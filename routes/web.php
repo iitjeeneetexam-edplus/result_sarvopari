@@ -27,6 +27,6 @@ Route::post('/school/store', [SchoolController::class, 'store'])->name('school.s
 
 Route::get('/standards', [StandardController::class, 'index'])->name('standards.index');
 Route::get('/standards/create', [StandardController::class, 'create'])->name('standards.create');
-Route::post('/standards/store', [StandardController::class, 'store'])->name('standards.store');
+Route::post('/standards', [StandardController::class, 'store'])->name('standards.store');
 
 
