@@ -8,10 +8,16 @@ use Illuminate\Http\Request;
 
 class DivisionController extends Controller
 {
+    public function index()
+    {
+        $divisions = Division::with('standard')->get(); // Eager load the standard relationship
+        return view('division.list', compact('divisions'));
+    }
+
     public function create()
     {
         $standards = Standard::all(); // Fetch all standards
-        return view('divisions.create', compact('standards')); // Pass standards to the view
+        return view('division.add', compact('standards')); // Pass standards to the view
     }
 
     public function store(Request $request)
@@ -24,12 +30,8 @@ class DivisionController extends Controller
 
         Division::create($request->all());
 
-        return redirect()->route('divisions.index')->with('success', 'Division added successfully.');
+        return redirect()->route('division.index')->with('success', 'Division added successfully.');
     }
 
-    public function index()
-    {
-        $divisions = Division::with('standard')->get(); // Eager load the standard relationship
-        return view('divisions.index', compact('divisions'));
-    }
+    
 }

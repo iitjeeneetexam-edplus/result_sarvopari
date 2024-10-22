@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Divisions List') }}
+            {{ __('Exams List') }}
         </h2>
     </x-slot>
 
@@ -14,25 +14,29 @@
                     </div>
                 @endif
 
-                <a href="{{ route('division.create') }}" class="btn btn-primary mb-3">Add New Division</a>
+                <a href="{{ route('exam.create') }}" class="btn btn-primary mb-3">Add New Exam</a>
 
                 <table class="table">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Division Name</th>
-                            <th>Status</th>
+                            <th>Exam Name</th>
                             <th>Standard</th>
+                            <th>Exam Date</th>
+                            <th>Total Marks</th>
+                            <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($divisions as $division)
+                        @foreach ($exams as $exam)
                             <tr>
-                                <td>{{ $division->id }}</td>
-                                <td>{{ $division->division_name }}</td>
-                                <td>{{ $division->status ? 'Active' : 'Inactive' }}</td>
-                                <td>{{ $division->standard->name ?? 'N/A' }}</td> <!-- Display associated standard -->
+                                <td>{{ $exam->id }}</td>
+                                <td>{{ $exam->exam_name }}</td>
+                                <td>{{ $exam->standard->name }}</td> <!-- Display associated standard -->
+                                <td>{{ $exam->exam_date }}</td>
+                                <td>{{ $exam->total_marks }}</td>
+                                <td>{{ ucfirst($exam->status) }}</td>
                                 <td>
                                     <!-- Add edit/delete actions if needed -->
                                 </td>

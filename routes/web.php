@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\StandardController;
 use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\ExamController;
 
 
 Route::get('/dashboard', function () {
@@ -38,5 +39,8 @@ Route::get('/division', [DivisionController::class, 'index'])->name('division.in
 Route::get('/division/create', [DivisionController::class, 'create'])->name('division.create');
 Route::post('/division/store', [DivisionController::class, 'store'])->name('division.store');
 
+Route::get('/exam', [ExamController::class, 'index'])->name('exam.index');
+Route::get('/exam/create', [ExamController::class, 'create'])->name('exam.create');
+Route::post('/exam/store', [ExamController::class, 'store'])->name('exam.store');
 
 
