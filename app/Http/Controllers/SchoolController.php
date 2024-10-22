@@ -38,7 +38,6 @@ class SchoolController extends Controller
             'status' => $request->status,
         ]);
 
-        // Redirect back with a success message
         return redirect()->back()->with('success', 'School added successfully!');
     }
 }
