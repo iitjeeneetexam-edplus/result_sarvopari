@@ -17,7 +17,7 @@ class StandardController extends Controller
     public function create()
     {
         $schools = School::all(); // Retrieve all schools to populate the dropdown
-        return view('standards.add', compact('schools')); // Pass schools to the view
+        return view('standard.add', compact('schools')); // Pass schools to the view
     }
 
     public function store(Request $request)
@@ -25,7 +25,7 @@ class StandardController extends Controller
         $request->validate([
             'school_id' => 'required|exists:schools,id', // Validate school_id exists in the schools table
             'standard_name' => 'required|string|max:255',
-            'status' => 'required|in:active,inactive', // Validate status is either 'active' or 'inactive'
+            'status' => 'required|in:1,0', // Validate status is either 'active' or 'inactive'
         ]);
 
         Standard::create([

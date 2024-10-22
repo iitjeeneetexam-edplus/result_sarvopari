@@ -1,3 +1,5 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+      
 <nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -68,7 +70,8 @@
     <div class="sidebar">
         <a class="" href="{{url('dashboard')}}">Dashboard</a>
         <a class="active" href="{{url('schools')}}">School</a>
-        <a href="{{url('standard')}}">Standard</a>
+        <a href="{{url('standards')}}">Standard</a>
+        <a href="{{url('Subject')}}">Subject</a>
         <a href="#contact">Contact</a>
         <a href="#about">About</a>
     </div>

@@ -9,13 +9,13 @@ class SchoolController extends Controller
 {
     public function index()
     {
-        $schools = School::all(); // Retrieve all schools
-        return view('school.list', compact('schools')); // Pass schools to the view
+        $schools = School::all(); 
+        return view('school.list', compact('schools'));
     }
 
     public function create()
     {
-        return view('school.add'); // Return the view with the form
+        return view('school.add'); 
     }
 
     public function store(Request $request)
