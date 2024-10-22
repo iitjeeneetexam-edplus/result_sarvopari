@@ -32,10 +32,16 @@
                         <option value="{{ $school->id }}">{{ $school->school_name }}</option>
                     @endforeach
                 </select>
+                @error('school_id')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
             <div class="form-group">
                 <label for="standard_name">Standard Name</label>
                 <input type="text" name="standard_name" id="standard_name" class="form-control" required>
+                @error('standard_name')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
             <div class="form-group">
                 <label for="status">Status</label>
@@ -44,6 +50,9 @@
                     <option value="1">Active</option>
                     <option value="0">Inactive</option>
                 </select>
+                @error('status')
+                    <div class="text-danger">{{ $message }}</div>
+                @enderror
             </div>
             <button type="submit" class="btn btn-primary">Add Standard</button>
         </form>

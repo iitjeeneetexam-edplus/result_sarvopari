@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\StandardController;
-
+use App\Http\Controllers\SubjectController;
 
 
 Route::get('/dashboard', function () {
@@ -28,5 +28,10 @@ Route::post('/school/store', [SchoolController::class, 'store'])->name('school.s
 Route::get('/standards', [StandardController::class, 'index'])->name('standards.index');
 Route::get('/standards/create', [StandardController::class, 'create'])->name('standards.create');
 Route::post('/standards', [StandardController::class, 'store'])->name('standards.store');
+
+Route::get('/subjects', [SubjectController::class, 'index'])->name('subjects.index');
+Route::get('/subjects/create', [SubjectController::class, 'create'])->name('subjects.create');
+Route::post('/subjects/store', [SubjectController::class, 'store'])->name('subjects.store');
+
 
 
