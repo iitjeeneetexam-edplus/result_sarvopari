@@ -15,7 +15,7 @@ class SchoolController extends Controller
 
     public function create()
     {
-        return view('add_school'); // Return the view with the form
+        return view('school.add'); // Return the view with the form
     }
 
     public function store(Request $request)
