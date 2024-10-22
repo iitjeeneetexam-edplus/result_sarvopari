@@ -1,16 +1,16 @@
-<!-- resources/views/standards/index.blade.php -->
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>List of Standards</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}"> <!-- Optional: Link your CSS -->
-</head>
-<body>
-    <div class="container">
-        <h1>List of Standards</h1>
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ __('Dashboard') }}
+        </h2>
+    </x-slot>
+    <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-8">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                <div class="container mt-5">
+                <a href="{{url('standards/create')}}" class="text-end">Create</a>
 
         <table class="table table-bordered">
             <thead>
@@ -38,5 +38,8 @@
             {{ $standards->links() }} <!-- Display pagination links -->
         </div>
     </div>
-</body>
-</html>
+    </div>
+    </div>
+    </div>
+  
+</x-app-layout>
