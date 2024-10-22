@@ -1,13 +1,15 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Subjects List') }}
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ __('Dashboard') }}
         </h2>
     </x-slot>
-
-    <div class="py-10">
-        <div class="max-w-6xl mx-auto sm:px-7 lg:px-8">
-            <div class="bg-white shadow-sm sm:rounded-lg p-6">
+    <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-8">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                <div class="container mt-5">
+                <a href="{{url('subjects/create')}}" class="text-end">Create</a>
                 @if(session('success'))
                     <div class="alert alert-success">
                         {{ session('success') }}

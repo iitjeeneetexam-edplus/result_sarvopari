@@ -71,7 +71,8 @@
         <a class="" href="{{url('dashboard')}}">Dashboard</a>
         <a class="active" href="{{url('schools')}}">School</a>
         <a href="{{url('standards')}}">Standard</a>
-        <a href="{{url('Subject')}}">Subject</a>
+        <a href="{{url('subjects')}}">Subject</a>
+        <a href="{{url('division')}}">Division</a>
         <a href="#contact">Contact</a>
         <a href="#about">About</a>
     </div>
