@@ -5,13 +5,20 @@
         </h2>
     </x-slot>
 
-    <div class="py-10">
-        <div class="max-w-6xl mx-auto sm:px-7 lg:px-8 pt-3">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100 ">
-                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-                    <div class="container mt-5">
-                        <h2>Add New School</h2>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-8">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6 text-gray-900 dark:text-gray-100">
+                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                <div class=" ">
+                    <h2>Add New School</h2>
+                    <form action="{{ url('school/store') }}" method="POST">
+                        @csrf
+                        <div class="form-group mb-3">
+                            <label for="school_name">School Name</label>
+                            <input type="text" class="form-control" id="school_name" name="school_name" required>
+                        </div>
 
                         <!-- Display Validation Errors -->
                         @if ($errors->any())
