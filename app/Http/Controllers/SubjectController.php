@@ -12,14 +12,14 @@ class SubjectController extends Controller
     public function index()
     {
         $subjects = Subject::all(); // Retrieve all subjects
-        return view('subjects.index', compact('subjects'));
+        return view('subjects.list', compact('subjects'));
     }
 
     // Show the form for creating a new subject
     public function create()
     {
         $standards = Standard::all(); // Assuming you have a Standard model
-        return view('subjects.create', compact('standards'));
+        return view('subjects.add', compact('standards'));
     }
 
     // Store a newly created subject in storage
