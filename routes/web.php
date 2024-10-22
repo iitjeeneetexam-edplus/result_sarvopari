@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DivisionController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SchoolController;
@@ -32,6 +33,10 @@ Route::post('/standards', [StandardController::class, 'store'])->name('standards
 Route::get('/subjects', [SubjectController::class, 'index'])->name('subjects.index');
 Route::get('/subjects/create', [SubjectController::class, 'create'])->name('subjects.create');
 Route::post('/subjects/store', [SubjectController::class, 'store'])->name('subjects.store');
+
+Route::get('/division', [DivisionController::class, 'index'])->name('division.index');
+Route::get('/division/create', [DivisionController::class, 'create'])->name('division.create');
+Route::post('/division/store', [DivisionController::class, 'store'])->name('division.store');
 
 
 
