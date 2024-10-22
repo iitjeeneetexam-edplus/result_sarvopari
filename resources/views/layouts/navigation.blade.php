@@ -66,6 +66,7 @@
         </div>
     </div>
     <div class="sidebar">
+        <a class="" href="{{url('dashboard')}}">Dashboard</a>
         <a class="active" href="{{url('schools')}}">School</a>
         <a href="{{url('standard')}}">Standard</a>
         <a href="#contact">Contact</a>
