@@ -13,7 +13,7 @@
                 <div class="container mt-5">
 
         <h1>List of Schools</h1>
-        <a href="{{url('school/create')}}" class="text-end">Create</a>
+        <a href="{{url('schools/create')}}" class="text-end">Create</a>
         @if(session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}

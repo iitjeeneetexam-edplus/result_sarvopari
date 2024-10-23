@@ -22,8 +22,8 @@ Route::get('/standard', [ProfileController::class, 'edit'])->name('profile.edit'
 
 require __DIR__.'/auth.php';
 Route::get('/schools', [SchoolController::class, 'index'])->name('schools.index');
-Route::get('/school/create', [SchoolController::class, 'create'])->name('school.create');
-Route::post('/school/store', [SchoolController::class, 'store'])->name('school.store');
+Route::get('/schools/create', [SchoolController::class, 'create'])->name('school.create');
+Route::post('/schools/store', [SchoolController::class, 'store'])->name('school.store');
 
 
 

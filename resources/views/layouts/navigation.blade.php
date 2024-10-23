@@ -69,7 +69,7 @@
     </div>
     <div class="sidebar">
         <a class="{{ Request::segment(1) == 'dashboard' ? 'active' : '' }}" href="{{url('dashboard')}}">Dashboard</a>
-        <a class="{{ Request::segment(1) == 'schools' ? 'active' : '' }}" href="{{url('schools')}}">School</a>
+        <a class="{{ Request::segment(1) == 'schools'   ? 'active' : '' }}" href="{{url('schools')}}">School</a>
         <a class="{{ Request::segment(1) == 'standards' ? 'active' : '' }}" href="{{url('standards')}}">Standard</a>
         <a class="{{ Request::segment(1) == 'subjects' ? 'active' : '' }}" href="{{url('subjects')}}">Subject</a>
         <a class="{{ Request::segment(1) == 'division' ? 'active' : '' }}" href="{{url('division')}}">Division</a>
