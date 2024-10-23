@@ -68,14 +68,12 @@
         </div>
     </div>
     <div class="sidebar">
-        <a class="" href="{{url('dashboard')}}">Dashboard</a>
-        <a class="active" href="{{url('schools')}}">School</a>
-        <a href="{{url('standards')}}">Standard</a>
-        <a href="{{url('subjects')}}">Subject</a>
-        <a href="{{url('division')}}">Division</a>
-        <a href="#contact">Contact</a>
-        <a href="#about">About</a>
-    </div>
+        <a class="{{ Request::segment(1) == 'dashboard' ? 'active' : '' }}" href="{{url('dashboard')}}">Dashboard</a>
+        <a class="{{ Request::segment(1) == 'schools' ? 'active' : '' }}" href="{{url('schools')}}">School</a>
+        <a class="{{ Request::segment(1) == 'standards' ? 'active' : '' }}" href="{{url('standards')}}">Standard</a>
+        <a class="{{ Request::segment(1) == 'subjects' ? 'active' : '' }}" href="{{url('subjects')}}">Subject</a>
+        <a class="{{ Request::segment(1) == 'division' ? 'active' : '' }}" href="{{url('division')}}">Division</a>
+     </div>
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">

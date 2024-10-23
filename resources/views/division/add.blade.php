@@ -7,7 +7,8 @@
 
     <div class="py-10">
         <div class="max-w-6xl mx-auto sm:px-7 lg:px-8">
-            <div class="bg-white shadow-sm sm:rounded-lg p-6">
+            <div class="bg-white shadow-sm sm:rounded-lg p-6 mt-5">
+            <h1>Add New Division</h1>
                 @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>
@@ -18,14 +19,14 @@
                     </div>
                 @endif
 
-                <form action="{{ route('divisions.store') }}" method="POST">
+                <form action="{{ route('division.store') }}" method="POST">
                     @csrf
                     <div class="form-group mb-3">
                         <label for="standard_id">Standard</label>
                         <select class="form-control" id="standard_id" name="standard_id" required>
-                            <option value="">Select a standard</option>
+                            <option value="">Select  standard</option>
                             @foreach ($standards as $standard)
-                                <option value="{{ $standard->id }}">{{ $standard->name }}</option> <!-- Assuming the standard has a name field -->
+                                <option value="{{ $standard->id }}">{{ $standard->standard_name }}</option> <!-- Assuming the standard has a name field -->
                             @endforeach
                         </select>
                         @error('standard_id')
@@ -43,7 +44,9 @@
 
                     <div class="form-group mb-3">
                         <label for="status">Status</label>
+                       
                         <select class="form-control" id="status" name="status" required>
+                        <option value="">Select  Status</option>
                             <option value="1">Active</option>
                             <option value="0">Inactive</option>
                         </select>

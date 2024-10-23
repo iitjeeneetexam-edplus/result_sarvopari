@@ -14,7 +14,7 @@
                     </div>
                 @endif
 
-                <a href="{{ route('divisions.create') }}" class="btn btn-primary mb-3">Add New Division</a>
+                <a href="{{ route('division.create') }}" class="btn btn-primary mb-3">Add New Division</a>
 
                 <table class="table">
                     <thead>
@@ -32,7 +32,7 @@
                                 <td>{{ $division->id }}</td>
                                 <td>{{ $division->division_name }}</td>
                                 <td>{{ $division->status ? 'Active' : 'Inactive' }}</td>
-                                <td>{{ $division->standard->name ?? 'N/A' }}</td> <!-- Display associated standard -->
+                                <td>{{ $division->standard_name ? $division->standard_name : 'N/A' ; }}</td> <!-- Display associated standard -->
                                 <td>
                                     <!-- Add edit/delete actions if needed -->
                                 </td>
