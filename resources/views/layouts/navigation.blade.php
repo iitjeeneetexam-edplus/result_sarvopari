@@ -74,6 +74,7 @@
         <a class="{{ Request::segment(1) == 'standards' ? 'active' : '' }}" href="{{url('standards')}}">Standard</a>
         <a class="{{ Request::segment(1) == 'subjects' ? 'active' : '' }}" href="{{url('subjects')}}">Subject</a>
         <a class="{{ Request::segment(1) == 'division' ? 'active' : '' }}" href="{{url('division')}}">Division</a>
+        <a class="{{ Request::segment(1) == 'exam' ? 'active' : '' }}" href="{{url('exam')}}">Exam</a>
      </div>
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
