@@ -15,20 +15,19 @@ class SubjectController extends Controller
         return view('subjects.list', compact('subjects'));
     }
 
-    // Show the form for creating a new subject
     public function create()
     {
         $standards = Standard::all(); // Assuming you have a Standard model
         return view('subjects.add', compact('standards'));
     }
 
-    // Store a newly created subject in storage
     public function store(Request $request)
     {
+        echo "<pre>";print_r($request->all());exit;
         $request->validate([
             'subject_name' => 'required|string|max:255',
             'is_optional' => 'boolean',
-            'standard_id' => 'required|exists:standards,id', // Validate standard_id
+            'standard_id' => 'required|exists:standards,id', 
             'status' => 'required|boolean',
         ]);
 

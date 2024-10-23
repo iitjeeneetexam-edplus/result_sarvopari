@@ -38,10 +38,12 @@
         .hidden {
             display: none;
         }
-    </style>    <div class="container">
+    </style>     
+     <meta name="base-url" content="{{ url('/') }}"> <!-- Set your base URL here -->
+  <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 col-md-10 col-lg-8">
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-5">
                     <div class="p-6 text-gray-900 dark:text-gray-100">
                         <h1>Add New Subject</h1>
                         @if ($errors->any())
@@ -54,30 +56,38 @@
                         </div>
                         @endif
 
-                        <form action="{{ route('subjects.store') }}" method="POST">
+                        <form  method="POST" id="subjectForm">
                             @csrf
                             <div class="form-group mb-3">
-                                <label for="subject_name">Subject Name</label>
-                                <input type="text" class="form-control" id="subject_name" name="subject_name" required>
+                                <label for="subject_name">Subject Name </label>
+                                <input type="text" class="form-control" id="subject_name" name="subject_name[]" required>
                                 @error('subject_name')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div id="optionalDiv" class="hidden is_optional_added">
+                            
+                            <div id="optionalDiv" class="hidden ">
+                            
                                 <div class="row ">
-                                    <div class="col-md-10">
-                                    <label for="subject_name">Subject Name</label>
-                                        <input type="text" class="form-control" id="subject_name" name="subject_name" required>
+                                <div class="col-md-12 is_addmore_subject">
+                                    
+                                        <button class="btn btn-success " style="float:right" id="addmore_subject" type="button">plus</button>
+                                        
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="is_optional_added">
+                                    <div class="row">
+                                    <div class="col-md-10 ">
+                                    <label for="subject_name">Subject Name </label>    
+                                        <input type="text" class="form-control" id="subject_name" name="subject_name[]" required>
                                         @error('subject_name')
                                         <div class="text-danger">{{ $message }}</div>
                                         @enderror
+                                        
                                     </div>
-                                    <div class="col-md-2">
-                                    <i class="fa fa-times-circle-o" aria-hidden="true"></i>
-
-                                        <button class="btn btn-danger remove-option mt-3" style="width:100px" >cancel</button>
+                                  </div>
                                     </div>
-
                                 </div>
                             
                                 <!-- Content to be shown when 'Yes' is selected -->
@@ -85,7 +95,7 @@
                             </div>
                             <div class="form-group mb-3 is_optional_content">
                                 <label for="is_optional">Is Optional?</label>
-                                <select class="form-control" id="is_optional" name="is_optional" onchange="toggleDiv()" >
+                                <select class="form-control" id="is_optional" name="is_optional[]" onchange="toggleDiv()" >
                                     <option value="0">No</option>
                                     <option value="1">Yes</option>
                                 </select>
@@ -93,6 +103,7 @@
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
+                            
                             <div class="add-chapter-btn">
                                 <a class="btn" id="addmore">
                                     &nbsp;&nbsp; Add More Subject
@@ -105,7 +116,6 @@
                                 <select class="form-control" id="standard_id" name="standard_id" required>
                                     <option value="">select option</option>
                                     @foreach ($standards as $standard)
-                                    <option value="{{ $standard->id }}">{{ $standard->standard_name }}</option>
                                     <option value="{{ $standard->id }}">{{ $standard->standard_name }}</option>
                                     @endforeach
                                 </select>
@@ -127,7 +137,7 @@
                             </div>
 
                             <button type="submit" class="btn btn-primary">Add Subject</button>
-                        </form>
+                            </form>
                     </div>
                 </div>
             </div>
@@ -137,27 +147,69 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
+        $('#subjectForm').on('submit', function(event) {
+            var formData = new FormData(this);
+            var baseUrl = $('meta[name="base-url"]').attr('content');
+            alert(baseUrl);
+            axios.post(baseUrl + 'subjects/store', {
+                formData: formData
+            })
+            .then(response => {
+                var reponse_data = response;
+              })
+            .catch(error => {
+                console.error(error);
+            });
+        });
+    });
+    $(document).ready(function() {
+        let idCounter = 2;
         $('#addmore').click(function() {
+            
             var chapterHtml = `
                     <div class="row  added-chapter">
                     <div style="text-align:end" >
                         <button class="btn btn-danger remove-chapter" style="width:100px" >cancel</button>
                      </div>
                <div class="form-group mb-3">
-                        <label for="subject_name">Subject Name</label>
-                        <input type="text" class="form-control" id="subject_name" name="subject_name" required>
+                        <label for="subject_name">Subject Name </label>
+                        <input type="text" class="form-control" id="subject_name" name="subject_name[]" required>
                        
                     </div>
+                    <input type="hidden" id="currentID" value="${idCounter}">
+                     <div id="optionalDiv${idCounter}" class="hidden ">
+                                <div class="row ">
+                                <div class="col-md-12 is_addmore_subject">
+                                    
+                                        <button class="btn btn-success " style="float:right" id="" type="button" onclick="is_optional_added_last(${idCounter})">plus</button>
+                                        <div class="is_optional_added_last${idCounter}"></div> <!-- Container for added subjects -->
 
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="is_optional_added_second${idCounter}">
+                                    <div class="row">
+                                    <div class="col-md-10 ">
+                                    <label for="subject_name">Subject Name</label>    
+                                        
+                                        <input type="text" class="form-control" id="subject_name" name="subject_name[]" required>
+                                    </div>
+                                  </div>
+                                    </div>
+                                </div>
+                            </div>
                     <div class="form-group mb-3">
                         <label for="is_optional">Is Optional?</label>
-                        <select class="form-control" id="is_optional" name="is_optional">
+                        <select class="form-control" id="is_optional${idCounter}" name="is_optional[]" onchange="toggleDiv2(${idCounter})">
                             <option value="0">No</option>
                             <option value="1">Yes</option>
                         </select>
                     </div>
                 </div>`;
-            $('.add-chapter-btn').before(chapterHtml);
+                
+                idCounter++;
+                
+                $('.add-chapter-btn').before(chapterHtml);
             $('.remove-chapter').click(function() {
                 $(this).closest('.added-chapter').remove();
             });
@@ -167,6 +219,57 @@
         });
         
     });
+    document.getElementById('addmore_subject').addEventListener('click', function() {
+    let i = document.querySelectorAll('.is_optional_added').length + 1;
+
+    let chapterHtml2 = `
+        <div>
+            <div class="row is_optional_added${i}">
+                <div class="col-md-10">
+                    <label for="subject_name">Subject Name</label>    
+                    <input type="text" class="form-control" id="subject_name" name="subject_name[]" required>
+                    <div class="text-danger" id="error_subject_name"></div> 
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-danger remove-option-second mt-3" data-index="${i}" style="width:100px" type="button">cancel</button>
+                </div> 
+            </div>
+        </div>`;
+
+    i++;
+
+    document.querySelector('.is_optional_added').insertAdjacentHTML('beforeend', chapterHtml2);
+});
+function is_optional_added_last(id) {
+    let chapterContainer = $(`.is_optional_added_last${id}`);
+    let i = chapterContainer.find('.is_optional_added_second').length + 1; // Increment the index
+
+    // New HTML for the subject input
+    let chapterHtml2 = `
+    <div>
+        <div class="row is_optional_added_second${i}">
+          <div class="row">
+            <div class="col-md-10">
+                <label for="subject_name_${i}">Subject Name</label>    
+                <input type="text" class="form-control" id="subject_name_${i}" name="subject_name[]" required>
+                <div class="text-danger" id="error_subject_name_${i}"></div> 
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-danger remove-option-second mt-3" data-index="${i}" style="width:100px" type="button">cancel</button>
+            </div> 
+        </div>
+        </div>
+    </div>`;
+
+    document.querySelector('.is_optional_added_second'+id).insertAdjacentHTML('beforeend',chapterHtml2);
+    
+}
+
+    // Use event delegation for removing options
+    $(document).on('click', '.remove-option-second', function() {
+        $(this).closest('.row').remove(); // Remove the corresponding input row
+    });
+
     
 </script>
 <script>
@@ -180,9 +283,25 @@
                 optionalDiv.classList.add('hidden');
             }
         }
+        function toggleDiv2(id) {
+            const isOptional2 = document.getElementById('is_optional'+id).value;
+            const optionalDiv2 = document.getElementById('optionalDiv'+id);
+            
+            if (isOptional2 == '1') {
+                
+                optionalDiv2.classList.remove('hidden');
+            } else {
+                optionalDiv2.classList.add('hidden');
+            }
+        }
         $('.remove-option').click(function() {
                 $(this).closest('.is_optional_added').hide();
-                location.reload();
-
+         
             });
+
+            $(document).on('click', '.remove-option-second', function() {
+                let i = $(this).data('index'); // Get the index from the data attribute
+                $(this).closest('.is_optional_added_second' + i).remove();
+            });
+    
     </script>
