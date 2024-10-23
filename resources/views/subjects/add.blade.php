@@ -41,7 +41,7 @@
     </style>    <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 col-md-10 col-lg-8">
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-5">
                     <div class="p-6 text-gray-900 dark:text-gray-100">
                         <h1>Add New Subject</h1>
                         @if ($errors->any())
@@ -63,21 +63,28 @@
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div id="optionalDiv" class="hidden is_optional_added">
+                            <div id="optionalDiv" class="hidden ">
                                 <div class="row ">
-                                    <div class="col-md-10">
-                                    <label for="subject_name">Subject Name</label>
+                                <div class="col-md-12 is_addmore_subject">
+                                    
+                                        <button class="btn btn-success " style="float:right" id="addmore_subject" type="button">plus</button>
+                                        
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="is_optional_added">
+                                    <div class="row">
+                                    <div class="col-md-10 ">
+                                    <label for="subject_name">Subject Name</label>    
+                                        
                                         <input type="text" class="form-control" id="subject_name" name="subject_name" required>
                                         @error('subject_name')
                                         <div class="text-danger">{{ $message }}</div>
                                         @enderror
+                                        
                                     </div>
-                                    <div class="col-md-2">
-                                    <i class="fa fa-times-circle-o" aria-hidden="true"></i>
-
-                                        <button class="btn btn-danger remove-option mt-3" style="width:100px" >cancel</button>
+                                  </div>
                                     </div>
-
                                 </div>
                             
                                 <!-- Content to be shown when 'Yes' is selected -->
@@ -157,6 +164,7 @@
                         </select>
                     </div>
                 </div>`;
+                
             $('.add-chapter-btn').before(chapterHtml);
             $('.remove-chapter').click(function() {
                 $(this).closest('.added-chapter').remove();
@@ -166,6 +174,27 @@
             });
         });
         
+    });
+    $('#addmore_subject').click(function() {
+        let i = $('.is_optional_added_second').length + 1;
+            var chapterHtml2 = `
+            <div>
+                     <div class="row is_optional_added_second${i}">
+                        <div class="col-md-10">
+                        <label for="subject_name">Subject Name</label>    
+                            
+                            <input type="text" class="form-control" id="subject_name" name="subject_name" required>
+                            @error('subject_name')
+                            <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                            
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-danger remove-option-second mt-3" data-index="${i}" style="width:100px" type="submit" >cancel</button>
+                        </div> 
+                        
+                    </div>   </div>`;
+                         $('.is_optional_added').append(chapterHtml2);
     });
     
 </script>
@@ -182,7 +211,11 @@
         }
         $('.remove-option').click(function() {
                 $(this).closest('.is_optional_added').hide();
-                location.reload();
+         
+            });
 
+            $(document).on('click', '.remove-option-second', function() {
+                let i = $(this).data('index'); // Get the index from the data attribute
+                $(this).closest('.is_optional_added_second' + i).remove();
             });
     </script>
