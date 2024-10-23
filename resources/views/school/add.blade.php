@@ -26,7 +26,7 @@
                             </div>
                         @endif
 
-                        <form action="{{ url('school/store') }}" method="POST">
+                        <form action="{{ url('schools/store') }}" method="POST">
                             @csrf
                             <div class="form-group mb-3">
                                 <label for="school_name">School Name</label>

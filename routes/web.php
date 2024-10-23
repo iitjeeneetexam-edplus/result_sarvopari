@@ -7,6 +7,7 @@ use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\StandardController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\ExamController;
+use App\Http\Controllers\StudentController;
 
 
 Route::get('/dashboard', function () {
@@ -43,4 +44,9 @@ Route::get('/exam', [ExamController::class, 'index'])->name('exam.index');
 Route::get('/exam/create', [ExamController::class, 'create'])->name('exam.create');
 Route::post('/exam/store', [ExamController::class, 'store'])->name('exam.store');
 
+Route::get('/get-standards/{school_id}', [StandardController::class, 'getStandardsBySchool'])->name('get-standards');
+Route::get('/get-divisions/{standard_id}', [DivisionController::class, 'getdivisionBystandard'])->name('get-divisions');
+Route::get('/students', [StudentController::class, 'index'])->name('students.index');
+Route::get('/students/add', [StudentController::class, 'showImportForm'])->name('students.importForm');
+Route::post('/students/import', [StudentController::class, 'import'])->name('students.import');
 

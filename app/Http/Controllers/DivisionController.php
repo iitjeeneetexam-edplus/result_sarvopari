@@ -33,5 +33,13 @@ class DivisionController extends Controller
         return redirect()->route('division.index')->with('success', 'Division added successfully.');
     }
 
+    public function getdivisionBystandard($standard_id)
+    {
+        // Fetch standards based on school_id
+        $division = Division::where('standard_id', $standard_id)->get();
+
+        // Return the standards as JSON
+        return response()->json($division);
+    }
     
 }
