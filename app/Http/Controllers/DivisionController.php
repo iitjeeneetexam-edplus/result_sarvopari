@@ -8,16 +8,16 @@ use Illuminate\Http\Request;
 
 class DivisionController extends Controller
 {
+
     public function index()
     {
-        $divisions = Division::with('standard')->get(); // Eager load the standard relationship
+        $divisions = Division::with('standard')->get(); 
         return view('division.list', compact('divisions'));
     }
-
     public function create()
     {
-        $standards = Standard::all(); // Fetch all standards
-        return view('division.add', compact('standards')); // Pass standards to the view
+        $standards = Standard::all(); 
+        return view('division.add', compact('standards')); 
     }
 
     public function store(Request $request)
@@ -25,7 +25,7 @@ class DivisionController extends Controller
         $request->validate([
             'division_name' => 'required|string|max:255',
             'status' => 'required|boolean',
-            'standard_id' => 'required|exists:standards,id', // Validate standard_id
+            'standard_id' => 'required|exists:standards,id', 
         ]);
 
         Division::create($request->all());

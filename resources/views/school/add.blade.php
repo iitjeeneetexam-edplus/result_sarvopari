@@ -12,40 +12,7 @@
                     <div class="p-6 text-gray-900 dark:text-gray-100">
                
                     <h2>Add New School</h2>
-                    <form action="{{ url('school/store') }}" method="POST">
-                        @csrf
-                        <div class="form-group mb-3">
-                            <label for="school_name">School Name</label>
-                            <input type="text" class="form-control" id="school_name" name="school_name" required>
-                        </div>
-
-                        <div class="form-group mb-3">
-                            <label for="address">Address</label>
-                            <textarea class="form-control" id="address" name="address" rows="3" required></textarea>
-                        </div>
-
-                        <div class="form-group mb-3">
-                            <label for="email">Email</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
-                        </div>
-
-                        <div class="form-group mb-3">
-                            <label for="contact_no">Contact No</label>
-                            <input type="text" class="form-control" id="contact_no" name="contact_no" required>
-                        </div>
-
-                        <div class="form-group mb-3">
-                            <label for="status">Status</label>
-                            <select class="form-control" id="status" name="status" required>
-                            <option value="">Select option</option>
-                                <option value="1">Active</option>
-                                <option value="0">Inactive</option>
-                            </select>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">Add School</button>
-                    </form>
-
+                   
                 <!-- Add your JS or Bootstrap script here -->
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
                         <!-- Display Validation Errors -->

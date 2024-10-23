@@ -13,6 +13,6 @@ class Division extends Model
 
     public function standard()
     {
-        return $this->belongsTo(Standard::class); // Define the relationship with Standard
+        return $this->belongsTo(Standard::class); 
     }
 }
