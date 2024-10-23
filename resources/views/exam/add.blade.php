@@ -26,18 +26,18 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="standard_id">Standard</label>
-                        <select class="form-control" id="standard_id" name="standard_id" required>
-                            <option value="">Select a standard</option>
-                            @foreach ($standards as $standard)
-                                <option value="{{ $standard->id }}">{{ $standard->standard_name }}</option>
+                        <label for="subject_id">Subject</label>
+                        <select class="form-control" id="subject_id" name="subject_id" required>
+                            <option value="">Select a Subject</option>
+                            @foreach ($subjects as $subject)
+                                <option value="{{ $subject->id }}">{{ $subject->subject_name }}</option>
                             @endforeach
                         </select>
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="exam_date">Exam Date</label>
-                        <input type="date" class="form-control" id="exam_date" name="exam_date" required>
+                        <label for="date">Exam Date</label>
+                        <input type="date" class="form-control" id="date" name="date" required>
                     </div>
 
                     <div class="form-group mb-3">
@@ -45,13 +45,7 @@
                         <input type="number" class="form-control" id="total_marks" name="total_marks" required>
                     </div>
 
-                    <div class="form-group mb-3">
-                        <label for="status">Status</label>
-                        <select class="form-control" id="status" name="status" required>
-                            <option value="1">Active</option>
-                            <option value="0">Inactive</option>
-                        </select>
-                    </div>
+                    
                     
 
                     <button type="submit" class="btn btn-primary">Add Exam</button>

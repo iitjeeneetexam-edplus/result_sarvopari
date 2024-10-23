@@ -73,6 +73,7 @@
         <a href="{{url('standards')}}">Standard</a>
         <a href="{{url('subjects')}}">Subject</a>
         <a href="{{url('division')}}">Division</a>
+        <a href="{{url('exam')}}">Exam</a>
         <a href="#contact">Contact</a>
         <a href="#about">About</a>
     </div>

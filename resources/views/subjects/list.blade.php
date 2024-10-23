@@ -23,7 +23,6 @@
                             <th>Subject Name</th>
                             <th>Is Optional</th>
                             <th>Status</th>
-                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -33,9 +32,7 @@
                                 <td>{{ $subject->subject_name }}</td>
                                 <td>{{ $subject->is_optional ? 'Yes' : 'No' }}</td>
                                 <td>{{ $subject->status ? 'Active' : 'Inactive' }}</td>
-                                <td>
-                                    <!-- Add any action buttons (edit, delete) if needed -->
-                                </td>
+                                
                             </tr>
                         @endforeach
                     </tbody>

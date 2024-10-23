@@ -21,11 +21,9 @@
                         <tr>
                             <th>ID</th>
                             <th>Exam Name</th>
-                            <th>Standard</th>
+                            <th>Subject</th>
                             <th>Exam Date</th>
                             <th>Total Marks</th>
-                            <th>Status</th>
-                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -33,13 +31,10 @@
                             <tr>
                                 <td>{{ $exam->id }}</td>
                                 <td>{{ $exam->exam_name }}</td>
-                                <td>{{ $exam->standard->name }}</td> <!-- Display associated standard -->
-                                <td>{{ $exam->exam_date }}</td>
+                                <td>{{ $exam->subject->subject_name }}</td> <!-- Display associated standard -->
+                                <td>{{ $exam->date }}</td>
                                 <td>{{ $exam->total_marks }}</td>
-                                <td>{{ ucfirst($exam->status) }}</td>
-                                <td>
-                                    <!-- Add edit/delete actions if needed -->
-                                </td>
+                                
                             </tr>
                         @endforeach
                     </tbody>

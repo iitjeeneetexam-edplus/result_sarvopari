@@ -23,7 +23,6 @@
                             <th>Division Name</th>
                             <th>Status</th>
                             <th>Standard</th>
-                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -33,9 +32,7 @@
                                 <td>{{ $division->division_name }}</td>
                                 <td>{{ $division->status ? 'Active' : 'Inactive' }}</td>
                                 <td>{{ $division->standard->name ?? 'N/A' }}</td> <!-- Display associated standard -->
-                                <td>
-                                    <!-- Add edit/delete actions if needed -->
-                                </td>
+                                
                             </tr>
                         @endforeach
                     </tbody>
