@@ -11,7 +11,7 @@
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-5">
                 <div class="container mt-5">
 
-        <h1>List of Schools</h1>
+        <h1>List of School</h1>
         <a href="{{ url('schools/create') }}" class="btn btn-primary mb-3" style="float: right;">Add New School</a>
         
 
