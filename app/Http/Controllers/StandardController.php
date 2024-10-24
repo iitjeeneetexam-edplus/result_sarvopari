@@ -37,4 +37,13 @@ class StandardController extends Controller
         return redirect()->route('standards.index')->with('success', 'Standard added successfully.');
     }
 
+    public function getStandardsBySchool($school_id)
+    {
+        // Fetch standards based on school_id
+        $standards = Standard::where('school_id', $school_id)->get();
+
+        // Return the standards as JSON
+        return response()->json($standards);
+    }
+
 }
