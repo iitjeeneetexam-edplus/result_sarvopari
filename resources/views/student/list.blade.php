@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    
+    <div class="row justify-content-center">
         <a href="{{ url('/students/add') }}" class="btn btn-primary mb-3 float-right">Add New Students</a>
 
         <!-- Filter Form -->
@@ -81,7 +81,7 @@
                 </div>
             </div>
         </div>
-    
+        </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
