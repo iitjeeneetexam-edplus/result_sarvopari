@@ -9,10 +9,14 @@
             <div class="col-12 col-md-10 col-lg-8">
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-5">
                 <div class="container mt-5">
-        <a href="{{ url('/students/add') }}" class="btn btn-primary mb-3 float-right">Add New Students</a>
-
+                    <div class="row"> 
+                         <div class="col-md-2 offset-10">
+                            <a href="{{ url('/students/add') }}" class="btn btn-primary" style="float: right;">Add New Students</a>
+                         </div>
+      
         <!-- Filter Form -->
         <form method="GET" action="{{ route('students.index') }}">
+      
             @csrf
             <div class="row mb-4">
                 <div class="col-md-4">
@@ -44,7 +48,9 @@
                 </div>
 
                 <div class="col-md-12 mt-3">
-                    <button type="submit" class="btn btn-primary">Filter</button>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary justify-center">Filter</button>
+                </div>
                 </div>
             </div>
         </form>
