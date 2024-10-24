@@ -62,11 +62,16 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>PRoll Number</th>
+                                <th>Roll Number</th>
                                 <th>Name</th>
                                 <th>GR Number</th>
                                 <th>UID</th>
                                 <th>Division</th>
+                                @if($subjects)
+                                    @foreach($subjects as $optionls)
+                                    <th>{{$optionls->subject_name}}</th>
+                                    @endforeach
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -90,52 +95,6 @@
                 </div>
             </div>
         </div>
-        </div>
-                </div>
-            </div></div>
-        
+    </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // School change event for fetching standards
-            $('#school').change(function() {
-                var schoolId = $(this).val();
-                if (schoolId) {
-                    $.ajax({
-                        url: '{{ url("/get-standards") }}/' + schoolId,
-                        type: 'GET',
-                        success: function(data) {
-                            $('#standard').empty().append('<option value="">Select a Standard</option>');
-                            $.each(data, function(key, value) {
-                                $('#standard').append('<option value="'+ value.id +'">'+ value.standard_name +'</option>');
-                            });
-                        }
-                    });
-                } else {
-                    $('#standard').empty().append('<option value="">Select a Standard</option>');
-                    $('#division').empty().append('<option value="">Select a Division</option>');
-                }
-            });
-
-            // Standard change event for fetching divisions
-            $('#standard').change(function() {
-                var standardId = $(this).val();
-                if (standardId) {
-                    $.ajax({
-                        url: '{{ url("/get-divisions") }}/' + standardId,
-                        type: 'GET',
-                        success: function(data) {
-                            $('#division').empty().append('<option value="">Select a Division</option>');
-                            $.each(data, function(key, value) {
-                                $('#division').append('<option value="'+ value.id +'">'+ value.division_name +'</option>');
-                            });
-                        }
-                    });
-                } else {
-                    $('#division').empty().append('<option value="">Select a Division</option>');
-                }
-            });
-        });
-    </script>
 </x-app-layout>

@@ -6,6 +6,7 @@ use App\Models\Division;
 use App\Models\School;
 use App\Models\Standard;
 use App\Models\Student;
+use App\Models\Subject;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,21 +16,29 @@ class StudentController extends Controller
 {
     public function index(Request $request)
     {
-        $divisionId = $request->input('division_id');
-        // Fetch students with specific fields
-        $query = Student::with('division:id,division_name')
-        ->select('name', 'roll_no', 'GR_no', 'uid', 'division_id');
         
-
-        if (!empty($divisionId)) {
-            $query->where('division_id', $divisionId);
-        }
-
-        $students = $query->get();
 
         $schools = School::select('id', 'school_name')->get();
 
-        return view('student.list', compact('students','schools'));
+        return view('student.listfilter', compact('schools'));
+    }
+
+    public function getstudents(Request $request)
+    {
+        $divisionId = $request->input('division_id');
+        $standardId = $request->input('standard_id');
+
+        $query = Student::with('division:id,division_name')
+        ->where('division_id', $divisionId)
+        ->select('name', 'roll_no', 'GR_no', 'uid', 'division_id');
+        $students = $query->get();
+
+        $subjects = Subject::join('subject_subs','subject_subs.subject_id','=','subjects.id')
+        ->where('subjects.standard_id',$standardId)
+        ->where('subjects.is_optional',1)
+        ->get();
+
+        return view('student.list', compact('students','subjects'));
     }
 
     public function showImportForm()
@@ -41,7 +50,6 @@ class StudentController extends Controller
     public function import(Request $request)
     {
         DB::beginTransaction();
-        // Validate the request
         $request->validate([
             'csv_file' => 'required|mimes:csv,txt|max:2048',
             'school_id' => 'required|exists:schools,id',
@@ -50,17 +58,10 @@ class StudentController extends Controller
 
         try{
             if (($handle = fopen($request->file('csv_file')->getRealPath(), 'r')) !== false) {
-                // Skip the header row
                 $header = fgetcsv($handle, 1000, ',');
     
                 while (($row = fgetcsv($handle, 1000, ',')) !== false) {
-                    // Map CSV data to your student fields
                     $studentData = array_combine($header, $row);
-    
-                    // Optionally validate student data
-                    
-    
-                    // Create student record with school and standard information
                     Student::updateOrCreate(
                         [
                             'name' => $studentData['name'],
