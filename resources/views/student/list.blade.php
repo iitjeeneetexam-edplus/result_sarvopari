@@ -53,7 +53,7 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Roll Number</th>
+                                <th>PRoll Number</th>
                                 <th>Name</th>
                                 <th>GR Number</th>
                                 <th>UID</th>
