@@ -39,7 +39,7 @@
             display: none;
         }
     </style>     
-     <meta name="base-url" content="{{ url('/') }}"> <!-- Set your base URL here -->
+   
   <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 col-md-10 col-lg-8">
@@ -56,7 +56,7 @@
                         </div>
                         @endif
 
-                        <form  method="POST" id="subjectForm">
+                        <form action="{{url('subjects/store')}}" method="POST" id="subjectForm" enctype='multipart/form-data'>
                             @csrf
                             <div class="form-group mb-3">
                                 <label for="subject_name">Subject Name </label>
@@ -80,7 +80,7 @@
                                     <div class="row">
                                     <div class="col-md-10 ">
                                     <label for="subject_name">Subject Name </label>    
-                                        <input type="text" class="form-control" id="subject_name" name="subject_name[]" required>
+                                        <input type="text" class="form-control" id="subject_name" name="subject_sub_name[0][]" >
                                         @error('subject_name')
                                         <div class="text-danger">{{ $message }}</div>
                                         @enderror
@@ -146,22 +146,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script type="text/javascript">
-    $(document).ready(function() {
-        $('#subjectForm').on('submit', function(event) {
-            var formData = new FormData(this);
-            var baseUrl = $('meta[name="base-url"]').attr('content');
-            alert(baseUrl);
-            axios.post(baseUrl + 'subjects/store', {
-                formData: formData
-            })
-            .then(response => {
-                var reponse_data = response;
-              })
-            .catch(error => {
-                console.error(error);
-            });
-        });
-    });
+ 
     $(document).ready(function() {
         let idCounter = 2;
         $('#addmore').click(function() {
@@ -192,7 +177,7 @@
                                     <div class="col-md-10 ">
                                     <label for="subject_name">Subject Name</label>    
                                         
-                                        <input type="text" class="form-control" id="subject_name" name="subject_name[]" required>
+                                        <input type="text" class="form-control" id="subject_name" name="subject_sub_name[${idCounter}][]" >
                                     </div>
                                   </div>
                                     </div>
@@ -227,7 +212,7 @@
             <div class="row is_optional_added${i}">
                 <div class="col-md-10">
                     <label for="subject_name">Subject Name</label>    
-                    <input type="text" class="form-control" id="subject_name" name="subject_name[]" required>
+                    <input type="text" class="form-control" id="subject_name" name="subject_sub_name[${i}][]" >
                     <div class="text-danger" id="error_subject_name"></div> 
                 </div>
                 <div class="col-md-2">
@@ -251,7 +236,7 @@ function is_optional_added_last(id) {
           <div class="row">
             <div class="col-md-10">
                 <label for="subject_name_${i}">Subject Name</label>    
-                <input type="text" class="form-control" id="subject_name_${i}" name="subject_name[]" required>
+                <input type="text" class="form-control" id="subject_name_${i}" name="subject_sub_name[${i}][]" >
                 <div class="text-danger" id="error_subject_name_${i}"></div> 
             </div>
             <div class="col-md-2">
