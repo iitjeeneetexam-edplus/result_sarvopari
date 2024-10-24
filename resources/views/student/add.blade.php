@@ -25,7 +25,7 @@
                     @csrf
                     <div>
                         <label for="school">Select School:</label>
-                        <select name="school_id" id="school" required>
+                        <select name="school_id" id="school" class="form-control" required>
                             <option value="">Select a School</option>
                             @foreach($schools as $school)
                                 <option value="{{ $school->id }}">{{ $school->school_name }}</option>
@@ -35,27 +35,27 @@
 
                     <div>
                         <label for="standard">Select Standard:</label>
-                        <select name="standard_id" id="standard" required>
+                        <select name="standard_id" id="standard" class="form-control" required>
                             <option value="">Select a Standard</option>
                         </select>
                     </div>
 
                     <div>
                         <label for="division">Select Division:</label>
-                        <select name="division_id" id="division" required>
+                        <select name="division_id" id="division" class="form-control" required>
                             <option value="">Select a Division</option>
                         </select>
                     </div>
 
                     <div>
                         <label for="csv_file">Upload CSV:</label>
-                        <input type="file" name="csv_file" required>
+                        <input type="file" name="csv_file" class="form-control" required>
                     </div>
 
-                    <button type="submit">Upload CSV</button>
+                    <button type="submit" class="btn btn-primary">Upload CSV</button>
                     </form>
 
-                    <a href="{{ route('standards.index') }}" class="btn btn-secondary mt-3">Back to Standards</a>
+                    <a href="{{ route('students.index') }}" class="btn btn-secondary mt-3">Back to Student List</a>
 
                     </div>
                 </div>
