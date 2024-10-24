@@ -11,49 +11,12 @@
                 <div class="container mt-5">
                     <div class="row"> 
                          <div class="col-md-2 offset-10">
-                            <a href="{{ url('/students/add') }}" class="btn btn-primary" style="float: right;">Add New Students</a>
+                            <a href="{{ url('/students/add') }}" class="btn btn-primary" >Add New Students</a>
                          </div>
+                    </div><br>
       
         <!-- Filter Form -->
-        <form method="GET" action="{{ route('students.index') }}">
-      
-            @csrf
-            <div class="row mb-4">
-                <div class="col-md-4">
-                    <label for="school">School</label>
-                    <select name="school_id" id="school" class="form-control">
-                        <option value="">All Schools</option>
-                        @foreach($schools as $school)
-                            <option value="{{ $school->id }}" {{ request('school_id') == $school->id ? 'selected' : '' }}>
-                                {{ $school->school_name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="col-md-4">
-                    <label for="standard">Select Standard:</label>
-                    <select name="standard_id" id="standard" class="form-control">
-                        <option value="">Select a Standard</option>
-                        <!-- Populated via AJAX -->
-                    </select>
-                </div>
-
-                <div class="col-md-4">
-                    <label for="division">Select Division:</label>
-                    <select name="division_id" id="division" class="form-control">
-                        <option value="">Select a Division</option>
-                        <!-- Populated via AJAX -->
-                    </select>
-                </div>
-
-                <div class="col-md-12 mt-3">
-                <div class="text-center">
-                    <button type="submit" class="btn btn-primary justify-center">Filter</button>
-                </div>
-                </div>
-            </div>
-        </form>
+       
 
         <!-- Student List Table -->
         <div class="row">
@@ -67,7 +30,7 @@
                                 <th>GR Number</th>
                                 <th>UID</th>
                                 <th>Division</th>
-                                @if($subjects)
+                                @if(!empty($subjects))
                                     @foreach($subjects as $optionls)
                                     <th>{{$optionls->subject_name}}</th>
                                     @endforeach
@@ -87,7 +50,7 @@
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="5" class="text-center">No students found</td>
+                                    <td colspan="7" class="text-center">No students found</td>
                                 </tr>
                             @endif
                         </tbody>
