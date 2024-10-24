@@ -67,19 +67,16 @@
                             </div>
                             
                             <div id="optionalDiv" class="hidden ">
-                            
                                 <div class="row ">
                                 <div class="col-md-12 is_addmore_subject">
-                                    
                                         <button class="btn btn-success " style="float:right" id="addmore_subject" type="button">plus</button>
-                                        
-                                    </div>
+                                   </div>
                                 </div>
                                 <div class="row">
                                     <div class="is_optional_added">
                                     <div class="row">
                                     <div class="col-md-10 ">
-                                    <label for="subject_name">Subject Name </label>    
+                                    <label for="subject_name">Optional Subject Name </label>    
                                         <input type="text" class="form-control" id="subject_name" name="subject_sub_name[0][]" >
                                         @error('subject_name')
                                         <div class="text-danger">{{ $message }}</div>
@@ -149,6 +146,7 @@
  
     $(document).ready(function() {
         let idCounter = 2;
+        let subjectCounter = 1;
         $('#addmore').click(function() {
             
             var chapterHtml = `
@@ -175,9 +173,9 @@
                                     <div class="is_optional_added_second${idCounter}">
                                     <div class="row">
                                     <div class="col-md-10 ">
-                                    <label for="subject_name">Subject Name</label>    
+                                    <label for="subject_name">Optional Subject Name</label>    
                                         
-                                        <input type="text" class="form-control" id="subject_name" name="subject_sub_name[${idCounter}][]" >
+                                        <input type="text" class="form-control" id="subject_name" name="subject_sub_name[${subjectCounter}][]"  >
                                     </div>
                                   </div>
                                     </div>
@@ -193,6 +191,7 @@
                 </div>`;
                 
                 idCounter++;
+                subjectCounter++;
                 
                 $('.add-chapter-btn').before(chapterHtml);
             $('.remove-chapter').click(function() {
@@ -211,8 +210,8 @@
         <div>
             <div class="row is_optional_added${i}">
                 <div class="col-md-10">
-                    <label for="subject_name">Subject Name</label>    
-                    <input type="text" class="form-control" id="subject_name" name="subject_sub_name[${i}][]" >
+                    <label for="subject_name">Optional Subject Name</label>    
+                    <input type="text" class="form-control" id="subject_name" name="subject_sub_name[0][]">
                     <div class="text-danger" id="error_subject_name"></div> 
                 </div>
                 <div class="col-md-2">
@@ -225,18 +224,20 @@
 
     document.querySelector('.is_optional_added').insertAdjacentHTML('beforeend', chapterHtml2);
 });
+let j=1;
 function is_optional_added_last(id) {
+    let data= id - 1 ;
     let chapterContainer = $(`.is_optional_added_last${id}`);
     let i = chapterContainer.find('.is_optional_added_second').length + 1; // Increment the index
-
+    
     // New HTML for the subject input
     let chapterHtml2 = `
     <div>
         <div class="row is_optional_added_second${i}">
           <div class="row">
             <div class="col-md-10">
-                <label for="subject_name_${i}">Subject Name</label>    
-                <input type="text" class="form-control" id="subject_name_${i}" name="subject_sub_name[${i}][]" >
+                <label for="subject_name_${i}">Optional Subject Name</label>    
+                <input type="text" class="form-control" id="subject_name_${i}" name="subject_sub_name[${data}][]"  >
                 <div class="text-danger" id="error_subject_name_${i}"></div> 
             </div>
             <div class="col-md-2">
@@ -247,7 +248,7 @@ function is_optional_added_last(id) {
     </div>`;
 
     document.querySelector('.is_optional_added_second'+id).insertAdjacentHTML('beforeend',chapterHtml2);
-    
+    j++;
 }
 
     // Use event delegation for removing options
