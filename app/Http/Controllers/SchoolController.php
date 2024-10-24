@@ -22,13 +22,13 @@ class SchoolController extends Controller
     {
         // Validate the request data
         $request->validate([
-            'school_name' => 'required|string|max:255',
+            'school_name' => 'required|string|max:255|unique:schools',
             'address' => 'required|string',
             'email' => 'required|email|unique:schools',
             'contact_no' => 'required|string|max:15',
             'status' => 'required|in:1,0',
         ]);
-
+        
         // Create a new school record
         School::create([
             'school_name' => $request->school_name,
@@ -38,6 +38,7 @@ class SchoolController extends Controller
             'status' => $request->status,
         ]);
 
-        return redirect()->back()->with('success', 'School added successfully!');
+        
+        return redirect()->route('schools.index')->with('success', 'School added successfully!');
     }
 }

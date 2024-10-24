@@ -111,6 +111,16 @@
         </div>
     </div>
 </nav>
+@if(session('success'))
+            <div class="alert alert-success text-center">
+                {{ session('success') }}
+            </div>
+        @endif
+        <script>
+            setTimeout(function() {
+    document.querySelector('.alert').remove();
+}, 2000);
+        </script>
 <style>
     .sidebar {
   margin: 0;
