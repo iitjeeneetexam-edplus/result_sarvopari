@@ -9,7 +9,7 @@ class SchoolController extends Controller
 {
     public function index()
     {
-        $schools = School::all(); 
+        $schools = School::paginate(5); 
         return view('school.list', compact('schools'));
     }
 
@@ -25,7 +25,7 @@ class SchoolController extends Controller
             'school_name' => 'required|string|max:255|unique:schools',
             'address' => 'required|string',
             'email' => 'required|email|unique:schools',
-            'contact_no' => 'required|string|max:15',
+            'contact_no' => 'required|regex:/[0-9]{10}/',
             'status' => 'required|in:1,0',
         ]);
         

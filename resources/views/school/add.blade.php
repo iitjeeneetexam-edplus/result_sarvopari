@@ -21,7 +21,7 @@
                             @csrf
                             <div class="form-group mb-3">
                                 <label for="school_name">School Name</label>
-                                <input type="text" class="form-control" id="school_name" name="school_name">
+                                <input type="text" class="form-control" id="school_name" name="school_name" value="{{ old('school_name') }}" placeholder="School Name">
                                 @error('school_name')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -29,7 +29,7 @@
 
                             <div class="form-group mb-3">
                                 <label for="address">Address</label>
-                                <textarea class="form-control" id="address" name="address" rows="3"></textarea>
+                                <textarea class="form-control" id="address" name="address" rows="3" placeholder="Enter Address">{{ old('address') }}</textarea>
                                 @error('address')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -37,7 +37,7 @@
 
                             <div class="form-group mb-3">
                                 <label for="email">Email</label>
-                                <input type="email" class="form-control" id="email" name="email">
+                                <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" placeholder="Enter Email">
                                 @error('email')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -45,7 +45,7 @@
 
                             <div class="form-group mb-3">
                                 <label for="contact_no">Contact No</label>
-                                <input type="text" class="form-control" id="contact_no" name="contact_no">
+                                <input type="text" class="form-control" id="contact_no" name="contact_no" value="{{ old('contact_no') }}" placeholder="Enter Contact No">
                                 @error('contact_no')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -55,8 +55,8 @@
                                 <label for="status">Status</label>
                                 <select class="form-control" id="status" name="status">
                                     <option value="">Select option</option>
-                                    <option value="1">Active</option>
-                                    <option value="0">Inactive</option>
+                                    <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Active</option>
+                                    <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Inactive</option>
                                 </select>
                                 @error('status')
                                     <div class="text-danger">{{ $message }}</div>

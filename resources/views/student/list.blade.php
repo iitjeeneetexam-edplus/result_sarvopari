@@ -6,6 +6,9 @@
     </x-slot>
 
     <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-8">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-5">
+                <div class="container mt-5">
         <a href="{{ url('/students/add') }}" class="btn btn-primary mb-3 float-right">Add New Students</a>
 
         <!-- Filter Form -->
@@ -82,6 +85,9 @@
             </div>
         </div>
         </div>
+                </div>
+            </div></div>
+        
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>

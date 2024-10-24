@@ -12,7 +12,7 @@ class SubjectController extends Controller
     // Display a listing of the subjects
     public function index()
     {
-        $subjects = Subject::get();
+        $subjects = Subject::paginate(5);
         $subject_subs = [];  
         foreach($subjects as $value){
             $subject_subs[$value->id] = Subjectsub::where('subject_id', $value->id)->get(); // Store sub-subjects by subject ID

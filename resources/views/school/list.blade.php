@@ -37,8 +37,12 @@
                         <td>{{ $school->status }}</td>
                     </tr>
                 @endforeach
+              
             </tbody>
+            <!-- For Bootstrap 4 -->
+
         </table>
+       <div style="float:right"> {{ $schools->links('pagination::bootstrap-4') }} </div>
     </div>
 
 </x-app-layout>

@@ -8,7 +8,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 col-md-10 col-lg-8">
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-5">
                     <div class="p-6 text-gray-900 dark:text-gray-100">
                     <h1>Add New Standard</h1>
 
@@ -51,12 +51,13 @@
                         <label for="csv_file">Upload CSV:</label>
                         <input type="file" name="csv_file" class="form-control" required>
                     </div>
-
+ <br>
                     <button type="submit" class="btn btn-primary">Upload CSV</button>
+                    <a href="{{ route('students.index') }}" class="btn btn-secondary" style="float:right">Back to Student</a>
+
                     </form>
 
-                    <a href="{{ route('students.index') }}" class="btn btn-secondary mt-3">Back to Student List</a>
-
+                  
                     </div>
                 </div>
             </div>

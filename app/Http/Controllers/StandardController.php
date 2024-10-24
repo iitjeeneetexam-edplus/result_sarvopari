@@ -10,7 +10,7 @@ class StandardController extends Controller
 {
     public function index()
     {
-        $standards = Standard::with('school')->paginate(10); // Retrieve standards with pagination
+        $standards = Standard::with('school')->paginate(5); // Retrieve standards with pagination
         return view('standard.list', compact('standards'));
     }
 
@@ -24,7 +24,7 @@ class StandardController extends Controller
     {
         $request->validate([
             'school_id' => 'required|exists:schools,id', // Validate school_id exists in the schools table
-            'standard_name' => 'required|string|max:255',
+            'standard_name' => 'required|string|max:255|unique:standards',
             'status' => 'required|in:1,0', // Validate status is either 'active' or 'inactive'
         ]);
 

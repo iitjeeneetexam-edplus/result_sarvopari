@@ -60,7 +60,7 @@
                             @csrf
                             <div class="form-group mb-3" id="main_subject">
                                 <label for="subject_name">Subject Name </label>
-                                <input type="text" class="form-control" id="subject_name" name="subject_name[]" >
+                                <input type="text" class="form-control" id="subject_name" name="subject_name[]" placeholder="Subject Name" >
                                 @error('subject_name')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -77,7 +77,7 @@
                                     <div class="row">
                                     <div class="col-md-10 ">
                                     <label for="subject_name">Subject Name </label>    
-                                        <input type="text" class="form-control" id="subject_name" name="subject_sub_name[0][]" >
+                                        <input type="text" class="form-control" id="subject_name" name="subject_sub_name[0][]" placeholder="Subject Name">
                                         @error('subject_name')
                                         <div class="text-danger">{{ $message }}</div>
                                         @enderror
@@ -88,7 +88,7 @@
                                   <div class="row">
                                     <div class="col-md-10 ">
                                     <label for="subject_name">Subject Name </label>    
-                                        <input type="text" class="form-control" id="subject_name" name="subject_sub_name[0][]" >
+                                        <input type="text" class="form-control" id="subject_name" name="subject_sub_name[0][]" placeholder="Subject Name" >
                                         @error('subject_name')
                                         <div class="text-danger">{{ $message }}</div>
                                         @enderror
@@ -168,7 +168,7 @@
                      </div>
                <div class="form-group mb-3" id="main_subject${idCounter}">
                         <label for="subject_name">Subject Name </label>
-                        <input type="text" class="form-control" id="subject_name" name="subject_name[]" >
+                        <input type="text" class="form-control" id="subject_name" name="subject_name[]" placeholder="Subject Name">
                        
                     </div>
                     <input type="hidden" id="currentID" value="${idCounter}">
@@ -189,14 +189,14 @@
                                     <div class="col-md-10 ">
                                     <label for="subject_name">Subject Name</label>    
                                         
-                                        <input type="text" class="form-control" id="subject_name" name="subject_sub_name[${subjectCounter}][]"  >
+                                        <input type="text" class="form-control" id="subject_name" name="subject_sub_name[${subjectCounter}][]" placeholder="Subject Name" >
                                     </div>
                                   </div>
                                   <div class="row">
                                     <div class="col-md-10 ">
                                     <label for="subject_name">Subject Name</label>    
                                         
-                                        <input type="text" class="form-control" id="subject_name" name="subject_sub_name[${subjectCounter}][]"  >
+                                        <input type="text" class="form-control" id="subject_name" name="subject_sub_name[${subjectCounter}][]"  placeholder="Subject Name">
                                     </div>
                                   </div>
                                     </div>

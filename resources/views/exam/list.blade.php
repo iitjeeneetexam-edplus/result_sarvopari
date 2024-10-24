@@ -5,18 +5,15 @@
         </h2>
     </x-slot>
 
-    <div class="py-10">
-        <div class="max-w-6xl mx-auto sm:px-7 lg:px-8">
-            <div class="bg-white shadow-sm sm:rounded-lg p-6">
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
+    <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-8">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-5">
+                <div class="container mt-5">
+               
+                <h1>List of Exam</h1>
+                <a href="{{ route('exam.create') }}" class="btn btn-primary mb-3" style="float:right">Add New Exam</a>
 
-                <a href="{{ route('exam.create') }}" class="btn btn-primary mb-3">Add New Exam</a>
-
-                <table class="table">
+                <table class="table table-bordered">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -39,7 +36,7 @@
                         @endforeach
                     </tbody>
                 </table>
-            </div>
+            </div></div>
         </div>
     </div>
 </x-app-layout>
