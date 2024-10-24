@@ -10,7 +10,7 @@
                 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
                 <div class="container mt-5">
                 <h1>List of Subject</h1>
-                <a href="{{ url('subjects/create') }}" class="btn btn-primary mb-3" style="float: right;">Add New Subject</a>
+                <a href="{{ url('subjects/create') }}" class="btn btn-success mb-3" style="float: right;">Add New Subject</a>
                 @if(session('success'))
                     <div class="alert alert-success">
                         {{ session('success') }}

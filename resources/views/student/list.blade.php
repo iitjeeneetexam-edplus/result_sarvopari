@@ -11,7 +11,7 @@
                 <div class="container mt-5">
                     <div class="row"> 
                          <div class="col-md-2 offset-10">
-                            <a href="{{ url('/students/add') }}" class="btn btn-primary" >Add New Students</a>
+                            <a href="{{ url('/students/add') }}" class="btn btn-success" >Add New Students</a>
                          </div>
                     </div><br>
       
