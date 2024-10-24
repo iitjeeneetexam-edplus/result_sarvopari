@@ -20,7 +20,7 @@
                                 <th>Division</th>
                                 @if($subjects)
                                     @foreach($subjects as $optionls)
-                                    <th>{{$optionls->subject_name}}</th>
+                                    <th>{{$optionls->subject}}</th>
                                     @endforeach
                                 @endif
                             </tr>
@@ -34,6 +34,11 @@
                                         <td>{{ $student->GR_no }}</td>
                                         <td>{{ $student->uid }}</td>
                                         <td>{{ $student->division->division_name }}</td>
+                                        @if($subjects)
+                                        @foreach($subjects as $optionls)
+                                            <td>{{$optionls->sub_subject}}</td>
+                                            @endforeach
+                                        @endif
                                     </tr>
                                 @endforeach
                             @else

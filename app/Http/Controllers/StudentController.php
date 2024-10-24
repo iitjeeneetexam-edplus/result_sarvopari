@@ -36,6 +36,7 @@ class StudentController extends Controller
         $subjects = Subject::join('subject_subs','subject_subs.subject_id','=','subjects.id')
         ->where('subjects.standard_id',$standardId)
         ->where('subjects.is_optional',1)
+        ->select('subjects.subject_name as subject','subject_subs.subject_name as sub_subject','subjects.id as sid','subject_subs.id as sub_id')
         ->get();
 
         return view('student.list', compact('students','subjects'));
