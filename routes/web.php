@@ -8,10 +8,21 @@ use App\Http\Controllers\StandardController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\StudentController;
-
+use App\Models\Division;
+use App\Models\Exam;
+use App\Models\School;
+use App\Models\Standard;
+use App\Models\Student;
+use App\Models\Subject;
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $school_count=School::count();
+    $Standard_count=Standard::count();
+    $Subject_count=Subject::count();
+    $Division_count=Division::count();
+    $Exam_count=Exam::count();
+    $Student_count=Student::count();
+    return view('dashboard',compact('school_count','Standard_count','Subject_count','Division_count','Exam_count','Student_count'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

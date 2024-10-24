@@ -5,8 +5,20 @@
         </h2>
     </x-slot>
 
-    <div class="container mt-4">
-         <!-- Student List Table -->
+    <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-8">
+                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-5">
+                <div class="container mt-5">
+                    <div class="row"> 
+                         <div class="col-md-2 offset-10">
+                            <a href="{{ url('/students/add') }}" class="btn btn-primary" >Add New Students</a>
+                         </div>
+                    </div><br>
+      
+        <!-- Filter Form -->
+       
+
+        <!-- Student List Table -->
         <div class="row">
             <div class="col-12">
                 <div class="table-responsive">
@@ -18,7 +30,7 @@
                                 <th>GR Number</th>
                                 <th>UID</th>
                                 <th>Division</th>
-                                @if($subjects)
+                                @if(!empty($subjects))
                                     @foreach($subjects as $optionls)
                                     <th>{{$optionls->subject}}</th>
                                     @endforeach
@@ -43,7 +55,7 @@
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="5" class="text-center">No students found</td>
+                                    <td colspan="7" class="text-center">No students found</td>
                                 </tr>
                             @endif
                         </tbody>
@@ -52,5 +64,6 @@
             </div>
         </div>
     </div>
+                </div></div></div></div>
 
 </x-app-layout>

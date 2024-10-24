@@ -50,6 +50,10 @@ class SubjectController extends Controller
     // Prepare subjects for mass insertion
     foreach ($request['subject_name'] as $index => $subjectName) {
         // Insert the main subject
+        if (empty($subjectName)) {
+            // Concatenate the sub-subject names if subject name is null or empty
+            $subjectName = implode(', ', array_filter($request['subject_sub_name'][$index]));
+        }
         $subject = Subject::create([
             'subject_name' => $subjectName,
             'is_optional' => $request['is_optional'][$index], // Add corresponding optional status
