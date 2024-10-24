@@ -10,7 +10,7 @@
             <div class="col-12 col-md-10 col-lg-8">
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-5">
                     <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <h1>Add New Standard</h1>
+                    <h1>Add New Student</h1>
 
                     @if ($errors->any())
                         <div class="alert alert-danger">
