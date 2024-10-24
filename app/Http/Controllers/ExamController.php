@@ -24,9 +24,9 @@ class ExamController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'exam_name' => 'required|string|max:255',
+            'exam_name' => 'required|string|max:255|unique:exams',
             'subject_id' => 'required|exists:subjects,id',
-            'date' => 'required|date',
+            'date' => 'required|date|after_or_equal:' . now()->format('Y-m-d'),
             'total_marks' => 'required|integer', 
         ]);
 

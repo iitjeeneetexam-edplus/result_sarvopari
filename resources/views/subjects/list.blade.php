@@ -20,24 +20,38 @@
                 <table class="table table-bordered">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>No</th>
                             <th>Subject Name</th>
+                            <th>Optioal Name</th>
                             <th>Is Optional</th>
                             <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($subjects as $subject)
-                            <tr>
-                                <td>{{ $subject->id }}</td>
-                                <td>{{ $subject->subject_name }}</td>
-                                <td>{{ $subject->is_optional ? 'Yes' : 'No' }}</td>
-                                <td>{{ $subject->status ? 'Active' : 'Inactive' }}</td>
-                                
-                            </tr>
-                        @endforeach
+                   
+                    @php $i = 1; @endphp 
+                    @foreach ($subjects as $subject)
+                    <tr>
+                        <td>{{ $i }}</td>
+                        <td>{{ !empty($subject->subject_name)? $subject->subject_name : 'N/A' ;  }}</td>
+                        <td>
+                            @if(isset($subject_subs[$subject->id]) && $subject_subs[$subject->id]->count() > 0) 
+                                @foreach ($subject_subs[$subject->id] as $subject2)
+                                    {{ !empty($subject2->subject_name)? $subject2->subject_name : 'N/A' ; }}<br> 
+                                @endforeach
+                            @else
+                                'N/A' 
+                            @endif
+                        </td>
+                        <td>{{ $subject->is_optional == '1' ? 'Yes' : 'No' }}</td>
+                        <td>{{ $subject->status ? 'Active' : 'Inactive' }}</td>
+                    </tr>
+                    @php $i++; @endphp 
+                @endforeach
+
                     </tbody>
                 </table>
+                <div style="float:right"> {{ $subjects->links('pagination::bootstrap-4') }} </div>
             </div>
         </div>
     </div>

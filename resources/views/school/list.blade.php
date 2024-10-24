@@ -13,11 +13,7 @@
 
         <h1>List of Schools</h1>
         <a href="{{ url('schools/create') }}" class="btn btn-primary mb-3" style="float: right;">Add New School</a>
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
+        
 
         <table class="table table-bordered">
             <thead>
@@ -41,8 +37,12 @@
                         <td>{{ $school->status }}</td>
                     </tr>
                 @endforeach
+              
             </tbody>
+            <!-- For Bootstrap 4 -->
+
         </table>
+       <div style="float:right"> {{ $schools->links('pagination::bootstrap-4') }} </div>
     </div>
 
 </x-app-layout>

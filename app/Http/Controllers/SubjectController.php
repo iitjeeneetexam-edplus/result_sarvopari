@@ -12,8 +12,12 @@ class SubjectController extends Controller
     // Display a listing of the subjects
     public function index()
     {
-        $subjects = Subject::all(); // Retrieve all subjects
-        return view('subjects.list', compact('subjects'));
+        $subjects = Subject::paginate(5);
+        $subject_subs = [];  
+        foreach($subjects as $value){
+            $subject_subs[$value->id] = Subjectsub::where('subject_id', $value->id)->get(); // Store sub-subjects by subject ID
+        }
+        return view('subjects.list', compact('subjects','subject_subs'));
     }
 
     public function create()
@@ -32,33 +36,33 @@ class SubjectController extends Controller
         //     'status' => 'required|boolean',
         // ]);
 
-       $validatedData = $request->validate([
-        'subject_name' => 'required|array',
-        'subject_name.*' => 'required|string',
-        'subject_sub_name' => 'required|array',
-        'subject_sub_name.*' => 'array',
-        'is_optional' => 'required|array',
-        'is_optional.*' => 'required|boolean',
-        'standard_id' => 'required|integer',
-        'status' => 'required|boolean',
-    ]);
+    //    $validatedData = $request->validate([
+    //     'subject_name' => 'required|array',
+    //     'subject_name.*' => 'required|string',
+    //     'subject_sub_name' => 'required|array',
+    //     'subject_sub_name.*' => 'array',
+    //     'is_optional' => 'required|array',
+    //     'is_optional.*' => 'required|boolean',
+    //     'standard_id' => 'required|integer',
+    //     'status' => 'required|boolean',
+    // ]);
 
     // Prepare subjects for mass insertion
-    foreach ($validatedData['subject_name'] as $index => $subjectName) {
+    foreach ($request['subject_name'] as $index => $subjectName) {
         // Insert the main subject
         $subject = Subject::create([
             'subject_name' => $subjectName,
-            'is_optional' => $validatedData['is_optional'][$index], // Add corresponding optional status
-            'standard_id' => $validatedData['standard_id'],         // Standard ID
-            'status' => $validatedData['status'],                   // Status
+            'is_optional' => $request['is_optional'][$index], // Add corresponding optional status
+            'standard_id' => $request['standard_id'],         // Standard ID
+            'status' => $request['status'],                   // Status
         ]);
     
         // Loop through the subject sub-names and insert them
-        foreach ($validatedData['subject_sub_name'][$index] as $subIndex => $subjectSubName) {
+        foreach ($request['subject_sub_name'][$index] as $subIndex => $subjectSubName) {
             // Insert each subject sub-name
             SubjectSub::create([
                 'subject_id' => $subject->id,              // Foreign key from the subject
-                'subject_name' => $subjectSubName,
+                'subject_name' => (!empty($subjectSubName))?$subjectSubName:null,
             ]);
         }
     }

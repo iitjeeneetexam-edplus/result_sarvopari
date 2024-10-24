@@ -34,9 +34,7 @@
         </table>
 
         <!-- Pagination Links -->
-        <div>
-            {{ $standards->links() }} <!-- Display pagination links -->
-        </div>
+        <div style="float:right"> {{ $standards->links('pagination::bootstrap-4') }} </div>
     </div>
     </div>
     </div>

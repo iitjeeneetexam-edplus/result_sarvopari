@@ -58,9 +58,9 @@
 
                         <form action="{{url('subjects/store')}}" method="POST" id="subjectForm" enctype='multipart/form-data'>
                             @csrf
-                            <div class="form-group mb-3">
+                            <div class="form-group mb-3" id="main_subject">
                                 <label for="subject_name">Subject Name </label>
-                                <input type="text" class="form-control" id="subject_name" name="subject_name[]" required>
+                                <input type="text" class="form-control" id="subject_name" name="subject_name[]" placeholder="Subject Name" >
                                 @error('subject_name')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -76,13 +76,25 @@
                                     <div class="is_optional_added">
                                     <div class="row">
                                     <div class="col-md-10 ">
-                                    <label for="subject_name">Optional Subject Name </label>    
-                                        <input type="text" class="form-control" id="subject_name" name="subject_sub_name[0][]" >
+                                    <label for="subject_name">Subject Name </label>    
+                                        <input type="text" class="form-control" id="subject_name" name="subject_sub_name[0][]" placeholder="Subject Name">
                                         @error('subject_name')
                                         <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                         
                                     </div>
+
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-md-10 ">
+                                    <label for="subject_name">Subject Name </label>    
+                                        <input type="text" class="form-control" id="subject_name" name="subject_sub_name[0][]" placeholder="Subject Name" >
+                                        @error('subject_name')
+                                        <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                        
+                                    </div>
+                                    
                                   </div>
                                     </div>
                                 </div>
@@ -154,18 +166,20 @@
                     <div style="text-align:end" >
                         <button class="btn btn-danger remove-chapter" style="width:100px" >cancel</button>
                      </div>
-               <div class="form-group mb-3">
+               <div class="form-group mb-3" id="main_subject${idCounter}">
                         <label for="subject_name">Subject Name </label>
-                        <input type="text" class="form-control" id="subject_name" name="subject_name[]" required>
+                        <input type="text" class="form-control" id="subject_name" name="subject_name[]" placeholder="Subject Name">
                        
                     </div>
                     <input type="hidden" id="currentID" value="${idCounter}">
+                   
                      <div id="optionalDiv${idCounter}" class="hidden ">
+                      <br>
                                 <div class="row ">
                                 <div class="col-md-12 is_addmore_subject">
                                     
                                         <button class="btn btn-success " style="float:right" id="" type="button" onclick="is_optional_added_last(${idCounter})">plus</button>
-                                        <div class="is_optional_added_last${idCounter}"></div> <!-- Container for added subjects -->
+                                        <div class="is_optional_added_last${idCounter}"></div> 
 
                                     </div>
                                 </div>
@@ -173,9 +187,16 @@
                                     <div class="is_optional_added_second${idCounter}">
                                     <div class="row">
                                     <div class="col-md-10 ">
-                                    <label for="subject_name">Optional Subject Name</label>    
+                                    <label for="subject_name">Subject Name</label>    
                                         
-                                        <input type="text" class="form-control" id="subject_name" name="subject_sub_name[${subjectCounter}][]"  >
+                                        <input type="text" class="form-control" id="subject_name" name="subject_sub_name[${subjectCounter}][]" placeholder="Subject Name" >
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-md-10 ">
+                                    <label for="subject_name">Subject Name</label>    
+                                        
+                                        <input type="text" class="form-control" id="subject_name" name="subject_sub_name[${subjectCounter}][]"  placeholder="Subject Name">
                                     </div>
                                   </div>
                                     </div>
@@ -206,11 +227,11 @@
     document.getElementById('addmore_subject').addEventListener('click', function() {
     let i = document.querySelectorAll('.is_optional_added').length + 1;
 
-    let chapterHtml2 = `
+    let chapterHtml2 = `<br>
         <div>
             <div class="row is_optional_added${i}">
                 <div class="col-md-10">
-                    <label for="subject_name">Optional Subject Name</label>    
+                    <label for="subject_name">Subject Name</label>    
                     <input type="text" class="form-control" id="subject_name" name="subject_sub_name[0][]">
                     <div class="text-danger" id="error_subject_name"></div> 
                 </div>
@@ -231,12 +252,12 @@ function is_optional_added_last(id) {
     let i = chapterContainer.find('.is_optional_added_second').length + 1; // Increment the index
     
     // New HTML for the subject input
-    let chapterHtml2 = `
+    let chapterHtml2 = `<br>
     <div>
         <div class="row is_optional_added_second${i}">
           <div class="row">
             <div class="col-md-10">
-                <label for="subject_name_${i}">Optional Subject Name</label>    
+                <label for="subject_name_${i}">Subject Name</label>    
                 <input type="text" class="form-control" id="subject_name_${i}" name="subject_sub_name[${data}][]"  >
                 <div class="text-danger" id="error_subject_name_${i}"></div> 
             </div>
@@ -265,7 +286,9 @@ function is_optional_added_last(id) {
             
             if (isOptional == '1') {
                 optionalDiv.classList.remove('hidden');
+                $('#main_subject').hide();
             } else {
+                $('#main_subject').show();
                 optionalDiv.classList.add('hidden');
             }
         }
@@ -276,8 +299,10 @@ function is_optional_added_last(id) {
             if (isOptional2 == '1') {
                 
                 optionalDiv2.classList.remove('hidden');
+                $('#main_subject'+id).hide();
             } else {
                 optionalDiv2.classList.add('hidden');
+                $('#main_subject'+id).hide();
             }
         }
         $('.remove-option').click(function() {

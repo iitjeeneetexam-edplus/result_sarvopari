@@ -11,8 +11,15 @@ class DivisionController extends Controller
 
     public function index()
     {
-        $divisions = Division::with('standard')->get(); 
-        return view('division.list', compact('divisions'));
+        $divisions = Division::with('standard')->paginate(5); 
+
+
+        $standard = Standard::paginate(5);
+        $division = [];  
+        foreach($standard as $value){
+            $division[$value->id] = Division::where('standard_id', $value->id)->get(); // Store sub-subjects by subject ID
+        }
+        return view('division.list', compact('standard','division'));
     }
     public function create()
     {
