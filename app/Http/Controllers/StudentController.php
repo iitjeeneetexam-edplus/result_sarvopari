@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Division;
 use App\Models\School;
 use App\Models\Standard;
 use App\Models\Student;
@@ -12,12 +13,23 @@ use Illuminate\Support\Facades\Log;
 
 class StudentController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $divisionId = $request->input('division_id');
         // Fetch students with specific fields
-        $students = Student::select('name', 'roll_no', 'GR_no', 'uid', 'division_id')->get();
+        $query = Student::with('division:id,division_name')
+        ->select('name', 'roll_no', 'GR_no', 'uid', 'division_id');
+        
 
-        return view('student.list', compact('students'));
+        if (!empty($divisionId)) {
+            $query->where('division_id', $divisionId);
+        }
+
+        $students = $query->get();
+
+        $schools = School::select('id', 'school_name')->get();
+
+        return view('student.list', compact('students','schools'));
     }
 
     public function showImportForm()

@@ -13,8 +13,8 @@ class Student extends Model
         return $this->belongsTo(School::class);
     }
 
-    public function standard()
+    public function division()
     {
-        return $this->belongsTo(Standard::class);
+        return $this->belongsTo(Division::class);
     }
 }
