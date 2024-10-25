@@ -99,11 +99,10 @@ class StudentController extends Controller
     {
         $subjectIds = $request->input('subject_ids');
         $studentIds = $request->input('student_ids');
-
-        // Loop through selected students and assign the subject
+        
         foreach ($subjectIds as $subjectId) {
             foreach ($studentIds as $studentId) {
-                // Assuming you have a StudentSubject model to store this relationship
+                
                 StudentSubject::create([
                     'student_id' => $studentId,
                     'subject_id' => $subjectId
