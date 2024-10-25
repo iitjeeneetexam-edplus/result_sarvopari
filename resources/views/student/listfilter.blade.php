@@ -45,7 +45,7 @@
                 </div>
 
                 <div class="col-md-12 mt-3">
-                    <button type="submit" class="btn btn-primary">Filter</button>
+                    <button type="submit" class="btn btn-primary">Get Student List</button>
                 </div>
             </div>
         </form>

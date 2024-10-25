@@ -61,4 +61,5 @@ Route::get('/students', [StudentController::class, 'index'])->name('students.ind
 Route::post('/students/getstudent', [StudentController::class, 'getstudents'])->name('students.getstudent');
 Route::get('/students/add', [StudentController::class, 'showImportForm'])->name('students.importForm');
 Route::post('/students/import', [StudentController::class, 'import'])->name('students.import');
+Route::post('/assign-subject', [StudentController::class, 'assignSubject'])->name('assign.subject');
 
