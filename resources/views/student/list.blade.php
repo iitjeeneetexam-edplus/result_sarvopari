@@ -55,7 +55,7 @@
                                         
                                         @if(!empty($subjectNames))
                                             @foreach($subjectNames as $subjectName)
-                                                <td>{{ trim($subjectName) }}</td> <!-- Display each subject name -->
+                                                <td>{{ trim($subjectName) }} </td> 
                                             @endforeach
                                         @else
                                             <span>No subjects assigned</span>
@@ -88,7 +88,7 @@
             </div>
             @endforeach
                 <div class="mt-3">
-                <button type="submit" class="btn btn-primary">Assign Subject</button>
+                <button type="submit" class="btn btn-primary mb-3" style="float:right">Assign Subject</button>
             </div>
         </form>
             </div>

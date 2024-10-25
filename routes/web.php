@@ -56,6 +56,8 @@ Route::get('/exam/create', [ExamController::class, 'create'])->name('exam.create
 Route::post('/exam/store', [ExamController::class, 'store'])->name('exam.store');
 
 Route::get('/get-standards/{school_id}', [StandardController::class, 'getStandardsBySchool'])->name('get-standards');
+Route::get('/get-subjects-sub/{subject_id}', [StandardController::class, 'getSubjectsubBySchool'])->name('get-subjects-sub');
+
 Route::get('/get-divisions/{standard_id}', [DivisionController::class, 'getdivisionBystandard'])->name('get-divisions');
 
 Route::get('/students', [StudentController::class, 'index'])->name('students.index');

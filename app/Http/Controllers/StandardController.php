@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\School;
 use App\Models\Standard;
+use App\Models\Subject;
+use App\Models\Subjectsub;
 use Illuminate\Http\Request;
 
 class StandardController extends Controller
@@ -39,11 +41,15 @@ class StandardController extends Controller
 
     public function getStandardsBySchool($school_id)
     {
-        // Fetch standards based on school_id
         $standards = Standard::where('school_id', $school_id)->get();
 
-        // Return the standards as JSON
         return response()->json($standards);
     }
+    public function getSubjectsubBySchool($subject_id){
 
+        $subjects = Subject::where('id',$subject_id)->first();
+
+        $subject_sub=Subjectsub::where('subject_id',$subject_id)->get();
+        return response()->json(['optional'=>$subjects,'subject_sub'=>$subject_sub]);
+    }
 }

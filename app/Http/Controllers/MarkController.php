@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\School;
 use App\Models\Student;
 use Illuminate\Http\Request;
 
@@ -20,8 +21,9 @@ class MarkController extends Controller
      */
     public function create()
     {
-        $student=Student::all();
-        return view('mark.add',compact('student'));
+
+        $schools = School::select('id', 'school_name')->get();
+        return view('mark.add',compact('schools'));
     }
 
     /**

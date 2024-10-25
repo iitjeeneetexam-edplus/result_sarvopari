@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Division;
 use App\Models\Standard;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 
 class DivisionController extends Controller
@@ -44,9 +45,8 @@ class DivisionController extends Controller
     {
         // Fetch standards based on school_id
         $division = Division::where('standard_id', $standard_id)->get();
-
-        // Return the standards as JSON
-        return response()->json($division);
+        $Subject = Subject::where('standard_id', $standard_id)->get();
+        return response()->json(['divisions'=>$division,'subjects'=>$Subject]);
     }
     
 }
