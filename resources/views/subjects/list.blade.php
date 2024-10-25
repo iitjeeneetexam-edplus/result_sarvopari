@@ -11,12 +11,7 @@
                 <div class="container mt-5">
                 <h1>List of Subject</h1>
                 <a href="{{ url('subjects/create') }}" class="btn btn-success mb-3" style="float: right;">Add New Subject</a>
-                @if(session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
-
+                
                 <table class="table table-bordered">
                     <thead>
                         <tr>

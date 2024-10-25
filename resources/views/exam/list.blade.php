@@ -36,6 +36,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                <div style="float:right"> {{ $exams->links('pagination::bootstrap-4') }} </div>
             </div></div>
         </div>
     </div>

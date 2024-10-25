@@ -25,7 +25,7 @@
                         <select class="form-control" id="subject_id" name="subject_id" required>
                             <option value="">Select a Subject</option>
                             @foreach ($subjects as $subject)
-                                <option value="{{ $subject->id }}" {{ old('subject_id') ==  $subject->id  ? 'selected' : '' }}>{{ $subject->subject_name }}</option>
+                                <option value="{{ $subject->id }}" {{ old('subject_id') ==  $subject->id  ? 'selected' : '' }}>{{ (!empty($subject->subject_name))?$subject->subject_name:''; }}</option>
                             @endforeach
                         </select>
                         @error('subject_id')
