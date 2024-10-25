@@ -10,7 +10,7 @@
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-5">
                 <div class="container mt-5">
                 <h1>List of Standard</h1>
-                <a href="{{ url('standards/create') }}" class="btn btn-primary mb-3" style="float: right;">Add New Standard</a>
+                <a href="{{ url('standards/create') }}" class="btn btn-success mb-3" style="float: right;">Add New Standard</a>
 
         <table class="table table-bordered">
             <thead>

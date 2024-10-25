@@ -17,7 +17,7 @@ class DivisionController extends Controller
         $standard = Standard::paginate(5);
         $division = [];  
         foreach($standard as $value){
-            $division[$value->id] = Division::where('standard_id', $value->id)->get(); // Store sub-subjects by subject ID
+            $division[$value->id] = Division::where('standard_id', $value->id)->get(); 
         }
         return view('division.list', compact('standard','division'));
     }

@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('exams', function (Blueprint $table) {
+        Schema::create('marks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('standard_id')->constrained('standards');
-            $table->string('exam_name');
-            $table->date('date');
+            $table->foreignId('student_id')->constrained('students');
+            $table->foreignId('subject_id')->constrained('subject_subs');
+            $table->foreignId('exam_id')->constrained('exams');
+            $table->enum('is_optional', [1, 0])->default(0);
+            $table->string('marks');
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('exams');
+        Schema::dropIfExists('marks');
     }
 };

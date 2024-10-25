@@ -11,7 +11,7 @@ class ExamController extends Controller
 {
     public function index()
     {
-        $exams = Exam::with('subject')->get(); // Fetch all exams with their associated standards
+        $exams = Exam::with('subject')->paginate(5); // Fetch all exams with their associated standards
         return view('exam.list', compact('exams'));
     }
 

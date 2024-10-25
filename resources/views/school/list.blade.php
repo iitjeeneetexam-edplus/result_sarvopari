@@ -12,7 +12,7 @@
                 <div class="container mt-5">
 
         <h1>List of School</h1>
-        <a href="{{ url('schools/create') }}" class="btn btn-primary mb-3" style="float: right;">Add New School</a>
+        <a href="{{ url('schools/create') }}" class="btn btn-success mb-3" style="float: right;">Add New School</a>
         
 
         <table class="table table-bordered">

@@ -11,7 +11,7 @@
                 <div class="container mt-5">
                
                 <h1>List of Division</h1>
-                <a href="{{ route('division.create') }}" class="btn btn-primary mb-3" style="float: right;">Add New Division</a>
+                <a href="{{ route('division.create') }}" class="btn btn-success mb-3" style="float: right;">Add New Division</a>
 
                 <table class="table table-bordered">
                     <thead>

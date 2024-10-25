@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\School;
 use App\Models\Standard;
 use App\Models\Subject;
 use App\Models\Subjectsub;
@@ -12,18 +13,25 @@ class SubjectController extends Controller
     // Display a listing of the subjects
     public function index()
     {
-        $subjects = Subject::paginate(5);
-        $subject_subs = [];  
-        foreach($subjects as $value){
-            $subject_subs[$value->id] = Subjectsub::where('subject_id', $value->id)->get(); // Store sub-subjects by subject ID
-        }
+       
+        $subjects = Subject::leftjoin('standards', 'standards.id', '=', 'subjects.standard_id')
+                            ->select('subjects.*', 'standards.standard_name', 'standards.id as standard_id')
+                            ->paginate(5);
+                        $subject_subs = [];  
+
+                        foreach ($subjects as $value) {
+                            // Store sub-subjects by subject ID
+                            $subject_subs[$value->id] = Subjectsub::where('subject_id', $value->id)->get();
+                        }
+
         return view('subjects.list', compact('subjects','subject_subs'));
     }
 
     public function create()
     {
+        $schools = School::select('id', 'school_name')->get();
         $standards = Standard::all(); // Assuming you have a Standard model
-        return view('subjects.add', compact('standards'));
+        return view('subjects.add', compact('standards','schools'));
     }
 
     public function store(Request $request)
