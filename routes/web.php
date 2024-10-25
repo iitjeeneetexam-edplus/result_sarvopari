@@ -57,14 +57,14 @@ Route::post('/exam/store', [ExamController::class, 'store'])->name('exam.store')
 
 Route::get('/get-standards/{school_id}', [StandardController::class, 'getStandardsBySchool'])->name('get-standards');
 Route::get('/get-divisions/{standard_id}', [DivisionController::class, 'getdivisionBystandard'])->name('get-divisions');
+
 Route::get('/students', [StudentController::class, 'index'])->name('students.index');
 Route::post('/students/getstudent', [StudentController::class, 'getstudents'])->name('students.getstudent');
 Route::get('/students/add', [StudentController::class, 'showImportForm'])->name('students.importForm');
 Route::post('/students/import', [StudentController::class, 'import'])->name('students.import');
-Route::post('/assign-subject', [StudentController::class, 'assignSubject'])->name('assign.subject');
 Route::get('/marks', [MarkController::class, 'index'])->name('marks.index');
 Route::get('/marks/create', [MarkController::class, 'create'])->name('marks.create');
-
+Route::post('/assign-subject', [StudentController::class, 'assignSubject'])->name('assign.subject');
 
 });
 Route::get('/standard', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -9,10 +9,10 @@ class Exam extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['exam_name', 'subject_id', 'date','total_marks']; // Add total_marks
+    protected $fillable = ['exam_name', 'standard_id', 'date']; // Add total_marks
 
-    public function subject()
+    public function standard()
     {
-        return $this->belongsTo(Subject::class);
+        return $this->belongsTo(Standard::class);
     }
 }

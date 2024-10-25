@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Exam;
+use App\Models\School;
 use App\Models\Standard;
 use App\Models\Subject;
 use Illuminate\Http\Request;
@@ -11,23 +12,24 @@ class ExamController extends Controller
 {
     public function index()
     {
-        $exams = Exam::with('subject')->paginate(5); // Fetch all exams with their associated standards
+        $exams = Exam::with('standard')->paginate(5); 
+        // echo "<pre>";print_r($exams);exit;// Fetch all exams with their associated standards
         return view('exam.list', compact('exams'));
     }
 
     public function create()
     {
-        $subjects = Subject::all(); // Get all standards for the dropdown
-        return view('exam.add', compact('subjects'));
+        $schools = School::select('id', 'school_name')->get();
+        $standards = Standard::all(); // Get all standards for the dropdown
+        return view('exam.add', compact('standards','schools'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'exam_name' => 'required|string|max:255|unique:exams',
-            'subject_id' => 'required|exists:subjects,id',
+            'standard_id' => 'required|exists:standards,id',
             'date' => 'required|date|after_or_equal:' . now()->format('Y-m-d'),
-            'total_marks' => 'required|integer', 
         ]);
 
         Exam::create($request->all());

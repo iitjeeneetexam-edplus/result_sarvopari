@@ -31,8 +31,8 @@
                                 <th>UID</th>
                                 <th>Division</th>
                                 @if(!empty($subjects))
-                                    @foreach($subjects as $optionls)
-                                    <th>{{$optionls->subject_name}}</th>
+                                    @foreach($subjects as $optionls) <!-- Reverse the subjects collection -->
+                                        <th>{{ $optionls->subject_name }}</th>
                                     @endforeach
                                 @endif
                             </tr>
@@ -49,14 +49,16 @@
                                         <td>{{ $student->GR_no }}</td>
                                         <td>{{ $student->uid }}</td>
                                         <td>{{ $student->division->division_name }}</td>
-                                        @if(!empty($subjects))
-                                            @foreach($subjects as $optionls)
-                                            @if($optionls->id == $student->subject_id)
-                                            <td>{{ $student->subject_name }}</td>
-                                            @else
-                                            <td></td>
-                                            @endif
+                                        @php
+                                            $subjectNames = explode(',', $student->subject_name); // Split the subject names
+                                        @endphp
+                                        
+                                        @if(!empty($subjectNames))
+                                            @foreach($subjectNames as $subjectName)
+                                                <td>{{ trim($subjectName) }}</td> <!-- Display each subject name -->
                                             @endforeach
+                                        @else
+                                            <span>No subjects assigned</span>
                                         @endif
                                     </tr>
                                 @endforeach
