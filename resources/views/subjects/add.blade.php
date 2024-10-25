@@ -119,14 +119,22 @@
 
                                 </a>
                             </div>
-
+                            <div class="form-group mb-3">
+                            <label for="standard_id">Select School</label>
+                            <select name="school_id" id="school" class="form-control">
+                                        <option value="">All Schools</option>
+                                        @foreach($schools as $school)
+                                        <option value="{{ $school->id }}" {{ request('school_id') == $school->id ? 'selected' : '' }}>
+                                            {{ $school->school_name }}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                            </div>
                             <div class="form-group mb-3">
                                 <label for="standard_id">Select Standard</label>
                                 <select class="form-control" id="standard_id" name="standard_id" required>
                                     <option value="">select option</option>
-                                    @foreach ($standards as $standard)
-                                    <option value="{{ $standard->id }}">{{ $standard->standard_name }}</option>
-                                    @endforeach
+                                  
                                 </select>
                                 @error('standard_id')
                                 <div class="text-danger">{{ $message }}</div>
@@ -153,7 +161,30 @@
         </div>
 </x-app-layout>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // School change event for fetching standards
+            $('#school').change(function() {
+                var schoolId = $(this).val();
+                if (schoolId) {
+                    $.ajax({
+                        url: '{{ url("/get-standards") }}/' + schoolId,
+                        type: 'GET',
+                        success: function(data) {
+                            $('#standard_id').empty().append('<option value="">Select a Standard</option>');
+                            $.each(data, function(key, value) {
+                                $('#standard_id').append('<option value="' + value.id + '">' + value.standard_name + '</option>');
+                            });
+                        }
+                    });
+                } else {
+                    $('#standard_id').empty().append('<option value="">Select a Standard</option>');
+                }
+            });
 
+});
+</script>
+            
 <script type="text/javascript">
  
     $(document).ready(function() {

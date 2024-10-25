@@ -7,6 +7,7 @@ use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\StandardController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\ExamController;
+use App\Http\Controllers\MarkController;
 use App\Http\Controllers\StudentController;
 use App\Models\Division;
 use App\Models\Exam;
@@ -29,11 +30,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-Route::get('/standard', [ProfileController::class, 'edit'])->name('profile.edit');
 
-require __DIR__.'/auth.php';
-Route::get('/schools', [SchoolController::class, 'index'])->name('schools.index');
+
+
+    Route::get('/schools', [SchoolController::class, 'index'])->name('schools.index');
 Route::get('/schools/create', [SchoolController::class, 'create'])->name('school.create');
 Route::post('/schools/store', [SchoolController::class, 'store'])->name('school.store');
 
@@ -61,4 +61,11 @@ Route::get('/students', [StudentController::class, 'index'])->name('students.ind
 Route::post('/students/getstudent', [StudentController::class, 'getstudents'])->name('students.getstudent');
 Route::get('/students/add', [StudentController::class, 'showImportForm'])->name('students.importForm');
 Route::post('/students/import', [StudentController::class, 'import'])->name('students.import');
+Route::get('/marks', [MarkController::class, 'index'])->name('marks.index');
+Route::get('/marks/create', [MarkController::class, 'create'])->name('marks.create');
 
+
+});
+Route::get('/standard', [ProfileController::class, 'edit'])->name('profile.edit');
+
+require __DIR__.'/auth.php';

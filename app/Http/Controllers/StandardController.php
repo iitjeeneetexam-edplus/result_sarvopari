@@ -24,7 +24,7 @@ class StandardController extends Controller
     {
         $request->validate([
             'school_id' => 'required|exists:schools,id', // Validate school_id exists in the schools table
-            'standard_name' => 'required|string|max:255|unique:standards',
+            'standard_name' => 'required|string|max:255',
             'status' => 'required|in:1,0', // Validate status is either 'active' or 'inactive'
         ]);
 

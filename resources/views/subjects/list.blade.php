@@ -16,8 +16,10 @@
                     <thead>
                         <tr>
                             <th>No</th>
+                            <th>Standard Name</th>
                             <th>Subject Name</th>
                             <th>Optioal Name</th>
+                         
                             <th>Is Optional</th>
                             <th>Status</th>
                         </tr>
@@ -28,6 +30,7 @@
                     @foreach ($subjects as $subject)
                     <tr>
                         <td>{{ $i }}</td>
+                        <td>{{ !empty($subject->standard_name)? $subject->standard_name : 'N/A' ;  }}</td>
                         <td>{{ !empty($subject->subject_name)? $subject->subject_name : 'N/A' ;  }}</td>
                         <td>
                             @if(isset($subject_subs[$subject->id]) && $subject_subs[$subject->id]->count() > 0) 
@@ -38,6 +41,7 @@
                                 'N/A' 
                             @endif
                         </td>
+                       
                         <td>{{ $subject->is_optional == '1' ? 'Yes' : 'No' }}</td>
                         <td>{{ $subject->status ? 'Active' : 'Inactive' }}</td>
                     </tr>
