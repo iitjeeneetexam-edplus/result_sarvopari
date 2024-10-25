@@ -232,7 +232,7 @@
             <div class="row is_optional_added${i}">
                 <div class="col-md-10">
                     <label for="subject_name">Subject Name</label>    
-                    <input type="text" class="form-control" id="subject_name" name="subject_sub_name[0][]">
+                    <input type="text" class="form-control" id="subject_name" name="subject_sub_name[0][]" placeholder="Subject Name">
                     <div class="text-danger" id="error_subject_name"></div> 
                 </div>
                 <div class="col-md-2">
@@ -258,7 +258,7 @@ function is_optional_added_last(id) {
           <div class="row">
             <div class="col-md-10">
                 <label for="subject_name_${i}">Subject Name</label>    
-                <input type="text" class="form-control" id="subject_name_${i}" name="subject_sub_name[${data}][]"  >
+                <input type="text" class="form-control" id="subject_name_${i}" name="subject_sub_name[${data}][]" placeholder="Subject Name" >
                 <div class="text-danger" id="error_subject_name_${i}"></div> 
             </div>
             <div class="col-md-2">
