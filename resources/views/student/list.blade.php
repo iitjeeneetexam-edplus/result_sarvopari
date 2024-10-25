@@ -51,11 +51,7 @@
                                         <td>{{ $student->division->division_name }}</td>
                                         @if(!empty($subjects))
                                             @foreach($subjects as $optionls)
-                                            @if($optionls->id == $student->subject_id)
                                             <td>{{ $student->subject_name }}</td>
-                                            @else
-                                            <td></td>
-                                            @endif
                                             @endforeach
                                         @endif
                                     </tr>

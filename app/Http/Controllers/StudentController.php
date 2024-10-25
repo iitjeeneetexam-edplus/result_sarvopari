@@ -31,14 +31,18 @@ class StudentController extends Controller
         $standardId = $request->input('standard_id');
 
         $query = Student::with('division:id,division_name')
-        ->leftjoin('student_subjects', 'students.id', '=', 'student_subjects.student_id')
-        ->leftjoin('subject_subs', 'subject_subs.id', '=', 'student_subjects.subject_id')
-        ->where('division_id', $divisionId)
-        ->select('students.*',
-        'subject_subs.subject_name',
-        'subject_subs.subject_id');
-        $students = $query->get();
-        
+            ->leftJoin('student_subjects', 'students.id', '=', 'student_subjects.student_id')
+            ->leftJoin('subject_subs', 'subject_subs.id', '=', 'student_subjects.subject_id')
+            ->where('division_id', $divisionId)
+            ->select(
+                'students.*',
+                DB::raw('GROUP_CONCAT(subject_subs.subject_name) as subject_name'), // Aggregate subject names
+                DB::raw('GROUP_CONCAT(subject_subs.subject_id) as subject_id') // Aggregate subject IDs
+            )
+            ->groupBy('students.id')  // Group by student ID
+            ->get();
+
+        $students = $query;
         
         $subjects = Subject::where('subjects.standard_id',$standardId)
          ->where('subjects.is_optional',1)->get();
