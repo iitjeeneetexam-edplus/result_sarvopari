@@ -30,6 +30,9 @@ class StudentController extends Controller
         $divisionId = $request->input('division_id');
         $standardId = $request->input('standard_id');
 
+        $divisionId = $request->input('division_id');
+        $standardId = $request->input('standard_id');
+
         $query = Student::with('division:id,division_name')
             ->leftJoin('student_subjects', 'students.id', '=', 'student_subjects.student_id')
             ->leftJoin('subject_subs', 'subject_subs.id', '=', 'student_subjects.subject_id')
@@ -37,13 +40,17 @@ class StudentController extends Controller
             ->select(
                 'students.*',
                 DB::raw('GROUP_CONCAT(subject_subs.subject_name) as subject_name'), // Aggregate subject names
-                DB::raw('GROUP_CONCAT(subject_subs.subject_id) as subject_id') // Aggregate subject IDs
+                DB::raw('GROUP_CONCAT(student_subjects.subject_id) as subject_id') // Aggregate subject IDs
             )
             ->groupBy('students.id')  // Group by student ID
             ->get();
 
         $students = $query;
-        
+        // echo "<pre>";print_r($students);exit;
+        // $student_id=Student::join('student_subjects','student_subjects.student_id','=','students.id')
+        //                     ->leftjoin('subject_subs','subject_subs.subject_id','=','student_subjects.subject_id')
+        //                   ->select('students.*','student_subjects.subject_id','subject_subs.subject_name')->get();
+        // echo "<pre>";print_r($student_id);exit;
         $subjects = Subject::where('subjects.standard_id',$standardId)
          ->where('subjects.is_optional',1)->get();
         $subject_subs = [];  
