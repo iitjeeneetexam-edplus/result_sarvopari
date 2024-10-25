@@ -6,7 +6,9 @@ use App\Models\Division;
 use App\Models\School;
 use App\Models\Standard;
 use App\Models\Student;
+use App\Models\StudentSubject;
 use App\Models\Subject;
+use App\Models\Subjectsub;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -29,17 +31,22 @@ class StudentController extends Controller
         $standardId = $request->input('standard_id');
 
         $query = Student::with('division:id,division_name')
+        ->leftjoin('student_subjects', 'students.id', '=', 'student_subjects.student_id')
+        ->leftjoin('subject_subs', 'subject_subs.id', '=', 'student_subjects.subject_id')
         ->where('division_id', $divisionId)
-        ->select('name', 'roll_no', 'GR_no', 'uid', 'division_id');
+        ->select('students.*',
+        'subject_subs.subject_name',
+        'subject_subs.subject_id');
         $students = $query->get();
-
-        $subjects = Subject::join('subject_subs','subject_subs.subject_id','=','subjects.id')
-        ->where('subjects.standard_id',$standardId)
-        ->where('subjects.is_optional',1)
-        ->select('subjects.subject_name as subject','subject_subs.subject_name as sub_subject','subjects.id as sid','subject_subs.id as sub_id')
-        ->get();
-
-        return view('student.list', compact('students','subjects'));
+        
+        
+        $subjects = Subject::where('subjects.standard_id',$standardId)
+         ->where('subjects.is_optional',1)->get();
+        $subject_subs = [];  
+        foreach($subjects as $value){
+            $subject_subs[$value->id] = Subjectsub::where('subject_id', $value->id)->get(); // Store sub-subjects by subject ID
+        }
+        return view('student.list', compact('students','subjects','subject_subs'));
     }
 
     public function showImportForm()
@@ -87,4 +94,25 @@ class StudentController extends Controller
 
         return redirect()->back()->with('success', 'Students imported successfully!');
     }
+
+    public function assignSubject(Request $request)
+    {
+        $subjectIds = $request->input('subject_ids');
+        $studentIds = $request->input('student_ids');
+
+        // Loop through selected students and assign the subject
+        foreach ($subjectIds as $subjectId) {
+            foreach ($studentIds as $studentId) {
+                // Assuming you have a StudentSubject model to store this relationship
+                StudentSubject::create([
+                    'student_id' => $studentId,
+                    'subject_id' => $subjectId
+                ]);
+            }
+        }
+
+        return redirect()->route('students.index')->with('success', 'Subject assigned to selected students.');
+        //return redirect()->back()->with('success', 'Subject assigned to selected students.');
+    }
+
 }
