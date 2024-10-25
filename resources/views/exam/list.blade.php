@@ -18,9 +18,8 @@
                         <tr>
                             <th>ID</th>
                             <th>Exam Name</th>
-                            <th>Subject</th>
+                            <th>Standard</th>
                             <th>Exam Date</th>
-                            <th>Total Marks</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -28,9 +27,8 @@
                             <tr>
                                 <td>{{ $exam->id }}</td>
                                 <td>{{ $exam->exam_name }}</td>
-                                <td>{{ $exam->subject->subject_name }}</td> <!-- Display associated standard -->
+                                <td>{{ $exam->standard->standard_name }}</td> <!-- Display associated standard -->
                                 <td>{{ $exam->date }}</td>
-                                <td>{{ $exam->total_marks }}</td>
                                 
                             </tr>
                         @endforeach
