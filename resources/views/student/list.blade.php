@@ -42,7 +42,7 @@
                                 @foreach($students as $student)
                                     <tr>
                                         <td>
-                                            <input type="checkbox" name="student_ids[]" class="student-checkbox" value="{{ $student->id }}">
+                                            <input type="checkbox" name="student_ids[]" class="student-checkbox" value="{{ $student->id }}" @if($student->subject_id) disabled @endif>
                                         </td>
                                         <td>{{ $student->roll_no }}</td>
                                         <td>{{ $student->name }}</td>
@@ -99,7 +99,7 @@
     <script>
         // Select/Deselect All Checkboxes
         $('#select-all').click(function() {
-            $('.student-checkbox').prop('checked', this.checked);
+            $('.student-checkbox:enabled').prop('checked', this.checked);
         });
 
         // Deselect "Select All" if any individual checkbox is unchecked
