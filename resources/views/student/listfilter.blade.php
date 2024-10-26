@@ -5,11 +5,11 @@
         </h2>
     </x-slot>
 
-    <div class="container">
-        <div class="row justify-content-center">
+    <div class="row justify-content-center">
             <div class="col-12 col-md-10 col-lg-8">
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-5">
-                    <div class="p-6 text-gray-900 dark:text-gray-100">
+                <div class="container mt-5">
+
                         <div class="row">
                             <div class="col-sm-3 offset-9">
                                 <a href="{{ url('/students/add') }}" class="btn btn-success mb-3 " style="float:right">Add New Students</a>

@@ -117,7 +117,8 @@
                     '<td>' + value.id + '</td>' +
                     '<td>' + value.name + '</td>' +
                     '<td>' + value.roll_no + '</td>' +
-                    '<td>' + value.GR_no + '</td>';
+                    '<td>' + value.GR_no + '</td>'+
+                    '<td>' + value.total_marks + '</td>';
 
     // Loop through the subjects to get the corresponding marks
             if (data.subject != null) {
@@ -140,18 +141,19 @@
             $('#studentdata thead tr').append('<th>Student Name</th>');
             $('#studentdata thead tr').append('<th>Roll No</th>');
             $('#studentdata thead tr').append('<th>GR No</th>');
+            $('#studentdata thead tr').append('<th>Total Marks</th>');
 
             // Adding dynamic subject headers
             if (data.subject != null) {
                 var subjectsArray = data.subject.split(',');
 
                 $.each(subjectsArray, function(index, subjectName) {
-                    $('#studentdata thead tr').append('<th>' + subjectName.trim() + '</th>'); // Trim to remove any extra spaces
+                    $('#studentdata thead tr').append('<th>' + subjectName.trim() + '</th>'); 
                 });
             }
                 },
                 error: function(xhr, status, error) {
-                    console.error(error); // Handle errors if they occur
+                    console.error(error); 
                 }
             });
         });
