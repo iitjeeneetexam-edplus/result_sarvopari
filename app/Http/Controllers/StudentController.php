@@ -68,25 +68,45 @@ class StudentController extends Controller
         $standardId = $request->input('standard_id');
 
         $query = Student::with('division:id,division_name')
-        ->leftJoin('marks', 'marks.student_id', '=', 'students.id')
-        ->where('students.division_id', $divisionId)
-        ->select(
-            'students.*',
-            'marks.marks as mark',
-            'marks.subject_id',
-        )
-        ->get();
+            ->leftJoin('marks', 'marks.student_id', '=', 'students.id')
+            ->leftJoin('subjects as s1', 's1.id', '=', 'marks.subject_id')
+            ->leftJoin('subject_subs as s2', 's2.id', '=', 'marks.subject_id')
+            ->where('students.division_id', $divisionId)
+            ->select(
+                'students.*',
+                'marks.marks',
+                'marks.subject_id',
+                DB::raw('GROUP_CONCAT(
+                    CASE 
+                        WHEN s1.is_optional = 0 THEN s1.subject_name
+                        WHEN s1.is_optional = 1 THEN s2.subject_name
+                        ELSE NULL
+                    END
+                ) as subject_name')
+            )
+            ->groupBy('students.id', 'marks.marks', 'marks.subject_id') 
+            ->get();
+       print_r($query);exit;
+    $students = [];
+    foreach ($query as $item) {
+        $students[$item->id]['id'] = $item->id;
+        $students[$item->id]['name'] = $item->name;
+        $students[$item->id]['roll_no'] = $item->roll_no;
+        $students[$item->id]['GR_no'] = $item->GR_no;
     
-        $students = $query;
+        $subjectName = $item->subject_name;
+        $students[$item->id]['marks'][$subjectName] = $item->mark;
+        }
         
-       
-        $subjects = Subject::leftjoin('marks','marks.subject_id','=','subjects.id')->where('standard_id',$standardId)->select('subjects.*','marks.total_marks')->get();
+        $subjects = Subject::where('standard_id', $standardId)->pluck('subject_name');
+        $subjectString = $subjects->implode(', ');
+
         // $subject_subs = [];  
         // foreach($subjects as $value){
         //     $subject_subs[$value->id] = Subjectsub::where('subject_id', $value->id)->get(); // Store sub-subjects by subject ID
         // }
         // print_r($subjects);exit;
-        return response()->json(['student'=>$students,'subject'=>$subjects]);
+        return response()->json(['student'=>$students,'subject'=>$subjectString]);
     }
 
     public function showImportForm()

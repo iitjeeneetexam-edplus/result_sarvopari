@@ -20,9 +20,9 @@
                             @csrf
                             <div class="row mb-4">
                                 <div class="col-md-4">
-                                    <label for="school">School</label>
+                                    <label for="school">Select School</label>
                                     <select name="school_id" id="school" class="form-control">
-                                        <option value="">All Schools</option>
+                                        <option value="">Select School</option>
                                         @foreach($schools as $school)
                                         <option value="{{ $school->id }}" {{ request('school_id') == $school->id ? 'selected' : '' }}>
                                             {{ $school->school_name }}
@@ -56,11 +56,7 @@
                         <table class="table table-bordered" id="studentdata">
                             <thead>
                                 <tr>
-                                    <th>no</th>
-                                    <th>Student Name</th>
-                                    <th>Roll No</th>
-                                    <th>GR No</th>
-                                    <th>Mark</th>
+                                   
                                 </tr>
                             </thead>
                             <tbody>
@@ -117,24 +113,42 @@
                 data: $(this).serialize(),
                 success: function(data) {
                     $.each(data.student, function(key, value) {
+                var studentRow = '<tr>' +
+                    '<td>' + value.id + '</td>' +
+                    '<td>' + value.name + '</td>' +
+                    '<td>' + value.roll_no + '</td>' +
+                    '<td>' + value.GR_no + '</td>';
 
-                        $('#studentdata tbody').append(
-                            '<tr>' +
-                                '<td>' + value.id + '</td>' +
-                                '<td>' + value.name + '</td>' +
-                                '<td>' + value.roll_no + '</td>' +
-                                '<td>' + value.GR_no + '</td>' +
-                                '<td>' + value.mark + '</td>' +
-                            '</tr>'
-                        );
-                    });
-                    $.each(data.subject, function(key, value) {
+    // Loop through the subjects to get the corresponding marks
+            if (data.subject != null) {
+                var subjectsArray = data.subject.split(',');
 
-                        $('#studentdata thead tr').append(
-                                    '<th>' + value.subject_name + '</th>'
-                                );
-                    });
-                                    
+                $.each(subjectsArray, function(index, subjectName) {
+                    studentRow += '<td>' + (value.marks[subjectName.trim()] || 'Empty') + '</td>';
+                });
+            }
+
+        studentRow += '</tr>';
+        $('#studentdata tbody').append(studentRow);
+    });
+
+// Header section
+            $('#studentdata thead tr').empty();
+
+            // Static headers
+            $('#studentdata thead tr').append('<th>No</th>');
+            $('#studentdata thead tr').append('<th>Student Name</th>');
+            $('#studentdata thead tr').append('<th>Roll No</th>');
+            $('#studentdata thead tr').append('<th>GR No</th>');
+
+            // Adding dynamic subject headers
+            if (data.subject != null) {
+                var subjectsArray = data.subject.split(',');
+
+                $.each(subjectsArray, function(index, subjectName) {
+                    $('#studentdata thead tr').append('<th>' + subjectName.trim() + '</th>'); // Trim to remove any extra spaces
+                });
+            }
                 },
                 error: function(xhr, status, error) {
                     console.error(error); // Handle errors if they occur

@@ -74,10 +74,12 @@ class SubjectController extends Controller
         if(!empty(array_filter($request['subject_sub_name'][$index]))){
             foreach ($request['subject_sub_name'][$index] as $subIndex => $subjectSubName) {
                 // Insert each subject sub-name
-                SubjectSub::create([
-                    'subject_id' => $subject->id,              // Foreign key from the subject
-                    'subject_name' => (!empty($subjectSubName))?$subjectSubName:null,
-                ]);
+                if (!empty($subjectSubName)) {
+                    SubjectSub::create([
+                        'subject_id' => $subject->id,              // Foreign key from the subject
+                        'subject_name' => $subjectSubName,
+                    ]);
+                }
             }
         }
         
