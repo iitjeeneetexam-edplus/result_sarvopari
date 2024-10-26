@@ -42,7 +42,7 @@ class StudentController extends Controller
                 DB::raw('GROUP_CONCAT(subject_subs.subject_name) as subject_name'), // Aggregate subject names
                 DB::raw('GROUP_CONCAT(student_subjects.subject_id) as subject_id') // Aggregate subject IDs
             )
-            ->groupBy('students.id')  // Group by student ID
+            ->groupBy('students.id', 'students.name', 'students.roll_no')  // Group by student ID
             ->get();
 
         $students = $query;
