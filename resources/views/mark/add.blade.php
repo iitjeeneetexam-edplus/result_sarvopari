@@ -48,6 +48,14 @@
                             </div>
 
                             <div class="col-md-12">
+                                <label for="exam_id">Select Exam:</label>
+                                <select name="exam_id" id="exam_id" class="form-control" require>
+                                    <option value="">Select a Exam</option>
+                                    <!-- exam list -->
+                                </select>
+                            </div>
+
+                            <div class="col-md-12">
                                 <label for="subject">Select Subject:</label>
                                 <select name="subject_id" id="subject" class="form-control">
                                     <option value="">Select a Subject</option>
@@ -56,14 +64,14 @@
                             </div>
                             <div class="col-md-12" style="display: none;" id="subject_sub_display">
                                 <label for="subject_sub">Select option Subject:</label>
-                                <select name="subject_sub_id" id="subject_sub" class="form-control">
+                                <select name="subject_sub" id="subject_sub" class="form-control">
                                     <option value="">Select a option Subject</option>
                                     <!-- Populated via AJAX -->
                                 </select>
                             </div>
                             <div class="col-md-12">
-                                <label for="total_mark">Total Marks</label>
-                                <input type="text" name="total_mark" id="total_mark" class="form-control" placeholder="Enter Total Marks">
+                                <label for="total_marks">Total Marks</label>
+                                <input type="text" name="total_marks" id="total_marks" class="form-control" placeholder="Enter Total Marks">
                             </div>
                             <br>
                             <h4>Student List</h4>
@@ -91,6 +99,8 @@
     </div>
 </x-app-layout>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="path/to/your-script.js"></script>
+
 <script>
     $(document).ready(function() {
         // School change event for fetching standards
@@ -144,15 +154,26 @@
                         } else {
                             $('#subject').append('<option value="">No subjects found</option>');
                         }
+
+                        //exam list
+                        $('#exam_id').empty().append('<option value="">Select a Exam</option>');
+                        if (data.exams && Array.isArray(data.exams) && data.exams.length) {
+                            $.each(data.exams, function(key, value) {
+                                $('#exam_id').append('<option value="' + value.id + '">' + value.exam_name + '</option>');
+                            });
+                        } else {
+                            $('#exam_id').append('<option value="">No Exam found</option>');
+                        }
+                        
                     }
                 });
             } else {
                 $('#division').empty().append('<option value="">Select a Division</option>');
             }
         });
-        $('#subject').change(function() {
-            // Show the content
 
+
+        $('#subject').change(function() {
             var subject_id = $(this).val();
             var division_id = $('#division').val();
             if (subject_id) {
@@ -173,7 +194,7 @@
 
                             } else {
                                 $('#subject_sub_display').hide();
-                                getstudentlist(division_id, subject_id); //student list function
+                                getstudentlist(0); //student list function
                             }
                         }
                     }
@@ -183,7 +204,17 @@
             }
         });
 
-        function getstudentlist(division_id, subject_id) {
+        //subject_sub
+        $('#subject_sub').change(function() {
+            var subject_id = $(this).val();
+            if (subject_id) {
+                getstudentlist(subject_id);
+            }
+        });
+
+
+        function getstudentlist(subject_id) {
+            var division_id =  $('#division').val();
             $.ajax({
                 url: '{{ url("/students/marksaddstudentlist") }}/' + division_id + '/' + subject_id,
                 type: 'GET',

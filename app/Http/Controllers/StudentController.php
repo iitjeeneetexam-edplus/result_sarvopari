@@ -175,8 +175,15 @@ class StudentController extends Controller
     }
 
     public function StudentlistBydivisionorsubject($division_id,$subject_id){
-        $students = Student::with('division:id,division_name')
-            ->where('division_id', $division_id)->get();
+
+        $studentQY = Student::with('division:id,division_name')
+            ->where('division_id', $division_id)
+            ->when($subject_id, function ($query) use ($subject_id) {
+                $query->join('student_subjects', 'students.id', '=', 'student_subjects.student_id')
+                      ->where('student_subjects.subject_id', $subject_id);
+            });
+
+        $students =  $studentQY->get();
         return response()->json(['students'=>$students]);
     }
 

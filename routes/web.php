@@ -70,7 +70,7 @@ Route::post('/students/import', [StudentController::class, 'import'])->name('stu
 Route::get('/students/marksaddstudentlist/{division_id}/{subject_id}', [StudentController::class, 'StudentlistBydivisionorsubject'])->name('students.marksaddstudentlist')->name('students.import');
 Route::get('/marks', [MarkController::class, 'index'])->name('marks.index');
 Route::get('/marks/create', [MarkController::class, 'create'])->name('marks.create');
-Route::get('/marks/store', [MarkController::class, 'store'])->name('marks.store');
+Route::post('/marks/store', [MarkController::class, 'store'])->name('marks.store');
 Route::post('/assign-subject', [StudentController::class, 'assignSubject'])->name('assign.subject');
 
 });
