@@ -38,11 +38,12 @@ class StudentController extends Controller
             ->leftJoin('subject_subs', 'subject_subs.id', '=', 'student_subjects.subject_id')
             ->where('division_id', $divisionId)
             ->select(
-                'students.*',
+                'students.id',
+                'students.name', 'students.roll_no', 'students.GR_no','students.uid', 'students.division_id',
                 DB::raw('GROUP_CONCAT(subject_subs.subject_name) as subject_name'), // Aggregate subject names
                 DB::raw('GROUP_CONCAT(student_subjects.subject_id) as subject_id') // Aggregate subject IDs
             )
-            ->groupBy('students.id')  // Group by student ID
+            ->groupBy('students.id', 'students.name', 'students.roll_no','students.GR_no','students.uid', 'students.division_id')  // Group by student ID
             ->get();
 
         $students = $query;
