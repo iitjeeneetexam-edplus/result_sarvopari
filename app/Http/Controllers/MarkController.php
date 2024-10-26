@@ -40,45 +40,48 @@ class MarkController extends Controller
      */
     public function store(Request $request)
     {
-        DB::beginTransaction();
+       
+        //DB::beginTransaction();
         $request->validate([
             'school_id' => 'required|exists:schools,id',
             'standard_id' => 'required|exists:standards,id',
             'division_id' => 'required|exists:division,id',
             'subject_id' => 'sometimes|required_without:subject_sub',
             'subject_sub' =>'sometimes|required_without:subject_id',
-            'total_mark'=>'required'
+            'total_marks'=>'required'
         ]);
 
         try{
             if ($request->input('marks') && $request->input('student_id')) {
-                
                 $marks = $request->input('marks');
-                $studentIds = $request->input('student_ids');
+                $studentIds = $request->input('student_id');
                 foreach ($studentIds as $i=>$studentId) {
+                    
                     if($request->input('subject_sub')){
                         $subjectid = $request->input('subject_sub');
-                        $is_optional = 1;
+                        $is_optional = '1';
                     }else{
                         $subjectid = $request->input('subject_id');
-                        $is_optional = 0;
+                        $is_optional = '0';
                     }
-                    Marks::updateOrCreate(
-                        [
+                    
+                    Marks::Create([
                             'student_id' => $studentId,
                             'subject_id' => $subjectid,
                             'exam_id' => $request->input('exam_id'),
                             'is_optional' => $is_optional,
                             'total_marks' => $request->input('total_marks'),
                             'marks' =>  $marks[$i]
-                        ]
-                    );
+                        ]);
+                   
                 }                
             }
-            DB::commit();
+            return redirect()->route('marks.create')->with('success', 'Marks added successfully.');
+            //DB::commit();
         }catch(Exception $e){
-            DB::rollBack();
-            Log::error('Marks add Error: ' . $e->getMessage());
+            return redirect()->route('marks.create')->with('fail', $e);
+            //DB::rollBack();
+            //Log::error('Marks add Error: ' . $e->getMessage());
             return back()->with('error', 'Error during Marks add.');
         }
     }
