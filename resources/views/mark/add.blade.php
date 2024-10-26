@@ -107,7 +107,7 @@
                 var standardId = $(this).val();
                 if (standardId) {
                     $.ajax({
-                        url: '{{ url("/get-divisions") }}/' + standardId,
+                        url: '{{ url("/get-divisions-subject") }}/' + standardId,
                         type: 'GET',
                         success: function(data) {
                            
