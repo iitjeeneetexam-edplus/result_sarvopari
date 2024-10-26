@@ -11,47 +11,47 @@
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-5">
                     <div class="p-6 text-gray-900 dark:text-gray-100 ">
 
-                  
 
-                    
-                    <form action="{{ route('students.import') }}" method="POST" enctype="multipart/form-data">
-                        
-                    @csrf
-                    <div>
-                        <label for="school">Select School:</label>
-                        <select name="school_id" id="school" class="form-control" required>
-                            <option value="">Select a School</option>
-                            @foreach($schools as $school)
-                                <option value="{{ $school->id }}">{{ $school->school_name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
 
-                    <div>
-                        <label for="standard">Select Standard:</label>
-                        <select name="standard_id" id="standard" class="form-control" required>
-                            <option value="">Select a Standard</option>
-                        </select>
-                    </div>
 
-                    <div>
-                        <label for="division">Select Division:</label>
-                        <select name="division_id" id="division" class="form-control" required>
-                            <option value="">Select a Division</option>
-                        </select>
-                    </div>
+                        <form action="{{ route('students.import') }}" method="POST" enctype="multipart/form-data">
 
-                    <div>
-                        <label for="csv_file">Upload CSV:</label>
-                        <input type="file" name="csv_file" class="form-control" required>
-                    </div>
- <br>
-                    <button type="submit" class="btn btn-primary">Upload CSV</button>
-                    <a href="{{ route('students.index') }}" class="btn btn-secondary" style="float:right">Back to Student</a>
+                            @csrf
+                            <div>
+                                <label for="school">Select School:</label>
+                                <select name="school_id" id="school" class="form-control" required>
+                                    <option value="">Select a School</option>
+                                    @foreach($schools as $school)
+                                    <option value="{{ $school->id }}">{{ $school->school_name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
 
-                    </form>
+                            <div>
+                                <label for="standard">Select Standard:</label>
+                                <select name="standard_id" id="standard" class="form-control" required>
+                                    <option value="">Select a Standard</option>
+                                </select>
+                            </div>
 
-                  
+                            <div>
+                                <label for="division">Select Division:</label>
+                                <select name="division_id" id="division" class="form-control" required>
+                                    <option value="">Select a Division</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="csv_file">Upload CSV:</label>
+                                <input type="file" name="csv_file" class="form-control" required>
+                            </div>
+                            <br>
+                            <button type="submit" class="btn btn-primary">Upload CSV</button>
+                            <a href="{{ route('students.index') }}" class="btn btn-secondary" style="float:right">Back to Student</a>
+
+                        </form>
+
+
                     </div>
                 </div>
             </div>
@@ -63,7 +63,7 @@
         $(document).ready(function() {
             $('#school').change(function() {
                 var schoolId = $(this).val();
-                if(schoolId) {
+                if (schoolId) {
                     $.ajax({
                         url: '{{ url("/get-standards") }}/' + schoolId,
                         type: 'GET',
@@ -71,7 +71,7 @@
                             $('#standard').empty();
                             $('#standard').append('<option value="">Select a Standard</option>');
                             $.each(data, function(key, value) {
-                                $('#standard').append('<option value="'+ value.id +'">'+ value.standard_name +'</option>');
+                                $('#standard').append('<option value="' + value.id + '">' + value.standard_name + '</option>');
                             });
                         }
                     });
@@ -83,7 +83,7 @@
 
             $('#standard').change(function() {
                 var standardId = $(this).val();
-                if(standardId) {
+                if (standardId) {
                     $.ajax({
                         url: '{{ url("/get-divisions") }}/' + standardId,
                         type: 'GET',
@@ -91,7 +91,7 @@
                             $('#division').empty();
                             $('#division').append('<option value="">Select a Division</option>');
                             $.each(data, function(key, value) {
-                                $('#division').append('<option value="'+ value.id +'">'+ value.division_name +'</option>');
+                                $('#division').append('<option value="' + value.id + '">' + value.division_name + '</option>');
                             });
                         }
                     });

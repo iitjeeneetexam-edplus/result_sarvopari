@@ -8,8 +8,8 @@
     <div class="py-10">
         <div class="max-w-6xl mx-auto sm:px-7 lg:px-8">
             <div class="bg-white shadow-sm sm:rounded-lg p-6 mt-5">
-            <h1>Add New Exam</h1>
-              
+                <h1>Add New Exam</h1>
+
 
                 <form action="{{ route('exam.store') }}" method="POST">
                     @csrf
@@ -17,30 +17,30 @@
                         <label for="exam_name">Exam Name</label>
                         <input type="text" class="form-control" id="exam_name" name="exam_name" required value="{{ old('exam_name')}}" placeholder="Enter Exam Name">
                     </div>
-                       @error('exam_name')
-                            <div class="text-danger">{{ $message }}</div>
+                    @error('exam_name')
+                    <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                    <div class="form-group mb-3">
+                        <label for="standard_id">Select School</label>
+                        <select name="school_id" id="school" class="form-control">
+                            <option value="">All Schools</option>
+                            @foreach($schools as $school)
+                            <option value="{{ $school->id }}" {{ request('school_id') == $school->id ? 'selected' : '' }}>
+                                {{ $school->school_name }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="standard_id">Select Standard</label>
+                        <select class="form-control" id="standard_id" name="standard_id" required>
+                            <option value="">select option</option>
+
+                        </select>
+                        @error('standard_id')
+                        <div class="text-danger">{{ $message }}</div>
                         @enderror
-                        <div class="form-group mb-3">
-                            <label for="standard_id">Select School</label>
-                            <select name="school_id" id="school" class="form-control">
-                                        <option value="">All Schools</option>
-                                        @foreach($schools as $school)
-                                        <option value="{{ $school->id }}" {{ request('school_id') == $school->id ? 'selected' : '' }}>
-                                            {{ $school->school_name }}
-                                        </option>
-                                        @endforeach
-                                    </select>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="standard_id">Select Standard</label>
-                                <select class="form-control" id="standard_id" name="standard_id" required>
-                                    <option value="">select option</option>
-                                  
-                                </select>
-                                @error('standard_id')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
+                    </div>
 
                     <div class="form-group mb-3">
                         <label for="date">Exam Date</label>
@@ -48,13 +48,13 @@
                         <input type="date" class="form-control" id="date" name="date" required value="{{ old('date') }}" min="{{ \Carbon\Carbon::today()->toDateString() }}" style="display:none;">
                         <span id="date-error" class="text-danger" style="display:none;"></span>
                         @error('date')
-                            <div class="text-danger">{{ $message }}</div>
+                        <div class="text-danger">{{ $message }}</div>
                         @enderror
 
                     </div>
 
-                    
-                    
+
+
 
                     <button type="submit" class="btn btn-primary">Add Exam</button>
                 </form>
@@ -64,27 +64,27 @@
 </x-app-layout>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-     $(document).ready(function() {
-            // School change event for fetching standards
-            $('#school').change(function() {
-                var schoolId = $(this).val();
-                if (schoolId) {
-                    $.ajax({
-                        url: '{{ url("/get-standards") }}/' + schoolId,
-                        type: 'GET',
-                        success: function(data) {
-                            $('#standard_id').empty().append('<option value="">Select a Standard</option>');
-                            $.each(data, function(key, value) {
-                                $('#standard_id').append('<option value="' + value.id + '">' + value.standard_name + '</option>');
-                            });
-                        }
-                    });
-                } else {
-                    $('#standard_id').empty().append('<option value="">Select a Standard</option>');
-                }
-            });
+    $(document).ready(function() {
+        // School change event for fetching standards
+        $('#school').change(function() {
+            var schoolId = $(this).val();
+            if (schoolId) {
+                $.ajax({
+                    url: '{{ url("/get-standards") }}/' + schoolId,
+                    type: 'GET',
+                    success: function(data) {
+                        $('#standard_id').empty().append('<option value="">Select a Standard</option>');
+                        $.each(data, function(key, value) {
+                            $('#standard_id').append('<option value="' + value.id + '">' + value.standard_name + '</option>');
+                        });
+                    }
+                });
+            } else {
+                $('#standard_id').empty().append('<option value="">Select a Standard</option>');
+            }
+        });
 
-});
+    });
     document.addEventListener("DOMContentLoaded", function() {
         const dateInput = document.getElementById("date");
         const dateError = document.getElementById("date-error");

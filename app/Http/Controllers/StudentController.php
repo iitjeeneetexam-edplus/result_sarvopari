@@ -80,13 +80,16 @@ class StudentController extends Controller
         })
         ->where('students.division_id', $divisionId)
         ->select(
-            'students.*',
+            'students.id',
+            'students.name',
+            'students.roll_no',
+            'students.GR_no',
             'marks.marks',
             'marks.subject_id',
             'marks.total_marks',
             DB::raw('GROUP_CONCAT(COALESCE(s1.subject_name, s2.subject_name)) as subject_name')
         )
-        ->groupBy('students.id', 'marks.marks', 'marks.subject_id','marks.total_marks')
+        ->groupBy('students.id','students.name','students.roll_no', 'students.GR_no','marks.marks', 'marks.subject_id','marks.total_marks')
         ->get();
     //    print_r($query);exit;
     $students = [];
