@@ -59,6 +59,33 @@ class StudentController extends Controller
         }
         return view('student.list', compact('students','subjects','subject_subs'));
     }
+    public function getstudentformarks(Request $request){
+
+        $divisionId = $request->input('division_id');
+        $standardId = $request->input('standard_id');
+
+        $divisionId = $request->input('division_id');
+        $standardId = $request->input('standard_id');
+
+        $query = Student::with('division:id,division_name')
+        ->leftJoin('marks', 'marks.student_id', '=', 'students.id')
+        ->where('students.division_id', $divisionId)
+        ->select(
+            'students.*',
+            'marks.marks as mark',
+            'marks.subject_id',
+        )
+        ->get();
+    
+        $students = $query;
+       
+        $subjects = Subject::where('standard_id',$standardId)->get();
+        // $subject_subs = [];  
+        // foreach($subjects as $value){
+        //     $subject_subs[$value->id] = Subjectsub::where('subject_id', $value->id)->get(); // Store sub-subjects by subject ID
+        // }
+        return response()->json(['student'=>$students,'subject'=>$subjects]);
+    }
 
     public function showImportForm()
     {

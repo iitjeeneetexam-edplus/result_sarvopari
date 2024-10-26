@@ -48,15 +48,16 @@
                                     </select>
                                 </div>
 
-                <div class="col-md-12 mt-3">
-                    <button type="submit" class="btn btn-primary">Get Student List</button>
-                </div>
+                                <div class="col-md-12 mt-3">
+                                    <button type="submit" class="btn btn-primary">Get Student List</button>
+                                </div>
                             </div>
                         </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-        </div></div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>

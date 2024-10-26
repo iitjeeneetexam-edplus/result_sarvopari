@@ -63,6 +63,7 @@ Route::get('/get-divisions/{standard_id}', [DivisionController::class, 'getdivis
 
 Route::get('/students', [StudentController::class, 'index'])->name('students.index');
 Route::post('/students/getstudent', [StudentController::class, 'getstudents'])->name('students.getstudent');
+Route::post('/students/getstudentformarks', [StudentController::class, 'getstudentformarks'])->name('students.getstudentformarks');
 Route::get('/students/add', [StudentController::class, 'showImportForm'])->name('students.importForm');
 Route::post('/students/import', [StudentController::class, 'import'])->name('students.import');
 Route::get('/marks', [MarkController::class, 'index'])->name('marks.index');

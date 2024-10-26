@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\School;
 use App\Models\Student;
+use App\Models\Subject;
 use Illuminate\Http\Request;
 
 class MarkController extends Controller
@@ -13,7 +14,11 @@ class MarkController extends Controller
      */
     public function index()
     {
-        return view('mark.list',);
+        $data=student::paginate(5);
+        $schools = School::select('id', 'school_name')->get();
+        $subjects = Subject::where('subjects.is_optional',1)->get();
+        // echo "<pre>";print_r($data);exit;
+        return view('mark.list',compact('data','subjects','schools'));
     }
 
     /**
