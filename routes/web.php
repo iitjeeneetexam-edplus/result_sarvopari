@@ -66,8 +66,11 @@ Route::post('/students/getstudent', [StudentController::class, 'getstudents'])->
 Route::post('/students/getstudentformarks', [StudentController::class, 'getstudentformarks'])->name('students.getstudentformarks');
 Route::get('/students/add', [StudentController::class, 'showImportForm'])->name('students.importForm');
 Route::post('/students/import', [StudentController::class, 'import'])->name('students.import');
+
+Route::get('/students/marksaddstudentlist/{division_id}/{subject_id}', [StudentController::class, 'StudentlistBydivisionorsubject'])->name('students.marksaddstudentlist')->name('students.import');
 Route::get('/marks', [MarkController::class, 'index'])->name('marks.index');
 Route::get('/marks/create', [MarkController::class, 'create'])->name('marks.create');
+Route::get('/marks/store', [MarkController::class, 'store'])->name('marks.store');
 Route::post('/assign-subject', [StudentController::class, 'assignSubject'])->name('assign.subject');
 
 });

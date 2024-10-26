@@ -152,4 +152,10 @@ class StudentController extends Controller
         //return redirect()->back()->with('success', 'Subject assigned to selected students.');
     }
 
+    public function StudentlistBydivisionorsubject($division_id,$subject_id){
+        $students = Student::with('division:id,division_name')
+            ->where('division_id', $division_id)->get();
+        return response()->json(['students'=>$students]);
+    }
+
 }
