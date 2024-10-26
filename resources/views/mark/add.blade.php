@@ -29,6 +29,9 @@
                                     </option>
                                     @endforeach
                                 </select>
+                                @error('school_id')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="col-md-12">
@@ -37,6 +40,9 @@
                                     <option value="">Select a Standard</option>
                                     <!-- Populated via AJAX -->
                                 </select>
+                                @error('standard_id')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="col-md-12">
@@ -45,6 +51,9 @@
                                     <option value="">Select a Division</option>
                                     <!-- Populated via AJAX -->
                                 </select>
+                                @error('division_id')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="col-md-12">
@@ -53,6 +62,9 @@
                                     <option value="">Select a Exam</option>
                                     <!-- exam list -->
                                 </select>
+                                @error('exam_id')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="col-md-12">
@@ -61,6 +73,9 @@
                                     <option value="">Select a Subject</option>
                                     <!-- Populated via AJAX -->
                                 </select>
+                                @error('subject_id')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-md-12" style="display: none;" id="subject_sub_display">
                                 <label for="subject_sub">Select option Subject:</label>
@@ -72,6 +87,9 @@
                             <div class="col-md-12">
                                 <label for="total_marks">Total Marks</label>
                                 <input type="text" name="total_marks" id="total_marks" class="form-control" placeholder="Enter Total Marks">
+                                @error('total_marks')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             <br>
                             <h4>Student List</h4>
@@ -226,7 +244,7 @@
                             var row = '<tr>' +
                                 '<td>' + student.roll_no + '</td>' +
                                 '<td>' + student.name + '</td>' +
-                                '<td><input type="number" name="marks[]"  min="0" max="' + totalmark + '" step="1"/> <input type="hidden" name="student_id[]" value="' + student.id + '" /></td>' +
+                                '<td><input type="number" name="marks[]"  min="0" max="' + totalmark + '" step="1" require/> <input type="hidden" name="student_id[]" value="' + student.id + '" /></td>' +
                                 '</tr>';
                             $('#studentTable tbody').append(row);
                         });

@@ -25,6 +25,9 @@
                                     <option value="{{ $school->id }}">{{ $school->school_name }}</option>
                                     @endforeach
                                 </select>
+                                @error('school_id')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div>
@@ -32,6 +35,9 @@
                                 <select name="standard_id" id="standard" class="form-control" required>
                                     <option value="">Select a Standard</option>
                                 </select>
+                                @error('standard_id')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div>
@@ -39,6 +45,9 @@
                                 <select name="division_id" id="division" class="form-control" required>
                                     <option value="">Select a Division</option>
                                 </select>
+                                @error('division_id')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div>
