@@ -78,12 +78,14 @@ class StudentController extends Controller
         ->get();
     
         $students = $query;
+        
        
-        $subjects = Subject::where('standard_id',$standardId)->get();
+        $subjects = Subject::leftjoin('marks','marks.subject_id','=','subjects.id')->where('standard_id',$standardId)->select('subjects.*','marks.total_marks')->get();
         // $subject_subs = [];  
         // foreach($subjects as $value){
         //     $subject_subs[$value->id] = Subjectsub::where('subject_id', $value->id)->get(); // Store sub-subjects by subject ID
         // }
+        // print_r($subjects);exit;
         return response()->json(['student'=>$students,'subject'=>$subjects]);
     }
 
