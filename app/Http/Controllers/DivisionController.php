@@ -45,6 +45,12 @@ class DivisionController extends Controller
     {
         // Fetch standards based on school_id
         $division = Division::where('standard_id', $standard_id)->get();
+        // $Subject = Subject::where('standard_id', $standard_id)->get();
+        return response()->json($division);
+    }
+    public function getSubjectsubBySchool($standard_id)
+    {
+        $division = Division::where('standard_id', $standard_id)->get();
         $Subject = Subject::where('standard_id', $standard_id)->get();
         return response()->json(['divisions'=>$division,'subjects'=>$Subject]);
     }

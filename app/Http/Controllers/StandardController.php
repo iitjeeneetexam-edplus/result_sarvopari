@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Division;
 use App\Models\School;
 use App\Models\Standard;
 use App\Models\Subject;
@@ -51,5 +52,11 @@ class StandardController extends Controller
 
         $subject_sub=Subjectsub::where('subject_id',$subject_id)->get();
         return response()->json(['optional'=>$subjects,'subject_sub'=>$subject_sub]);
+    }
+    public function getdivisionBydivisionsubject($standard_id){
+        $division = Division::where('standard_id', $standard_id)->get();
+        $Subject = Subject::where('standard_id', $standard_id)->get();
+        return response()->json(['divisions'=>$division,'subjects'=>$Subject]);
+
     }
 }
