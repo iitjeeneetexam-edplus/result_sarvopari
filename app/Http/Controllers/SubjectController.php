@@ -62,6 +62,7 @@ class SubjectController extends Controller
             // Concatenate the sub-subject names if subject name is null or empty
             $subjectName = implode(', ', array_filter($request['subject_sub_name'][$index]));
         }
+        
         $subject = Subject::create([
             'subject_name' => $subjectName,
             'is_optional' => $request['is_optional'][$index], // Add corresponding optional status
@@ -70,13 +71,16 @@ class SubjectController extends Controller
         ]);
     
         // Loop through the subject sub-names and insert them
-        foreach ($request['subject_sub_name'][$index] as $subIndex => $subjectSubName) {
-            // Insert each subject sub-name
-            SubjectSub::create([
-                'subject_id' => $subject->id,              // Foreign key from the subject
-                'subject_name' => (!empty($subjectSubName))?$subjectSubName:null,
-            ]);
+        if(!empty(array_filter($request['subject_sub_name'][$index]))){
+            foreach ($request['subject_sub_name'][$index] as $subIndex => $subjectSubName) {
+                // Insert each subject sub-name
+                SubjectSub::create([
+                    'subject_id' => $subject->id,              // Foreign key from the subject
+                    'subject_name' => (!empty($subjectSubName))?$subjectSubName:null,
+                ]);
+            }
         }
+        
     }
     // Insert sub-subjects in bulk
             return redirect()->route('subjects.index')->with('success', 'Subject added successfully.');
