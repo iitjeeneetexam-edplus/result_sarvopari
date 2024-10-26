@@ -90,7 +90,7 @@
                             <button type="submit" class="btn btn-primary mb-3" style="float:right">Add Mark</button>
                         </form>
 
-                        
+
                         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
                     </div>
                 </div>
@@ -164,7 +164,7 @@
                         } else {
                             $('#exam_id').append('<option value="">No Exam found</option>');
                         }
-                        
+
                     }
                 });
             } else {
@@ -214,7 +214,7 @@
 
 
         function getstudentlist(subject_id) {
-            var division_id =  $('#division').val();
+            var division_id = $('#division').val();
             $.ajax({
                 url: '{{ url("/students/marksaddstudentlist") }}/' + division_id + '/' + subject_id,
                 type: 'GET',
@@ -224,9 +224,9 @@
                         var totalmark = $('#total_mark').val();
                         $.each(data.students, function(index, student) {
                             var row = '<tr>' +
-                                '<td>'+ student.roll_no +'</td>' +
-                                '<td>'+student.name +'</td>' +
-                                '<td><input type="number" name="marks[]"  min="0" max="'+totalmark+'" step="1"/> <input type="hidden" name="student_id[]" value="' + student.id + '" /></td>' +
+                                '<td>' + student.roll_no + '</td>' +
+                                '<td>' + student.name + '</td>' +
+                                '<td><input type="number" name="marks[]"  min="0" max="' + totalmark + '" step="1"/> <input type="hidden" name="student_id[]" value="' + student.id + '" /></td>' +
                                 '</tr>';
                             $('#studentTable tbody').append(row);
                         });

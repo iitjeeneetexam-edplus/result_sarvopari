@@ -38,9 +38,9 @@
         .hidden {
             display: none;
         }
-    </style>     
-   
-  <div class="container">
+    </style>
+
+    <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 col-md-10 col-lg-8">
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-5">
@@ -60,51 +60,51 @@
                             @csrf
                             <div class="form-group mb-3" id="main_subject">
                                 <label for="subject_name">Subject Name </label>
-                                <input type="text" class="form-control" id="subject_name" name="subject_name[]" placeholder="Subject Name" >
+                                <input type="text" class="form-control" id="subject_name" name="subject_name[]" placeholder="Subject Name">
                                 @error('subject_name')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                            
+
                             <div id="optionalDiv" class="hidden ">
                                 <div class="row ">
-                                <div class="col-md-12 is_addmore_subject">
+                                    <div class="col-md-12 is_addmore_subject">
                                         <button class="btn btn-success " style="float:right" id="addmore_subject" type="button">plus</button>
-                                   </div>
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="is_optional_added">
-                                    <div class="row">
-                                    <div class="col-md-10 ">
-                                    <label for="subject_name">Subject Name </label>    
-                                        <input type="text" class="form-control" id="subject_name" name="subject_sub_name[0][]" placeholder="Subject Name">
-                                        @error('subject_name')
-                                        <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                        
-                                    </div>
+                                        <div class="row">
+                                            <div class="col-md-10 ">
+                                                <label for="subject_name">Subject Name </label>
+                                                <input type="text" class="form-control" id="subject_name" name="subject_sub_name[0][]" placeholder="Subject Name">
+                                                @error('subject_name')
+                                                <div class="text-danger">{{ $message }}</div>
+                                                @enderror
 
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-10 ">
-                                    <label for="subject_name">Subject Name </label>    
-                                        <input type="text" class="form-control" id="subject_name" name="subject_sub_name[0][]" placeholder="Subject Name" >
-                                        @error('subject_name')
-                                        <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                        
-                                    </div>
-                                    
-                                  </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-10 ">
+                                                <label for="subject_name">Subject Name </label>
+                                                <input type="text" class="form-control" id="subject_name" name="subject_sub_name[0][]" placeholder="Subject Name">
+                                                @error('subject_name')
+                                                <div class="text-danger">{{ $message }}</div>
+                                                @enderror
+
+                                            </div>
+
+                                        </div>
                                     </div>
                                 </div>
-                            
+
                                 <!-- Content to be shown when 'Yes' is selected -->
-                                
+
                             </div>
                             <div class="form-group mb-3 is_optional_content">
                                 <label for="is_optional">Is Optional?</label>
-                                <select class="form-control" id="is_optional" name="is_optional[]" onchange="toggleDiv()" >
+                                <select class="form-control" id="is_optional" name="is_optional[]" onchange="toggleDiv()">
                                     <option value="0">No</option>
                                     <option value="1">Yes</option>
                                 </select>
@@ -112,7 +112,7 @@
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                            
+
                             <div class="add-chapter-btn">
                                 <a class="btn" id="addmore">
                                     &nbsp;&nbsp; Add More Subject
@@ -120,21 +120,21 @@
                                 </a>
                             </div>
                             <div class="form-group mb-3">
-                            <label for="standard_id">Select School</label>
-                            <select name="school_id" id="school" class="form-control">
-                                        <option value="">All Schools</option>
-                                        @foreach($schools as $school)
-                                        <option value="{{ $school->id }}" {{ request('school_id') == $school->id ? 'selected' : '' }}>
-                                            {{ $school->school_name }}
-                                        </option>
-                                        @endforeach
-                                    </select>
+                                <label for="standard_id">Select School</label>
+                                <select name="school_id" id="school" class="form-control">
+                                    <option value="">All Schools</option>
+                                    @foreach($schools as $school)
+                                    <option value="{{ $school->id }}" {{ request('school_id') == $school->id ? 'selected' : '' }}>
+                                        {{ $school->school_name }}
+                                    </option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="form-group mb-3">
                                 <label for="standard_id">Select Standard</label>
                                 <select class="form-control" id="standard_id" name="standard_id" required>
                                     <option value="">select option</option>
-                                  
+
                                 </select>
                                 @error('standard_id')
                                 <div class="text-danger">{{ $message }}</div>
@@ -154,44 +154,43 @@
                             </div>
 
                             <button type="submit" class="btn btn-primary">Add Subject</button>
-                            </form>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
 </x-app-layout>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // School change event for fetching standards
-            $('#school').change(function() {
-                var schoolId = $(this).val();
-                if (schoolId) {
-                    $.ajax({
-                        url: '{{ url("/get-standards") }}/' + schoolId,
-                        type: 'GET',
-                        success: function(data) {
-                            $('#standard_id').empty().append('<option value="">Select a Standard</option>');
-                            $.each(data, function(key, value) {
-                                $('#standard_id').append('<option value="' + value.id + '">' + value.standard_name + '</option>');
-                            });
-                        }
-                    });
-                } else {
-                    $('#standard_id').empty().append('<option value="">Select a Standard</option>');
-                }
-            });
+<script>
+    $(document).ready(function() {
+        // School change event for fetching standards
+        $('#school').change(function() {
+            var schoolId = $(this).val();
+            if (schoolId) {
+                $.ajax({
+                    url: '{{ url("/get-standards") }}/' + schoolId,
+                    type: 'GET',
+                    success: function(data) {
+                        $('#standard_id').empty().append('<option value="">Select a Standard</option>');
+                        $.each(data, function(key, value) {
+                            $('#standard_id').append('<option value="' + value.id + '">' + value.standard_name + '</option>');
+                        });
+                    }
+                });
+            } else {
+                $('#standard_id').empty().append('<option value="">Select a Standard</option>');
+            }
+        });
 
-});
+    });
 </script>
-            
+
 <script type="text/javascript">
- 
     $(document).ready(function() {
         let idCounter = 2;
         let subjectCounter = 1;
         $('#addmore').click(function() {
-            
+
             var chapterHtml = `
                     <div class="row  added-chapter">
                     <div style="text-align:end" >
@@ -241,11 +240,11 @@
                         </select>
                     </div>
                 </div>`;
-                
-                idCounter++;
-                subjectCounter++;
-                
-                $('.add-chapter-btn').before(chapterHtml);
+
+            idCounter++;
+            subjectCounter++;
+
+            $('.add-chapter-btn').before(chapterHtml);
             $('.remove-chapter').click(function() {
                 $(this).closest('.added-chapter').remove();
             });
@@ -253,12 +252,12 @@
                 readURL(this);
             });
         });
-        
+
     });
     document.getElementById('addmore_subject').addEventListener('click', function() {
-    let i = document.querySelectorAll('.is_optional_added').length + 1;
+        let i = document.querySelectorAll('.is_optional_added').length + 1;
 
-    let chapterHtml2 = `<br>
+        let chapterHtml2 = `<br>
         <div>
             <div class="row is_optional_added${i}">
                 <div class="col-md-10">
@@ -272,18 +271,19 @@
             </div>
         </div>`;
 
-    i++;
+        i++;
 
-    document.querySelector('.is_optional_added').insertAdjacentHTML('beforeend', chapterHtml2);
-});
-let j=1;
-function is_optional_added_last(id) {
-    let data= id - 1 ;
-    let chapterContainer = $(`.is_optional_added_last${id}`);
-    let i = chapterContainer.find('.is_optional_added_second').length + 1; // Increment the index
-    
-    // New HTML for the subject input
-    let chapterHtml2 = `<br>
+        document.querySelector('.is_optional_added').insertAdjacentHTML('beforeend', chapterHtml2);
+    });
+    let j = 1;
+
+    function is_optional_added_last(id) {
+        let data = id - 1;
+        let chapterContainer = $(`.is_optional_added_last${id}`);
+        let i = chapterContainer.find('.is_optional_added_second').length + 1; // Increment the index
+
+        // New HTML for the subject input
+        let chapterHtml2 = `<br>
     <div>
         <div class="row is_optional_added_second${i}">
           <div class="row">
@@ -299,51 +299,49 @@ function is_optional_added_last(id) {
         </div>
     </div>`;
 
-    document.querySelector('.is_optional_added_second'+id).insertAdjacentHTML('beforeend',chapterHtml2);
-    j++;
-}
+        document.querySelector('.is_optional_added_second' + id).insertAdjacentHTML('beforeend', chapterHtml2);
+        j++;
+    }
 
     // Use event delegation for removing options
     $(document).on('click', '.remove-option-second', function() {
         $(this).closest('.row').remove(); // Remove the corresponding input row
     });
-
-    
 </script>
 <script>
-        function toggleDiv() {
-            const isOptional = document.getElementById('is_optional').value;
-            const optionalDiv = document.getElementById('optionalDiv');
-            
-            if (isOptional == '1') {
-                optionalDiv.classList.remove('hidden');
-                $('#main_subject').hide();
-            } else {
-                $('#main_subject').show();
-                optionalDiv.classList.add('hidden');
-            }
-        }
-        function toggleDiv2(id) {
-            const isOptional2 = document.getElementById('is_optional'+id).value;
-            const optionalDiv2 = document.getElementById('optionalDiv'+id);
-            
-            if (isOptional2 == '1') {
-                
-                optionalDiv2.classList.remove('hidden');
-                $('#main_subject'+id).hide();
-            } else {
-                optionalDiv2.classList.add('hidden');
-                $('#main_subject'+id).hide();
-            }
-        }
-        $('.remove-option').click(function() {
-                $(this).closest('.is_optional_added').hide();
-         
-            });
+    function toggleDiv() {
+        const isOptional = document.getElementById('is_optional').value;
+        const optionalDiv = document.getElementById('optionalDiv');
 
-            $(document).on('click', '.remove-option-second', function() {
-                let i = $(this).data('index'); // Get the index from the data attribute
-                $(this).closest('.is_optional_added_second' + i).remove();
-            });
-    
-    </script>
+        if (isOptional == '1') {
+            optionalDiv.classList.remove('hidden');
+            $('#main_subject').hide();
+        } else {
+            $('#main_subject').show();
+            optionalDiv.classList.add('hidden');
+        }
+    }
+
+    function toggleDiv2(id) {
+        const isOptional2 = document.getElementById('is_optional' + id).value;
+        const optionalDiv2 = document.getElementById('optionalDiv' + id);
+
+        if (isOptional2 == '1') {
+
+            optionalDiv2.classList.remove('hidden');
+            $('#main_subject' + id).hide();
+        } else {
+            optionalDiv2.classList.add('hidden');
+            $('#main_subject' + id).hide();
+        }
+    }
+    $('.remove-option').click(function() {
+        $(this).closest('.is_optional_added').hide();
+
+    });
+
+    $(document).on('click', '.remove-option-second', function() {
+        let i = $(this).data('index'); // Get the index from the data attribute
+        $(this).closest('.is_optional_added_second' + i).remove();
+    });
+</script>
