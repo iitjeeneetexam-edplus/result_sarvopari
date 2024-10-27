@@ -77,7 +77,9 @@ Route::get('/get-divisions-subject/{standard_id}', [StandardController::class, '
 Route::get('/get-divisions/{standard_id}', [DivisionController::class, 'getdivisionBystandard'])->name('get-divisions');
 
 Route::get('/students', [StudentController::class, 'index'])->name('students.index');
-Route::post('/students/getstudent', [StudentController::class, 'getstudents'])->name('students.getstudent');
+// Route::post('/students/getstudent', [StudentController::class, 'getstudents'])->name('students.getstudent');
+Route::get('/students/getstudent/{sid}/{did}', [StudentController::class, 'getstudents'])->name('students.getstudent');
+Route::post('/students/getstudent', [StudentController::class, 'getstudents'])->name('students.getstudent.post');
 Route::post('/students/getstudentformarks', [StudentController::class, 'getstudentformarks'])->name('students.getstudentformarks');
 Route::get('/students/add', [StudentController::class, 'showImportForm'])->name('students.importForm');
 Route::post('/students/import', [StudentController::class, 'import'])->name('students.import');
@@ -88,9 +90,8 @@ Route::get('/marks/create', [MarkController::class, 'create'])->name('marks.crea
 Route::post('/marks/store', [MarkController::class, 'store'])->name('marks.store');
 Route::post('/assign-subject', [StudentController::class, 'assignSubject'])->name('assign.subject');
 
-Route::put('/students/{id}', [StudentController::class, 'update'])->name('students.update');
-Route::get('/students/{id}/edit', [StudentController::class, 'edit'])->name('students.edit');
-Route::delete('/students/{id}', [StudentController::class, 'destroy'])->name('students.destroy');
+Route::get('/students/edit/{id}', [StudentController::class, 'editstudent'])->name('students.edit');
+Route::put('/students/update', [StudentController::class, 'updatestudent'])->name('students.edit');
 
 
 });
