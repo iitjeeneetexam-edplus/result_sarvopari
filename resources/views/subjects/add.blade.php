@@ -134,7 +134,6 @@
                                 <label for="standard_id">Select Standard</label>
                                 <select class="form-control" id="standard_id" name="standard_id" required>
                                     <option value="">select option</option>
-
                                 </select>
                                 @error('standard_id')
                                 <div class="text-danger">{{ $message }}</div>

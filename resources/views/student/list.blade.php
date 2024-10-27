@@ -36,6 +36,7 @@
                                                 <th>{{ $optionls->subject_name }}</th>
                                                 @endforeach
                                                 @endif
+                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -53,7 +54,6 @@
                                                 @php
                                                 $subjectNames = explode(',', $student->subject_name); // Split the subject names
                                                 @endphp
-
                                                 @if(!empty($subjectNames))
                                                 @foreach($subjectNames as $subjectName)
                                                 <td>{{ trim($subjectName) }} </td>
@@ -61,6 +61,15 @@
                                                 @else
                                                 <span>No subjects assigned</span>
                                                 @endif
+                                                
+                                                <td>
+                                                    <a href="#" class="btn btn-sm edit-btn btn-success">Edit</a>
+                                                    <form action="#" method="POST" style="display:inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this student?')">Delete</button>
+                                                    </form>
+                                                </td>
                                             </tr>
                                             @endforeach
                                             @else
@@ -99,7 +108,51 @@
         </div>
     </div>
     </div>
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form id="editForm" method="POST" action="">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Edit Student</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="editRollNo">Roll Number</label>
+                            <input type="text" class="form-control" id="editRollNo" name="roll_no" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editName">Name</label>
+                            <input type="text" class="form-control" id="editName" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editGRNo">GR Number</label>
+                            <input type="text" class="form-control" id="editGRNo" name="GR_no" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editUID">UID</label>
+                            <input type="text" class="form-control" id="editUID" name="uid" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="editDivision">Division</label>
+                            <input type="text" class="form-control" id="editDivision" name="division_name" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         // Select/Deselect All Checkboxes
         $('#select-all').click(function() {
@@ -111,6 +164,21 @@
             if (!$(this).is(':checked')) {
                 $('#select-all').prop('checked', false);
             }
+        });
+
+        $('.edit-btn').click(function() {
+            const data = $(this).data('students');
+            $.each(data.students, function(index, student) {
+                alert(student);
+            });
+            alert(data.students);
+            $('#editForm').attr('action', '/students/' + student.id);
+            $('#editRollNo').val(student.roll_no);
+            $('#editName').val(student.name);
+            $('#editGRNo').val(student.GR_no);
+            $('#editUID').val(student.uid);
+            $('#editDivision').val(student.division.division_name);
+            $('#editModal').modal('show');
         });
     </script>
 </x-app-layout>
