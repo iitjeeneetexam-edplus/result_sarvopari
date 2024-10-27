@@ -97,11 +97,14 @@
 }, 2000);
         </script>
 <style>
+   .row{
+    --bs-gutter-x:0 !important;
+   }
     .sidebar {
   margin: 0;
   padding: 0;
   width: 200px;
-  background-color: #f1f1f1;
+  background-color: #fff;
   position: fixed;
   height: 100%;
   overflow: auto;
@@ -139,7 +142,15 @@ div.content {
   .sidebar a {float: left;}
   div.content {margin-left: 0;}
 }
-
+@media screen and (max-width: 1200px) {
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+  .sidebar a {float: left;}
+  div.content {margin-left: 0;}
+}
 @media screen and (max-width: 400px) {
   .sidebar a {
     text-align: center;

@@ -7,10 +7,9 @@
     </x-slot>
 
     <div class="row justify-content-center">
-        <div class="col-12 col-md-10 col-lg-8">
+        <div class="col-12 col-sm-8 col-md-8 col-lg-7">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-5">
                 <div class="container mt-5">
-
                     <h1>List of Mark</h1>
                     <div class="row">
                         <div class="col-sm-2 offset-sm-10"><a href="{{ url('marks/create') }}" class="btn btn-success mb-3" style="float: right;">Add New Mark</a>
@@ -48,7 +47,7 @@
                             </div>
 
                             <div class="col-md-12 mt-3">
-                                <button type="submit" class="btn btn-primary">Get Student List</button>
+                                <button type="submit" class="btn btn-success">Get Student List</button>
                             </div>
                         </div>
                     </form>
@@ -63,6 +62,8 @@
                         </tbody>
                     </table>
                 </div>
+            </div></div>
+    </div>
                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                 <script>
                     $(document).ready(function() {

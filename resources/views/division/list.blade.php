@@ -6,17 +6,20 @@
     </x-slot>
 
     <div class="row justify-content-center">
-        <div class="col-12 col-md-10 col-lg-8">
+        <div class="col-12 col-sm-8 col-md-8 col-lg-7">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-5">
                 <div class="container mt-5">
 
                     <h1>List of Division</h1>
+                    <div class="table-responsive">
+                <div class="d-flex justify-content-end mb-3">
+                    
                     <a href="{{ route('division.create') }}" class="btn btn-success mb-3" style="float: right;">Add New Division</a>
-
+                </div>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>No</th>
                                 <th>Division Name</th>
                                 <th>Standard</th>
                                 <th>Status</th>
@@ -42,6 +45,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                    </div>
                     <div style="float:right"> {{ $standard->links('pagination::bootstrap-4') }} </div>
                 </div>
             </div>

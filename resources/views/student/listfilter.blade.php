@@ -6,13 +6,13 @@
     </x-slot>
 
     <div class="row justify-content-center">
-        <div class="col-12 col-md-10 col-lg-8">
+        <div class="col-12 col-sm-8 col-md-8 col-lg-7">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-5">
                 <div class="container mt-5">
 
                     <div class="row">
-                        <div class="col-sm-3 offset-9">
-                            <a href="{{ url('/students/add') }}" class="btn btn-success mb-3 " style="float:right">Add New Students</a>
+                        <div class="col-sm-2 offset-10">
+                            <a href="{{ url('/students/add') }}" class="btn btn-success mb-3 ">Add  Student</a>
                         </div>
                     </div>
 
@@ -49,7 +49,7 @@
                             </div>
 
                             <div class="col-md-12 mt-3">
-                                <button type="submit" class="btn btn-primary">Get Student List</button>
+                                <button type="submit" class="btn btn-success">Get Student List</button>
                             </div>
                         </div>
                     </form>
