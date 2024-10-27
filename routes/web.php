@@ -36,12 +36,19 @@ Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.
 Route::get('/schools', [SchoolController::class, 'index'])->name('schools.index');
 Route::get('/schools/create', [SchoolController::class, 'create'])->name('school.create');
 Route::post('/schools/store', [SchoolController::class, 'store'])->name('school.store');
+Route::get('/schools/edit/{school_id}', [SchoolController::class, 'edit'])->name('school.edit');
+Route::post('/schools/update', [SchoolController::class, 'update'])->name('school.update');
+Route::get('/schools/delete/{school_id}', [SchoolController::class, 'delete'])->name('school.delete');
 
 
 
 Route::get('/standards', [StandardController::class, 'index'])->name('standards.index');
 Route::get('/standards/create', [StandardController::class, 'create'])->name('standards.create');
 Route::post('/standards', [StandardController::class, 'store'])->name('standards.store');
+Route::get('/standards/edit/{standard_id}', [StandardController::class, 'edit'])->name('standards.edit');
+Route::post('/standards/update', [StandardController::class, 'update'])->name('standards.update');
+Route::get('/standards/delete/{standard_id}', [StandardController::class, 'delete'])->name('standards.delete');
+
 
 Route::get('/subjects', [SubjectController::class, 'index'])->name('subjects.index');
 Route::get('/subjects/create', [SubjectController::class, 'create'])->name('subjects.create');
@@ -50,10 +57,18 @@ Route::post('/subjects/store', [SubjectController::class, 'store'])->name('subje
 Route::get('/division', [DivisionController::class, 'index'])->name('division.index');
 Route::get('/division/create', [DivisionController::class, 'create'])->name('division.create');
 Route::post('/division/store', [DivisionController::class, 'store'])->name('division.store');
+Route::get('/division/edit/{division_id}', [DivisionController::class, 'edit'])->name('division.edit');
+Route::post('/division/update', [DivisionController::class, 'update'])->name('division.update');
+Route::get('/division/delete/{division_id}', [DivisionController::class, 'delete'])->name('division.delete');
+
 
 Route::get('/exam', [ExamController::class, 'index'])->name('exam.index');
 Route::get('/exam/create', [ExamController::class, 'create'])->name('exam.create');
 Route::post('/exam/store', [ExamController::class, 'store'])->name('exam.store');
+Route::get('/exam/edit/{division_id}', [ExamController::class, 'edit'])->name('exam.edit');
+Route::post('/exam/update', [ExamController::class, 'update'])->name('exam.update');
+Route::get('/exam/delete/{division_id}', [ExamController::class, 'delete'])->name('exam.delete');
+
 
 Route::get('/get-standards/{school_id}', [StandardController::class, 'getStandardsBySchool'])->name('get-standards');
 Route::get('/get-subjects-sub/{subject_id}', [StandardController::class, 'getSubjectsubBySchool'])->name('get-subjects-sub');

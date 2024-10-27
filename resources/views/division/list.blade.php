@@ -20,27 +20,23 @@
                                 <th>Division Name</th>
                                 <th>Standard</th>
                                 <th>Status</th>
+                                <th>Action</th>
 
                             </tr>
                         </thead>
                         <tbody>
                             @php $i = 1; @endphp
-                            @foreach ($standard as $value)
+                            @foreach ($division as $value)
                             <tr>
                                 <td>{{ $i }}</td>
                                 <td>
-                                    @if(isset($division[$value->id]) && $division[$value->id]->count() > 0)
-                                    @foreach ($division[$value->id] as $value2)
-                                    {{ !empty($value2->division_name)? $value2->division_name : 'N/A' ; }}<br>
-                                    @endforeach
-                                    @else
-                                    N/A
-                                    @endif
-                                </td>
+                                    {{ !empty($value->division_name)? $value->division_name : 'N/A' ; }}<br>
+                                 </td>
                                 <td>{{ !empty($value->standard_name)? $value->standard_name : 'N/A' ;  }}</td>
 
                                 <td>{{ $value->status ? 'Active' : 'Inactive' }}</td>
-
+                                <td><a href="{{url('division/edit/'.$value->id)}}" class="btn btn-success">Edit</a>&nbsp;&nbsp;<a href="{{url('division/delete/'.$value->id)}}" onclick="return confirm('Are you sure you want to Delete Division?')" class="btn btn-danger">Delete</a></td>
+                         
                             </tr>
                             @php $i++; @endphp
                             @endforeach

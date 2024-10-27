@@ -26,21 +26,60 @@ class StandardController extends Controller
 
     public function store(Request $request)
     {
+        $count=Standard::where('school_id',$request->school_id)->where('standard_name',$request->standard_name)->count();
+        if($count==0){
+            $request->validate([
+                'school_id' => 'required|exists:schools,id', // Validate school_id exists in the schools table
+                'standard_name' => 'required|string|max:255',
+                'status' => 'required|in:1,0', // Validate status is either 'active' or 'inactive'
+            ]);
+    
+            Standard::create([
+                'school_id' => $request->school_id,
+                'standard_name' => $request->standard_name,
+                'status' => $request->status,
+            ]);
+            return redirect()->route('standards.index')->with('success', 'Standard added successfully.');
+        } 
+       
+        return redirect()->route('standards.index')->with('error', 'Standard Already Exists successfully.');
+
+      
+        
+    }
+    public function edit($id){
+        $schools = School::all(); 
+        $data=Standard::where('id',$id)->first();
+        return view('standard.edit', compact('data','schools'));
+    }
+    public function update(Request $request){
+        $standard = Standard::findOrFail($request->id);
+
         $request->validate([
-            'school_id' => 'required|exists:schools,id', // Validate school_id exists in the schools table
-            'standard_name' => 'required|string|max:255',
-            'status' => 'required|in:1,0', // Validate status is either 'active' or 'inactive'
+            'school_id' => 'required|exists:schools,id', 
+            'standard_name' => 'required|string|max:255|unique:standards,standard_name,' . $standard->id . ',id,school_id,' . $request->school_id,
+            'status' => 'required|in:1,0', 
         ]);
 
-        Standard::create([
+        $standard->update([
             'school_id' => $request->school_id,
             'standard_name' => $request->standard_name,
             'status' => $request->status,
         ]);
 
-        return redirect()->route('standards.index')->with('success', 'Standard added successfully.');
-    }
+        return redirect()->route('standards.index')->with('success', 'Standard updated successfully.');
 
+    }
+    public function delete($id){
+        $standard = Standard::findOrFail($id);
+
+        // Delete the school record
+        $standard->delete();
+    
+        // Optionally, return a response or redirect
+        return redirect()->route('standards.index')->with('success', 'Standard deleted successfully.');
+    
+    }
     public function getStandardsBySchool($school_id)
     {
         $standards = Standard::where('school_id', $school_id)->get();
