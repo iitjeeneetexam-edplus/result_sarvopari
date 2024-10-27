@@ -56,9 +56,10 @@
                         </div>
                         @endif
 
-                        <form action="{{url('subjects/store')}}" method="POST" id="subjectForm" enctype='multipart/form-data'>
+                        <form action="{{url('subjects/update')}}" method="POST" id="subjectForm" enctype='multipart/form-data'>
                             @csrf
                             <div class="form-group mb-3" id="main_subject">
+                                <input type="hidden" name="subject_id" value="{{$data->id}}">
                                 <label for="subject_name">Subject Name </label>
                                 <input type="text" class="form-control" id="subject_name" name="subject_name[]" value="{{ $data->subject_name}}" placeholder="Subject Name">
                                 @error('subject_name')
@@ -79,13 +80,12 @@
                                         <div class="row">
                                             <div class="col-md-10 ">
                                                 <label for="subject_name">Subject Name </label>
+                                                <input type="hidden" name="subject_sub_id[]" value="{{ $value_subject_main['id'] }}">
                                                 <input type="text" class="form-control" id="subject_name" name="subject_sub_name[0][]" placeholder="Subject Name" value="{{ $value_subject_main['subject_name'] }}">
                                                 @error('subject_name')
                                                 <div class="text-danger">{{ $message }}</div>
                                                 @enderror
-
-                                            </div>
-
+                                          </div>
                                         </div>
                                        
                                         @endforeach
