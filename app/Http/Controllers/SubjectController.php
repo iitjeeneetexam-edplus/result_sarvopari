@@ -87,4 +87,20 @@ class SubjectController extends Controller
     // Insert sub-subjects in bulk
             return redirect()->route('subjects.index')->with('success', 'Subject added successfully.');
     }
+    public function edit($id){
+        $schools = School::select('id', 'school_name')->get();
+        $standards = Standard::all();
+
+        $data=Subject::where('id',$id)->first();
+        if(!empty($data->standard_id)){
+            $school_id = Standard::where('id',$data->standard_id)->first();
+
+        }else
+        {
+            $school_id='';
+        }
+        $subject_sub = Subjectsub::where('subject_id',$id)->get()->toarray();
+        // echo "<pre>";print_r($subject_sub);exit;
+        return view('subjects.edit', compact('school_id','schools','data','subject_sub'));
+    }
 }

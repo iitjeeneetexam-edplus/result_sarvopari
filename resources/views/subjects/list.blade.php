@@ -24,6 +24,7 @@
 
                                 <th>Is Optional</th>
                                 <th>Status</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -46,6 +47,8 @@
 
                                 <td>{{ $subject->is_optional == '1' ? 'Yes' : 'No' }}</td>
                                 <td>{{ $subject->status ? 'Active' : 'Inactive' }}</td>
+                                <td><a href="{{url('subjects/edit/'.$subject->id)}}" class="btn btn-success">Edit</a>&nbsp;&nbsp;
+                                <a href="{{url('subjects/delete/'.$subject->id)}}" onclick="return confirm('Are you sure you want to Delete Standard?')" class="btn btn-danger">Delete</a></td>
                             </tr>
                             @php $i++; @endphp
                             @endforeach
