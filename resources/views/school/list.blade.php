@@ -20,7 +20,7 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>No</th>
                                 <th>School Name</th>
                                 <th>Address</th>
                                 <th>Email</th>
@@ -31,9 +31,10 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @php $i=1 @endphp
                             @foreach($schools as $school)
                             <tr>
-                                <td>{{ $school->id }}</td>
+                                <td>{{ $i }}</td>
                                 <td>{{ $school->school_name }}</td>
                                 <td>{{ $school->address }}</td>
                                 <td>{{ $school->email }}</td>
@@ -41,6 +42,8 @@
                                 <td>{{ $school->status }}</td>
                                 <td><a href="{{url('schools/edit/'.$school->id)}}" class="btn btn-success">Edit</a>&nbsp;&nbsp;<a href="{{url('schools/delete/'.$school->id)}}" onclick="return confirm('Are you sure you want to Delete School?')" class="btn btn-danger">Delete</a></td>
                             </tr>
+                            @php $i++ @endphp
+
                             @endforeach
 
                         </tbody>

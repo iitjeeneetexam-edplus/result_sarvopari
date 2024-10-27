@@ -20,7 +20,7 @@
                     <form method="POST" action="{{ route('students.getstudent') }}">
                         @csrf
                         <div class="row mb-4">
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <label for="school">School</label>
                                 <select name="school_id" id="school" class="form-control">
                                     <option value="">All Schools</option>
@@ -32,7 +32,7 @@
                                 </select>
                             </div>
 
-                            <div class="col-md-3 offset-1">
+                            <div class="col-md-4">
                                 <label for="standard">Select Standard:</label>
                                 <select name="standard_id" id="standard" class="form-control">
                                     <option value="">Select a Standard</option>
@@ -40,7 +40,7 @@
                                 </select>
                             </div>
 
-                            <div class="col-md-3 offset-1">
+                            <div class="col-md-4">
                                 <label for="division">Select Division:</label>
                                 <select name="division_id" id="division" class="form-control">
                                     <option value="">Select a Division</option>

@@ -18,7 +18,7 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>No</th>
                                 <th>Exam Name</th>
                                 <th>Standard</th>
                                 <th>Exam Date</th>
@@ -26,15 +26,17 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @php $i = 1; @endphp
                             @foreach ($exams as $exam)
                             <tr>
-                                <td>{{ $exam->id }}</td>
+                                <td>{{ $i }}</td>
                                 <td>{{ $exam->exam_name }}</td>
                                 <td>{{ $exam->standard_name }}</td> <!-- Display associated standard -->
                                 <td>{{ date('d-m-20y',strtotime($exam->date)) }}</td>
                                 <td><a href="{{url('exam/edit/'.$exam->id)}}" class="btn btn-success">Edit</a>&nbsp;&nbsp;<a href="{{url('exam/delete/'.$exam->id)}}" onclick="return confirm('Are you sure you want to Delete School?')" class="btn btn-danger">Delete</a></td>
                          
                             </tr>
+                            @php $i++; @endphp
                             @endforeach
                         </tbody>
                     </table>

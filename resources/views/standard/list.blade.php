@@ -18,7 +18,7 @@
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>No</th>
                                 <th>School Name</th>
                                 <th>Standard Name</th>
                                 <th>Status</th>
@@ -26,15 +26,17 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @php $i=1 @endphp
                             @if(!empty($standards))
                             @foreach ($standards as $standard)
                             <tr>
-                                <td>{{ $standard->id }}</td>
+                                <td>{{ $i }}</td>
                                 <td>{{ (!empty($standard->school->school_name))?$standard->school->school_name:''; }}</td> <!-- Accessing school name via relationship -->
                                 <td>{{ $standard->standard_name }}</td>
                                 <td>{{ $standard->status }}</td>
                                 <td><a href="{{url('standards/edit/'.$standard->id)}}" class="btn btn-success">Edit</a>&nbsp;&nbsp;<a href="{{url('standards/delete/'.$standard->id)}}" onclick="return confirm('Are you sure you want to Delete Standard?')" class="btn btn-danger">Delete</a></td>
                             </tr>
+                            @php $i++ @endphp
                             @endforeach
                             @endif
                         </tbody>

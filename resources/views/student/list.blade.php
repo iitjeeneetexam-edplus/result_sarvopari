@@ -9,12 +9,8 @@
         <div class="col-lg-7 col-sm-6 col-md-6">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-5">
                 <div class="container mt-5">
-
-
-
-                    <!-- Student List Table -->
-                   
-                            <form method="POST" action="{{ route('assign.subject') }}">
+                    <h2>Student Assign Subject</h2>
+                <br>   <form method="POST" action="{{ route('assign.subject') }}">
                                 @csrf
                                 <div class="table-responsive">
                                     <table class="table table-bordered">
@@ -23,6 +19,7 @@
                                                 <th>
                                                     <input type="checkbox" id="select-all">
                                                 </th>
+                                                <th>No</th>
                                                 <th>Roll Number</th>
                                                 <th>Name</th>
                                                 <th>GR Number</th>
@@ -37,12 +34,15 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @php $i = 1; @endphp
                                             @if($students->isNotEmpty())
                                             @foreach($students as $student)
                                             <tr>
                                                 <td>
                                                     <input type="checkbox" name="student_ids[]" class="student-checkbox" value="{{ $student->id }}" @if($student->subject_id) disabled @endif>
                                                 </td>
+                                                <td>{{ $i }}</td>
+
                                                 <td>{{ $student->roll_no }}</td>
                                                 <td>{{ $student->name }}</td>
                                                 <td>{{ $student->GR_no }}</td>
@@ -59,15 +59,16 @@
                                                 <span>No subjects assigned</span>
                                                 @endif
                                                 
-                                                <td>
+                                                <!-- <td>
                                                     <a href="#" class="btn btn-sm edit-btn btn-success">Edit</a>
                                                     <form action="#" method="POST" style="display:inline;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this student?')">Delete</button>
                                                     </form>
-                                                </td>
+                                                </td> -->
                                             </tr>
+                                            @php $i++; @endphp
                                             @endforeach
                                             @else
                                             <tr>
@@ -93,9 +94,10 @@
                                         </select>
                                     </div>
                                 </div>
+                                @php $i++; @endphp
                                 @endforeach
                                 <div class="mt-3">
-                                    <button type="submit" class="btn btn-primary mb-3" style="float:right">Assign Subject</button>
+                                    <button type="submit" class="btn btn-success mb-3" style="float:right">Assign Subject</button>
                                 </div>
                             </form>
                         </div>

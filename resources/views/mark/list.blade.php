@@ -18,7 +18,7 @@
                     <form method="POST">
                         @csrf
                         <div class="row mb-4">
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <label for="school">Select School</label>
                                 <select name="school_id" id="school" class="form-control">
                                     <option value="">Select School</option>
@@ -30,7 +30,7 @@
                                 </select>
                             </div>
 
-                            <div class="col-md-3 offset-1">
+                            <div class="col-md-4">
                                 <label for="standard">Select Standard:</label>
                                 <select name="standard_id" id="standard" class="form-control">
                                     <option value="">Select a Standard</option>
@@ -38,7 +38,7 @@
                                 </select>
                             </div>
 
-                            <div class="col-md-3 offset-1">
+                            <div class="col-md-4">
                                 <label for="division">Select Division:</label>
                                 <select name="division_id" id="division" class="form-control">
                                     <option value="">Select a Division</option>
@@ -47,7 +47,7 @@
                             </div>
 
                             <div class="col-md-12 mt-3">
-                                <button type="submit" class="btn btn-primary">Get Student List</button>
+                                <button type="submit" class="btn btn-success">Get Student List</button>
                             </div>
                         </div>
                     </form>
