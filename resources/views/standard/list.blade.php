@@ -5,12 +5,16 @@
         </h2>
     </x-slot>
     <div class="row justify-content-center">
-        <div class="col-12 col-md-10 col-lg-8">
+        <div class="col-lg-7 col-sm-6 col-md-6">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-5">
                 <div class="container mt-5">
-                    <h1>List of Standard</h1>
+                <h1>List of Standard</h1>
+                <div class="table-responsive">
+                <div class="d-flex justify-content-end mb-3">
+                    
                     <a href="{{ url('standards/create') }}" class="btn btn-success mb-3" style="float: right;">Add New Standard</a>
-
+                </div>
+                
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -35,7 +39,7 @@
                             @endif
                         </tbody>
                     </table>
-
+                </div>
                     <!-- Pagination Links -->
                     <div style="float:right"> {{ $standards->links('pagination::bootstrap-4') }} </div>
                 </div>

@@ -6,13 +6,15 @@
     </x-slot>
 
     <div class="row justify-content-center">
-        <div class="col-12 col-md-10 col-lg-8">
+        <div class="col-lg-8 col-sm-6 col-md-6">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-5">
                 <div class="container mt-5">
 
                     <h1>List of Exam</h1>
+                    <div class="table-responsive">
+                <div class="d-flex justify-content-end mb-3">
                     <a href="{{ route('exam.create') }}" class="btn btn-success mb-3" style="float:right">Add New Exam</a>
-
+                </div>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -36,6 +38,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                </div>
                     <div style="float:right"> {{ $exams->links('pagination::bootstrap-4') }} </div>
                 </div>
             </div>
