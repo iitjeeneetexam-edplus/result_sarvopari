@@ -105,7 +105,7 @@
                                     <!-- student list for add marks -->
                                 </tbody>
                             </table>
-                            <button type="submit" class="btn btn-primary mb-3" style="float:right">Add Mark</button>
+                            <button type="submit" class="btn btn-success mb-3" style="float:right">Add Mark</button>
                         </form>
 
 

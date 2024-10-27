@@ -5,12 +5,12 @@
         </h2>
     </x-slot>
     <div class="row justify-content-center">
-        <div class="col-lg-7 col-sm-6 col-md-6">
+        <div class="col-12 col-sm-8 col-md-8 col-lg-7">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-5">
                 <div class="container mt-5">
                 <h1>List of Standard</h1>
                 <div class="table-responsive">
-                <div class="d-flex justify-content-end mb-3">
+                    <div class="d-flex justify-content-end mb-3">
                     
                     <a href="{{ url('standards/create') }}" class="btn btn-success mb-3" style="float: right;">Add New Standard</a>
                 </div>

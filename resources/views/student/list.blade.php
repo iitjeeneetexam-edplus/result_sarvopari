@@ -6,17 +6,14 @@
     </x-slot>
 
     <div class="row justify-content-center">
-        <div class="col-12 col-md-10 col-lg-8">
+        <div class="col-lg-7 col-sm-6 col-md-6">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-5">
                 <div class="container mt-5">
 
 
 
-
                     <!-- Student List Table -->
-                    <div class="row">
-                        <div class="col-12">
-
+                   
                             <form method="POST" action="{{ route('assign.subject') }}">
                                 @csrf
                                 <div class="table-responsive">
@@ -105,9 +102,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    </div>
+       
     <!-- Edit Modal -->
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">

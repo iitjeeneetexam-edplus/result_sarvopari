@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="row justify-content-center">
-        <div class="col-lg-8 col-sm-6 col-md-6">
+        <div class="col-lg-7 col-sm-6 col-md-6">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-5">
                 <div class="container mt-5">
 

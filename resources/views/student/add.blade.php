@@ -11,7 +11,7 @@
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-5">
                     <div class="p-6 text-gray-900 dark:text-gray-100 ">
 
-
+                    <h1>Add  Student</h1>
 
 
                         <form action="{{ route('students.import') }}" method="POST" enctype="multipart/form-data">
