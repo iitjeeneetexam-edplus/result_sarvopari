@@ -53,6 +53,9 @@ Route::get('/standards/delete/{standard_id}', [StandardController::class, 'delet
 Route::get('/subjects', [SubjectController::class, 'index'])->name('subjects.index');
 Route::get('/subjects/create', [SubjectController::class, 'create'])->name('subjects.create');
 Route::post('/subjects/store', [SubjectController::class, 'store'])->name('subjects.store');
+Route::get('/subjects/edit/{subject_id}', [SubjectController::class, 'edit'])->name('subjects.edit');
+Route::post('/subjects/update', [SubjectController::class, 'update'])->name('subjects.update');
+Route::get('/subjects/delete/{subject_id}', [SubjectController::class, 'delete'])->name('subjects.delete');
 
 Route::get('/division', [DivisionController::class, 'index'])->name('division.index');
 Route::get('/division/create', [DivisionController::class, 'create'])->name('division.create');
