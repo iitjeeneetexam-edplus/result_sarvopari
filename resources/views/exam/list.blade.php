@@ -20,6 +20,7 @@
                                 <th>Exam Name</th>
                                 <th>Standard</th>
                                 <th>Exam Date</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -27,9 +28,10 @@
                             <tr>
                                 <td>{{ $exam->id }}</td>
                                 <td>{{ $exam->exam_name }}</td>
-                                <td>{{ $exam->standard->standard_name }}</td> <!-- Display associated standard -->
-                                <td>{{ $exam->date }}</td>
-
+                                <td>{{ $exam->standard_name }}</td> <!-- Display associated standard -->
+                                <td>{{ date('d-m-20y',strtotime($exam->date)) }}</td>
+                                <td><a href="{{url('exam/edit/'.$exam->id)}}" class="btn btn-success">Edit</a>&nbsp;&nbsp;<a href="{{url('exam/delete/'.$exam->id)}}" onclick="return confirm('Are you sure you want to Delete School?')" class="btn btn-danger">Delete</a></td>
+                         
                             </tr>
                             @endforeach
                         </tbody>

@@ -18,17 +18,21 @@
                                 <th>School Name</th>
                                 <th>Standard Name</th>
                                 <th>Status</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @if(!empty($standards))
                             @foreach ($standards as $standard)
                             <tr>
                                 <td>{{ $standard->id }}</td>
-                                <td>{{ $standard->school->school_name }}</td> <!-- Accessing school name via relationship -->
+                                <td>{{ (!empty($standard->school->school_name))?$standard->school->school_name:''; }}</td> <!-- Accessing school name via relationship -->
                                 <td>{{ $standard->standard_name }}</td>
                                 <td>{{ $standard->status }}</td>
+                                <td><a href="{{url('standards/edit/'.$standard->id)}}" class="btn btn-success">Edit</a>&nbsp;&nbsp;<a href="{{url('standards/delete/'.$standard->id)}}" onclick="return confirm('Are you sure you want to Delete Standard?')" class="btn btn-danger">Delete</a></td>
                             </tr>
                             @endforeach
+                            @endif
                         </tbody>
                     </table>
 
