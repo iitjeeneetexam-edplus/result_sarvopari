@@ -47,7 +47,7 @@
                     <div class="form-group mb-3">
                         <label for="date">Exam Date</label>
                         <input type="text" id="date-placeholder" class="form-control" placeholder="Enter Exam Date" onfocus="this.style.display='none'; document.getElementById('date').style.display='block';" />
-                        <input type="date" class="form-control" id="date" name="date" required value="{{ old('date') }}" min="{{ \Carbon\Carbon::today()->toDateString() }}" style="display:none;">
+                        <input type="date" class="form-control" id="date" name="date" required value="{{ old('date') }}" style="display:none;">
                         <span id="date-error" class="text-danger" style="display:none;"></span>
                         @error('date')
                         <div class="text-danger">{{ $message }}</div>

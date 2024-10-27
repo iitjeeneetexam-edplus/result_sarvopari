@@ -55,18 +55,17 @@
                                                 @foreach($subjectNames as $subjectName)
                                                 <td>{{ trim($subjectName) }} </td>
                                                 @endforeach
+                                                @for ($j = count($subjectNames); $j < count($subjects); $j++)
+                                                    <td></td> 
+                                                @endfor
                                                 @else
                                                 <span>No subjects assigned</span>
                                                 @endif
-                                                
-                                                <!-- <td>
-                                                    <a href="#" class="btn btn-sm edit-btn btn-success">Edit</a>
-                                                    <form action="#" method="POST" style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this student?')">Delete</button>
-                                                    </form>
-                                                </td> -->
+                                                <td>
+                                                    <a href="#" class="btn btn-sm edit-btn btn-success" data-student-id="{{ $student->id }}">Edit</a>
+                                                    <a href="#" class="btn btn-sm delete-btn btn-danger" data-student-id="{{ $student->id }}">Delete</a>
+
+                                                </td> 
                                             </tr>
                                             @php $i++; @endphp
                                             @endforeach
@@ -221,27 +220,46 @@
                 }
             });
 
-            
-            
         });
-        $('#editForm').on('submit', function(e) {
-    e.preventDefault(); // Prevent the default form submission
 
-    // Submit the form via AJAX
-    $.ajax({
-        url: $(this).attr('action'),    // Use the form's action attribute URL
-        type: 'POST',
-        data: $(this).serialize(),       // Serialize the form data
-        success: function(response) {
-            // Handle the successful response, then reload the page
-            console.log("Form submitted successfully.");
-            location.reload();           // Refresh the page
-        },
-        error: function(xhr) {
-            // Handle any errors
-            console.log("Error submitting form:", xhr.responseText);
-        }
-    });
+        //delete
+        $('.delete-btn').click(function(event) {
+            confirm('Are you sure you want to delete this student?');
+            event.preventDefault();   
+            var student_id = $(this).data('student-id');
+            $.ajax({
+                url: '{{ url("/students/delete") }}/' + student_id,
+                type: 'GET',
+                success: function(data) {
+                    location.reload(); 
+                },
+                error: function() {
+                    alert('Error fetching.');
+                }
+            });
+        });
+
+        $('#editForm').on('submit', function(e) {
+        e.preventDefault(); // Prevent the default form submission
+
+        // Submit the form via AJAX
+        $.ajax({
+            url: $(this).attr('action'),    // Use the form's action attribute URL
+            type: 'POST',
+            data: $(this).serialize(),       // Serialize the form data
+            success: function(response) {
+                // Handle the successful response, then reload the page
+                console.log("Form submitted successfully.");
+                location.reload();           // Refresh the page
+            },
+            error: function(xhr) {
+                // Handle any errors
+                console.log("Error submitting form:", xhr.responseText);
+            }
+        });
+
+        
+        
 });
     </script>
 </x-app-layout>
