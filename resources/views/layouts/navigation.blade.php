@@ -97,6 +97,9 @@
 }, 2000);
         </script>
 <style>
+   .row{
+    --bs-gutter-x:0 !important;
+   }
     .sidebar {
   margin: 0;
   padding: 0;
