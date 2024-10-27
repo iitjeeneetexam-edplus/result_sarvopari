@@ -73,6 +73,11 @@ Route::get('/marks/create', [MarkController::class, 'create'])->name('marks.crea
 Route::post('/marks/store', [MarkController::class, 'store'])->name('marks.store');
 Route::post('/assign-subject', [StudentController::class, 'assignSubject'])->name('assign.subject');
 
+Route::put('/students/{id}', [StudentController::class, 'update'])->name('students.update');
+Route::get('/students/{id}/edit', [StudentController::class, 'edit'])->name('students.edit');
+Route::delete('/students/{id}', [StudentController::class, 'destroy'])->name('students.destroy');
+
+
 });
 Route::get('/standard', [ProfileController::class, 'edit'])->name('profile.edit');
 
