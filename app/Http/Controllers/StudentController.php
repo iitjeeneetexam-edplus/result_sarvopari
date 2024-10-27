@@ -27,6 +27,7 @@ class StudentController extends Controller
 
     public function getstudents(Request $request)
     {
+        print_r($_GET);
         $divisionId = $request->input('division_id');
         $standardId = $request->input('standard_id');
 
@@ -58,7 +59,10 @@ class StudentController extends Controller
         foreach($subjects as $value){
             $subject_subs[$value->id] = Subjectsub::where('subject_id', $value->id)->get(); // Store sub-subjects by subject ID
         }
-        return view('student.list', compact('students','subjects','subject_subs'));
+
+        $divisiions = Division::where('standard_id',$standardId)->get();
+
+        return view('student.list', compact('students','subjects','subject_subs','divisiions'));
     }
     public function getstudentformarks(Request $request){
 
@@ -91,7 +95,6 @@ class StudentController extends Controller
         )
         ->groupBy('students.id','students.name','students.roll_no', 'students.GR_no','marks.marks', 'marks.subject_id','marks.total_marks')
         ->get();
-    //    print_r($query);exit;
     $students = [];
     foreach ($query as $item) {
         $students[$item->id]['id'] = $item->id;
@@ -103,15 +106,12 @@ class StudentController extends Controller
         $subjectName = $item->subject_name;
         $students[$item->id]['marks'][$subjectName] = $item->marks;
         }
-        // print_r($students);exit;
+
         $subjects = Subject::where('standard_id', $standardId)->pluck('subject_name');
         $subjectString = $subjects->implode(', ');
 
-        // $subject_subs = [];  
-        // foreach($subjects as $value){
-        //     $subject_subs[$value->id] = Subjectsub::where('subject_id', $value->id)->get(); // Store sub-subjects by subject ID
-        // }
-        // print_r($query);exit;
+        
+
         return response()->json(['student'=>$students,'subject'=>$subjectString]);
     }
 
@@ -193,6 +193,52 @@ class StudentController extends Controller
         // $students = Student::with('division:id,division_name')
         //     ->where('division_id', $division_id)->get();
         return response()->json(['students'=>$students]);
+    }
+
+    //student details by student id
+    public function editstudent($id){
+        $studentdetail = student::find($id);
+        $division_id = $studentdetail->division_id;
+        $divid = Division::find($division_id);
+        $standard_id = $divid->standard_id;
+        $data = ['standard_id'=>$standard_id,'division_id'=>$division_id,'studentdetail'=>$studentdetail];
+        return response()->json($data);
+
+    }
+
+    public function updatestudent(Request $request){
+        $request->validate([
+            'roll_no' => 'required|integer',
+            'name' => 'required|string|max:255',
+            'GR_no' => 'required|string|max:255',
+            'uid' => 'required|string|max:255',
+            'editDivision' => 'required|exists:division,id',
+        ]);
+    
+        $student = Student::find($request->studentid);
+    
+        if (!$student) {
+            return redirect()->back()->with('error', 'Student not found');
+        }
+    
+        $student->roll_no = $request->input('roll_no');
+        $student->name = $request->input('name');
+        $student->GR_no = $request->input('GR_no');
+        $student->uid = $request->input('uid');
+        $student->division_id = $request->input('editDivision');
+    
+        $student->save();
+
+        $standard_id = Division::find($request->input('editDivision'));
+        $requestdt = ['division_id'=>$request->input('editDivision'),'standard_id'=>$standard_id->standard_id];
+        // return redirect()->route('students.getstudent')->with($requestdt, 'Subject assigned to selected students.');
+        // return redirect()->route('students.getstudent')
+        // ->with('message', 'Subject assigned to selected students.')
+        // ->with('data', $requestdt);
+        // $data = ['url'=>'students/getstudent/','standard_id'=>$standard_id,'division_id'=>$request->input('editDivision')];
+        // return json_encode('success');
+        return redirect('students/getstudent/'.$standard_id.'/'.$request->input('editDivision'));
+        // return redirect()->back()->with('message', 'Student updated successfully');
     }
 
 }
