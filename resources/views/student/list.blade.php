@@ -43,20 +43,28 @@
                                                     <input type="checkbox" name="student_ids[]" class="student-checkbox" value="{{ $student->id }}"> 
                                                 </td>
                                                 <td>{{ $i }}</td>
-
                                                 <td>{{ $student->roll_no }}</td>
                                                 <td>{{ $student->name }}</td>
                                                 <td>{{ $student->GR_no }}</td>
                                                 <td>{{ $student->uid }}</td>
                                                 <td>{{ $student->division->division_name }}</td>
                                                 @php
-                                                $subjectNames = explode(',', $student->subject_name); // Split the subject names
+                                                $subjectNames = explode(',', $student->subject_id); // Split the subject names
+                                                
                                                 @endphp
                                                 @if(!empty($subjectNames))
-                                                @foreach($subjectNames as $subjectName)
-                                                <td>{{ trim($subjectName) }} </td>
-                                                @endforeach
-                                                @for ($j = count($subjectNames); $j < count($subjects); $j++)
+                                                    @foreach($subjects as $optionls) 
+                                                    @foreach($subject_subs as $subject_subsoptions)
+                                                        @foreach($subject_subsoptions as $subjectSub)
+                                                        
+                                                        @if($optionls->id == $subjectSub->subject_id && in_array($subjectSub->id,$subjectNames))
+                                                        <td>{{ $subjectSub->subject_name }}</td>
+                                                        @endif
+                                                        @endforeach
+                                                        @endforeach
+                                                    
+                                                    @endforeach
+                                                    @for ($j = count($subjectNames); $j < count($subjects); $j++)
                                                     <td></td> 
                                                 @endfor
                                                 @else
