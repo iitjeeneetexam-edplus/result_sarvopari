@@ -16,10 +16,10 @@ class MarkController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $data=student::paginate(5);
-        $schools = School::select('id', 'school_name')->get();
+        $schools = School::select('id', 'school_name')->where('id',$request->session()->get('school_id'))->get();
         $subjects = Subject::where('subjects.is_optional',1)->get();
         // echo "<pre>";print_r($data);exit;
         return view('mark.list',compact('data','subjects','schools'));
@@ -28,10 +28,10 @@ class MarkController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
 
-        $schools = School::select('id', 'school_name')->get();
+        $schools = School::select('id', 'school_name')->where('id',$request->session()->get('school_id'))->get();
         return view('mark.add',compact('schools'));
     }
 

@@ -10,18 +10,20 @@ use Illuminate\Http\Request;
 
 class ExamController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $school_session_id = $request->session()->get('school_id');
         $exams = Exam::leftJoin('standards', 'standards.id', '=', 'exams.standard_id')
         ->select('exams.*', 'standards.standard_name')
+        ->where('standards.school_id', $school_session_id)
         ->paginate(5);
         return view('exam.list', compact('exams'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $schools = School::select('id', 'school_name')->get();
-        $standards = Standard::all(); // Get all standards for the dropdown
+        $schools = School::select('id', 'school_name')->where('id',$request->session()->get('school_id'))->get();
+        $standards = Standard::all(); 
         return view('exam.add', compact('standards','schools'));
     }
 
@@ -37,15 +39,15 @@ class ExamController extends Controller
 
         return redirect()->route('exam.index')->with('success', 'Exam added successfully.');
     }
-    public function edit($id){
-        $schools = School::select('id', 'school_name')->get();
+    public function edit($id,Request $request){
+        $schools = School::select('id', 'school_name')->where('id',$request->session()->get('school_id'))->get();
         $data=Exam::where('id',$id)->first();
         $standard = Standard::where('id',$data->standard_id)->first();
         if(!empty($standard->school_id)){
             $selected_School = School::where('id',$standard->school_id)->first(); 
         }else{
             $selected_School = new School();
-             $selected_School->id = '';
+            $selected_School->id = '';
         }
 
         return view('exam.edit', compact('data','schools','selected_School'));

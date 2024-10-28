@@ -26,7 +26,6 @@
                     <div class="form-group mb-3">
                         <label for="standard_id">Select School</label>
                         <select name="school_id" id="school" class="form-control">
-                            <option value="">All Schools</option>
                             @foreach($schools as $school)
                             <option value="{{ $school->id }}" 
                                         {{ isset($selected_School) && $selected_School->id == $school->id ? 'selected' : '' }}>
@@ -49,13 +48,13 @@
 
                     <div class="form-group mb-3">
                         <label for="date">Exam Date</label>
-                        <input type="text" id="date-placeholder" class="form-control" placeholder="{{ !empty($data->date) ? date('d-m-20y', strtotime($data->date)) : 'Enter Exam Date' }}" 
-       onfocus="this.style.display='none'; document.getElementById('date').style.display='block'; document.getElementById('date').focus();" />
+                        <!-- <input type="text" id="date-placeholder" class="form-control" placeholder="{{ !empty($data->date) ? date('d-m-20y', strtotime($data->date)) : 'Enter Exam Date' }}" 
+       onfocus="this.style.display='none'; document.getElementById('date').style.display='block'; document.getElementById('date').focus();" /> -->
 
-<!-- Actual date input -->
-<input type="date" class="form-control" id="date" name="date" required 
-       value="{{ old('date', \Carbon\Carbon::parse($data->date)->toDateString()) }}" 
-       min="{{ \Carbon\Carbon::today()->toDateString() }}" style="display:none;">    <span id="date-error" class="text-danger" style="display:none;"></span>
+                    <input type="date" class="form-control" id="date" name="date" required 
+                        value="{{ old('date', \Carbon\Carbon::parse($data->date)->toDateString()) }}" 
+                        min="{{ \Carbon\Carbon::today()->toDateString() }}" >
+                       <span id="date-error" class="text-danger" style="display:none;"></span>
                         @error('date')
                         <div class="text-danger">{{ $message }}</div>
                         @enderror

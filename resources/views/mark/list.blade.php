@@ -1,4 +1,5 @@
 <!-- resources/views/list_schools.blade.php -->
+@include('sidebar_display')
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -21,7 +22,6 @@
                             <div class="col-md-4">
                                 <label for="school">Select School</label>
                                 <select name="school_id" id="school" class="form-control">
-                                    <option value="">Select School</option>
                                     @foreach($schools as $school)
                                     <option value="{{ $school->id }}" {{ request('school_id') == $school->id ? 'selected' : '' }}>
                                         {{ $school->school_name }}
@@ -68,8 +68,8 @@
                 <script>
                     $(document).ready(function() {
                         // School change event for fetching standards
-                        $('#school').change(function() {
-                            var schoolId = $(this).val();
+                        function loadStandards(schoolId) {
+                            // var schoolId = $(this).val();
                             if (schoolId) {
                                 $.ajax({
                                     url: '{{ url("/get-standards") }}/' + schoolId,
@@ -85,8 +85,12 @@
                                 $('#standard').empty().append('<option value="">Select a Standard</option>');
                                 $('#division').empty().append('<option value="">Select a Division</option>');
                             }
-                        });
-
+                        }
+                        var preSelectedSchoolId = $('#school').val();
+                        if (preSelectedSchoolId) {
+                            
+                            loadStandards(preSelectedSchoolId);
+                        }
                         // Standard change event for fetching divisions
                         $('#standard').change(function() {
                             var standardId = $(this).val();

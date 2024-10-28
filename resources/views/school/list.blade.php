@@ -7,7 +7,10 @@
     </x-slot>
 
     <div class="row justify-content-center">
-        <div class="col-12 col-sm-8 col-md-8 col-lg-7">
+    
+           
+        <div class="col-12 col-sm-8 col-md-8 col-lg-10">
+            
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-5">
                 <div class="container mt-5">
 

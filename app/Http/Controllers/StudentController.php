@@ -20,7 +20,7 @@ class StudentController extends Controller
     {
         
 
-        $schools = School::select('id', 'school_name')->get();
+        $schools = School::select('id', 'school_name')->where('id',$request->session()->get('school_id'))->get();
 
         return view('student.listfilter', compact('schools'));
     }
@@ -114,9 +114,9 @@ class StudentController extends Controller
         return response()->json(['student'=>$students,'subject'=>$subjectString]);
     }
 
-    public function showImportForm()
+    public function showImportForm(Request $request)
     {
-        $schools = School::all();
+        $schools = School::where('id',$request->session()->get('school_id'))->get();
         return view('student.add', compact('schools'));
     }
 

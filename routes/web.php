@@ -101,6 +101,6 @@ Route::get('/students/delete/{id}', [StudentController::class, 'deletestudent'])
 
 
 });
-Route::get('/standard', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 
 require __DIR__.'/auth.php';
