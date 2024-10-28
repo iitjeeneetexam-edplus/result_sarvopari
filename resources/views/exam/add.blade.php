@@ -46,17 +46,13 @@
 
                     <div class="form-group mb-3">
                         <label for="date">Exam Date</label>
-                        <input type="text" id="date-placeholder" class="form-control" placeholder="Enter Exam Date" onfocus="this.style.display='none'; document.getElementById('date').style.display='block';" />
-                        <input type="date" class="form-control" id="date" name="date" required value="{{ old('date') }}" min="{{ \Carbon\Carbon::today()->toDateString() }}" style="display:none;">
+                        <input type="date" class="form-control" id="date" name="date" required value="{{ old('date') }}">
                         <span id="date-error" class="text-danger" style="display:none;"></span>
                         @error('date')
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
 
                     </div>
-
-
-
 
                     <button type="submit" class="btn btn-primary">Add Exam</button>
                 </form>
@@ -89,23 +85,5 @@
         });
 
     });
-    document.addEventListener("DOMContentLoaded", function() {
-        const dateInput = document.getElementById("date");
-        const dateError = document.getElementById("date-error");
-
-        // Function to check the selected date
-        dateInput.addEventListener("input", function() {
-            const selectedDate = new Date(dateInput.value);
-            const today = new Date();
-            today.setHours(0, 0, 0, 0); // Set hours to 0 for comparison
-
-            if (selectedDate < today) {
-                dateError.textContent = "Please select a date today or in the future.";
-                dateError.style.display = "block"; // Show error message
-                dateInput.value = ""; // Clear the invalid date
-            } else {
-                dateError.style.display = "none"; // Hide error message
-            }
-        });
-    });
+    
 </script>

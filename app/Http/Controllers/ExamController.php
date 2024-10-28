@@ -28,9 +28,9 @@ class ExamController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'exam_name' => 'required|string|max:255|unique:exams',
+            'exam_name' => 'required|string|max:255',
             'standard_id' => 'required|exists:standards,id',
-            'date' => 'required|date|after_or_equal:' . now()->format('Y-m-d'),
+            'date' => 'required',
         ]);
 
         Exam::create($request->all());

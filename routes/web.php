@@ -96,6 +96,8 @@ Route::post('/assign-subject', [StudentController::class, 'assignSubject'])->nam
 
 Route::get('/students/edit/{id}', [StudentController::class, 'editstudent'])->name('students.edit');
 Route::put('/students/update', [StudentController::class, 'updatestudent'])->name('students.edit');
+Route::get('/students/delete/{id}', [StudentController::class, 'deletestudent'])->name('students.delete');
+
 
 
 });

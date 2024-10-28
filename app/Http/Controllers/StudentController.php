@@ -27,7 +27,6 @@ class StudentController extends Controller
 
     public function getstudents(Request $request)
     {
-        print_r($_GET);
         $divisionId = $request->input('division_id');
         $standardId = $request->input('standard_id');
 
@@ -139,10 +138,10 @@ class StudentController extends Controller
                     $studentData = array_combine($header, $row);
                     Student::updateOrCreate(
                         [
-                            'name' => $studentData['name'],
-                            'roll_no' => $studentData['roll_no'],
-                            'GR_no' => $studentData['GR_no'],
-                            'uid' => $studentData['uid'],
+                            'name' => $studentData['NAME'],
+                            'roll_no' => $studentData['ROLL_NO'],
+                            'GR_no' => $studentData['GR_NO'],
+                            'uid' => $studentData['UID'],
                             'division_id' => $request['division_id']
                         ]
                     );
@@ -167,9 +166,10 @@ class StudentController extends Controller
         $subjectIds = $request->input('subject_ids');
         $studentIds = $request->input('student_ids');
         
-        foreach ($subjectIds as $subjectId) {
+        
             foreach ($studentIds as $studentId) {
-                
+                StudentSubject::where('student_id',$studentId)->delete();
+                foreach ($subjectIds as $subjectId) {
                 StudentSubject::create([
                     'student_id' => $studentId,
                     'subject_id' => $subjectId
@@ -239,6 +239,20 @@ class StudentController extends Controller
         // return json_encode('success');
         return redirect('students/getstudent/'.$standard_id.'/'.$request->input('editDivision'));
         // return redirect()->back()->with('message', 'Student updated successfully');
+    }
+
+    public function deletestudent($id){
+        $student = Student::find($id);
+
+        if (!$student) {
+            return redirect()->back()->with('error', 'Student not found.');
+        }
+
+        $dlt = $student->delete();
+        if($dlt){
+            $subdl = StudentSubject::where('student_id',$id)->delete();
+        }
+        return response()->json($subdl);
     }
 
 }
