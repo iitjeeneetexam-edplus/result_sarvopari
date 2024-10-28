@@ -10,11 +10,13 @@ use Illuminate\Http\Request;
 class DivisionController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
         // $divisions = Division::with('standard')->paginate(5); 
+        $school_session_id = $request->session()->get('school_id');
         $division = Division::leftJoin('standards', 'standards.id', '=', 'division.standard_id')
         ->select('division.*', 'standards.standard_name')
+        ->where('standards.school_id', $school_session_id)
         ->paginate(5);
         $standard = Standard::paginate(5);
         // $division = [];  
@@ -23,9 +25,9 @@ class DivisionController extends Controller
         // }
         return view('division.list', compact('standard','division'));
     }
-    public function create()
+    public function create(Request $request)
     {
-        $standards = Standard::all(); 
+        $standards = Standard::where('school_id',$request->session()->get('school_id'))->get(); 
         return view('division.add', compact('standards')); 
     }
 
@@ -47,8 +49,8 @@ class DivisionController extends Controller
             }
        
     }
-    public function edit($id){
-        $standards = Standard::all(); 
+    public function edit($id,Request $request){
+        $standards = Standard::where('id',$request->session()->get('school_id'))->get(); 
     
         $data = Division::leftJoin('standards', 'standards.id', '=', 'division.standard_id')
         ->select('division.*', 'standards.standard_name')
@@ -59,22 +61,22 @@ class DivisionController extends Controller
         $division = Division::findOrFail($request->id);
 
     // Validate the request data
-    $request->validate([
-        'division_name' => 'required|string|max:255|unique:division,division_name,' . $request->id . ',id,standard_id,' . $request->standard_id,
-        'status' => 'required|boolean',
-        'standard_id' => 'required|exists:standards,id',
+        $request->validate([
+            'division_name' => 'required|string|max:255|unique:division,division_name,' . $request->id . ',id,standard_id,' . $request->standard_id,
+            'status' => 'required|boolean',
+            'standard_id' => 'required|exists:standards,id',
 
-    ]);
+        ]);
 
-    // Update the division record
-    $division->update([
-        'division_name' => $request->division_name,
-        'status' => $request->status,
-        'standard_id' => $request->standard_id,
-    ]);
+        // Update the division record
+        $division->update([
+            'division_name' => $request->division_name,
+            'status' => $request->status,
+            'standard_id' => $request->standard_id,
+        ]);
 
-    // Redirect back with a success message
-    return redirect()->route('division.index')->with('success', 'Division updated successfully.');
+        // Redirect back with a success message
+        return redirect()->route('division.index')->with('success', 'Division updated successfully.');
 
 
     }

@@ -18,15 +18,9 @@
                             @csrf
                             <div class="form-group">
                                 <label for="school_id">School</label>
-                                <select name="school_id" id="school_id" class="form-control">
-                                    <option value="">Select a School</option>
-                                    @foreach ($schools as $school)
-                                    <option value="{{ $school->id }}" {{ old('school_id') ==  $school->id  ? 'selected' : '' }}>{{ $school->school_name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('school_id')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
+                               
+                                <input type="text"  value="{{ $schools->school_name}}" class="form-control" disabled>
+                                <input type="hidden" name="school_id" value="{{ $schools->id}}">
                             </div>
                             <div class="form-group">
                                 <label for="standard_name">Standard Name</label>
@@ -35,17 +29,10 @@
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
+
                             <div class="form-group">
-                                <label for="status">Status</label>
-                                <select class="form-control" id="status" name="status">
-                                    <option value="">Select option</option>
-                                    <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Active</option>
-                                    <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>Inactive</option>
-                                </select>
-                                @error('status')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
+                                <input type="hidden" name="status" value="1">
+                             </div>
                             <br>
                             <button type="submit" class="btn btn-success">Add Standard</button>
                             <a href="{{ route('standards.index') }}" class="btn btn-secondary " style="float:right">Back to Create Standard</a>

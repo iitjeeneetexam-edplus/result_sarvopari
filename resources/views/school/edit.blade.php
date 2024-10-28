@@ -65,7 +65,7 @@
                             </div>
 
                             <button type="submit" class="btn btn-success">Update School</button>
-                            <a href="{{ route('schools.index') }}" class="btn btn-secondary " style="float:right">Back to School</a>
+                            <a href="{{ route('schools') }}" class="btn btn-secondary " style="float:right">Back to School</a>
                         </form>
 
                         <!-- Add your JS or Bootstrap script here -->

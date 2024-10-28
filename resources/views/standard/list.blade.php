@@ -1,3 +1,5 @@
+@include('sidebar_display')
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -19,7 +21,7 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>School Name</th>
+                                <!-- <th>School Name</th> -->
                                 <th>Standard Name</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -31,9 +33,13 @@
                             @foreach ($standards as $standard)
                             <tr>
                                 <td>{{ $i }}</td>
-                                <td>{{ (!empty($standard->school->school_name))?$standard->school->school_name:''; }}</td> <!-- Accessing school name via relationship -->
+                                <!-- <td>{{ (!empty($standard->school->school_name))?$standard->school->school_name:''; }}</td> Accessing school name via relationship -->
                                 <td>{{ $standard->standard_name }}</td>
-                                <td>{{ $standard->status }}</td>
+                                <td>@if($standard->status == 1)
+                                        <button class="btn btn-success">Active</button>
+                                    @else
+                                        <button class="btn btn-danger">Inactive</button>
+                                    @endif</td>
                                 <td><a href="{{url('standards/edit/'.$standard->id)}}" class="btn btn-success">Edit</a>&nbsp;&nbsp;<a href="{{url('standards/delete/'.$standard->id)}}" onclick="return confirm('Are you sure you want to Delete Standard?')" class="btn btn-danger">Delete</a></td>
                             </tr>
                             @php $i++ @endphp

@@ -40,7 +40,7 @@
                                 <td>{{ $school->email }}</td>
                                 <td>{{ $school->contact_no }}</td>
                                 <td>{{ $school->status }}</td>
-                                <td><a href="{{url('schools/edit/'.$school->id)}}" class="btn btn-success">Edit</a>&nbsp;&nbsp;<a href="{{url('schools/delete/'.$school->id)}}" onclick="return confirm('Are you sure you want to Delete School?')" class="btn btn-danger">Delete</a></td>
+                                <td><a href="{{url('schools/view/'.$school->id)}}" class="btn btn-warning">View</a>&nbsp;&nbsp;<a href="{{url('schools/edit/'.$school->id)}}" class="btn btn-success">Edit</a>&nbsp;&nbsp;<a href="{{url('schools/delete/'.$school->id)}}" onclick="return confirm('Are you sure you want to Delete School?')" class="btn btn-danger">Delete</a></td>
                             </tr>
                             @php $i++ @endphp
 

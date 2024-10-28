@@ -33,18 +33,19 @@ Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.
 
 
 
-Route::get('/schools', [SchoolController::class, 'index'])->name('schools.index');
+Route::get('/schools', [SchoolController::class, 'index'])->name('schools');
 Route::get('/schools/create', [SchoolController::class, 'create'])->name('school.create');
 Route::post('/schools/store', [SchoolController::class, 'store'])->name('school.store');
 Route::get('/schools/edit/{school_id}', [SchoolController::class, 'edit'])->name('school.edit');
 Route::post('/schools/update', [SchoolController::class, 'update'])->name('school.update');
 Route::get('/schools/delete/{school_id}', [SchoolController::class, 'delete'])->name('school.delete');
+Route::get('/schools/view/{school_id}', [SchoolController::class, 'view'])->name('school.view');
 
 
 
 Route::get('/standards', [StandardController::class, 'index'])->name('standards.index');
 Route::get('/standards/create', [StandardController::class, 'create'])->name('standards.create');
-Route::post('/standards', [StandardController::class, 'store'])->name('standards.store');
+Route::post('/standards/store', [StandardController::class, 'store'])->name('standards.store');
 Route::get('/standards/edit/{standard_id}', [StandardController::class, 'edit'])->name('standards.edit');
 Route::post('/standards/update', [StandardController::class, 'update'])->name('standards.update');
 Route::get('/standards/delete/{standard_id}', [StandardController::class, 'delete'])->name('standards.delete');

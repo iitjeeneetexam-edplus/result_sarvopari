@@ -37,8 +37,9 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="status">Status</label>
-
+                        <input type="hidden" name="status" value="1">
+                        <!-- <label for="status">Status</label>
+               
                         <select class="form-control" id="status" name="status">
                             <option value="">Select option</option>
                             <option value="1" {{ old('status') == '1' ? 'selected' : '' }}>Active</option>
@@ -46,7 +47,7 @@
                         </select>
                         @error('status')
                         <div class="text-danger">{{ $message }}</div>
-                        @enderror
+                        @enderror -->
                     </div>
 
                     <button type="submit" class="btn btn-primary">Add Division</button>

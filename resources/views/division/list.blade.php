@@ -1,3 +1,4 @@
+@include('sidebar_display')
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -37,7 +38,11 @@
                                  </td>
                                 <td>{{ !empty($value->standard_name)? $value->standard_name : 'N/A' ;  }}</td>
 
-                                <td>{{ $value->status ? 'Active' : 'Inactive' }}</td>
+                                <td>@if($value->status == 1)
+                                        <button class="btn btn-success">Active</button>
+                                    @else
+                                        <button class="btn btn-danger">Inactive</button>
+                                    @endif</td>
                                 <td><a href="{{url('division/edit/'.$value->id)}}" class="btn btn-success">Edit</a>&nbsp;&nbsp;<a href="{{url('division/delete/'.$value->id)}}" onclick="return confirm('Are you sure you want to Delete Division?')" class="btn btn-danger">Delete</a></td>
                          
                             </tr>

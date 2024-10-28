@@ -55,9 +55,10 @@
                     </x-slot>
                 </x-dropdown>
             </div>
-        
-
+            
             <!-- Hamburger -->
+            <div class="row">
+                 <div class="col-md-10">
             <div class="-me-2 flex items-center sm:hidden">
                 <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
@@ -66,11 +67,13 @@
                     </svg>
                 </button>
             </div>
+            </div>
+            </div>
         </div>
     </div>
-    <div class="sidebar">
-        <a class="{{ Request::segment(1) == 'dashboard' ? 'active' : '' }}" href="{{url('dashboard')}}">Dashboard</a>
-        <a class="{{ Request::segment(1) == 'schools'   ? 'active' : '' }}" href="{{url('schools')}}">School</a>
+    <div class="sidebar"style="display:none;">
+        <!-- <a class="{{ Request::segment(1) == 'dashboard' ? 'active' : '' }}" href="{{url('dashboard')}}">Dashboard</a> -->
+        <!-- <a class="{{ Request::segment(1) == 'schools'   ? 'active' : '' }}" href="{{url('schools')}}">School</a> -->
         <a class="{{ Request::segment(1) == 'standards' ? 'active' : '' }}" href="{{url('standards')}}">Standard</a>
         <a class="{{ Request::segment(1) == 'subjects' ? 'active' : '' }}" href="{{url('subjects')}}">Subject</a>
         <a class="{{ Request::segment(1) == 'division' ? 'active' : '' }}" href="{{url('division')}}">Division</a>
