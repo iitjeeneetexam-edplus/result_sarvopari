@@ -1,3 +1,4 @@
+@include('sidebar_display')
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -6,7 +7,7 @@
     </x-slot>
 
     <div class="row justify-content-center">
-        <div class="col-lg-7 col-sm-6 col-md-6">
+        <div class="col-lg-8 col-sm-6 col-md-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-5">
                 <div class="container mt-5">
                     <h2>Student Assign Subject</h2>
@@ -84,6 +85,7 @@
                                             @endif
                                         </tbody>
                                     </table>
+                                    <div style="float:right"> {{ $students->links('pagination::bootstrap-4') }} </div>
                                 </div>
                                 @foreach($subjects as $optionls)
                                 <div class="row mb-4">
@@ -121,10 +123,7 @@
                     @method('PUT')
                     <div class="modal-header">
                        <h5 class="modal-title" id="editModalLabel">Edit Student</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
+                     </div>
                     <div class="modal-body">
                     <input type="hidden" name="division_id" id="division_id">
                         <input type="hidden" name="standard_id" id="standard_id">

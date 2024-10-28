@@ -44,7 +44,7 @@ class StudentController extends Controller
                 DB::raw('GROUP_CONCAT(student_subjects.subject_id) as subject_id') // Aggregate subject IDs
             )
             ->groupBy('students.id', 'students.name', 'students.roll_no','students.GR_no','students.uid', 'students.division_id')  // Group by student ID
-            ->get();
+            ->paginate(10);
 
         $students = $query;
         // echo "<pre>";print_r($students);exit;
@@ -89,10 +89,9 @@ class StudentController extends Controller
             'students.GR_no',
             'marks.marks',
             'marks.subject_id',
-            'marks.total_marks',
             DB::raw('GROUP_CONCAT(COALESCE(s1.subject_name, s2.subject_name)) as subject_name')
         )
-        ->groupBy('students.id','students.name','students.roll_no', 'students.GR_no','marks.marks', 'marks.subject_id','marks.total_marks')
+        ->groupBy('students.id','students.name','students.roll_no', 'students.GR_no','marks.marks', 'marks.subject_id')
         ->get();
     $students = [];
     foreach ($query as $item) {
@@ -100,8 +99,7 @@ class StudentController extends Controller
         $students[$item->id]['name'] = $item->name;
         $students[$item->id]['roll_no'] = $item->roll_no;
         $students[$item->id]['GR_no'] = $item->GR_no;
-        $students[$item->id]['total_marks'] = $item->total_marks;
-    
+        
         $subjectName = $item->subject_name;
         $students[$item->id]['marks'][$subjectName] = $item->marks;
         }
@@ -109,9 +107,13 @@ class StudentController extends Controller
         $subjects = Subject::where('standard_id', $standardId)->pluck('subject_name');
         $subjectString = $subjects->implode(', ');
 
-        
+        $total_marks = Subject::leftjoin('marks','marks.subject_id','=','subjects.id')
+                            ->where('standard_id', $standardId)
+                            ->pluck('total_marks');
 
-        return response()->json(['student'=>$students,'subject'=>$subjectString]);
+        // print_r($total_marks);exit;
+
+        return response()->json(['student'=>$students,'subject'=>$subjectString,'total_marks'=>$total_marks]);
     }
 
     public function showImportForm(Request $request)

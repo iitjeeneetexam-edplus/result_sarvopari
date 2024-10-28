@@ -122,15 +122,15 @@
                                             '<td>' + value.id + '</td>' +
                                             '<td>' + value.name + '</td>' +
                                             '<td>' + value.roll_no + '</td>' +
-                                            '<td>' + value.GR_no + '</td>' +
-                                            '<td>' + value.total_marks + '</td>';
-
+                                            '<td>' + value.GR_no + '</td>';
+                                           
                                         // Loop through the subjects to get the corresponding marks
                                         if (data.subject != null) {
                                             var subjectsArray = data.subject.split(',');
+                                            
 
                                             $.each(subjectsArray, function(index, subjectName) {
-                                                studentRow += '<td>' + (value.marks[subjectName.trim()] || 'Empty') + '</td>';
+                                                studentRow += '<td>' + (value.marks[subjectName.trim()]  || '') + '</td>';
                                             });
                                         }
 
@@ -146,14 +146,14 @@
                                     $('#studentdata thead tr').append('<th>Student Name</th>');
                                     $('#studentdata thead tr').append('<th>Roll No</th>');
                                     $('#studentdata thead tr').append('<th>GR No</th>');
-                                    $('#studentdata thead tr').append('<th>Total Marks</th>');
-
+                                  
                                     // Adding dynamic subject headers
                                     if (data.subject != null) {
                                         var subjectsArray = data.subject.split(',');
+                                        var totalmarks = data.total_marks;
 
                                         $.each(subjectsArray, function(index, subjectName) {
-                                            $('#studentdata thead tr').append('<th>' + subjectName.trim() + '</th>');
+                                            $('#studentdata thead tr').append('<th>' + subjectName.trim() + '('+ totalmarks[index] +')' +'</th>');
                                         });
                                     }
                                 },
