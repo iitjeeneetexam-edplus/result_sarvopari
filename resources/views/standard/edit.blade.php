@@ -19,15 +19,8 @@
                             <div class="form-group">
                                 <label for="school_id">School</label>
                                 <input type="hidden" name="id" value="{{ $data->id }}">
-                                <select name="school_id" id="school_id" class="form-control">
-                                    <option value="">Select a School</option>
-                                    @foreach ($schools as $school)
-                                    <option value="{{ $school->id }}" {{ $data->school_id ==  $school->id  ? 'selected' : '' }}>{{ $school->school_name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('school_id')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
+                                <input type="text"  value="{{ $schools->school_name}}" class="form-control" disabled>
+                                <input type="hidden" name="school_id" value="{{ $schools->id}}">
                             </div>
                             <div class="form-group">
                                 <label for="standard_name">Standard Name</label>

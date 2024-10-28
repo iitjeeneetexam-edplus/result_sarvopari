@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\School;
+use App\Models\Standard;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class SchoolController extends Controller
 {
@@ -39,7 +41,7 @@ class SchoolController extends Controller
         ]);
 
         
-        return redirect()->route('schools.index')->with('success', 'School added successfully!');
+        return redirect()->route('schools')->with('success', 'School added successfully!');
     }
     public function edit(Request $request,$id){
         
@@ -69,7 +71,7 @@ class SchoolController extends Controller
         ]);
     
         // Optionally, return a response or redirect
-        return redirect()->route('schools.index')->with('success', 'School updated successfully.');
+        return redirect()->route('schools')->with('success', 'School updated successfully.');
     
     }
     
@@ -80,7 +82,21 @@ class SchoolController extends Controller
         $school->delete();
     
         // Optionally, return a response or redirect
-        return redirect()->route('schools.index')->with('success', 'School deleted successfully.');
+        return redirect()->route('schools')->with('success', 'School deleted successfully.');
     
+    }
+    public function view($id,Request $request){
+        $standards = Standard::with('school')
+            ->whereHas('school', function($query) use ($id) {
+                $query->where('id', $id);
+            })
+        ->paginate(5);
+       //set session
+        $request->session()->put('school_id', $id);
+       
+       
+        $value = $request->session()->get('school_id');
+       
+        return view('standard.list', compact('standards')); 
     }
 }

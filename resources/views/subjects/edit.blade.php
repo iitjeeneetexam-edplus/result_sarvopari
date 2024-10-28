@@ -116,7 +116,6 @@
                             <div class="form-group mb-3">
                                 <label for="standard_id">Select School</label>
                                 <select name="school_id" id="school" class="form-control">
-                                    <option value="">All Schools</option>
                                     @foreach($schools as $school)
                                     <option value="{{ $school->id }}" {{ isset($school_id->school_id) && $school_id->school_id == $school->id ? 'selected' : '' }}>
                                         {{ $school->school_name }}

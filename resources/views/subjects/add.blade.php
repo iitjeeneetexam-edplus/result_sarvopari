@@ -141,15 +141,16 @@
                             </div>
 
                             <div class="form-group mb-3">
-                                <label for="status">Status</label>
-                                <select class="form-control" id="status" name="status" required>
+                                <!-- <label for="status">Status</label> -->
+                                <input type="hidden" name="status" value="1">
+                                <!-- <select class="form-control" id="status" name="status" required>
                                     <option value="">select option</option>
                                     <option value="1">Active</option>
                                     <option value="0">Inactive</option>
                                 </select>
                                 @error('status')
                                 <div class="text-danger">{{ $message }}</div>
-                                @enderror
+                                @enderror -->
                             </div>
 
                             <button type="submit" class="btn btn-primary">Add Subject</button>

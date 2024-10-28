@@ -11,11 +11,12 @@ use Illuminate\Http\Request;
 class SubjectController extends Controller
 {
     // Display a listing of the subjects
-    public function index()
+    public function index(Request $request)
     {
-       
+        $school_session_id = $request->session()->get('school_id');
         $subjects = Subject::leftjoin('standards', 'standards.id', '=', 'subjects.standard_id')
                             ->select('subjects.*', 'standards.standard_name', 'standards.id as standard_id')
+                            ->where('standards.school_id', $school_session_id)
                             ->paginate(5);
                         $subject_subs = [];  
 
@@ -27,9 +28,9 @@ class SubjectController extends Controller
         return view('subjects.list', compact('subjects','subject_subs'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $schools = School::select('id', 'school_name')->get();
+        $schools = School::select('id', 'school_name')->where('id',$request->session()->get('school_id'))->get();
         $standards = Standard::all(); // Assuming you have a Standard model
         return view('subjects.add', compact('standards','schools'));
     }
@@ -87,8 +88,8 @@ class SubjectController extends Controller
     // Insert sub-subjects in bulk
             return redirect()->route('subjects.index')->with('success', 'Subject added successfully.');
     }
-    public function edit($id){
-        $schools = School::select('id', 'school_name')->get();
+    public function edit($id,Request $request){
+        $schools = School::select('id', 'school_name')->where('id',$request->session()->get('school_id'))->get();
         $standards = Standard::all();
 
         $data=Subject::where('id',$id)->first();
