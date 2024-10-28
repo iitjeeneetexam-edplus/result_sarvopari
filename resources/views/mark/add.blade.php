@@ -65,7 +65,13 @@
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-
+                            <div class="col-md-12">
+                                <label for="total_marks">Total Marks</label>
+                                <input type="text" name="total_marks" id="total_marks" class="form-control" placeholder="Enter Total Marks">
+                                @error('total_marks')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
                             <div class="col-md-12">
                                 <label for="subject">Select Subject:</label>
                                 <select name="subject_id" id="subject" class="form-control">
@@ -83,13 +89,7 @@
                                     <!-- Populated via AJAX -->
                                 </select>
                             </div>
-                            <div class="col-md-12">
-                                <label for="total_marks">Total Marks</label>
-                                <input type="text" name="total_marks" id="total_marks" class="form-control" placeholder="Enter Total Marks">
-                                @error('total_marks')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
+                            
                             <br>
                             <h4>Student List</h4>
                             <table id="studentTable" class="table">
@@ -241,7 +241,8 @@
                 success: function(data) {
                     $('#studentTable tbody').empty();
                     if (data.students.length > 0) {
-                        var totalmark = $('#total_mark').val();
+                        var totalmark = $('#total_marks').val();
+                        alert(totalmark);
                         $.each(data.students, function(index, student) {
                             var row = '<tr>' +
                                 '<td>' + student.roll_no + '</td>' +
