@@ -166,9 +166,10 @@ class StudentController extends Controller
         $subjectIds = $request->input('subject_ids');
         $studentIds = $request->input('student_ids');
         
-        foreach ($subjectIds as $subjectId) {
+        
             foreach ($studentIds as $studentId) {
-                
+                StudentSubject::where('student_id',$studentId)->delete();
+                foreach ($subjectIds as $subjectId) {
                 StudentSubject::create([
                     'student_id' => $studentId,
                     'subject_id' => $subjectId
