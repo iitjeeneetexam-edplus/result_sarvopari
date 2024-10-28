@@ -65,7 +65,6 @@
                                                 <td>
                                                     <a href="#" class="btn btn-sm edit-btn btn-success" data-student-id="{{ $student->id }}">Edit</a>
                                                     <a href="#" class="btn btn-sm delete-btn btn-danger" data-student-id="{{ $student->id }}">Delete</a>
-
                                                 </td> 
                                             </tr>
                                             @php $i++; @endphp
