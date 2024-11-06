@@ -51,7 +51,7 @@
                             </div>
                         </div>
                     </form>
-
+                <div class="table-container">
                     <table class="table table-bordered" id="studentdata">
                         <thead>
                             <tr>
@@ -61,6 +61,7 @@
                         <tbody>
                         </tbody>
                     </table>
+                </div>
                 </div>
             </div></div>
     </div>
@@ -120,6 +121,7 @@
                                     $.each(data.student, function(key, value) {
                                         var studentRow = '<tr>' +
                                             '<td>' + value.id + '</td>' +
+                                            '<td><button class="btn btn-success">Result</button></td>' +
                                             '<td>' + value.name + '</td>' +
                                             '<td>' + value.roll_no + '</td>' +
                                             '<td>' + value.GR_no + '</td>';
@@ -143,6 +145,7 @@
 
                                     // Static headers
                                     $('#studentdata thead tr').append('<th>No</th>');
+                                    $('#studentdata thead tr').append('<th>Results</th>');
                                     $('#studentdata thead tr').append('<th>Student Name</th>');
                                     $('#studentdata thead tr').append('<th>Roll No</th>');
                                     $('#studentdata thead tr').append('<th>GR No</th>');
