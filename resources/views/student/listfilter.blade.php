@@ -18,7 +18,7 @@
                     </div>
 
                     <!-- Filter Form -->
-                    <form method="POST" action="{{ route('students.getstudent.post') }}">
+                    <form method="get" action="{{ route('students.getstudent.get') }}">
                         @csrf
                         <div class="row mb-4">
                             <div class="col-md-4">

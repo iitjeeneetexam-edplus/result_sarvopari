@@ -68,8 +68,8 @@ class StudentController extends Controller
         $divisionId = $request->input('division_id');
         $standardId = $request->input('standard_id');
 
-        $divisionId = $request->input('division_id');
-        $standardId = $request->input('standard_id');
+        // $divisionId = $request->input('division_id');
+        // $standardId = $request->input('standard_id');
 
         $query = Student::with('division:id,division_name')
         ->leftJoin('marks', 'marks.student_id', '=', 'students.id')
@@ -87,32 +87,34 @@ class StudentController extends Controller
             'students.name',
             'students.roll_no',
             'students.GR_no',
+            'students.division_id',
             'marks.marks',
             'marks.subject_id',
+            
             DB::raw('GROUP_CONCAT(COALESCE(s1.subject_name, s2.subject_name)) as subject_name')
         )
         ->groupBy('students.id','students.name','students.roll_no', 'students.GR_no','marks.marks', 'marks.subject_id')
-        ->get();
+        ->paginate(10);
     $students = [];
     foreach ($query as $item) {
         $students[$item->id]['id'] = $item->id;
         $students[$item->id]['name'] = $item->name;
         $students[$item->id]['roll_no'] = $item->roll_no;
         $students[$item->id]['GR_no'] = $item->GR_no;
+        $students[$item->id]['division_id'] = $item->division_id;
+
         
         $subjectName = $item->subject_name;
         $students[$item->id]['marks'][$subjectName] = $item->marks;
+        
         }
-
+        
         $subjects = Subject::where('standard_id', $standardId)->pluck('subject_name');
         $subjectString = $subjects->implode(', ');
 
         $total_marks = Subject::leftjoin('marks','marks.subject_id','=','subjects.id')
                             ->where('standard_id', $standardId)
                             ->pluck('total_marks');
-
-        // print_r($total_marks);exit;
-
         return response()->json(['student'=>$students,'subject'=>$subjectString,'total_marks'=>$total_marks]);
     }
 

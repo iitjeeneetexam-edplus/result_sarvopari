@@ -34,15 +34,15 @@
                             @foreach ($subjects as $subject)
                             <tr>
                                 <td>{{ $i }}</td>
-                                <td>{{ !empty($subject->standard_name)? $subject->standard_name : 'N/A' ;  }}</td>
-                                <td>{{ !empty($subject->subject_name)? $subject->subject_name : 'N/A' ;  }}</td>
+                                <td>{{ !empty($subject->standard_name)? $subject->standard_name : '' ;  }}</td>
+                                <td>{{ !empty($subject->subject_name)? $subject->subject_name : '' ;  }}</td>
                                 <td>
                                     @if(isset($subject_subs[$subject->id]) && $subject_subs[$subject->id]->count() > 0)
                                     @foreach ($subject_subs[$subject->id] as $subject2)
-                                    {{ !empty($subject2->subject_name)? $subject2->subject_name : 'N/A' ; }}<br>
+                                    {{ !empty($subject2->subject_name)? $subject2->subject_name : '' ; }}<br>
                                     @endforeach
                                     @else
-                                    'N/A'
+                                    
                                     @endif
                                 </td>
 

@@ -53,7 +53,7 @@
                     </form>
                 <div class="table-container">
                     <table class="table table-bordered" id="studentdata">
-                        <thead>
+                        <thead class="thead-dark">
                             <tr>
 
                             </tr>
@@ -61,6 +61,7 @@
                         <tbody>
                         </tbody>
                     </table>
+                    <div id="pagination-links"></div>
                 </div>
                 </div>
             </div></div>
@@ -119,14 +120,13 @@
                                 data: $(this).serialize(),
                                 success: function(data) {
                                     $.each(data.student, function(key, value) {
-                                        var studentRow = '<tr>' +
+                                        var studentRow = `<tr class="student-row" data-id="${value.id}">`+
                                             '<td>' + value.id + '</td>' +
                                             '<td><button class="btn btn-success">Result</button></td>' +
                                             '<td>' + value.name + '</td>' +
                                             '<td>' + value.roll_no + '</td>' +
                                             '<td>' + value.GR_no + '</td>';
                                            
-                                        // Loop through the subjects to get the corresponding marks
                                         if (data.subject != null) {
                                             var subjectsArray = data.subject.split(',');
                                             
@@ -135,7 +135,7 @@
                                                 studentRow += '<td>' + (value.marks[subjectName.trim()]  || '') + '</td>';
                                             });
                                         }
-
+                                        studentRow += `<td><button class="openModalBtn btn btn-success" data-id="${value.id}" data-division-id="${value.division_id}" >Edit</button></td>`;
                                         studentRow += '</tr>';
                                         $('#studentdata tbody').append(studentRow);
                                     });
@@ -149,6 +149,7 @@
                                     $('#studentdata thead tr').append('<th>Student Name</th>');
                                     $('#studentdata thead tr').append('<th>Roll No</th>');
                                     $('#studentdata thead tr').append('<th>GR No</th>');
+                                   
                                   
                                     // Adding dynamic subject headers
                                     if (data.subject != null) {
@@ -156,9 +157,12 @@
                                         var totalmarks = data.total_marks;
 
                                         $.each(subjectsArray, function(index, subjectName) {
-                                            $('#studentdata thead tr').append('<th>' + subjectName.trim() + '('+ totalmarks[index] +')' +'</th>');
+                                            var marks = totalmarks[index] !== undefined && totalmarks[index] !== '' ? totalmarks[index] : ''; // default to 'N/A' if undefined or empty
+                                            $('#studentdata thead tr').append('<th>' + subjectName.trim() + '(' + marks + ')</th>');
                                         });
                                     }
+                                    $('#studentdata thead tr').append('<th>Action</th>');
+                                    // $('#pagination-links').html(data.subject.pagination);
                                 },
                                 error: function(xhr, status, error) {
                                     console.error(error);
@@ -166,5 +170,103 @@
                             });
                         });
                     });
+                    $(document).on('click', '.openModalBtn', function() {
+                            var studentId  = $(this).data('id');
+                            var divisionId = $(this).data('division-id');
+                            var row = $(this).closest('.student-row');
+
+                            $.ajax({
+                                url: '/marks/edit/' + studentId + '/' + divisionId, // include both IDs in the URL
+                                type: 'GET',
+                                success: function(data) {
+                                    // Hide the current row
+                                    row.hide();
+
+                                    // Generate the editable row
+                                    var editRow = `<tr class="edit-row" data-id="${studentId}">
+                                        <td>${studentId}</td>
+                                        <td><button class="btn btn-success">Result</button></td>
+                                        <td><input type="text" class="form-control" value="${row.find('td').eq(2).text()}" name="name" disabled></td>
+                                        <td><input type="text" class="form-control" value="${row.find('td').eq(3).text()}" name="roll_no" disabled></td>
+                                        <td><input type="text" class="form-control" value="${row.find('td').eq(4).text()}" name="GR_no" disabled></td>`;
+
+                                    // Add subject marks as editable inputs
+                                    if (data.optional_subject != null) {
+                                        var subjectsArray = data.optional_subject.split(',');
+                                        console.log(data.optional_subject);
+                                        $.each(subjectsArray, function(index, subjectName) {
+                                            // var subjectId = data.subject_ids[index]; // Assuming you have an array of subject IDs in 'data.subject_ids'
+
+                                        // Add hidden input for subject_id and text input for marks
+                                            // editRow += `<td><input type="text" class="form-control" value="${index}" name="subject_id[]"></td>`; // Hidden field for subject_id
+                            
+                                            editRow += `<td><input type="text" class="form-control" value="${row.find('td').eq(5 + index).text()}" name="marks[${subjectName.trim()}]"></td>`;
+                                        });
+                                    }
+
+                                    editRow += `<td><div class="d-flex"><button type="button" class="btn btn-danger cancelEditBtn">Cancel</button><button type="button" class="btn btn-success saveEditBtn">Update</button></div></td></tr>`;
+                                    
+                                    // Insert the editable row right after the hidden row
+                                    row.after(editRow);
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error('Error fetching data:', error);
+                                    alert('Error fetching data');
+                                }
+                            });
+                        });
+
+// Event delegation for cancel edit button
+                                $(document).on('click', '.cancelEditBtn', function() {
+                                    var row = $(this).closest('.student-row');
+                                    var editRow = $(this).closest('.edit-row');
+                                    
+                                    // Show the original row again and remove the edit row
+                                    row.show();
+                                    editRow.remove();
+                                });
+
+                                // Event delegation for save edit button (if you want to handle saving logic)
+                                $(document).on('click', '.saveEditBtn', function() {
+                                    var editRow = $(this).closest('.edit-row');
+                                    var studentId = editRow.data('id');
+                                    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+// Set the token in the AJAX request headers
+                                    $.ajaxSetup({
+                                        headers: {
+                                            'X-CSRF-TOKEN': csrfToken
+                                        }
+                                    });
+                                    // Collect the form data from the edit row
+                                    var formData = {
+                                        name: editRow.find('input[name="name"]').val(),
+                                        roll_no: editRow.find('input[name="roll_no"]').val(),
+                                        GR_no: editRow.find('input[name="GR_no"]').val()
+                                    };
+                                    
+                                    // Add marks data for each subject
+                                    editRow.find('input[name^="marks"]').each(function() {
+                                        formData[$(this).attr('name')] = $(this).val();
+                                    });
+
+                                    $.ajax({
+                                        url: '/marks/update/' + studentId, // The URL for updating marks
+                                        type: 'POST',
+                                        data: formData,
+                                        success: function(response) {
+                                            console.log('Data updated successfully', response);
+                                        },
+                                        error: function(xhr, status, error) {
+                                            console.error('Error saving data:', error);
+                                            alert('Error saving data');
+                                        }
+                                    });
+                                });
+
+
+                   
+                   
                 </script>
 </x-app-layout>
+<!-- 
