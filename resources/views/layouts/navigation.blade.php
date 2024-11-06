@@ -153,6 +153,11 @@ div.content {
   height: 1000px;
 }
 
+.table-container {
+        width: 100%;
+        overflow-x: auto;
+    }
+    
 @media screen and (max-width: 700px) {
   .sidebar {
     width: 100%;
