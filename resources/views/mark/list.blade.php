@@ -45,6 +45,14 @@
                                     <!-- Populated via AJAX -->
                                 </select>
                             </div>
+                            <div class="col-md-4">
+                                <label for="exam_id">Select Exam:</label>
+                                <select name="exam_id" id="exam" class="form-control">
+                                    <option value="">Select a Exam</option>
+                                    <!-- Populated via AJAX -->
+                                </select>
+                            </div>
+
 
                             <div class="col-md-12 mt-3">
                                 <button type="submit" class="btn btn-success">Get Student List</button>
@@ -111,6 +119,23 @@
                                 $('#division').empty().append('<option value="">Select a Division</option>');
                             }
                         });
+                        $('#division').change(function() {
+                            var standardId = $(this).val();
+                            if (standardId) {
+                                $.ajax({
+                                    url: '{{ url("/get-exam") }}/' + standardId,
+                                    type: 'GET',
+                                    success: function(data) {
+                                        $('#exam').empty().append('<option value="">Select a Exam</option>');
+                                        $.each(data, function(key, value) {
+                                            $('#exam').append('<option value="' + value.id + '">' + value.exam_name + '</option>');
+                                        });
+                                    }
+                                });
+                            } else {
+                                $('#exam').empty().append('<option value="">Select a Exam</option>');
+                            }
+                        });
                         $('form').submit(function(event) {
                             event.preventDefault(); 
                             $('#studentdata tbody').empty();
@@ -121,6 +146,9 @@
                                 type: 'POST',
                                 data: $(this).serialize(),
                                 success: function(data) {
+                                    if(data.student !=null){
+
+                                    
                                     $.each(data.student, function(key, value) {
                                         var studentRow = `<tr class="student-row" data-id="${value.id}">`+
                                             '<td>' + value.id + '</td>' +
@@ -144,6 +172,9 @@
                                         studentRow += '</tr>';
                                         $('#studentdata tbody').append(studentRow);
                                     });
+                                }else{
+                                    // $('#studentdata tr').append('<th>No data Found!</th>');
+                                }
 
                                     // Header section
                                     $('#studentdata thead tr').empty();
@@ -170,7 +201,7 @@
                                     // $('#pagination-links').html(data.subject.pagination);
                                 },
                                 error: function(xhr, status, error) {
-                                    console.error(error);
+                                    $('#studentdata thead tr').append('<th>No data Found!</th>');
                                 }
                             });
                         });
@@ -209,10 +240,14 @@
                                         <td><label>${row.find('td').eq(3).text()}</label></td>
                                         <td><label>${row.find('td').eq(4).text()}<label></td>`;
                                         // alert(data.subject_ids);
-                                        // var subject_ids_get = data.subject_ids.split(',');
-                                        //         $.each(subject_ids_get, function(index, subject_id) {
-                                        //          editRow += `<td><input type="hidden" class="form-control" value="${subject_id}" name="subject_id"><td>`; 
-                                        //         });
+                                        var main_subject_ids_get = data.main_subject_ids.split(',');
+                                                $.each(main_subject_ids_get, function(index, subject_id) {
+                                                 editRow += `<td><input type="hidden" class="form-control" value="${subject_id}" name="main_subject_id[]"><td>`; 
+                                                });
+                                                var optional_subject_ids_get = data.optional_subject_ids.split(',');
+                                                $.each(optional_subject_ids_get, function(index, subject_id) {
+                                                 editRow += `<td><input type="hidden" class="form-control" value="${subject_id}" name="optional_subject_id[]"><td>`; 
+                                                });
                             
                                             if (data.optional_subject != null) {
                                                 var subjectsArray = data.optional_subject.split(',');
@@ -296,7 +331,8 @@
                                     });
                                     // Collect the form data from the edit row
                                     var formData = {
-                                        subject_id: editRow.find('input[name="subject_id"]').val(),
+                                        subject_id: editRow.find('input[name="main_subject_id"]').val(),
+                                        subject_id: editRow.find('input[name="optional_subject_id"]').val(),
                                         // marks: editRow.find('input[name="subject_id[]"]').map(function() {
                                         //     return $(this).val();  // Collect all marks into an array
                                         // }).get() 
