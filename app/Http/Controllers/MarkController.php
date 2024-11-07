@@ -139,9 +139,12 @@ class MarkController extends Controller
         $subjectString = $subjects->map(function($subjectName, $subjectId) {
             return  $subjectName;  // Format as "subject_id - subject_name"
         })->implode(', ');
-
-        $subject_id_data = Subject::leftjoin('subject_subs','subject_subs.subject_id','=','subjects.id')->where('subjects.standard_id', $standard_id)->pluck('subject_subs.id');
-        $subject_ids = $subject_id_data->map(function($id) {
+        $main_subject_id = Subject::where('standard_id', $standard_id)->pluck('id');
+        $main_subject_ids = $main_subject_id->map(function($subjectId) {
+            return  $subjectId;  // Format as "subject_id - subject_name"
+        })->implode(', ');
+        $optional_subject_id = Subject::leftjoin('subject_subs','subject_subs.subject_id','=','subjects.id')->where('subjects.standard_id', $standard_id)->pluck('subject_subs.id');
+        $optional_subject_ids = $optional_subject_id->map(function($id) {
             return  $id;  
         })->implode(', ');
 
@@ -151,7 +154,7 @@ class MarkController extends Controller
                             ->where('standard_id', $standard_id)
                             ->pluck('total_marks');
                             // print_r($subjectString);exit;
-        return response()->json(['student_data'=>$student_data,'optional_subject'=>$subjectString,'total_marks'=>$total_marks,'subject_ids'=>$subject_ids]);
+        return response()->json(['student_data'=>$student_data,'optional_subject'=>$subjectString,'total_marks'=>$total_marks,'main_subject_ids'=>$main_subject_ids,'optional_subject_ids'=>$optional_subject_ids]);
     }
     
     /**

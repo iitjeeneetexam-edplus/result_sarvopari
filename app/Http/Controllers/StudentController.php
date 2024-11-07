@@ -71,7 +71,7 @@ class StudentController extends Controller
 
         $divisionId = $request->input('division_id');
         $standardId = $request->input('standard_id');
-
+        $exam_id = $request->input('exam_id');
         // $divisionId = $request->input('division_id');
         // $standardId = $request->input('standard_id');
 
@@ -86,6 +86,7 @@ class StudentController extends Controller
                 ->where('marks.is_optional', '1');
         })
         ->where('students.division_id', $divisionId)
+        ->where('marks.exam_id', $exam_id)
         ->select(
             'students.id',
             'students.name',
@@ -99,7 +100,8 @@ class StudentController extends Controller
             DB::raw('GROUP_CONCAT(COALESCE(s1.subject_name, s2.subject_name)) as subject_name')
         )
         ->groupBy('students.id','students.name','students.roll_no', 'students.GR_no','marks.marks', 'marks.subject_id')
-        ->paginate(10);
+        ->get();
+        // print_r($query);exit;
     $students = [];
     foreach ($query as $item) {
         $students[$item->id]['id'] = $item->id;

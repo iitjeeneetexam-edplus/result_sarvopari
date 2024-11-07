@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Division;
+use App\Models\Exam;
 use App\Models\Standard;
 use App\Models\Subject;
 use Illuminate\Http\Request;
@@ -102,6 +103,11 @@ class DivisionController extends Controller
         $division = Division::where('standard_id', $standard_id)->get();
         $Subject = Subject::where('standard_id', $standard_id)->get();
         return response()->json(['divisions'=>$division,'subjects'=>$Subject]);
+    }
+    public function getstandardByexam($standard_id){
+        $exam = Exam::where('standard_id', $standard_id)->get();
+        // $Subject = Subject::where('standard_id', $standard_id)->get();
+        return response()->json($exam);
     }
     
 }

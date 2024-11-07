@@ -79,6 +79,8 @@ Route::get('/get-subjects-sub/{subject_id}', [StandardController::class, 'getSub
 Route::get('/get-divisions-subject/{standard_id}', [StandardController::class, 'getdivisionBydivisionsubject'])->name('get-divisions-subject');
 
 Route::get('/get-divisions/{standard_id}', [DivisionController::class, 'getdivisionBystandard'])->name('get-divisions');
+Route::get('/get-exam/{standard_id}', [DivisionController::class, 'getstandardByexam'])->name('get-exam');
+
 
 Route::get('/students', [StudentController::class, 'index'])->name('students.index');
 // Route::post('/students/getstudent', [StudentController::class, 'getstudents'])->name('students.getstudent');
