@@ -276,26 +276,11 @@ class StudentController extends Controller
         try{
             $student=Student::join('division','division.id','=','students.division_id')
             ->join('standards','standards.id','=','division.standard_id')
+            ->join('exams','exams.standard_id','=','standards.id')
             ->join('schools','schools.id','=','standards.school_id')
             ->select('students.*','standards.standard_name','standards.id as standard_id','schools.school_name','division.division_name')
-            ->where('students.id',$request->student_id)->first();
+            ->where('students.id',$request->student_id)->where('exams.id',$request->exam_id)->first();
             
-            //$subjects = Subject::where('standard_id', $student['standard_id'])->select('subject_name','id','is_optional')->get();
-            // $subjectString = $subjectss->implode(', ');
-            // $subjects = explode(",",$subjectString);
-
-            // $total_marks = Subject::leftjoin('marks','marks.subject_id','=','subjects.id')
-            // ->where('standard_id', $student['standard_id'])
-            // ->select('marks.total_marks','marks.subject_id','marks.is_optional')->get();
-
-            // $student_marks = Marks::leftJoin('subjects as s1', function ($join) {
-            //     $join->on('s1.id', '=', 'marks.subject_id')
-            //         ->where('marks.is_optional', '0');
-            // })
-            // ->leftJoin('subject_subs as s2', function ($join) {
-            //     $join->on('s2.id', '=', 'marks.subject_id')
-            //         ->where('marks.is_optional', '1');
-            // })->where('marks.student_id',$request->student_id)->get();
 
             $subjectsData = Subject::leftJoin('marks', function ($join) {
                 $join->on('marks.subject_id', '=', 'subjects.id')
@@ -303,6 +288,7 @@ class StudentController extends Controller
             })
             ->where('subjects.standard_id', $student['standard_id'])
             ->where('marks.student_id', $request->student_id)
+            ->where('marks.exam_id', $request->exam_id)
             ->select(
                 'subjects.subject_name',
                 'subjects.id',
@@ -321,6 +307,7 @@ class StudentController extends Controller
             })
             ->where('subjects.standard_id', $student['standard_id'])
             ->where('marks.student_id', $request->student_id)
+            ->where('marks.exam_id', $request->exam_id)
             ->select(
                 'subject_subs.subject_name',
                 'subject_subs.id',
