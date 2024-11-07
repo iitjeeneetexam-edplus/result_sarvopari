@@ -15,37 +15,34 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                    <x-nav-link :href="route('schools')" :active="request()->routeIs('schools')" style=" text-decoration: none;">
+                        {{ __('School') }}
                     </x-nav-link>
                 </div>
             </div>
         
 
-            <?php
-    use Illuminate\Support\Facades\Request;
-    $segment1 = Request::segment(1);  
-    $segment2 = Request::segment(2);  
-    $segment3 = Request::segment(3);
-    if (Request::segment(1) != 'schools') {
-        $schools = getSchoolList();
-    ?>
-    <div class="mt-3">
-        <select 
-            class="inline-flex items-center px-5 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150" 
-            name="school_id"
-            onchange="if (this.value) window.location.href=this.value">
-            <option value="">Select School</option>
+           
             
-            <?php foreach ($schools as $school) { ?>
-                <option value="{{ url('schools/view', $school->id) }}"  {{ old('school_id') == $school->id ? 'selected' : '' }}>
-                    {{ $school->school_name }}
-                </option>
-            <?php } ?>
-        </select>
-    </div>
+        @if (Request::segment(1) != 'schools' || (Request::segment(2) == 'view'))
+            <?php $schools = getSchoolList(); ?>
+            <div class="mt-3">
+                <select 
+                    class="inline-flex items-center px-5 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150" 
+                    name="school_id"
+                    onchange="if (this.value) window.location.href=this.value">
+                    <option value="">Select School</option>
+                    
+                    @foreach ($schools as $school)
+                        <option value="{{ url('schools/view', $school->id) }}"  {{ old('school_id') == $school->id ? 'selected' : '' }}>
+                            {{ $school->school_name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        @endif
 
-    <?php } ?>
+ 
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">

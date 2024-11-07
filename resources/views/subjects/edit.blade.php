@@ -1,3 +1,4 @@
+@include('sidebar_display')
 <style>
     .add-chapter-btn {
         border: 1.5px solid gray;

@@ -40,7 +40,6 @@
                                             @foreach($students as $student)
                                             <tr>
                                                 <td>
-                                                    <!-- @if($student->subject_id) disabled @endif -->
                                                     <input type="checkbox" name="student_ids[]" class="student-checkbox" value="{{ $student->id }}"> 
                                                 </td>
                                                 <td>{{ $i }}</td>
@@ -60,6 +59,7 @@
                                                         
                                                         @if($optionls->id == $subjectSub->subject_id && in_array($subjectSub->id,$subjectNames))
                                                         <td>{{ $subjectSub->subject_name }}</td>
+
                                                         @endif
                                                         @endforeach
                                                         @endforeach
@@ -85,7 +85,9 @@
                                             @endif
                                         </tbody>
                                     </table>
-                                    <div style="float:right"> {{ $students->links('pagination::bootstrap-4') }} </div>
+                                    <div class="pagination" style="float:right">
+                                        {{ $students->appends(request()->query())->links() }}
+                                    </div>
                                 </div>
                                 @foreach($subjects as $optionls)
                                 <div class="row mb-4">
@@ -175,7 +177,7 @@
                     </div>
                     <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="submit" class="btn btn-success">Save</button>
                     </div>
                 </form>
             </div>
