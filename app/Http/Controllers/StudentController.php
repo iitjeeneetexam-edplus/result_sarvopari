@@ -109,10 +109,11 @@ class StudentController extends Controller
         $students[$item->id]['roll_no'] = $item->roll_no;
         $students[$item->id]['GR_no'] = $item->GR_no;
         $students[$item->id]['division_id'] = $item->division_id;
+        $students[$item->id]['exam_id'] = $item->exam_id;
 
-        
         $subjectName = $item->subject_name;
         $students[$item->id]['marks'][$subjectName] = $item->marks;
+        
         
         }
         
@@ -281,7 +282,7 @@ class StudentController extends Controller
             ->join('standards','standards.id','=','division.standard_id')
             ->join('exams','exams.standard_id','=','standards.id')
             ->join('schools','schools.id','=','standards.school_id')
-            ->select('students.*','standards.standard_name','standards.id as standard_id','schools.school_name','division.division_name')
+            ->select('students.*','standards.standard_name','standards.id as standard_id','schools.school_name','division.division_name','exams.exam_name','exams.exam_year','exams.result_date')
             ->where('students.id',$request->student_id)->where('exams.id',$request->exam_id)->first();
             
 
@@ -321,9 +322,9 @@ class StudentController extends Controller
                 'marks.is_optional as mark_is_optional'
             )
             ->get();
-
+            
             $data = ['student'=>$student,'subjects'=>$subjectsData,'optional_subjects'=>$optinalsubjects]; 
-
+                
             //$data = ['student'=>$student,'subjects'=>$subjects,'total_marks'=>$total_marks,'student_marks'=>$student_marks]; 
             
             $pdf = PDF::loadView('mark.marksheet', ['data' => $data]);
