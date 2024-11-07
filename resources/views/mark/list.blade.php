@@ -152,7 +152,7 @@
                                     $.each(data.student, function(key, value) {
                                         var studentRow = `<tr class="student-row" data-id="${value.id}">`+
                                             '<td>' + value.id + '</td>' +
-                                            '<td><form method="POST" action="{{ route("students.marksheet") }}">@csrf <input type="hidden" name="student_id" value="'+ value.id +'"><button class="btn btn-success">Result</button></form></td>' +
+                                            '<td><form method="POST" action="{{ route("students.marksheet") }}">@csrf <input type="hidden" name="exam_id" value="'+ value.exam_id +'"><input type="hidden" name="student_id" value="'+ value.id +'"><button class="btn btn-success">Result</button></form></td>' +
                                             '<td>' + value.name + '</td>' +
                                             '<td>' + value.roll_no + '</td>' +
                                             '<td>' + value.GR_no + '</td>';
