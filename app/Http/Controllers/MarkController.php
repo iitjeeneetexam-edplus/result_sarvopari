@@ -148,7 +148,7 @@ class MarkController extends Controller
             return  $id;  
         })->implode(', ');
 
-        // print_r($subject_ids);exit;
+        // print_r($main_subject_ids);exit;
 
         $total_marks = Subject::leftjoin('marks','marks.subject_id','=','subjects.id')
                             ->where('standard_id', $standard_id)
@@ -163,6 +163,7 @@ class MarkController extends Controller
     public function update(Request $request,$id)
     {
         $marks = $request->input('marks');
+        print_r($request->all());exit;
 
 // Filter out only empty strings and null values, keeping `0`
         $singleValue = implode(', ', array_filter($marks, function ($value) {

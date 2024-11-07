@@ -240,14 +240,14 @@
                                         <td><label>${row.find('td').eq(3).text()}</label></td>
                                         <td><label>${row.find('td').eq(4).text()}<label></td>`;
                                         // alert(data.subject_ids);
-                                        var main_subject_ids_get = data.main_subject_ids.split(',');
-                                                $.each(main_subject_ids_get, function(index, subject_id) {
-                                                 editRow += `<td><input type="hidden" class="form-control" value="${subject_id}" name="main_subject_id[]"><td>`; 
-                                                });
-                                                var optional_subject_ids_get = data.optional_subject_ids.split(',');
-                                                $.each(optional_subject_ids_get, function(index, subject_id) {
-                                                 editRow += `<td><input type="hidden" class="form-control" value="${subject_id}" name="optional_subject_id[]"><td>`; 
-                                                });
+                                        // var main_subject_ids_get = data.main_subject_ids.split(',');
+                                        //         $.each(main_subject_ids_get, function(index, subject_id) {
+                                        //          editRow += `<td><input type="hidden" class="form-control" value="${subject_id}" name="main_subject_id[]"><td>`; 
+                                        //         });
+                                        //         var optional_subject_ids_get = data.optional_subject_ids.split(',');
+                                        //         $.each(optional_subject_ids_get, function(index, subject_id) {
+                                        //          editRow += `<td><input type="hidden" class="form-control" value="${subject_id}" name="optional_subject_id[]"><td>`; 
+                                        //         });
                             
                                             if (data.optional_subject != null) {
                                                 var subjectsArray = data.optional_subject.split(',');
@@ -331,8 +331,8 @@
                                     });
                                     // Collect the form data from the edit row
                                     var formData = {
-                                        subject_id: editRow.find('input[name="main_subject_id"]').val(),
-                                        subject_id: editRow.find('input[name="optional_subject_id"]').val(),
+                                        main_subject_id: editRow.find('input[name="main_subject_id[]"]').val(),
+                                        optional_subject_id: editRow.find('input[name="optional_subject_id[]"]').val(),
                                         // marks: editRow.find('input[name="subject_id[]"]').map(function() {
                                         //     return $(this).val();  // Collect all marks into an array
                                         // }).get() 
