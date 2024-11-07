@@ -99,7 +99,7 @@ class StudentController extends Controller
             
             DB::raw('GROUP_CONCAT(COALESCE(s1.subject_name, s2.subject_name)) as subject_name')
         )
-        ->groupBy('students.id','students.name','students.roll_no', 'students.GR_no','marks.marks', 'marks.subject_id')
+        ->groupBy('students.id','students.name','students.roll_no', 'students.GR_no','marks.marks', 'marks.exam_id','marks.subject_id')
         ->get();
         // print_r($query);exit;
     $students = [];
