@@ -113,8 +113,10 @@ class StudentController extends Controller
         $subjectString = $subjects->implode(', ');
 
         $total_marks = Subject::leftjoin('marks','marks.subject_id','=','subjects.id')
+                            ->leftjoin('subject_subs','subject_subs.subject_id','=','subjects.id')
                             ->where('standard_id', $standardId)
                             ->pluck('total_marks');
+                            // print_r($total_marks);exit;
         return response()->json(['student'=>$students,'subject'=>$subjectString,'total_marks'=>$total_marks]);
     }
 

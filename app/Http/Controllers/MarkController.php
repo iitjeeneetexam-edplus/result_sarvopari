@@ -9,6 +9,7 @@ use App\Models\Student;
 use App\Models\Subject;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
@@ -123,7 +124,8 @@ class MarkController extends Controller
                 DB::raw('GROUP_CONCAT(COALESCE(s1.subject_name, s2.subject_name)) as subject_name') 
             )
             ->groupBy('students.id', 'students.name', 'students.roll_no', 'students.GR_no','marks.marks','marks.subject_id') 
-            ->tosql();
+            ->first();
+        //   echo "<pre>";print_r($student_data);exit; 
         
         $standard_id = Division::where('id',$did)->pluck('standard_id');
 
@@ -133,13 +135,21 @@ class MarkController extends Controller
 
         // Now, create a formatted string
         $subjectString = $subjects->map(function($subjectName, $subjectId) {
-            return $subjectId . ' - ' . $subjectName;  // Format as "subject_id - subject_name"
-        })->implode(', '); 
+            return  $subjectName;  // Format as "subject_id - subject_name"
+        })->implode(', ');
+
+        $subject_id_data = Subject::leftjoin('subject_subs','subject_subs.subject_id','=','subjects.id')->where('subjects.standard_id', $standard_id)->pluck('subject_subs.id');
+        $subject_ids = $subject_id_data->map(function($id) {
+            return  $id;  
+        })->implode(', ');
+
+        // print_r($subject_ids);exit;
+
         $total_marks = Subject::leftjoin('marks','marks.subject_id','=','subjects.id')
                             ->where('standard_id', $standard_id)
                             ->pluck('total_marks');
                             // print_r($subjectString);exit;
-        return response()->json(['student_data'=>$student_data,'optional_subject'=>$subjectString,'total_marks'=>$total_marks]);
+        return response()->json(['student_data'=>$student_data,'optional_subject'=>$subjectString,'total_marks'=>$total_marks,'subject_ids'=>$subject_ids]);
     }
     
     /**
@@ -147,18 +157,36 @@ class MarkController extends Controller
      */
     public function update(Request $request,$id)
     {
-        $student_detail_update = Student::where('id', $id)->first();
+        $marks = $request->input('marks');
+
+// Filter out only empty strings and null values, keeping `0`
+        $singleValue = implode(', ', array_filter($marks, function ($value) {
+            return $value !== null && $value !== '';
+        }));
+        
+        // print_r($singleValue);
+        $student_detail_update = Marks::where('student_id', $id)->where('subject_id',$request->input('subject_id'))->first();
 
         if ($student_detail_update) {
             $student_detail_update->update([
-                'name' => $request->input('name'),
-                'roll_no' => $request->input('roll_no'),
-                'GR_no' => $request->input('GR_no'),
+                'marks' => $singleValue,
             ]);
         }
+
     }
    public function destroy(string $id)
     {
-        //
+        // $marks = Marks::findOrFail($id);
+        // $marks->delete();
+
+        // $marks = $request->input('marks');
+        // $singleValue = implode(', ', array_filter($marks)); 
+        $student_detail_update = Marks::where('student_id', $id)->first();
+
+        if ($student_detail_update) {
+            $student_detail_update->update([
+                'marks' => '',
+            ]);
+        }
     }
 }

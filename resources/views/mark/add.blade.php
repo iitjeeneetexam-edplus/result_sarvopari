@@ -243,7 +243,6 @@
                     $('#studentTable tbody').empty();
                     if (data.students.length > 0) {
                         var totalmark = $('#total_marks').val();
-                        alert(totalmark);
                         $.each(data.students, function(index, student) {
                             var row = '<tr>' +
                                 '<td>' + student.roll_no + '</td>' +
@@ -257,7 +256,6 @@
                     }
                 },
                 error: function() {
-                    alert('Error fetching student data.');
                 }
             });
         }

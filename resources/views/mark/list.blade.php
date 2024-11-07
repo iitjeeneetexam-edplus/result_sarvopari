@@ -112,7 +112,9 @@
                             }
                         });
                         $('form').submit(function(event) {
-                            event.preventDefault(); // Prevent the form from submitting normally
+                            event.preventDefault(); 
+                            $('#studentdata tbody').empty();
+
 
                             $.ajax({
                                 url: '/students/getstudentformarks',
@@ -135,7 +137,10 @@
                                                 studentRow += '<td>' + (value.marks[subjectName.trim()]  || '') + '</td>';
                                             });
                                         }
-                                        studentRow += `<td><button class="openModalBtn btn btn-success" data-id="${value.id}" data-division-id="${value.division_id}" >Edit</button></td>`;
+                                        studentRow += `<td><button class="openModalBtn btn btn-success" data-id="${value.id}" data-division-id="${value.division_id}" >Edit</button>
+                                        
+                                        </td>`;
+                                        //&nbsp&nbsp<button class="openBtndelete btn btn-danger" data-id="${value.id}">Delete</button>
                                         studentRow += '</tr>';
                                         $('#studentdata tbody').append(studentRow);
                                     });
@@ -170,43 +175,66 @@
                             });
                         });
                     });
+                    $(document).on('click', '.openBtndelete', function() {
+                        var studentId  = $(this).data('id');
+                        var row = $(this).closest('.student-row');
+                            if (confirm('Are you sure you want to delete this?')) {
+                            $.ajax({
+                                    url: '/marks/delete/' + studentId ,
+                                    type: 'GET',
+                                    success: function(data){
+                                       
+                                        $('form').submit();  
+                                    },
+                                    error: function(xhr, status, error) {
+                                        console.error('Error fetching data:', error);
+                                    }
+                        });
+                      }
+                    });
                     $(document).on('click', '.openModalBtn', function() {
                             var studentId  = $(this).data('id');
                             var divisionId = $(this).data('division-id');
                             var row = $(this).closest('.student-row');
 
                             $.ajax({
-                                url: '/marks/edit/' + studentId + '/' + divisionId, // include both IDs in the URL
+                                url: '/marks/edit/' + studentId + '/' + divisionId, 
                                 type: 'GET',
                                 success: function(data) {
-                                    // Hide the current row
                                     row.hide();
-
-                                    // Generate the editable row
                                     var editRow = `<tr class="edit-row" data-id="${studentId}">
                                         <td>${studentId}</td>
                                         <td><button class="btn btn-success">Result</button></td>
-                                        <td><input type="text" class="form-control" value="${row.find('td').eq(2).text()}" name="name" disabled></td>
-                                        <td><input type="text" class="form-control" value="${row.find('td').eq(3).text()}" name="roll_no" disabled></td>
-                                        <td><input type="text" class="form-control" value="${row.find('td').eq(4).text()}" name="GR_no" disabled></td>`;
-
-                                    // Add subject marks as editable inputs
-                                    if (data.optional_subject != null) {
-                                        var subjectsArray = data.optional_subject.split(',');
-                                        console.log(data.optional_subject);
-                                        $.each(subjectsArray, function(index, subjectName) {
-                                            // var subjectId = data.subject_ids[index]; // Assuming you have an array of subject IDs in 'data.subject_ids'
-
-                                        // Add hidden input for subject_id and text input for marks
-                                            // editRow += `<td><input type="text" class="form-control" value="${index}" name="subject_id[]"></td>`; // Hidden field for subject_id
+                                        <td><label>${row.find('td').eq(2).text()}</label></td>
+                                        <td><label>${row.find('td').eq(3).text()}</label></td>
+                                        <td><label>${row.find('td').eq(4).text()}<label></td>`;
+                                        // alert(data.subject_ids);
+                                        // var subject_ids_get = data.subject_ids.split(',');
+                                        //         $.each(subject_ids_get, function(index, subject_id) {
+                                        //          editRow += `<td><input type="hidden" class="form-control" value="${subject_id}" name="subject_id"><td>`; 
+                                        //         });
                             
-                                            editRow += `<td><input type="text" class="form-control" value="${row.find('td').eq(5 + index).text()}" name="marks[${subjectName.trim()}]"></td>`;
-                                        });
-                                    }
+                                            if (data.optional_subject != null) {
+                                                var subjectsArray = data.optional_subject.split(',');
+                                                console.log(data.optional_subject);
+                                                        $.each(subjectsArray, function(index, subjectName) {
+                                                            var cellText = row.find('td').eq(5 + index).text().trim();
+                                                            
+                                                            editRow += `<td>`;
+                                                            if (cellText != '') {
+                                                                editRow += `<input type="text" id="myTextbox" style="width:150;justify-self:center"  class="form-control" 
+                                                                            value="${cellText}" name="marks[]" />`;
+                                                            } else {
+                                                                editRow += cellText;
+                                                            }
+                                                            editRow += `</td>`;
+                                                        });
 
-                                    editRow += `<td><div class="d-flex"><button type="button" class="btn btn-danger cancelEditBtn">Cancel</button><button type="button" class="btn btn-success saveEditBtn">Update</button></div></td></tr>`;
+                                                editRow += ` <span id="errorMessage" style="color: red; display: none;">This field is required.</span>`;
+                                            }
+
+                                    editRow += `<td><div class="d-flex"><button type="button" class="btn btn-warning cancelEditBtn">Back</button>&nbsp&nbsp<button type="button" class="btn btn-success saveEditBtn">Update</button></div></td></tr>`;
                                     
-                                    // Insert the editable row right after the hidden row
                                     row.after(editRow);
                                 },
                                 error: function(xhr, status, error) {
@@ -216,23 +244,51 @@
                             });
                         });
 
-// Event delegation for cancel edit button
                                 $(document).on('click', '.cancelEditBtn', function() {
-                                    var row = $(this).closest('.student-row');
                                     var editRow = $(this).closest('.edit-row');
-                                    
-                                    // Show the original row again and remove the edit row
-                                    row.show();
-                                    editRow.remove();
+                                    var row = editRow.prev('.student-row'); 
+
+                                    editRow.toggle();
+                                    row.toggle();
                                 });
 
-                                // Event delegation for save edit button (if you want to handle saving logic)
+                                                                
                                 $(document).on('click', '.saveEditBtn', function() {
-                                    var editRow = $(this).closest('.edit-row');
+                                    //validation 
+                                    event.preventDefault(); 
+                                    var regex = /^[0-9]+$/;
+                                    var textboxValue = $('#myTextbox').val().trim();
+                                    if (textboxValue === '') {
+                                       
+                                        $('#myTextbox').css('border', '2px solid red');
+                                        $('#myTextbox').addClass('invalid');
+                                        $('#errorMessage').show(); 
+                                        setTimeout(function() {
+                                            $('#myTextbox').removeClass('invalid');
+                                        }, 500);
+                                        return; // Show error message
+                                    } else if (!regex.test(textboxValue)) {
+                                            $('#myTextbox').addClass('invalid');
+                                            $('#errorMessage').text('Please enter only integer values (no decimals or symbols).').show();
+                                            return;
+                                        } else if (parseInt(textboxValue) < 0 || parseInt(textboxValue) > 100) {
+                                            $('#myTextbox').addClass('invalid');
+                                            $('#errorMessage').text('Please enter a value between 0 and 100.').show();
+                                            return;
+                                        } else {
+                                        // Remove red border if textbox is not empty
+                                        $('#myTextbox').removeClass('invalid');
+                                        $('#errorMessage').hide();
+                                        $('#myTextbox').css('border', ''); // Reset border style
+                                    }
+
+
+                                    var editRow = $(this).closest('.edit-row'); // Store reference to the edit row
+                                    var row = editRow.prev('.student-row');     
                                     var studentId = editRow.data('id');
                                     var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                                    var row = $(this).closest('.student-row');
 
-// Set the token in the AJAX request headers
                                     $.ajaxSetup({
                                         headers: {
                                             'X-CSRF-TOKEN': csrfToken
@@ -240,26 +296,31 @@
                                     });
                                     // Collect the form data from the edit row
                                     var formData = {
-                                        name: editRow.find('input[name="name"]').val(),
-                                        roll_no: editRow.find('input[name="roll_no"]').val(),
-                                        GR_no: editRow.find('input[name="GR_no"]').val()
+                                        subject_id: editRow.find('input[name="subject_id"]').val(),
+                                        // marks: editRow.find('input[name="subject_id[]"]').map(function() {
+                                        //     return $(this).val();  // Collect all marks into an array
+                                        // }).get() 
+                                        marks: editRow.find('input[name="marks[]"]').map(function() {
+                                            return $(this).val();  // Collect all marks into an array
+                                        }).get() 
                                     };
                                     
                                     // Add marks data for each subject
-                                    editRow.find('input[name^="marks"]').each(function() {
-                                        formData[$(this).attr('name')] = $(this).val();
-                                    });
+                                    // editRow.find('input[name^="marks"]').each(function() {
+                                    //     formData[$(this).attr('name')] = $(this).val();
+                                    // });
 
                                     $.ajax({
                                         url: '/marks/update/' + studentId, // The URL for updating marks
                                         type: 'POST',
                                         data: formData,
                                         success: function(response) {
-                                            console.log('Data updated successfully', response);
+                                            
+                                            $('form').submit();  
+                                            // row.hide();
                                         },
                                         error: function(xhr, status, error) {
                                             console.error('Error saving data:', error);
-                                            alert('Error saving data');
                                         }
                                     });
                                 });
@@ -269,4 +330,47 @@
                    
                 </script>
 </x-app-layout>
-<!-- 
+<style>
+    /* Basic styling for the textbox */
+input.form-control {
+    width: 100%;
+    padding: 10px;
+    margin: 20px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    position: relative;
+}
+
+/* Red border and shaking effect when invalid */
+input.form-control.invalid {
+    border: 2px solid red;
+    animation: shake 0.5s ease; /* Apply the shake animation */
+}
+
+/* Error message styling */
+#errorMessage {
+    color: red;
+    font-size: 12px;
+    display: none; /* Hidden by default */
+    position: absolute;
+    top: -20px; /* Move above the textbox */
+    left: 0;
+    width: 100%;
+    text-align: left;
+}
+
+/* Shaking animation */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(5px); }
+}
+
+/* Move input label up on focus (for a floating label effect) */
+input.form-control:focus + #errorMessage {
+    display: block; /* Show the error message when the input is focused */
+}
+
+</style>
