@@ -102,6 +102,8 @@ Route::get('/students/edit/{id}', [StudentController::class, 'editstudent'])->na
 Route::put('/students/update', [StudentController::class, 'updatestudent'])->name('students.edit');
 Route::get('/students/delete/{id}', [StudentController::class, 'deletestudent'])->name('students.delete');
 
+Route::post('/student/marksheet', [StudentController::class, 'marksheet'])->name('students.marksheet');
+
 
 
 });

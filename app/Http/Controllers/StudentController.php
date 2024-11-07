@@ -3,15 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Division;
+use App\Models\Marks;
 use App\Models\School;
 use App\Models\Standard;
 use App\Models\Student;
 use App\Models\StudentSubject;
 use App\Models\Subject;
 use App\Models\Subjectsub;
+use PDF;
 use Exception;
+use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File as FacadesFile;
 use Illuminate\Support\Facades\Log;
 
 class StudentController extends Controller
@@ -189,6 +193,7 @@ class StudentController extends Controller
 
     public function StudentlistBydivisionorsubject($division_id,$subject_id){
         $studentQY = Student::with('division:id,division_name')
+        ->select('students.id', 'students.name', 'students.roll_no')
             ->where('division_id', $division_id)
             ->when($subject_id, function ($query) use ($subject_id) {
                 $query->join('student_subjects', 'students.id', '=', 'student_subjects.student_id')
@@ -259,6 +264,100 @@ class StudentController extends Controller
             $subdl = StudentSubject::where('student_id',$id)->delete();
         }
         return response()->json($subdl);
+    }
+
+    public function marksheet(Request $request){
+        // $validator = Validator::make($request->all(), [
+        //     'student_id' => 'required',
+        // ]);
+        // if ($validator->fails()) {
+        //     return $this->response([], $validator->errors()->first(), false, 400);
+        // }
+        try{
+            $student=Student::join('division','division.id','=','students.division_id')
+            ->join('standards','standards.id','=','division.standard_id')
+            ->join('schools','schools.id','=','standards.school_id')
+            ->select('students.*','standards.standard_name','standards.id as standard_id','schools.school_name','division.division_name')
+            ->where('students.id',$request->student_id)->first();
+            
+            //$subjects = Subject::where('standard_id', $student['standard_id'])->select('subject_name','id','is_optional')->get();
+            // $subjectString = $subjectss->implode(', ');
+            // $subjects = explode(",",$subjectString);
+
+            // $total_marks = Subject::leftjoin('marks','marks.subject_id','=','subjects.id')
+            // ->where('standard_id', $student['standard_id'])
+            // ->select('marks.total_marks','marks.subject_id','marks.is_optional')->get();
+
+            // $student_marks = Marks::leftJoin('subjects as s1', function ($join) {
+            //     $join->on('s1.id', '=', 'marks.subject_id')
+            //         ->where('marks.is_optional', '0');
+            // })
+            // ->leftJoin('subject_subs as s2', function ($join) {
+            //     $join->on('s2.id', '=', 'marks.subject_id')
+            //         ->where('marks.is_optional', '1');
+            // })->where('marks.student_id',$request->student_id)->get();
+
+            $subjectsData = Subject::leftJoin('marks', function ($join) {
+                $join->on('marks.subject_id', '=', 'subjects.id')
+                     ->where('marks.is_optional', '0');
+            })
+            ->where('subjects.standard_id', $student['standard_id'])
+            ->where('marks.student_id', $request->student_id)
+            ->select(
+                'subjects.subject_name',
+                'subjects.id',
+                'subjects.is_optional',
+                'marks.total_marks',
+                'marks.marks',
+                'marks.subject_id as mark_subject_id',
+                'marks.is_optional as mark_is_optional'
+            )
+            ->get();
+
+            $optinalsubjects = Subject::join('subject_subs','subject_subs.subject_id','=','subjects.id')
+            ->leftJoin('marks', function ($join) {
+                $join->on('marks.subject_id', '=', 'subject_subs.id')
+                     ->where('marks.is_optional', '1');
+            })
+            ->where('subjects.standard_id', $student['standard_id'])
+            ->where('marks.student_id', $request->student_id)
+            ->select(
+                'subject_subs.subject_name',
+                'subject_subs.id',
+                'subjects.is_optional',
+                'marks.total_marks',
+                'marks.marks',
+                'marks.subject_id as mark_subject_id',
+                'marks.is_optional as mark_is_optional'
+            )
+            ->get();
+
+            $data = ['student'=>$student,'subjects'=>$subjectsData,'optional_subjects'=>$optinalsubjects]; 
+
+            //$data = ['student'=>$student,'subjects'=>$subjects,'total_marks'=>$total_marks,'student_marks'=>$student_marks]; 
+            
+            $pdf = PDF::loadView('mark.marksheet', ['data' => $data]);
+            $folderPath = public_path('pdfs');
+
+            if (!File::exists($folderPath)) {
+            File::makeDirectory($folderPath, 0755, true);
+            }
+
+            $baseFileName = 'marksheet.pdf';
+            $pdfPath = $folderPath . '/' . $baseFileName;
+
+            $counter = 1;
+            while (File::exists($pdfPath)) {
+            $pdfPath = $folderPath . '/marksheet' . $counter . '.pdf'; 
+            $counter++;
+            }
+
+            file_put_contents($pdfPath, $pdf->output());
+            $pdfUrl = asset('pdfs/' . basename($pdfPath));
+            return response($pdfUrl);
+        }catch(Exception $e){
+            return redirect()->route('marks.index')->with([], "Something went wrong!.", false, 400);
+        }
     }
 
 }

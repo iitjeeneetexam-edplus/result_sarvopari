@@ -14,6 +14,7 @@ class Marks extends Model
         'exam_id',
         'is_optional',
         'total_marks',
+        'passing_marks',
         'marks',
     ];
 }

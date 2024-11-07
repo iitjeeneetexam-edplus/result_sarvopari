@@ -34,6 +34,14 @@
                         </select>
                     </div>
                     <div class="form-group mb-3">
+                        <label for="exam_year">Exam Year</label>
+                        <input type="text" class="form-control" id="exam_year" name="exam_year" required value="{{ old('date') }}">
+                        <span id="date-error" class="text-danger" style="display:none;"></span>
+                        @error('exam_year')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group mb-3">
                         <label for="standard_id">Select Standard</label>
                         <select class="form-control" id="standard_id" name="standard_id" required>
                             <option value="">select option</option>
@@ -51,7 +59,15 @@
                         @error('date')
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
+                    </div>
 
+                    <div class="form-group mb-3">
+                        <label for="result_date">Result Date</label>
+                        <input type="date" class="form-control" id="result_date" name="result_date" required value="{{ old('date') }}">
+                        <span id="date-error" class="text-danger" style="display:none;"></span>
+                        @error('result_date')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <button type="submit" class="btn btn-success">Add Exam</button>
