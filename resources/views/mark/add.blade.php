@@ -74,6 +74,13 @@
                                 @enderror
                             </div>
                             <div class="col-md-12">
+                                <label for="passing_marks">Passing Marks</label>
+                                <input type="text" name="passing_marks" id="passing_marks" class="form-control" placeholder="Enter Passing Marks">
+                                @error('passing_marks')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-12">
                                 <label for="subject">Select Subject:</label>
                                 <select name="subject_id" id="subject" class="form-control">
                                     <option value="">Select a Subject</option>
@@ -243,7 +250,6 @@
                     $('#studentTable tbody').empty();
                     if (data.students.length > 0) {
                         var totalmark = $('#total_marks').val();
-                        alert(totalmark);
                         $.each(data.students, function(index, student) {
                             var row = '<tr>' +
                                 '<td>' + student.roll_no + '</td>' +

@@ -48,7 +48,8 @@ class MarkController extends Controller
             'division_id' => 'required|exists:division,id',
             'subject_id' => 'sometimes|required_without:subject_sub',
             'subject_sub' =>'sometimes|required_without:subject_id',
-            'total_marks'=>'required'
+            'total_marks'=>'required',
+            'passing_marks'=>'required'
         ]);
 
         try{
@@ -71,6 +72,7 @@ class MarkController extends Controller
                             'exam_id' => $request->input('exam_id'),
                             'is_optional' => $is_optional,
                             'total_marks' => $request->input('total_marks'),
+                            'passing_marks'=>$request->input('passing_marks'),
                             'marks' =>  !empty($marks[$i]) ? $marks[$i] : '',
                         ]);
                    

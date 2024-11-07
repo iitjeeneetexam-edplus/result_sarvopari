@@ -33,6 +33,8 @@ class ExamController extends Controller
             'exam_name' => 'required|string|max:255',
             'standard_id' => 'required|exists:standards,id',
             'date' => 'required',
+            'result_date' => 'required',
+            'exam_year' => 'required',
         ]);
 
         Exam::create($request->all());
