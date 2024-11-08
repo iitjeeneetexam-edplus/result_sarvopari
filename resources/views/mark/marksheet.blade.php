@@ -47,7 +47,7 @@
             <td colspan="2">school_index: <b>school_index</b></td>
         </tr>
         <tr class="header-row">
-            <td colspan="4">Name <center><b>{{ $data['student']['name'] }}</b></center></td>
+            <td colspan="4"><center><b>{{ $data['student']['name'] }}</b></center></td>
         </tr>
         <tr class="header-row">
             <td colspan="1">G.R</td>
