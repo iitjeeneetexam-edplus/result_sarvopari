@@ -119,7 +119,7 @@
                                 $('#division').empty().append('<option value="">Select a Division</option>');
                             }
                         });
-                        $('#division').change(function() {
+                        $('#standard').change(function() {
                             var standardId = $(this).val();
                             if (standardId) {
                                 $.ajax({
