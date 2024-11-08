@@ -39,15 +39,15 @@
             <td colspan="4"><center><b>{{ $data['student']['school_name'] }}</b></center></td>
         </tr>
         <tr class="header-row" colspan="4">
-            <td colspan="2">Exam: exam</td>
-            <td colspan="2">Year: <b>year</b></td>
+            <td colspan="2">Exam: <b>{{ $data['student']['exam_name'] }}</b></td>
+            <td colspan="2">Year: <b>{{ $data['student']['exam_year'] }}</b></td>
         </tr>
         <tr class="header-row">
             <td colspan="2">Standard: <b>{{ $data['student']['standard_name'] }} </b></td>
             <td colspan="2">school_index: <b>school_index</b></td>
         </tr>
         <tr class="header-row">
-            <td colspan="4">Name <center><b>{{ $data['student']['name'] }}</b></center></td>
+            <td colspan="4"><center><b>{{ $data['student']['name'] }}</b></center></td>
         </tr>
         <tr class="header-row">
             <td colspan="1">G.R</td>
@@ -82,9 +82,12 @@
         @endphp
         @endforeach
 
+        @php
+        $sno = $no;
+        @endphp
         @foreach($data['optional_subjects'] as $optinalsubjects)
              <tr>
-                <td>{{ $no }}</td>
+                <td>{{ ++$sno }}</td>
                 <td>{{ $optinalsubjects->subject_name }}</td>
                 <td>{{ $optinalsubjects->total_marks }}</td>
                 <td>{{ $optinalsubjects->marks ?? ' ' }}</td>
@@ -126,7 +129,7 @@
         </td>
         </tr>
         <tr>
-            <td colspan="4">Result Date:</td>
+            <td colspan="4">Result Date: {{ $data['student']['result_date'] }}</td>
         </tr>
         <tr>
             <td colspan="2">Teacher Signature</td>

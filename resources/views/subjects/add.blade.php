@@ -78,7 +78,7 @@
                                         <div class="row">
                                             <div class="col-md-10 ">
                                                 <label for="subject_name">Subject Name </label>
-                                                <input type="text" class="form-control" id="subject_name" name="subject_sub_name[0][]" placeholder="Subject Name">
+                                                <input type="text" class="form-control" id="subject_sub_name" name="subject_sub_name[0][]" placeholder="Subject Name">
                                                 @error('subject_name')
                                                 <div class="text-danger">{{ $message }}</div>
                                                 @enderror
@@ -199,7 +199,7 @@
                      </div>
                <div class="form-group mb-3" id="main_subject${idCounter}">
                         <label for="subject_name">Subject Name </label>
-                        <input type="text" class="form-control" id="subject_name" name="subject_name[]" placeholder="Subject Name">
+                        <input type="text" class="form-control" id="subject_name${idCounter}" name="subject_name[]" placeholder="Subject Name">
                        
                     </div>
                     <input type="hidden" id="currentID" value="${idCounter}">
@@ -220,14 +220,14 @@
                                     <div class="col-md-10 ">
                                     <label for="subject_name">Subject Name</label>    
                                         
-                                        <input type="text" class="form-control" id="subject_name" name="subject_sub_name[${subjectCounter}][]" placeholder="Subject Name" >
+                                        <input type="text" class="form-control" id="subject_sub_name${idCounter}" name="subject_sub_name[${subjectCounter}][]" placeholder="Subject Name" >
                                     </div>
                                   </div>
                                   <div class="row">
                                     <div class="col-md-10 ">
                                     <label for="subject_name">Subject Name</label>    
                                         
-                                        <input type="text" class="form-control" id="subject_name" name="subject_sub_name[${subjectCounter}][]"  placeholder="Subject Name">
+                                        <input type="text" class="form-control" id="subject_sub_name${idCounter}" name="subject_sub_name[${subjectCounter}][]"  placeholder="Subject Name">
                                     </div>
                                   </div>
                                     </div>
@@ -317,9 +317,11 @@
         if (isOptional == '1') {
             optionalDiv.classList.remove('hidden');
             $('#main_subject').hide();
+            $('#subject_name').val('');
         } else {
             $('#main_subject').show();
             optionalDiv.classList.add('hidden');
+            $('#subject_sub_name').val('');
         }
     }
 
@@ -331,9 +333,11 @@
 
             optionalDiv2.classList.remove('hidden');
             $('#main_subject' + id).hide();
+            $('#subject_name' + id).val('');
         } else {
             optionalDiv2.classList.add('hidden');
             $('#main_subject' + id).hide();
+            $('#subject_sub_name' + id).val('');
         }
     }
     $('.remove-option').click(function() {
