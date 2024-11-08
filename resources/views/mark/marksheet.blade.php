@@ -39,7 +39,7 @@
             <td colspan="4"><center><b>{{ $data['student']['school_name'] }}</b></center></td>
         </tr>
         <tr class="header-row" colspan="4">
-            <td colspan="2">Exam: {{ $data['student']['exam_name'] }}</td>
+            <td colspan="2">Exam: <b>{{ $data['student']['exam_name'] }}</b></td>
             <td colspan="2">Year: <b>{{ $data['student']['exam_year'] }}</b></td>
         </tr>
         <tr class="header-row">

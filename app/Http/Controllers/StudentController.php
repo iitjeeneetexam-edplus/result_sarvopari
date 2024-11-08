@@ -324,7 +324,6 @@ class StudentController extends Controller
             ->get();
             
             $data = ['student'=>$student,'subjects'=>$subjectsData,'optional_subjects'=>$optinalsubjects]; 
-                
             //$data = ['student'=>$student,'subjects'=>$subjects,'total_marks'=>$total_marks,'student_marks'=>$student_marks]; 
             
             $pdf = PDF::loadView('mark.marksheet', ['data' => $data]);
@@ -345,7 +344,8 @@ class StudentController extends Controller
 
             file_put_contents($pdfPath, $pdf->output());
             $pdfUrl = asset('pdfs/' . basename($pdfPath));
-            return response($pdfUrl);
+            return response()->json(['pdfUrl'=>$pdfUrl]);
+
         }catch(Exception $e){
             return redirect()->route('marks.index')->with([], "Something went wrong!.", false, 400);
         }

@@ -152,7 +152,7 @@
                                     $.each(data.student, function(key, value) {
                                         var studentRow = `<tr class="student-row" data-id="${value.id}">`+
                                             '<td>' + value.id + '</td>' +
-                                            '<td><form method="POST" action="{{ route("students.marksheet") }}">@csrf <input type="hidden" name="exam_id" value="'+ value.exam_id +'"><input type="hidden" name="student_id" value="'+ value.id +'"><button class="btn btn-success">Result</button></form></td>' +
+                                            '<td><button class="btn btn-success" onclick="generatepdf('+ value.id +','+ value.exam_id +')">Result</button></td>'+
                                             '<td>' + value.name + '</td>' +
                                             '<td>' + value.roll_no + '</td>' +
                                             '<td>' + value.GR_no + '</td>';
@@ -362,7 +362,28 @@
                                 });
 
 
-                   
+                   function generatepdf(studentId,examId){
+                     $.ajax({
+                        url: "{{ route('students.marksheet') }}",
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            exam_id: examId,
+                            student_id: studentId
+                        },
+                        success: function (response) {
+                            console.log(response);
+                            if (response.pdfUrl) {
+                                window.open(response.pdfUrl, '_blank');
+                            } else {
+                                alert('Failed to generate PDF.');
+                            }
+                        },
+                        error: function () {
+                            alert('Error while processing request.');
+                        }
+                    });
+                   }
                    
                 </script>
 </x-app-layout>
