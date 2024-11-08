@@ -95,7 +95,7 @@ Route::get('/marks', [MarkController::class, 'index'])->name('marks.index');
 Route::get('/marks/create', [MarkController::class, 'create'])->name('marks.create');
 Route::post('/marks/store', [MarkController::class, 'store'])->name('marks.store');
 Route::get('/marks/edit/{sid}/{did}', [MarkController::class, 'edit'])->name('marks.edit');
-Route::post('/marks/update/{id}', [MarkController::class, 'update'])->name('marks.update');
+Route::post('/marks/update', [MarkController::class, 'update'])->name('marks.update');
 Route::get('/marks/delete/{sid}', [MarkController::class, 'destroy'])->name('marks.destroy');
 
 Route::post('/assign-subject', [StudentController::class, 'assignSubject'])->name('assign.subject');

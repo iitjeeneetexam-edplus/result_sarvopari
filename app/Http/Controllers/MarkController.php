@@ -139,7 +139,7 @@ class MarkController extends Controller
         $subjectString = $subjects->map(function($subjectName, $subjectId) {
             return  $subjectName;  // Format as "subject_id - subject_name"
         })->implode(', ');
-        $main_subject_id = Subject::where('standard_id', $standard_id)->pluck('id');
+        $main_subject_id = Subject::where('standard_id', $standard_id)->where('is_optional', '0')->pluck('id');
         $main_subject_ids = $main_subject_id->map(function($subjectId) {
             return  $subjectId;  // Format as "subject_id - subject_name"
         })->implode(', ');
@@ -147,7 +147,7 @@ class MarkController extends Controller
         $optional_subject_ids = $optional_subject_id->map(function($id) {
             return  $id;  
         })->implode(', ');
-
+       
         // print_r($main_subject_ids);exit;
 
         $total_marks = Subject::leftjoin('marks','marks.subject_id','=','subjects.id')
@@ -160,25 +160,32 @@ class MarkController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,$id)
+    public function update(Request $request)
     {
-        $marks = $request->input('marks');
-        print_r($request->all());exit;
-
-// Filter out only empty strings and null values, keeping `0`
-        $singleValue = implode(', ', array_filter($marks, function ($value) {
-            return $value !== null && $value !== '';
-        }));
         
-        // print_r($singleValue);
-        $student_detail_update = Marks::where('student_id', $id)->where('subject_id',$request->input('subject_id'))->first();
+        $markIds = $request->input('mark_id');
+        $marks = $request->input('marks');
 
-        if ($student_detail_update) {
-            $student_detail_update->update([
-                'marks' => $singleValue,
-            ]);
+        $filteredMarkIds = array_filter($markIds, function($value) {
+            return !empty($value);
+        });
+
+        $filteredMarkIds = array_values($filteredMarkIds);
+        try{
+            foreach ($filteredMarkIds as $index => $markId) {
+                $mark = Marks::find($markId);  
+                if ($mark) {
+                    $mark->marks = $marks[$index];
+                    $mark->save();
+                    
+                }
+            }
+            return 1;
+        }catch(Exception $e){
+            return 0;
         }
-
+         
+       
     }
    public function destroy(string $id)
     {
