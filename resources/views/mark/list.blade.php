@@ -8,7 +8,7 @@
     </x-slot>
 
     <div class="row justify-content-center">
-        <div class="col-12 col-sm-8 col-md-8 col-lg-7">
+        <div class="col-12 col-sm-8 col-md-12 col-lg-9">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-5">
                 <div class="container mt-5">
                     <h1>List of Mark</h1>
@@ -159,14 +159,15 @@
                                            
                                         if (data.subject != null) {
                                             var subjectsArray = data.subject.split(',');
-                                            
-
                                             $.each(subjectsArray, function(index, subjectName) {
-                                                studentRow += '<td>' + (value.marks[subjectName.trim()]  || '') + '</td>';
-                                            });
+                                                studentRow += `<td>
+                                                                <input type="hidden" name="is_optional[]" value="${value.is_optional[subjectName.trim()] || ''}">
+                                                                <input type="hidden" name="mark_id[]" value="${value.mark_id[subjectName.trim()] || ''}">
+                                                                ${value.marks[subjectName.trim()] || ''}
+                                                            </td>`;
+                                                            });
                                         }
                                         studentRow += `<td><button class="openModalBtn btn btn-success" data-id="${value.id}" data-division-id="${value.division_id}" >Edit</button>
-                                        
                                         </td>`;
                                         //&nbsp&nbsp<button class="openBtndelete btn btn-danger" data-id="${value.id}">Delete</button>
                                         studentRow += '</tr>';
@@ -187,18 +188,19 @@
                                     $('#studentdata thead tr').append('<th>GR No</th>');
                                    
                                   
-                                    // Adding dynamic subject headers
                                     if (data.subject != null) {
                                         var subjectsArray = data.subject.split(',');
                                         var totalmarks = data.total_marks;
 
                                         $.each(subjectsArray, function(index, subjectName) {
-                                            var marks = totalmarks[index] !== undefined && totalmarks[index] !== '' ? totalmarks[index] : ''; // default to 'N/A' if undefined or empty
-                                            $('#studentdata thead tr').append('<th>' + subjectName.trim() + '(' + marks + ')</th>');
+                                            var marks = (totalmarks[index] && totalmarks[index].total_marks !== undefined && totalmarks[index].total_marks !== '') 
+                                                        ? totalmarks[index].total_marks 
+                                                        : '';
+
+                                            $('#studentdata thead tr').append('<th>' + subjectName.trim() + ' (' + marks + ')</th>');
                                         });
                                     }
                                     $('#studentdata thead tr').append('<th>Action</th>');
-                                    // $('#pagination-links').html(data.subject.pagination);
                                 },
                                 error: function(xhr, status, error) {
                                     $('#studentdata thead tr').append('<th>No data Found!</th>');
@@ -225,8 +227,18 @@
                     });
                     $(document).on('click', '.openModalBtn', function() {
                             var studentId  = $(this).data('id');
+                            localStorage.setItem('studentId', JSON.stringify(studentId));
+
                             var divisionId = $(this).data('division-id');
                             var row = $(this).closest('.student-row');
+                            // let tdElement = row.find('td').eq(5);
+                            // let isOptionalValues = [];
+
+                            // tdElement.find('input[name="is_optional[]"]').each(function(_, input) {
+                            //     isOptionalValues.push(input.value);
+                            // });
+
+                            // console.log(isOptionalValues);
 
                             $.ajax({
                                 url: '/marks/edit/' + studentId + '/' + divisionId, 
@@ -240,33 +252,61 @@
                                         <td><label>${row.find('td').eq(3).text()}</label></td>
                                         <td><label>${row.find('td').eq(4).text()}<label></td>`;
                                         // alert(data.subject_ids);
-                                        // var main_subject_ids_get = data.main_subject_ids.split(',');
-                                        //         $.each(main_subject_ids_get, function(index, subject_id) {
-                                        //          editRow += `<td><input type="hidden" class="form-control" value="${subject_id}" name="main_subject_id[]"><td>`; 
-                                        //         });
-                                        //         var optional_subject_ids_get = data.optional_subject_ids.split(',');
-                                        //         $.each(optional_subject_ids_get, function(index, subject_id) {
-                                        //          editRow += `<td><input type="hidden" class="form-control" value="${subject_id}" name="optional_subject_id[]"><td>`; 
-                                        //         });
-                            
-                                            if (data.optional_subject != null) {
-                                                var subjectsArray = data.optional_subject.split(',');
-                                                console.log(data.optional_subject);
-                                                        $.each(subjectsArray, function(index, subjectName) {
-                                                            var cellText = row.find('td').eq(5 + index).text().trim();
-                                                            
-                                                            editRow += `<td>`;
-                                                            if (cellText != '') {
-                                                                editRow += `<input type="text" id="myTextbox" style="width:150;justify-self:center"  class="form-control" 
-                                                                            value="${cellText}" name="marks[]" />`;
-                                                            } else {
-                                                                editRow += cellText;
-                                                            }
-                                                            editRow += `</td>`;
-                                                        });
+                                      // Split main and optional subject IDs
+                                      var is_optional = row.find('input[name="is_optional[]"]').map(function() {
+                                            return $(this).val(); // Collect each value into an array
+                                        }).get();
+                                        var mark_id = row.find('input[name="mark_id[]"]').map(function() {
+                                            return $(this).val(); // Collect each value into an array
+                                        }).get();
+                                        // console.log(marks_id);
 
-                                                editRow += ` <span id="errorMessage" style="color: red; display: none;">This field is required.</span>`;
-                                            }
+                                        console.log(is_optional);
+                                    var optional_subject_ids_get = data.optional_subject_ids.split(',');
+                                    var main_subject_ids_get = data.main_subject_ids.split(',');
+
+                                    // Define the arrays for subjects and marks
+                                    var subjectsArray = data.optional_subject != null ? data.optional_subject.split(',') : [];
+                                    var mainIndex = 0, optionalIndex = 0;
+
+                                    // Loop through each subject
+                                    $.each(subjectsArray, function(index, subjectName) {
+                                        // Check if the cell has text
+                                        var cellText = row.find('td').eq(5 + index).text().trim();
+                                        // editRow += `<tr>`; // Wrap each set in a new table row for alignment
+
+                                        // Add Main Subject ID
+
+                                        if (optionalIndex < optional_subject_ids_get.length) {
+                                            editRow += `<input type="hidden" class="form-control" value="${optional_subject_ids_get[optionalIndex]}" name="optional_subject_id[]">`;
+                                            optionalIndex++;
+                                        }
+
+                                        if (mainIndex < main_subject_ids_get.length) {
+                                            editRow += `<input type="hidden" class="form-control" value="${main_subject_ids_get[mainIndex]}" name="main_subject_id[]">`;
+                                            mainIndex++;
+                                        }
+                                         editRow +=`<input type="hidden"  style="width:150px; justify-self:center" class="form-control" value="${is_optional[index]}" name="is_optional[]" />`;
+                                        // Add Optional Subject ID
+                                        editRow += `<input type="hidden"  style="width:150px; justify-self:center" class="form-control" value="${mark_id[index]}" name="marks_id[]" />`;
+                                        // Add Marks input field or blank value if cellText is empty
+                                        editRow += `<td>`;
+                                        if (cellText != '') {
+                                            
+                                            editRow += `<input type="text" id="myTextbox" data-mark_index="${index}" style="width:150px; justify-self:center" class="form-control" value="${cellText}" name="marks[]" />`;
+                                        } 
+                                        // else {
+                                        //     editRow += `<input type="text" id="myTextbox" style="width:150px; justify-self:center" class="form-control" name="marks[]" />`;
+                                        // }
+                                        editRow += `</td>`;
+                                    });
+
+                                    // Add error message outside the loop for all fields
+                                    editRow += `<span id="errorMessage" style="color: red; display: none;">This field is required.</span>`;
+
+                                            // Arrays to store main subject IDs, optional subject IDs, and marks
+                                       
+                                           
 
                                     editRow += `<td><div class="d-flex"><button type="button" class="btn btn-warning cancelEditBtn">Back</button>&nbsp&nbsp<button type="button" class="btn btn-success saveEditBtn">Update</button></div></td></tr>`;
                                     
@@ -291,8 +331,12 @@
                                 $(document).on('click', '.saveEditBtn', function() {
                                     //validation 
                                     event.preventDefault(); 
+                                    // var markIndex = $(this).attr('data-mark_index');
+
+                                    
+
                                     var regex = /^[0-9]+$/;
-                                    var textboxValue = $('#myTextbox').val().trim();
+                                    var textboxValue = $('#myTextbox').val();
                                     if (textboxValue === '') {
                                        
                                         $('#myTextbox').css('border', '2px solid red');
@@ -317,10 +361,10 @@
                                         $('#myTextbox').css('border', ''); // Reset border style
                                     }
 
-
+                                    
                                     var editRow = $(this).closest('.edit-row'); // Store reference to the edit row
                                     var row = editRow.prev('.student-row');     
-                                    var studentId = editRow.data('id');
+                                    var studentId = localStorage.getItem('studentId');
                                     var csrfToken = $('meta[name="csrf-token"]').attr('content');
                                     var row = $(this).closest('.student-row');
 
@@ -329,30 +373,43 @@
                                             'X-CSRF-TOKEN': csrfToken
                                         }
                                     });
-                                    // Collect the form data from the edit row
-                                    var formData = {
-                                        main_subject_id: editRow.find('input[name="main_subject_id[]"]').val(),
-                                        optional_subject_id: editRow.find('input[name="optional_subject_id[]"]').val(),
-                                        // marks: editRow.find('input[name="subject_id[]"]').map(function() {
-                                        //     return $(this).val();  // Collect all marks into an array
-                                        // }).get() 
-                                        marks: editRow.find('input[name="marks[]"]').map(function() {
-                                            return $(this).val();  // Collect all marks into an array
-                                        }).get() 
+                            
+                                    // let mainSubjectIds = $('input[name="main_subject_id[]"]').map(function() {
+                                    //     return $(this).val();
+                                    // }).get();
+                                    // let optional_subject_id = $('input[name="optional_subject_id[]"]').map(function() {
+                                    //     return $(this).val();
+                                    // }).get();
+                                    // let is_optional = $('input[name="is_optional[]"]').map(function() {
+                                    //     return $(this).val();
+                                    // }).get();
+                                    let marks = $('input[name="marks[]"]').map(function() {
+                                        return $(this).val();
+                                    }).get();
+                                    let mark_id = $('input[name="marks_id[]"]').map(function() {
+                                        return $(this).val();
+                                    }).get();
+                                    // console.log(mainSubjectIds);
+                                    // console.log(optional_subject_id);
+                                    // console.log(is_optional);
+                                    console.log(marks);
+                                    console.log(mark_id);
+                                    let formData = {
+                                        'mark_id[]': mark_id,
+                                        'marks[]': marks,
+                                        // You can add other fields if needed
                                     };
+                                      
                                     
-                                    // Add marks data for each subject
-                                    // editRow.find('input[name^="marks"]').each(function() {
-                                    //     formData[$(this).attr('name')] = $(this).val();
-                                    // });
-
+                                 
                                     $.ajax({
-                                        url: '/marks/update/' + studentId, // The URL for updating marks
+                                        url: '/marks/update', // The URL for updating marks
                                         type: 'POST',
                                         data: formData,
                                         success: function(response) {
-                                            
-                                            $('form').submit();  
+                                            if(response == '1'){
+                                                $('form').submit();  
+                                            }
                                             // row.hide();
                                         },
                                         error: function(xhr, status, error) {

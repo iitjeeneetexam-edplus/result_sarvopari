@@ -96,10 +96,13 @@ class StudentController extends Controller
             'marks.marks',
             'marks.exam_id',
             'marks.subject_id',
+            'marks.is_optional',
+            'marks.id as mark_id',
+           
             
             DB::raw('GROUP_CONCAT(COALESCE(s1.subject_name, s2.subject_name)) as subject_name')
         )
-        ->groupBy('students.id','students.name','students.roll_no', 'students.GR_no','marks.marks', 'marks.exam_id','marks.subject_id')
+        ->groupBy('students.id','students.name','students.roll_no', 'students.GR_no','marks.marks', 'marks.exam_id','marks.subject_id','marks.is_optional','marks.id','students.division_id')
         ->get();
         // print_r($query);exit;
     $students = [];
@@ -112,6 +115,10 @@ class StudentController extends Controller
         $students[$item->id]['exam_id'] = $item->exam_id;
 
         $subjectName = $item->subject_name;
+        $students[$item->id]['is_optional'][$subjectName] = $item->is_optional;
+        $students[$item->id]['subject_id'][$subjectName] = $item->subject_id;
+        
+        $students[$item->id]['mark_id'][$subjectName] = $item->mark_id;
         $students[$item->id]['marks'][$subjectName] = $item->marks;
         
         
@@ -120,10 +127,16 @@ class StudentController extends Controller
         $subjects = Subject::where('standard_id', $standardId)->pluck('subject_name');
         $subjectString = $subjects->implode(', ');
 
-        $total_marks = Subject::leftjoin('marks','marks.subject_id','=','subjects.id')
-                            ->leftjoin('subject_subs','subject_subs.subject_id','=','subjects.id')
-                            ->where('standard_id', $standardId)
-                            ->pluck('total_marks');
+        // $total_marks = Subject::leftjoin('marks','marks.subject_id','=','subjects.id')
+        //                     ->leftjoin('subject_subs','subject_subs.subject_id','=','subjects.id')
+        //                     ->where('standard_id', $standardId)
+        //                     ->pluck('total_marks');
+        $total_marks = Marks::where('exam_id', $exam_id)
+              ->select('subject_id', 'total_marks') // Select only the needed columns
+              ->groupBy('subject_id', 'total_marks') // Group by subject_id and total_marks
+              ->get()->toarray();
+
+  
                             // print_r($total_marks);exit;
         return response()->json(['student'=>$students,'subject'=>$subjectString,'total_marks'=>$total_marks]);
     }
