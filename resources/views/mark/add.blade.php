@@ -68,14 +68,14 @@
                             </div>
                             <div class="col-md-12">
                                 <label for="total_marks">Total Marks</label>
-                                <input type="text" name="total_marks" id="total_marks" class="form-control" placeholder="Enter Total Marks">
+                                <input type="text" name="total_marks" id="total_marks" class="form-control" placeholder="Enter Total Marks" require>
                                 @error('total_marks')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
                             <div class="col-md-12">
                                 <label for="passing_marks">Passing Marks</label>
-                                <input type="text" name="passing_marks" id="passing_marks" class="form-control" placeholder="Enter Passing Marks">
+                                <input type="text" name="passing_marks" id="passing_marks" class="form-control" placeholder="Enter Passing Marks" require>
                                 @error('passing_marks')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror

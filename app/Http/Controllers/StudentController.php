@@ -209,28 +209,24 @@ class StudentController extends Controller
 
     public function StudentlistBydivisionorsubject($division_id,$subject_id,$is_optional,$exam_id){
         $studentQY = Student::with('division:id,division_name')
-            ->leftJoin('marks', 'marks.student_id', '=', 'students.id')
+        ->leftJoin('marks', function ($join) use ($subject_id, $is_optional, $exam_id) {
+            $join->on('marks.student_id', '=', 'students.id')
+                ->where('marks.subject_id', $subject_id)
+                ->where('marks.is_optional', $is_optional)
+                ->where('marks.exam_id', $exam_id);
+        })
             ->select('students.id', 'students.name', 'students.roll_no','marks.marks')
             ->where('division_id', $division_id);
 
             if($is_optional == 1){
                 $studentQY = $studentQY->when($subject_id, function ($query) use ($subject_id,$is_optional,$exam_id) {
                     $query->join('student_subjects', 'students.id', '=', 'student_subjects.student_id')                    
-                    ->where('student_subjects.subject_id', $subject_id)
-                    ->where('marks.subject_id', $subject_id)
-                    ->where('marks.is_optional', $is_optional)
-                    ->where('marks.exam_id', $exam_id);
-                });
-            }else{
-                $studentQY = $studentQY->when($subject_id, function ($query) use ($subject_id,$is_optional,$exam_id) {
-                    $query->where('marks.subject_id', $subject_id)
-                    ->where('marks.is_optional', $is_optional)
-                    ->where('marks.exam_id', $exam_id);
+                    ->where('student_subjects.subject_id', $subject_id);
+                    
                 });
             }
+            
         $students =  $studentQY->get();
-        // $students = Student::with('division:id,division_name')
-        //     ->where('division_id', $division_id)->get();
         return response()->json(['students'=>$students]);
     }
 
