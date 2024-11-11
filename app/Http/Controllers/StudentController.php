@@ -68,7 +68,7 @@ class StudentController extends Controller
         return view('student.list', compact('students','subjects','subject_subs','divisiions'));
     }
     public function getstudentformarks(Request $request){
-
+    //    print_r($request->all());exit;
         $divisionId = $request->input('division_id');
         $standardId = $request->input('standard_id');
         $exam_id = $request->input('exam_id');
@@ -86,7 +86,7 @@ class StudentController extends Controller
                 ->where('marks.is_optional', '1');
         })
         ->where('students.division_id', $divisionId)
-        ->where('marks.exam_id', $exam_id)
+        ->orwhere('marks.exam_id', $exam_id)
         ->select(
             'students.id',
             'students.name',
@@ -104,7 +104,6 @@ class StudentController extends Controller
         )
         ->groupBy('students.id','students.name','students.roll_no', 'students.GR_no','marks.marks', 'marks.exam_id','marks.subject_id','marks.is_optional','marks.id','students.division_id')
         ->get();
-        // print_r($query);exit;
     $students = [];
     foreach ($query as $item) {
         $students[$item->id]['id'] = $item->id;
