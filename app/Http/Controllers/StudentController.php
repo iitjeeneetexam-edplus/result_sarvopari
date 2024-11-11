@@ -208,15 +208,27 @@ class StudentController extends Controller
         //return redirect()->back()->with('success', 'Subject assigned to selected students.');
     }
 
-    public function StudentlistBydivisionorsubject($division_id,$subject_id){
+    public function StudentlistBydivisionorsubject($division_id,$subject_id,$is_optional,$exam_id){
         $studentQY = Student::with('division:id,division_name')
-        ->select('students.id', 'students.name', 'students.roll_no')
-            ->where('division_id', $division_id)
-            ->when($subject_id, function ($query) use ($subject_id) {
-                $query->join('student_subjects', 'students.id', '=', 'student_subjects.student_id')
-                      ->where('student_subjects.subject_id', $subject_id);
-            });
+            ->leftJoin('marks', 'marks.student_id', '=', 'students.id')
+            ->select('students.id', 'students.name', 'students.roll_no','marks.marks')
+            ->where('division_id', $division_id);
 
+            if($is_optional == 1){
+                $studentQY = $studentQY->when($subject_id, function ($query) use ($subject_id,$is_optional,$exam_id) {
+                    $query->join('student_subjects', 'students.id', '=', 'student_subjects.student_id')                    
+                    ->where('student_subjects.subject_id', $subject_id)
+                    ->where('marks.subject_id', $subject_id)
+                    ->where('marks.is_optional', $is_optional)
+                    ->where('marks.exam_id', $exam_id);
+                });
+            }else{
+                $studentQY = $studentQY->when($subject_id, function ($query) use ($subject_id,$is_optional,$exam_id) {
+                    $query->where('marks.subject_id', $subject_id)
+                    ->where('marks.is_optional', $is_optional)
+                    ->where('marks.exam_id', $exam_id);
+                });
+            }
         $students =  $studentQY->get();
         // $students = Student::with('division:id,division_name')
         //     ->where('division_id', $division_id)->get();
@@ -231,7 +243,6 @@ class StudentController extends Controller
         $standard_id = $divid->standard_id;
         $data = ['standard_id'=>$standard_id,'division_id'=>$division_id,'studentdetail'=>$studentdetail];
         return response()->json($data);
-
     }
 
     public function updatestudent(Request $request){
@@ -295,7 +306,7 @@ class StudentController extends Controller
             ->join('standards','standards.id','=','division.standard_id')
             ->join('exams','exams.standard_id','=','standards.id')
             ->join('schools','schools.id','=','standards.school_id')
-            ->select('students.*','standards.standard_name','standards.id as standard_id','schools.school_name','division.division_name','exams.exam_name','exams.exam_year','exams.result_date')
+            ->select('students.*','standards.standard_name','standards.id as standard_id','schools.school_name','schools.school_index','schools.address','division.division_name','exams.exam_name','exams.exam_year','exams.result_date')
             ->where('students.id',$request->student_id)->where('exams.id',$request->exam_id)->first();
             
 

@@ -69,15 +69,34 @@ class MarkController extends Controller
                         $is_optional = '0';
                     }
                     
-                    Marks::Create([
-                            'student_id' => $studentId,
-                            'subject_id' => $subjectid,
-                            'exam_id' => $request->input('exam_id'),
-                            'is_optional' => $is_optional,
-                            'total_marks' => $request->input('total_marks'),
-                            'passing_marks'=>$request->input('passing_marks'),
-                            'marks' =>  !empty($marks[$i]) ? $marks[$i] : '',
-                        ]);
+                    $markId = Marks::where('student_id',$studentId)
+                    ->where('subject_id',$subjectid)
+                    ->where('exam_id',$request->input('exam_id'))
+                    ->where('is_optional',$is_optional)->value('id');
+                    
+
+                        if (!empty($markId)) {
+                            Marks::where('id', $markId)->update([
+                                'student_id' => $studentId,
+                                'subject_id' => $subjectid,
+                                'exam_id' => $request->input('exam_id'),
+                                'is_optional' => $is_optional,
+                                'total_marks' => $request->input('total_marks'),
+                                'passing_marks' => $request->input('passing_marks'),
+                                'marks' => !empty($marks[$i]) ? $marks[$i] : '',
+                            ]);
+                        } else {
+                            Marks::create([
+                                'student_id' => $studentId,
+                                'subject_id' => $subjectid,
+                                'exam_id' => $request->input('exam_id'),
+                                'is_optional' => $is_optional,
+                                'total_marks' => $request->input('total_marks'),
+                                'passing_marks' => $request->input('passing_marks'),
+                                'marks' => !empty($marks[$i]) ? $marks[$i] : '',
+                            ]);
+                        }
+                        
                    
                 }                
             }
