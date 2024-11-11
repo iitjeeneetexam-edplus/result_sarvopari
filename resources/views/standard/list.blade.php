@@ -40,7 +40,7 @@
                                     @else
                                         <button class="btn btn-danger">Inactive</button>
                                     @endif</td>
-                                <td><a href="{{url('standards/edit/'.$standard->id)}}" class="btn btn-success">Edit</a>&nbsp;&nbsp;<a href="{{url('standards/delete/'.$standard->id)}}" onclick="return confirm('Are you sure you want to Delete Standard?')" class="btn btn-danger">Delete</a></td>
+                                <td><a href="{{url('standards/edit/'.$standard->id)}}" class="btn btn-success">Edit</a>&nbsp;&nbsp;<a href="javascript:void(0);" onclick="confirmDelete({{ $standard->id }})"  class="btn btn-danger">Delete</a></td>
                             </tr>
                             @php $i++ @endphp
                             @endforeach
@@ -56,3 +56,55 @@
     </div>
 
 </x-app-layout>
+<Script>
+ function confirmDelete(id) {
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-success swal2-confirm",
+            cancelButton: "btn btn-danger swal2-cancel"
+        },
+        buttonsStyling: true
+    });
+
+    swalWithBootstrapButtons.fire({
+        title: "Are you sure?",
+        text: "Are you sure want to delete standard!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            axios.get(`{{ url('standards/delete') }}/${id}`, {
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}' 
+                }
+            })
+            .then(response => {
+                 swalWithBootstrapButtons.fire({
+                    title: "Deleted!",
+                    text: "Your standard has been deleted.",
+                    icon: "success"
+                }).then(() => {
+                   window.location.href = "{{ route('standards.index') }}";
+                });
+            })
+            .catch(error => {
+                swalWithBootstrapButtons.fire(
+                    "Error!",
+                    "There was a problem deleting the standard.",
+                    "error"
+                );
+            });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+            swalWithBootstrapButtons.fire({
+                title: "Cancelled",
+                text: "Your standard is safe ",
+                icon: "error"
+            });
+        }
+    });
+}
+
+</Script>

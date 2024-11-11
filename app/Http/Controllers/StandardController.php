@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Division;
 use App\Models\Exam;
+use App\Models\Marks;
 use App\Models\School;
 use App\Models\Standard;
+use App\Models\Student;
+use App\Models\StudentSubject;
 use App\Models\Subject;
 use App\Models\Subjectsub;
 use Illuminate\Http\Request;
@@ -80,12 +83,45 @@ class StandardController extends Controller
 
     }
     public function delete($id){
-        $standard = Standard::findOrFail($id);
 
-        // Delete the school record
-        $standard->delete();
-    
-        // Optionally, return a response or redirect
+        $standard_ids = Standard::where('id', $id)->pluck('id')->toArray();
+        if (!empty($standard_ids)) {
+             Standard::whereIn('id', $standard_ids)->delete();
+            
+             $subject_ids = Subject::whereIn('standard_id', $standard_ids)->pluck('id')->toArray();
+             
+             if (!empty($subject_ids)) {
+                 Subject::whereIn('id', $subject_ids)->delete();
+                 Subjectsub::whereIn('subject_id', $subject_ids)->delete();
+             }
+ 
+             $division_ids = Division::whereIn('standard_id', $standard_ids)->pluck('id')->toArray();
+ 
+             if (!empty($division_ids)) {
+                 Division::whereIn('id', $division_ids)->delete();
+ 
+                 Exam::whereIn('standard_id', $standard_ids)->delete();
+ 
+                 $student_ids = Student::whereIn('division_id', $division_ids)->pluck('id')->toArray();
+ 
+                 if (!empty($student_ids)) {
+                     Student::whereIn('id', $student_ids)->delete();
+ 
+                     $studentsubject_ids = StudentSubject::whereIn('student_id', $student_ids)->pluck('id')->toArray();
+ 
+                     if (!empty($studentsubject_ids)) {
+                         StudentSubject::whereIn('id', $studentsubject_ids)->delete();
+                         
+                     }
+ 
+                     $marks_ids = Marks::whereIn('student_id', $student_ids)->pluck('id')->toArray();
+ 
+                     if (!empty($marks_ids)) {
+                         Marks::whereIn('id', $marks_ids)->delete();
+                     }
+                 }
+             }
+         }
         return redirect()->route('standards.index')->with('success', 'Standard deleted successfully.');
     
     }

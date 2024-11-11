@@ -49,7 +49,7 @@
                                 <td>{{ $subject->is_optional == '1' ? 'Yes' : 'No' }}</td>
                                 <td>{{ $subject->status ? 'Active' : 'Inactive' }}</td>
                                 <td><a href="{{url('subjects/edit/'.$subject->id)}}" class="btn btn-success">Edit</a>&nbsp;&nbsp;
-                                <a href="{{url('subjects/delete/'.$subject->id)}}" onclick="return confirm('Are you sure you want to Delete Standard?')" class="btn btn-danger">Delete</a></td>
+                                <a href="javascript:void(0);" onclick="confirmDelete({{ $subject->id }})" class="btn btn-danger">Delete</a></td>
                             </tr>
                             @php $i++; @endphp
                             @endforeach
@@ -62,3 +62,55 @@
             </div>
         </div>
 </x-app-layout>
+<Script>
+ function confirmDelete(id) {
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-success",
+            cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: true
+    });
+
+    swalWithBootstrapButtons.fire({
+        title: "Are you sure?",
+        text: "Are you sure want to delete subject!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            axios.get(`{{ url('subjects/delete') }}/${id}`, {
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}' 
+                }
+            })
+            .then(response => {
+                 swalWithBootstrapButtons.fire({
+                    title: "Deleted!",
+                    text: "Your subject has been deleted.",
+                    icon: "success"
+                }).then(() => {
+                   window.location.href = "{{ route('subjects.index') }}";
+                });
+            })
+            .catch(error => {
+                swalWithBootstrapButtons.fire(
+                    "Error!",
+                    "There was a problem deleting the subject.",
+                    "error"
+                );
+            });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+            swalWithBootstrapButtons.fire({
+                title: "Cancelled",
+                text: "Your subject is safe ",
+                icon: "error"
+            });
+        }
+    });
+}
+
+</Script>

@@ -73,7 +73,7 @@
                                                 @endif
                                                 <td>
                                                     <a href="#" class="btn btn-sm edit-btn btn-success" data-student-id="{{ $student->id }}">Edit</a>
-                                                    <a href="#" class="btn btn-sm delete-btn btn-danger" data-student-id="{{ $student->id }}">Delete</a>
+                                                    <a  class="btn btn-sm delete-btn btn-danger" href="javascript:void(0);" onclick="confirmDelete({{ $student->id }})">Delete</a>
                                                 </td> 
                                             </tr>
                                             @php $i++; @endphp
@@ -232,21 +232,56 @@
         });
 
         //delete
-        $('.delete-btn').click(function(event) {
-            confirm('Are you sure you want to delete this student?');
-            event.preventDefault();   
-            var student_id = $(this).data('student-id');
-            $.ajax({
-                url: '{{ url("/students/delete") }}/' + student_id,
-                type: 'GET',
-                success: function(data) {
-                    location.reload(); 
-                },
-                error: function() {
-                    alert('Error fetching.');
+        function confirmDelete(id) {
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-success",
+            cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: true
+    });
+
+    swalWithBootstrapButtons.fire({
+        title: "Are you sure?",
+        text: "Are you sure want to delete student!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            axios.get(`{{ url('students/delete') }}/${id}`, {
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}' 
                 }
+            })
+            .then(response => {
+                 swalWithBootstrapButtons.fire({
+                    title: "Deleted!",
+                    text: "Your student has been deleted.",
+                    icon: "success"
+                }).then(() => {
+                   window.location.href = "{{ route('students.index') }}";
+                });
+            })
+            .catch(error => {
+                swalWithBootstrapButtons.fire(
+                    "Error!",
+                    "There was a problem deleting the student.",
+                    "error"
+                );
             });
-        });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+            swalWithBootstrapButtons.fire({
+                title: "Cancelled",
+                text: "Your student is safe ",
+                icon: "error"
+            });
+        }
+    });
+}
+        
 
         $('#editForm').on('submit', function(e) {
         e.preventDefault(); // Prevent the default form submission
