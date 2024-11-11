@@ -97,7 +97,6 @@ class MarkController extends Controller
                             ]);
                         }
                         
-                   
                 }                
             }
             return redirect()->route('marks.create')->with('success', 'Marks added successfully.');
