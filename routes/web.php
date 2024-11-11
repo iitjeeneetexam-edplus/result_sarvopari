@@ -15,6 +15,7 @@ use App\Models\School;
 use App\Models\Standard;
 use App\Models\Student;
 use App\Models\Subject;
+use GuzzleHttp\Psr7\Request;
 
 Route::get('/dashboard', function () {
     $school_count=School::count();

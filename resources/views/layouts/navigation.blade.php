@@ -7,16 +7,16 @@
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
-                <div class="shrink-0 flex items-center">
+                <!-- <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
                     </a>
-                </div>
+                </div> -->
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('schools')" :active="request()->routeIs('schools')" style=" text-decoration: none;">
-                        {{ __('School') }}
+                        {{ __('All School') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -34,7 +34,7 @@
                     <option value="">Select School</option>
                     
                     @foreach ($schools as $school)
-                        <option value="{{ url('schools/view', $school->id) }}"  {{ old('school_id') == $school->id ? 'selected' : '' }}>
+                        <option value="{{ url('schools/view', $school->id) }}"  {{ session('school_id') == $school->id ? 'selected' : '' }}>
                             {{ $school->school_name }}
                         </option>
                     @endforeach
@@ -90,7 +90,7 @@
     </div>
     <div class="sidebar"style="display:none;">
         <!-- <a class="{{ Request::segment(1) == 'dashboard' ? 'active' : '' }}" href="{{url('dashboard')}}">Dashboard</a> -->
-        <!-- <a class="{{ Request::segment(1) == 'schools'   ? 'active' : '' }}" href="{{url('schools')}}">School</a> -->
+        <!-- <a class="{{ Request::segment(1) == 'dashboard'   ? 'active' : '' }}" href="{{url('dashboard')}}">Dashboard</a> -->
         <a class="{{ Request::segment(1) == 'standards' ? 'active' : '' }}" href="{{url('standards')}}">Standard</a>
         <a class="{{ Request::segment(1) == 'subjects' ? 'active' : '' }}" href="{{url('subjects')}}">Subject</a>
         <a class="{{ Request::segment(1) == 'division' ? 'active' : '' }}" href="{{url('division')}}">Division</a>
