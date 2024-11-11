@@ -230,7 +230,6 @@ class StudentController extends Controller
         return response()->json(['students'=>$students]);
     }
 
-    //student details by student id
     public function editstudent($id){
         $studentdetail = student::find($id);
         $division_id = $studentdetail->division_id;
@@ -318,6 +317,7 @@ class StudentController extends Controller
                 'subjects.is_optional',
                 'marks.total_marks',
                 'marks.marks',
+                'marks.passing_marks',
                 'marks.subject_id as mark_subject_id',
                 'marks.is_optional as mark_is_optional'
             )
