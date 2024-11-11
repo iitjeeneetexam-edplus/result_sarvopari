@@ -60,10 +60,10 @@
  function confirmDelete(id) {
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
-            confirmButton: "btn btn-success",
-            cancelButton: "btn btn-danger"
+            confirmButton: "btn btn-success swal2-confirm",
+            cancelButton: "btn btn-danger swal2-cancel"
         },
-        buttonsStyling: false
+        buttonsStyling: true
     });
 
     swalWithBootstrapButtons.fire({
