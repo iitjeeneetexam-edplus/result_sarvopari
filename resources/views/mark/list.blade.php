@@ -8,7 +8,7 @@
     </x-slot>
 
     <div class="row justify-content-center">
-        <div class="col-12 col-sm-8 col-md-12 col-lg-9">
+        <div class="col-lg-8 col-sm-8 col-md-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-5">
                 <div class="container mt-5">
                     <h1>List of Mark</h1>
@@ -76,6 +76,7 @@
     </div>
                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                 <script>
+                    
                     $(document).ready(function() {
                         // School change event for fetching standards
                         function loadStandards(schoolId) {
@@ -138,9 +139,6 @@
                         });
                         $('form').submit(function(event) {
                             event.preventDefault(); 
-                            $('#studentdata tbody').empty();
-
-
                             $.ajax({
                                 url: '/students/getstudentformarks',
                                 type: 'POST',
@@ -148,7 +146,7 @@
                                 success: function(data) {
                                     if(data.student !=null){
 
-                                    
+                                    $('table tbody').empty();
                                     $.each(data.student, function(key, value) {
                                         var studentRow = `<tr class="student-row" data-id="${value.id}">`+
                                             '<td>' + value.id + '</td>' +
@@ -216,7 +214,7 @@
                                     url: '/marks/delete/' + studentId ,
                                     type: 'GET',
                                     success: function(data){
-                                       
+                                        $('#studentdata tbody').empty();
                                         $('form').submit();  
                                     },
                                     error: function(xhr, status, error) {

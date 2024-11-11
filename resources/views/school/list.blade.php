@@ -45,7 +45,7 @@
                                 <td>{{ $school->email }}</td>
                                 <td>{{ $school->contact_no }}</td>
                                 <td>{{ $school->status }}</td>
-                                <td><a href="{{url('schools/view/'.$school->id)}}" class="btn btn-warning">View</a>&nbsp;&nbsp;<a href="{{url('schools/edit/'.$school->id)}}" class="btn btn-success">Edit</a>&nbsp;&nbsp;<a href="{{url('schools/delete/'.$school->id)}}" onclick="return confirm('Are you sure you want to Delete School?')" class="btn btn-danger">Delete</a></td>
+                                <td><a href="{{url('schools/view/'.$school->id)}}" class="btn btn-warning">View</a>&nbsp;&nbsp;<a href="{{url('schools/edit/'.$school->id)}}" class="btn btn-success">Edit</a>&nbsp;&nbsp;<a href="javascript:void(0);" onclick="confirmDelete({{ $school->id }})" class="btn btn-danger">Delete</a></td>
                             </tr>
                             @php $i++ @endphp
 
@@ -60,3 +60,58 @@
                 </div>
 
 </x-app-layout>
+<style>
+    
+</style>
+<Script>
+ function confirmDelete(id) {
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-success",
+            cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: false
+    });
+
+    swalWithBootstrapButtons.fire({
+        title: "Are you sure?",
+        text: "Are you sure want to delete school!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            axios.get(`{{ url('schools/delete') }}/${id}`, {
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}' 
+                }
+            })
+            .then(response => {
+                 swalWithBootstrapButtons.fire({
+                    title: "Deleted!",
+                    text: "Your file has been deleted.",
+                    icon: "success"
+                }).then(() => {
+                   window.location.href = "{{ route('schools') }}";
+                });
+            })
+            .catch(error => {
+                swalWithBootstrapButtons.fire(
+                    "Error!",
+                    "There was a problem deleting the file.",
+                    "error"
+                );
+            });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+            swalWithBootstrapButtons.fire({
+                title: "Cancelled",
+                text: "Your School is safe ",
+                icon: "error"
+            });
+        }
+    });
+}
+
+</Script>
