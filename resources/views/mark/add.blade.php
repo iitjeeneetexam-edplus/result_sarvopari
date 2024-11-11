@@ -222,7 +222,7 @@
 
                             } else {
                                 $('#subject_sub_display').hide();
-                                getstudentlist(0); //student list function
+                                getstudentlist(subject_id,0); //student list function
                             }
                         }
                     }
@@ -236,15 +236,16 @@
         $('#subject_sub').change(function() {
             var subject_id = $(this).val();
             if (subject_id) {
-                getstudentlist(subject_id);
+                getstudentlist(subject_id,1);
             }
         });
 
 
-        function getstudentlist(subject_id) {
+        function getstudentlist(subject_id,is_optional) {
             var division_id = $('#division').val();
+            var exam_id = $('#exam_id').val();
             $.ajax({
-                url: '{{ url("/students/marksaddstudentlist") }}/' + division_id + '/' + subject_id,
+                url: '{{ url("/students/marksaddstudentlist") }}/' + division_id + '/' + subject_id + '/' + is_optional+ '/' + exam_id,
                 type: 'GET',
                 success: function(data) {
                     $('#studentTable tbody').empty();
@@ -254,7 +255,7 @@
                             var row = '<tr>' +
                                 '<td>' + student.roll_no + '</td>' +
                                 '<td>' + student.name + '</td>' +
-                                '<td><input type="number" name="marks[]"  min="0" max="' + totalmark + '" step="1" require/> <input type="hidden" name="student_id[]" value="' + student.id + '" /></td>' +
+                                '<td><input type="number" name="marks[]" value="'+student.marks+'"  min="0" max="' + totalmark + '" step="1" require/> <input type="hidden" name="student_id[]" value="' + student.id + '" /></td>' +
                                 '</tr>';
                             $('#studentTable tbody').append(row);
                         });

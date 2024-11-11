@@ -91,7 +91,7 @@ Route::post('/students/getstudentformarks', [StudentController::class, 'getstude
 Route::get('/students/add', [StudentController::class, 'showImportForm'])->name('students.importForm');
 Route::post('/students/import', [StudentController::class, 'import'])->name('students.import');
 
-Route::get('/students/marksaddstudentlist/{division_id}/{subject_id}', [StudentController::class, 'StudentlistBydivisionorsubject'])->name('students.marksaddstudentlist')->name('students.import');
+Route::get('/students/marksaddstudentlist/{division_id}/{subject_id}/{is_optional}/{exam_id}', [StudentController::class, 'StudentlistBydivisionorsubject'])->name('students.marksaddstudentlist')->name('students.import');
 Route::get('/marks', [MarkController::class, 'index'])->name('marks.index');
 Route::get('/marks/create', [MarkController::class, 'create'])->name('marks.create');
 Route::post('/marks/store', [MarkController::class, 'store'])->name('marks.store');
