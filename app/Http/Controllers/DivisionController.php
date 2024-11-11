@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Division;
 use App\Models\Exam;
+use App\Models\Marks;
 use App\Models\Standard;
+use App\Models\Student;
+use App\Models\StudentSubject;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 
@@ -82,12 +85,26 @@ class DivisionController extends Controller
 
     }
     public function delete($id){
-        $division = Division::findOrFail($id);
-
-        // Delete the school record
-        $division->delete();
-    
-        // Optionally, return a response or redirect
+        if (is_string($id)) {
+            $id = explode(',', $id); 
+        }
+        $standard_id = Division::whereIn('id', $id)->pluck('standard_id')->toArray();
+        if (!empty($standard_id)) {
+            Division::whereIn('id', $id)->delete();
+            Exam::whereIn('standard_id', $standard_id)->delete();
+            $student_ids = Student::whereIn('division_id', $id)->pluck('id')->toArray();
+            if (!empty($student_ids)) {
+                Student::whereIn('id', $student_ids)->delete();
+                $studentsubject_ids = StudentSubject::whereIn('student_id', $student_ids)->pluck('id')->toArray();
+                if (!empty($studentsubject_ids)) {
+                    StudentSubject::whereIn('id', $studentsubject_ids)->delete();
+                }
+                $marks_ids = Marks::whereIn('student_id', $student_ids)->pluck('id')->toArray();
+                if (!empty($marks_ids)) {
+                    Marks::whereIn('id', $marks_ids)->delete();
+                }
+            }
+        }
         return redirect()->route('division.index')->with('success', 'Division deleted successfully.');
     
     }

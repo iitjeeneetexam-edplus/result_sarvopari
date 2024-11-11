@@ -34,7 +34,7 @@
                                 <td>{{ $exam->exam_name }}</td>
                                 <td>{{ $exam->standard_name }}</td> <!-- Display associated standard -->
                                 <td>{{ date('d-m-20y',strtotime($exam->date)) }}</td>
-                                <td><a href="{{url('exam/edit/'.$exam->id)}}" class="btn btn-success">Edit</a>&nbsp;&nbsp;<a href="{{url('exam/delete/'.$exam->id)}}" onclick="return confirm('Are you sure you want to Delete School?')" class="btn btn-danger">Delete</a></td>
+                                <td><a href="{{url('exam/edit/'.$exam->id)}}" class="btn btn-success">Edit</a>&nbsp;&nbsp;<a href="javascript:void(0);" onclick="confirmDelete({{ $exam->id }})" class="btn btn-danger">Delete</a></td>
                          
                             </tr>
                             @php $i++; @endphp
@@ -48,3 +48,55 @@
         </div>
     </div>
 </x-app-layout>
+<Script>
+ function confirmDelete(id) {
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-success",
+            cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: false
+    });
+
+    swalWithBootstrapButtons.fire({
+        title: "Are you sure?",
+        text: "Are you sure want to delete exam!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            axios.get(`{{ url('exam/delete') }}/${id}`, {
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}' 
+                }
+            })
+            .then(response => {
+                 swalWithBootstrapButtons.fire({
+                    title: "Deleted!",
+                    text: "Your exam has been deleted.",
+                    icon: "success"
+                }).then(() => {
+                   window.location.href = "{{ route('exam.index') }}";
+                });
+            })
+            .catch(error => {
+                swalWithBootstrapButtons.fire(
+                    "Error!",
+                    "There was a problem deleting the exam.",
+                    "error"
+                );
+            });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+            swalWithBootstrapButtons.fire({
+                title: "Cancelled",
+                text: "Your exam is safe ",
+                icon: "error"
+            });
+        }
+    });
+}
+
+</Script>

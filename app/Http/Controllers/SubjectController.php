@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Division;
+use App\Models\Exam;
+use App\Models\Marks;
 use App\Models\School;
 use App\Models\Standard;
+use App\Models\Student;
+use App\Models\StudentSubject;
 use App\Models\Subject;
 use App\Models\Subjectsub;
 use Illuminate\Http\Request;
@@ -150,5 +155,35 @@ class SubjectController extends Controller
         
         // Insert sub-subjects in bulk
                 return redirect()->route('subjects.index')->with('success', 'Subject added successfully.');
+    }
+    public function delete($id){
+      
+        if (is_string($id)) {
+            $id = explode(',', $id); 
+        }
+        $standard_id = Subject::whereIn('id', $id)->pluck('standard_id')->toArray();
+        if (!empty($standard_id)) {
+            Subject::whereIn('id', $id)->delete();
+            Subjectsub::whereIn('subject_id', $id)->delete();
+        }
+        $division_ids = Division::whereIn('standard_id', $standard_id)->pluck('id')->toArray();
+        if (!empty($division_ids)) {
+            Division::whereIn('id', $division_ids)->delete();
+            Exam::whereIn('standard_id', $standard_id)->delete();
+            $student_ids = Student::whereIn('division_id', $division_ids)->pluck('id')->toArray();
+            if (!empty($student_ids)) {
+                Student::whereIn('id', $student_ids)->delete();
+                $studentsubject_ids = StudentSubject::whereIn('student_id', $student_ids)->pluck('id')->toArray();
+                if (!empty($studentsubject_ids)) {
+                    StudentSubject::whereIn('id', $studentsubject_ids)->delete();
+                  
+                }
+                $marks_ids = Marks::whereIn('student_id', $student_ids)->pluck('id')->toArray();
+                if (!empty($marks_ids)) {
+                    Marks::whereIn('id', $marks_ids)->delete();
+                }
+            }
+        }
+        return redirect()->back()->with('success', 'Subjects deleted successfully!');
     }
 }

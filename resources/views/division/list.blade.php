@@ -43,7 +43,7 @@
                                     @else
                                         <button class="btn btn-danger">Inactive</button>
                                     @endif</td>
-                                <td><a href="{{url('division/edit/'.$value->id)}}" class="btn btn-success">Edit</a>&nbsp;&nbsp;<a href="{{url('division/delete/'.$value->id)}}" onclick="return confirm('Are you sure you want to Delete Division?')" class="btn btn-danger">Delete</a></td>
+                                <td><a href="{{url('division/edit/'.$value->id)}}" class="btn btn-success">Edit</a>&nbsp;&nbsp;<a href="javascript:void(0);" onclick="confirmDelete({{ $value->id }})" class="btn btn-danger">Delete</a></td>
                          
                             </tr>
                             @php $i++; @endphp
@@ -56,3 +56,55 @@
             </div>
         </div>
 </x-app-layout>
+<Script>
+ function confirmDelete(id) {
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: "btn btn-success",
+            cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: false
+    });
+
+    swalWithBootstrapButtons.fire({
+        title: "Are you sure?",
+        text: "Are you sure want to delete division!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            axios.get(`{{ url('division/delete') }}/${id}`, {
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}' 
+                }
+            })
+            .then(response => {
+                 swalWithBootstrapButtons.fire({
+                    title: "Deleted!",
+                    text: "Your division has been deleted.",
+                    icon: "success"
+                }).then(() => {
+                   window.location.href = "{{ route('division.index') }}";
+                });
+            })
+            .catch(error => {
+                swalWithBootstrapButtons.fire(
+                    "Error!",
+                    "There was a problem deleting the division.",
+                    "error"
+                );
+            });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+            swalWithBootstrapButtons.fire({
+                title: "Cancelled",
+                text: "Your division is safe ",
+                icon: "error"
+            });
+        }
+    });
+}
+
+</Script>

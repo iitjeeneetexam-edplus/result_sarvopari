@@ -280,15 +280,17 @@ class StudentController extends Controller
     }
 
     public function deletestudent($id){
-        $student = Student::find($id);
-
+        if (is_string($id)) {
+            $id = explode(',', $id); 
+        }
+        $student = Student::whereIn('id', $id);
         if (!$student) {
             return redirect()->back()->with('error', 'Student not found.');
         }
-
         $dlt = $student->delete();
         if($dlt){
-            $subdl = StudentSubject::where('student_id',$id)->delete();
+            $subdl = StudentSubject::whereIn('student_id',$id)->delete();
+            $subdl = Marks::whereIn('student_id', $id)->delete();
         }
         return response()->json($subdl);
     }
