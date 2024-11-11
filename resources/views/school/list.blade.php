@@ -25,6 +25,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>School Name</th>
+                                <th>School Index</th>
                                 <th>Address</th>
                                 <th>Email</th>
                                 <th>Contact No</th>
@@ -39,6 +40,7 @@
                             <tr>
                                 <td>{{ $i }}</td>
                                 <td>{{ $school->school_name }}</td>
+                                <td>{{ $school->school_index }}</td>
                                 <td>{{ $school->address }}</td>
                                 <td>{{ $school->email }}</td>
                                 <td>{{ $school->contact_no }}</td>
