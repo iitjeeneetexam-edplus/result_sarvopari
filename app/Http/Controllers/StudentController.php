@@ -165,7 +165,7 @@ class StudentController extends Controller
     
                 while (($row = fgetcsv($handle, 1000, ',')) !== false) {
                     $studentData = array_combine($header, $row);
-                    Student::updateOrCreate(
+                    Student::Create(
                         [
                             'name' => $studentData['NAME'],
                             'roll_no' => $studentData['ROLL_NO'],

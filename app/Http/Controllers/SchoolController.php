@@ -11,6 +11,8 @@ use App\Models\Student;
 use App\Models\StudentSubject;
 use App\Models\Subject;
 use App\Models\Subjectsub;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -18,26 +20,28 @@ class SchoolController extends Controller
 {
     public function index()
     {
-        $schools = School::paginate(5); 
+        $user = Auth::user();
+        $userId = $user->id; 
+        $schools = School::where("user_id",$userId)->paginate(5); 
         return view('school.list', compact('schools'));
     }
 
     public function create()
-    {
+    { 
         return view('school.add'); 
     }
 
     public function store(Request $request)
-    {
-        // Validate the request data
+    { 
         $request->validate([
             'school_name' => 'required|string|max:255|unique:schools',
             'address' => 'required|string',
             'email' => 'required|email|unique:schools',
             'contact_no' => 'required|regex:/[0-9]{10}/',
-            'status' => 'required|in:1,0',
+            'status' => 'required|in:1,0', 
         ]);
-        
+        $user = Auth::user();
+        $userId = $user->id;  
         // Create a new school record
         School::create([
             'school_name' => $request->school_name,
@@ -46,15 +50,17 @@ class SchoolController extends Controller
             'email' => $request->email,
             'contact_no' => $request->contact_no,
             'status' => $request->status,
+            'user_id' => $userId,
+
         ]);
 
         
         return redirect()->route('schools')->with('success', 'School added successfully!');
     }
     public function edit(Request $request,$id){
-        
+         $users = User::all();
          $data=School::where('id',$id)->first();
-         return view('school.edit', compact('data'));
+         return view('school.edit', compact('data','users'));
          
     }
     public function update(Request $request){
@@ -66,7 +72,7 @@ class SchoolController extends Controller
             'address' => 'required|string',
             'email' => 'required|email|unique:schools,email,' . $request->id,
             'contact_no' => 'required|regex:/[0-9]{10}/',
-            'status' => 'required|in:1,0',
+            'status' => 'required|in:1,0', 
         ]);
     
         // Update the school record
@@ -76,7 +82,7 @@ class SchoolController extends Controller
             'address' => $request->address,
             'email' => $request->email,
             'contact_no' => $request->contact_no,
-            'status' => $request->status,
+            'status' => $request->status, 
         ]);
     
         // Optionally, return a response or redirect

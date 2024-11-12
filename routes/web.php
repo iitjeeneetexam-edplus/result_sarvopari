@@ -16,18 +16,15 @@ use App\Models\Standard;
 use App\Models\Student;
 use App\Models\Subject;
 use GuzzleHttp\Psr7\Request;
-
-Route::get('/dashboard', function () {
-    $school_count=School::count();
-    $Standard_count=Standard::count();
-    $Subject_count=Subject::count();
-    $Division_count=Division::count();
-    $Exam_count=Exam::count();
-    $Student_count=Student::count();
-    return view('dashboard',compact('school_count','Standard_count','Subject_count','Division_count','Exam_count','Student_count'));
-})->middleware(['auth', 'verified'])->name('dashboard');
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 Route::middleware('auth')->group(function () {
+    
+    Route::get('/dashboard', function () {
+        return redirect('/schools');
+    })->middleware(['auth', 'verified'])->name('dashboard');
+
 Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

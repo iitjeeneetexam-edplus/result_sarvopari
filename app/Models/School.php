@@ -18,5 +18,6 @@ class School extends Model
         'email',
         'contact_no',
         'status',
+        'user_id'
     ];
 }
