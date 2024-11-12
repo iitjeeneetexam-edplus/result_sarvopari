@@ -66,20 +66,7 @@
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="col-md-12">
-                                <label for="total_marks">Total Marks</label>
-                                <input type="text" name="total_marks" id="total_marks" class="form-control" placeholder="Enter Total Marks" require>
-                                @error('total_marks')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col-md-12">
-                                <label for="passing_marks">Passing Marks</label>
-                                <input type="text" name="passing_marks" id="passing_marks" class="form-control" placeholder="Enter Passing Marks" require>
-                                @error('passing_marks')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
+                           
                             <div class="col-md-12">
                                 <label for="subject">Select Subject:</label>
                                 <select name="subject_id" id="subject" class="form-control">
@@ -96,6 +83,20 @@
                                     <option value="">Select a option Subject</option>
                                     <!-- Populated via AJAX -->
                                 </select>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="total_marks">Total Marks</label>
+                                <input type="text" name="total_marks" id="total_marks" class="form-control" placeholder="Enter Total Marks" require>
+                                @error('total_marks')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-12">
+                                <label for="passing_marks">Passing Marks</label>
+                                <input type="text" name="passing_marks" id="passing_marks" class="form-control" placeholder="Enter Passing Marks" require>
+                                @error('passing_marks')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                             
                             <br>
@@ -130,6 +131,7 @@
     $(document).ready(function() {
         // School change event for fetching standards
         function loadStandards(schoolId) {
+            var oldStatus = "{{ old('standard_id') }}";
             if (schoolId) {
                 $.ajax({
                     url: '{{ url("/get-standards") }}/' + schoolId,
@@ -137,7 +139,8 @@
                     success: function(data) {
                         $('#standard').empty().append('<option value="">Select a Standard</option>');
                         $.each(data, function(key, value) {
-                            $('#standard').append('<option value="' + value.id + '">' + value.standard_name + '</option>');
+                            var isSelected = (oldStatus == value.id) ? 'selected' : ''; 
+                            $('#standard').append('<option value="' + value.id + '" ' + isSelected + '>' + value.standard_name + '</option>');
                         });
                     }
                 });
@@ -153,6 +156,9 @@
             }
         // Standard change event for fetching divisions
         $('#standard').change(function() {
+            var division_id = "{{ old('division_id') }}";
+            var exam_id = "{{ old('exam_id') }}";
+            var subject_id = "{{ old('subject_id') }}";
             var standardId = $(this).val();
             if (standardId) {
                 $.ajax({
@@ -165,7 +171,8 @@
                         // Populate the division dropdown
                         if (data.divisions && Array.isArray(data.divisions) && data.divisions.length) {
                             $.each(data.divisions, function(key, value) {
-                                $('#division').append('<option value="' + value.id + '">' + value.division_name + '</option>');
+                                var isSelected = (division_id == value.id) ? 'selected' : ''; 
+                                $('#division').append('<option value="' + value.id + '"  ' + isSelected + '>' + value.division_name + '</option>');
                             });
                         } else {
                             $('#division').append('<option value="">No divisions found</option>');
@@ -177,7 +184,8 @@
                         // Populate the subject dropdown
                         if (data.subjects && Array.isArray(data.subjects) && data.subjects.length) {
                             $.each(data.subjects, function(key, value) {
-                                $('#subject').append('<option value="' + value.id + '">' + value.subject_name + '</option>');
+                                var isSelected = (exam_id == value.id) ? 'selected' : ''; 
+                                $('#subject').append('<option value="' + value.id + '" ' + isSelected + '>' + value.subject_name + '</option>');
                             });
                         } else {
                             $('#subject').append('<option value="">No subjects found</option>');
@@ -187,7 +195,8 @@
                         $('#exam_id').empty().append('<option value="">Select a Exam</option>');
                         if (data.exams && Array.isArray(data.exams) && data.exams.length) {
                             $.each(data.exams, function(key, value) {
-                                $('#exam_id').append('<option value="' + value.id + '">' + value.exam_name + '</option>');
+                                var isSelected = (exam_id == value.id) ? 'selected' : ''; 
+                                $('#exam_id').append('<option value="' + value.id + '" ' + isSelected + '>' + value.exam_name + '</option>');
                             });
                         } else {
                             $('#exam_id').append('<option value="">No Exam found</option>');

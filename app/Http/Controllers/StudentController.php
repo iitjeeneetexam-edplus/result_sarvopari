@@ -10,7 +10,8 @@ use App\Models\Student;
 use App\Models\StudentSubject;
 use App\Models\Subject;
 use App\Models\Subjectsub;
-use PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
+
 use Exception;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
@@ -47,8 +48,10 @@ class StudentController extends Controller
                 DB::raw('GROUP_CONCAT(subject_subs.subject_name) as subject_name'), // Aggregate subject names
                 DB::raw('GROUP_CONCAT(student_subjects.subject_id) as subject_id') // Aggregate subject IDs
             )
-            ->groupBy('students.id', 'students.name', 'students.roll_no','students.GR_no','students.uid', 'students.division_id')  // Group by student ID
-            ->paginate(10);
+            ->groupBy('students.id', 'students.name', 'students.roll_no','students.GR_no','students.uid', 'students.division_id') 
+            ->wherenull('student_subjects.deleted_at')
+            ->get();
+           
 
         $students = $query;
         // echo "<pre>";print_r($students);exit;
@@ -189,6 +192,7 @@ class StudentController extends Controller
 
     public function assignSubject(Request $request)
     {
+        // print_r($request->All());exit;
         $subjectIds = $request->input('subject_ids');
         $studentIds = $request->input('student_ids');
         
@@ -291,28 +295,28 @@ class StudentController extends Controller
     }
 
     public function marksheet(Request $request){
-        // $validator = Validator::make($request->all(), [
-        //     'student_id' => 'required',
-        // ]);
-        // if ($validator->fails()) {
-        //     return $this->response([], $validator->errors()->first(), false, 400);
-        // }
+        
         try{
+           
             $student=Student::join('division','division.id','=','students.division_id')
             ->join('standards','standards.id','=','division.standard_id')
             ->join('exams','exams.standard_id','=','standards.id')
             ->join('schools','schools.id','=','standards.school_id')
             ->select('students.*','standards.standard_name','standards.id as standard_id','schools.school_name','schools.school_index','schools.address','division.division_name','exams.exam_name','exams.exam_year','exams.result_date')
-            ->where('students.id',$request->student_id)->where('exams.id',$request->exam_id)->first();
-            
+            ->whereIn('students.id',$request->student_id)->get()->toarray();
 
-            $subjectsData = Subject::leftJoin('marks', function ($join) {
+            // echo "<pre>";print_r($student);exit;
+          
+            $subjectsData= [];
+            $optinalsubjects= [];
+            foreach($student as $value){
+
+            $subjectsData[] = Subject::leftJoin('marks', function ($join) {
                 $join->on('marks.subject_id', '=', 'subjects.id')
                      ->where('marks.is_optional', '0');
             })
-            ->where('subjects.standard_id', $student['standard_id'])
-            ->where('marks.student_id', $request->student_id)
-            ->where('marks.exam_id', $request->exam_id)
+            ->where('subjects.standard_id', $value['standard_id'])
+            ->whereIn('marks.student_id', $request->student_id)
             ->select(
                 'subjects.subject_name',
                 'subjects.id',
@@ -321,18 +325,19 @@ class StudentController extends Controller
                 'marks.marks',
                 'marks.passing_marks',
                 'marks.subject_id as mark_subject_id',
-                'marks.is_optional as mark_is_optional'
+                'marks.is_optional as mark_is_optional',
+                'marks.student_id',
             )
-            ->get();
+            ->get()->toarray();
+           
 
             $optinalsubjects = Subject::join('subject_subs','subject_subs.subject_id','=','subjects.id')
             ->leftJoin('marks', function ($join) {
                 $join->on('marks.subject_id', '=', 'subject_subs.id')
                      ->where('marks.is_optional', '1');
             })
-            ->where('subjects.standard_id', $student['standard_id'])
-            ->where('marks.student_id', $request->student_id)
-            ->where('marks.exam_id', $request->exam_id)
+            ->where('subjects.standard_id', $value['standard_id'])
+            ->whereIn('marks.student_id', $request->student_id)
             ->select(
                 'subject_subs.subject_name',
                 'subject_subs.id',
@@ -340,13 +345,25 @@ class StudentController extends Controller
                 'marks.total_marks',
                 'marks.marks',
                 'marks.subject_id as mark_subject_id',
-                'marks.is_optional as mark_is_optional'
+                'marks.is_optional as mark_is_optional',
+                'marks.passing_marks',
+                'marks.student_id',
+
             )
-            ->get();
+            ->get()->toarray();
+            
+            }
+            
+            // $response_data = [
+            //     'student' => $student,
+            //     'subjects' => $subjectsData,
+            //     'optional_subjects'=>$optinalsubjects,
+            // ];
+            // exit;
+            // echo "<pre>";print_r($response_data);exit;
             
             $data = ['student'=>$student,'subjects'=>$subjectsData,'optional_subjects'=>$optinalsubjects]; 
-            //$data = ['student'=>$student,'subjects'=>$subjects,'total_marks'=>$total_marks,'student_marks'=>$student_marks]; 
-            
+            // echo "<pre>";print_r($data);exit;
             $pdf = PDF::loadView('mark.marksheet', ['data' => $data]);
             $folderPath = public_path('pdfs');
 

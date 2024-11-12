@@ -149,8 +149,8 @@
                                     $('table tbody').empty();
                                     $.each(data.student, function(key, value) {
                                         var studentRow = `<tr class="student-row" data-id="${value.id}">`+
+                                            '<td><input type="checkbox" class="student-checkbox" data-id="' + value.id + '"></td>' +
                                             '<td>' + value.id + '</td>' +
-                                            '<td><button class="btn btn-success" onclick="generatepdf('+ value.id +','+ value.exam_id +')">Result</button></td>'+
                                             '<td>' + value.name + '</td>' +
                                             '<td>' + value.roll_no + '</td>' +
                                             '<td>' + value.GR_no + '</td>';
@@ -170,21 +170,34 @@
                                         //&nbsp&nbsp<button class="openBtndelete btn btn-danger" data-id="${value.id}">Delete</button>
                                         studentRow += '</tr>';
                                         $('#studentdata tbody').append(studentRow);
+                                       
                                     });
                                 }else{
                                     // $('#studentdata tr').append('<th>No data Found!</th>');
                                 }
-
+                               
+                                       
                                     // Header section
                                     $('#studentdata thead tr').empty();
-
+                                    $('#studentdata thead tr').append('<th style="width:140px"><input type="checkbox" id="selectAll">&nbsp;&nbsp;&nbsp;&nbsp;<button id="" class="btn btn-success generateResultButton">Result</button></th>');
                                     // Static headers
                                     $('#studentdata thead tr').append('<th>No</th>');
-                                    $('#studentdata thead tr').append('<th>Results</th>');
                                     $('#studentdata thead tr').append('<th>Student Name</th>');
                                     $('#studentdata thead tr').append('<th>Roll No</th>');
                                     $('#studentdata thead tr').append('<th>GR No</th>');
-                                   
+                                    $('#selectAll').on('click', function() {
+                                            var isChecked = this.checked;
+                                            $('.student-checkbox').prop('checked', isChecked);
+                                        });
+
+                                        // Individual Student Checkbox Click
+                                        $('#studentdata').on('click', '.student-checkbox', function() {
+                                            if ($('.student-checkbox:checked').length === $('.student-checkbox').length) {
+                                                $('#selectAll').prop('checked', true);
+                                            } else {
+                                                $('#selectAll').prop('checked', false);
+                                            }
+                                        });
                                   
                                     if (data.subject != null) {
                                         var subjectsArray = data.subject.split(',');
@@ -417,29 +430,65 @@
                                 });
 
 
-                   function generatepdf(studentId,examId){
-                     $.ajax({
-                        url: "{{ route('students.marksheet') }}",
-                        type: 'POST',
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            exam_id: examId,
-                            student_id: studentId
-                        },
-                        success: function (response) {
-                            console.log(response);
-                            if (response.pdfUrl) {
-                                window.open(response.pdfUrl, '_blank');
-                            } else {
-                                alert('Failed to generate PDF.');
+                //    function generatepdf(studentId,examId){
+                //      $.ajax({
+                //         url: "{{ route('students.marksheet') }}",
+                //         type: 'POST',
+                //         data: {
+                //             _token: '{{ csrf_token() }}',
+                //             exam_id: examId,
+                //             student_id: studentId
+                //         },
+                //         success: function (response) {
+                //             console.log(response);
+                //             if (response.pdfUrl) {
+                //                 window.open(response.pdfUrl, '_blank');
+                //             } else {
+                //                 alert('Failed to generate PDF.');
+                //             }
+                //         },
+                //         error: function () {
+                //             alert('Error while processing request.');
+                //         }
+                //     });
+                //    }
+                $('#studentdata').on('click', '.generateResultButton', function() {
+                            var selectedStudentIds = [];
+
+                            $('.student-checkbox:checked').each(function() {
+                                selectedStudentIds.push($(this).data('id'));
+                            });
+
+                            if (selectedStudentIds.length === 0) {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Result",
+                                    text: "Please select one or more student!",
+                                    });
+                                return;
                             }
-                        },
-                        error: function () {
-                            alert('Error while processing request.');
-                        }
-                    });
-                   }
-                   
+
+                            $.ajax({
+                                url: '/student/marksheet',  
+                                method: 'POST',
+                                data: {
+                                    student_id: selectedStudentIds,
+                                    _token: '{{ csrf_token() }}',  
+                                },
+                                success: function(response) {
+                                    console.log(response.pdfUrl);
+                                    window.open(response.pdfUrl, '_blank');
+                                },
+                                error: function() {
+                                    Swal.fire({
+                                    icon: "error",
+                                    title: "Result",
+                                    text: "An error occurred while generating results!",
+                                    });
+                                return;
+                                }
+                            });
+                        });
                 </script>
 </x-app-layout>
 <style>

@@ -85,9 +85,6 @@
                                             @endif
                                         </tbody>
                                     </table>
-                                    <div class="pagination" style="float:right">
-                                        {{ $students->appends(request()->query())->links() }}
-                                    </div>
                                 </div>
                                 @foreach($subjects as $optionls)
                                 <div class="row mb-4">
