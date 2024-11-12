@@ -6,60 +6,68 @@
             {{ __('Dashboard') }}
         </h2>
     </x-slot>
-
+<style> 
+</style>
     <div class="row justify-content-center">
         <div class="col-lg-8 col-sm-8 col-md-8">
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-5">
                 <div class="container mt-5">
                     <h1>List of Mark</h1>
-                    <div class="row">
-                        <div class="col-sm-2 offset-sm-10"><a href="{{ url('marks/create') }}" class="btn btn-success mb-3" style="float: right;">Add New Mark</a>
+                    <div class="border-div">
+                        
+                        <div class="row">
+                            <div class="col-sm-2 offset-sm-10"><a href="{{ url('marks/create') }}" class="btn btn-success mb-3" style="float: right;">Add New Mark</a>
+                            </div>
                         </div>
+                        <form method="POST">
+                        <ul id="validationErrors" style="list-style: disc;   color: red;"></ul>
+                            @csrf
+                            <div class="row mb-4">
+                                <div class="col-md-4">
+                                    <label for="school">Select School</label>
+                                    <select name="school_id" id="school" class="form-control">
+                                        @foreach($schools as $school)
+                                        <option value="{{ $school->id }}" {{ request('school_id') == $school->id ? 'selected' : '' }}>
+                                            {{ $school->school_name }}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="standard">Select Standard:</label>
+                                    <select name="standard_id" id="standard" class="form-control">
+                                        <option value="">Select a Standard</option>
+                                        <!-- Populated via AJAX -->
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="division">Select Division:</label>
+                                    <select name="division_id" id="division" class="form-control">
+                                        <option value="">Select a Division</option>
+                                        <!-- Populated via AJAX -->
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="exam_id">Select Exam:</label>
+                                    <select name="exam_id" id="exam" class="form-control">
+                                        <option value="">Select a Exam</option>
+                                        <!-- Populated via AJAX -->
+                                    </select>
+                                </div>
+
+
+                                <div class="col-md-12 mt-3">
+                                    <button type="submit" class="btn btn-success">Get Student List</button> 
+                                    
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <form method="POST">
-                        @csrf
-                        <div class="row mb-4">
-                            <div class="col-md-4">
-                                <label for="school">Select School</label>
-                                <select name="school_id" id="school" class="form-control">
-                                    @foreach($schools as $school)
-                                    <option value="{{ $school->id }}" {{ request('school_id') == $school->id ? 'selected' : '' }}>
-                                        {{ $school->school_name }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="col-md-4">
-                                <label for="standard">Select Standard:</label>
-                                <select name="standard_id" id="standard" class="form-control">
-                                    <option value="">Select a Standard</option>
-                                    <!-- Populated via AJAX -->
-                                </select>
-                            </div>
-
-                            <div class="col-md-4">
-                                <label for="division">Select Division:</label>
-                                <select name="division_id" id="division" class="form-control">
-                                    <option value="">Select a Division</option>
-                                    <!-- Populated via AJAX -->
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="exam_id">Select Exam:</label>
-                                <select name="exam_id" id="exam" class="form-control">
-                                    <option value="">Select a Exam</option>
-                                    <!-- Populated via AJAX -->
-                                </select>
-                            </div>
-
-
-                            <div class="col-md-12 mt-3">
-                                <button type="submit" class="btn btn-success">Get Student List</button>
-                            </div>
-                        </div>
-                    </form>
+                    <hr/>
                 <div class="table-container">
+                    <div class="button-div" style="display: none;"><button type="button" class="btn btn-success generateResultButton mb-2" style="float:right">Generate Results</button></div>
                     <table class="table table-bordered" id="studentdata">
                         <thead class="thead-dark">
                             <tr>
@@ -139,6 +147,32 @@
                         });
                         $('form').submit(function(event) {
                             event.preventDefault(); 
+                            let errors="";
+                            $("#validationErrors").html("");
+                            var schoolValue= $('#school').val();
+                            var standardValue= $('#standard').val();
+                            var divisionValue= $('#division').val();
+                            var examValue= $('#exam').val(); 
+                            if(!$.trim(schoolValue))
+                                errors+="<li>Please select school.</li>" 
+                            if(!$.trim(standardValue))
+                                errors+="<li>Please select standard.</li>"
+                            if(!$.trim(divisionValue))
+                                errors+="<li>Please select division.</li>"
+                            if(!$.trim(examValue))
+                                errors+="<li>Please select exam.</li>"
+                            if($.trim(errors))
+                        {
+                            $("#validationErrors").html(errors);
+                            return;
+                        }
+                            
+                            if (schoolValue == '') {
+                                console.log(schoolValue);
+                                return;
+                            } 
+
+
                             $.ajax({
                                 url: '/students/getstudentformarks',
                                 type: 'POST',
@@ -176,10 +210,11 @@
                                     // $('#studentdata tr').append('<th>No data Found!</th>');
                                 }
                                
-                                       
+                                   
                                     // Header section
                                     $('#studentdata thead tr').empty();
-                                    $('#studentdata thead tr').append('<th style="width:140px"><input type="checkbox" id="selectAll">&nbsp;&nbsp;&nbsp;&nbsp;<button id="" class="btn btn-success generateResultButton">Result</button></th>');
+                                    $('.button-div').show();   
+                                    $('#studentdata thead tr').append('<th style="width:140px"><input type="checkbox" id="selectAll">&nbsp;&nbsp;&nbsp;&nbsp;</th>');
                                     // Static headers
                                     $('#studentdata thead tr').append('<th>No</th>');
                                     $('#studentdata thead tr').append('<th>Student Name</th>');
@@ -452,9 +487,8 @@
                 //         }
                 //     });
                 //    }
-                $('#studentdata').on('click', '.generateResultButton', function() {
-                            var selectedStudentIds = [];
-
+                $('.generateResultButton').on('click' , function() { 
+                            var selectedStudentIds = []; 
                             $('.student-checkbox:checked').each(function() {
                                 selectedStudentIds.push($(this).data('id'));
                             });
@@ -475,7 +509,14 @@
                                     student_id: selectedStudentIds,
                                     _token: '{{ csrf_token() }}',  
                                 },
+                                beforeSend: function() { 
+                                    $("#dev-loader").show();
+                                },
+                                complete: function() { 
+                                    $("#dev-loader").hide();
+                                },
                                 success: function(response) {
+                                    debugger;
                                     console.log(response.pdfUrl);
                                     window.open(response.pdfUrl, '_blank');
                                 },

@@ -59,6 +59,8 @@
                                                         
                                                         @if($optionls->id == $subjectSub->subject_id && in_array($subjectSub->id,$subjectNames))
                                                         <td>{{ $subjectSub->subject_name }}</td>
+                                                        @else
+                                                        <td> </td>
 
                                                         @endif
                                                         @endforeach

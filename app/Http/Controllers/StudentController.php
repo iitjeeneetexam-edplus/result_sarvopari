@@ -296,8 +296,7 @@ class StudentController extends Controller
 
     public function marksheet(Request $request){
         
-        try{
-           
+        try{ 
             $student=Student::join('division','division.id','=','students.division_id')
             ->join('standards','standards.id','=','division.standard_id')
             ->join('exams','exams.standard_id','=','standards.id')
