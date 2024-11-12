@@ -307,11 +307,9 @@ class StudentController extends Controller
 
             // echo "<pre>";print_r($student);exit;
           
-            $subjectsData= [];
-            $optinalsubjects= [];
             foreach($student as $value){
 
-            $subjectsData[] = Subject::leftJoin('marks', function ($join) {
+            $subjectsData = Subject::leftJoin('marks', function ($join) {
                 $join->on('marks.subject_id', '=', 'subjects.id')
                      ->where('marks.is_optional', '0');
             })
@@ -365,6 +363,7 @@ class StudentController extends Controller
             $data = ['student'=>$student,'subjects'=>$subjectsData,'optional_subjects'=>$optinalsubjects]; 
             // echo "<pre>";print_r($data);exit;
             $pdf = PDF::loadView('mark.marksheet', ['data' => $data]);
+            // return $pdf->download('marksheet.pdf');
             $folderPath = public_path('pdfs');
 
             if (!File::exists($folderPath)) {
