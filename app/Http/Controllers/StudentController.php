@@ -322,14 +322,17 @@ class StudentController extends Controller
             ->whereIn('students.id',$request->student_id)->get()->toarray();
 
             // echo "<pre>";print_r($student);exit;
-          
-            foreach($student as $value){
-
+            $standard_id=0;
+            if(!empty($student))
+            {
+             $standard_id=$student[0]['standard_id'];
+            }
+         
             $subjectsData = Subject::leftJoin('marks', function ($join) {
                 $join->on('marks.subject_id', '=', 'subjects.id')
                      ->where('marks.is_optional', '0');
             })
-            ->where('subjects.standard_id', $value['standard_id'])
+            ->where('subjects.standard_id', $standard_id)
             ->whereIn('marks.student_id', $request->student_id)
             ->select(
                 'subjects.subject_name',
@@ -350,7 +353,7 @@ class StudentController extends Controller
                 $join->on('marks.subject_id', '=', 'subject_subs.id')
                      ->where('marks.is_optional', '1');
             })
-            ->where('subjects.standard_id', $value['standard_id'])
+            ->where('subjects.standard_id', $standard_id)
             ->whereIn('marks.student_id', $request->student_id)
             ->select(
                 'subject_subs.subject_name',
@@ -364,9 +367,7 @@ class StudentController extends Controller
                 'marks.student_id',
 
             )
-            ->get()->toarray();
-            
-            }
+            ->get()->toarray(); 
             
             // $response_data = [
             //     'student' => $student,
@@ -375,8 +376,14 @@ class StudentController extends Controller
             // ];
             // exit;
             // echo "<pre>";print_r($response_data);exit;
+            $tempStudantId=array_column($subjectsData, 'student_id') ;
+            $tempOpsStudantId =array_column($optinalsubjects, 'student_id');
+            $tempMerge=array_unique(array_merge($tempStudantId, $tempOpsStudantId));  
+            $filteredStudents = array_filter($student, function ($st) use ($tempMerge) {  
+               return is_array($tempMerge) && isset($st['id']) && in_array($st['id'], $tempMerge);
+            });
             
-            $data = ['student'=>$student,'subjects'=>$subjectsData,'optional_subjects'=>$optinalsubjects]; 
+            $data = ['student'=>$filteredStudents,'subjects'=>$subjectsData,'optional_subjects'=>$optinalsubjects]; 
             // echo "<pre>";print_r($data);exit;
             $pdf = PDF::loadView('mark.marksheet', ['data' => $data]);
             // return $pdf->download('marksheet.pdf');

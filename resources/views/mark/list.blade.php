@@ -194,7 +194,7 @@
                                     $('table tbody').empty();
                                     $.each(data.student, function(key, value) {
                                         var studentRow = `<tr class="student-row" data-id="${value.id}">`+
-                                            '<td><input type="checkbox" class="student-checkbox" data-id="' + value.id + '"></td>' +
+                                            '<td ><input type="checkbox" class="student-checkbox" data-id="' + value.id + '" ></td>' +
                                             '<td>' + value.roll_no + '</td>' +
                                             '<td>' + value.name + '</td>' +
                                            
@@ -225,10 +225,10 @@
                                     // Header section
                                     $('#studentdata thead tr').empty();
                                     $('.button-div').show();   
-                                    $('#studentdata thead tr').append('<th style="width:140px"><input type="checkbox" id="selectAll">&nbsp;&nbsp;&nbsp;&nbsp;</th>');
+                                    $('#studentdata thead tr').append('<th style="width:49px;"><input type="checkbox" id="selectAll">&nbsp;&nbsp;&nbsp;&nbsp;</th>');
                                     // Static headers
-                                    $('#studentdata thead tr').append('<th>Roll No</th>');
-                                    $('#studentdata thead tr').append('<th>Student Name</th>');
+                                    $('#studentdata thead tr').append('<th style="width:46px">Roll No</th>');
+                                    $('#studentdata thead tr').append('<th style="width:375px">Student Name</th>');
                                    
                                     $('#studentdata thead tr').append('<th>GR No</th>');
                                     $('#selectAll').on('click', function() {
