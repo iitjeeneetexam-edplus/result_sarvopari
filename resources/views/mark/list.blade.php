@@ -254,7 +254,7 @@
                                                         ? totalmarks[index].total_marks 
                                                         : '';
 
-                                            $('#studentdata thead tr').append('<th>' + subjectName.trim() + ' (' + marks + ')</th>');
+                                            $('#studentdata thead tr').append('<th>' + subjectName.trim() + '<br> (' + marks + ')</th>');
                                         });
                                     }
                                     $('#studentdata thead tr').append('<th>Action</th>');
