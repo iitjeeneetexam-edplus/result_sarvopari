@@ -173,11 +173,7 @@ $passfail = 0;
     <p style="position: absolute; bottom: 20pt; left: 30px; font-size: 16pt;">
         Date – {{ $student_value['result_date'] }}
     </p>
-
-
-
-
-           
+      
        
 </div>
 

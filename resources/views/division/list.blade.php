@@ -21,8 +21,9 @@
                         <thead>
                             <tr>
                                 <th>No</th>
-                                <th>Division Name</th>
+                               
                                 <th>Standard</th>
+                                <th>Division Name</th>
                                 <th>Status</th>
                                 <th>Action</th>
 
@@ -33,11 +34,11 @@
                             @foreach ($division as $value)
                             <tr>
                                 <td>{{ $i }}</td>
+                                
+                                <td>{{ !empty($value->standard_name)? $value->standard_name : 'N/A' ;  }}</td>
                                 <td>
                                     {{ !empty($value->division_name)? $value->division_name : 'N/A' ; }}<br>
                                  </td>
-                                <td>{{ !empty($value->standard_name)? $value->standard_name : 'N/A' ;  }}</td>
-
                                 <td>@if($value->status == 1)
                                         <button class="btn btn-success">Active</button>
                                     @else
@@ -51,7 +52,7 @@
                         </tbody>
                     </table>
                     </div>
-                    <div style="float:right"> {{ $standard->links('pagination::bootstrap-4') }} </div>
+                   
                 </div>
             </div>
         </div>

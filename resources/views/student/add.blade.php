@@ -16,19 +16,11 @@
 
 
                         <form action="{{ route('students.import') }}" method="POST" enctype="multipart/form-data">
-
+                               
                             @csrf
-                            <div>
-                                <label for="school">Select School:</label>
-                                <select name="school_id" id="school" class="form-control" required>
-                                    <option value="">Select a School</option>
-                                    @foreach($schools as $school)
-                                    <option value="{{ $school->id }}">{{ $school->school_name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('school_id')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
+                            
+                            <div class="form-group">
+                                <input type="hidden" name="school_id" id="school_id" value="{{ $schools->id}}">
                             </div>
 
                             <div>
@@ -70,9 +62,14 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+
         $(document).ready(function() {
-            $('#school').change(function() {
-                var schoolId = $(this).val();
+            var preSelectedSchoolId = $('#school_id').val();
+            if (preSelectedSchoolId) {
+                
+                loadStandards(preSelectedSchoolId);
+            }
+            function loadStandards(schoolId) {
                 if (schoolId) {
                     $.ajax({
                         url: '{{ url("/get-standards") }}/' + schoolId,
@@ -95,7 +92,7 @@
                     $('#standard').empty();
                     $('#standard').append('<option value="">Select a Standard</option>');
                 }
-            });
+            }
 
             $('#standard').change(function() {
                 var standardId = $(this).val();

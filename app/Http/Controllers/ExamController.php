@@ -26,7 +26,7 @@ class ExamController extends Controller
 
     public function create(Request $request)
     { 
-        $schools = School::select('id', 'school_name')->where('id',$request->session()->get('school_id'))->get();
+        $schools = School::select('id', 'school_name')->where('id',$request->session()->get('school_id'))->first();
         $standards = Standard::all(); 
         return view('exam.add', compact('standards','schools'));
     }
@@ -46,7 +46,7 @@ class ExamController extends Controller
         return redirect()->route('exam.index')->with('success', 'Exam added successfully.');
     }
     public function edit($id,Request $request){
-        $schools = School::select('id', 'school_name')->where('id',$request->session()->get('school_id'))->get();
+        $schools = School::select('id', 'school_name')->where('id',$request->session()->get('school_id'))->first();
         $data=Exam::where('id',$id)->first();
         $standard = Standard::where('id',$data->standard_id)->first();
         if(!empty($standard->school_id)){

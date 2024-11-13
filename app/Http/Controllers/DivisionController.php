@@ -21,8 +21,8 @@ class DivisionController extends Controller
         $division = Division::leftJoin('standards', 'standards.id', '=', 'division.standard_id')
         ->select('division.*', 'standards.standard_name')
         ->where('standards.school_id', $school_session_id)
-        ->paginate(5);
-        $standard = Standard::paginate(5);
+        ->get();
+        $standard = Standard::all();
         // $division = [];  
         // foreach($standard as $value){
         //     $division[$value->id] = Division::where('standard_id', $value->id)->get(); 
@@ -37,20 +37,27 @@ class DivisionController extends Controller
 
     public function store(Request $request)
     {
-        $count=Division::where('standard_id',$request->standard_id)->where('division_name',$request->division_name)->count();
-        if($count==0){
-        $request->validate([
-            'division_name' => 'required|string|max:255',
-            'status' => 'required|boolean',
-            'standard_id' => 'required|exists:standards,id', 
-        ]);
-        Division::create($request->all());
-        return redirect()->route('division.index')->with('success', 'Division added successfully.');
-   
-        }else{
-            return redirect()->route('division.index')->with('error', 'Division Already Exists successfully.');
+        // echo "<pre>";print_r($request->all());exit;
+        $divisionNames = $request->division_name;
 
+        foreach ($divisionNames as $index => $divisionName) {
+            $count = Division::where('standard_id', $request->standard_id)
+                            ->where('division_name', $divisionName)
+                            ->count();
+                     
+            if ($count == 0) {
+              
+                Division::create([
+                    'division_name' => $divisionName,
+                    'standard_id' => $request->standard_id,
+                    'status' =>  $request->status,
+                ]);
+                
+            }else{
+                    return redirect()->route('division.index')->with('error', 'Division Already Exists successfully.');
             }
+        }
+        return redirect()->route('division.index')->with('success', 'Division added successfully.');
        
     }
     public function edit($id,Request $request){

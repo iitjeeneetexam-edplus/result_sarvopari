@@ -64,6 +64,36 @@
 }
 
     </style>
+    <style>
+    .add-chapter-btn {
+        border: 1.5px solid gray;
+        border-radius: 5px;
+        text-align: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        width: -webkit-fit-content;
+        width: -moz-fit-content;
+        width: fit-content;
+        margin: 0 auto;
+        padding-right: 7px;
+        margin-top: 20px;
+        font-weight: 600;
+        color: var(--primary-color);
+    }
+
+    .add-chapter-btn #addmore i {
+        border: 1.5px solid var(--primary-color);
+        padding: 3px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .add-chapter-btn label {
+        cursor: pointer;
+        margin-top: 5px;
+    }
+</style>
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">

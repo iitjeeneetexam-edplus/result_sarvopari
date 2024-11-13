@@ -25,7 +25,7 @@ class StudentController extends Controller
     {
         
 
-        $schools = School::select('id', 'school_name')->where('id',$request->session()->get('school_id'))->get();
+        $schools = School::select('id', 'school_name')->where('id',$request->session()->get('school_id'))->first();
 
         return view('student.listfilter', compact('schools'));
     }
@@ -144,7 +144,7 @@ class StudentController extends Controller
 
     public function showImportForm(Request $request)
     {
-        $schools = School::where('id',$request->session()->get('school_id'))->get();
+        $schools = School::where('id',$request->session()->get('school_id'))->first();
         return view('student.add', compact('schools'));
     }
 
@@ -191,21 +191,28 @@ class StudentController extends Controller
 
     public function assignSubject(Request $request)
     {
-        // print_r($request->All());exit;
+    //    echo"<pre>"; print_r($request->all());exit;
         $subjectIds = $request->input('subject_ids');
         $studentIds = $request->input('student_ids');
         
         
-            foreach ($studentIds as $studentId) {
-                StudentSubject::where('student_id',$studentId)->delete();
-                foreach ($subjectIds as $subjectId) {
-                StudentSubject::create([
-                    'student_id' => $studentId,
-                    'subject_id' => $subjectId
-                ]);
+        foreach ($studentIds as $studentId) {
+            $validSubjectIds = array_filter($subjectIds);
+            
+            foreach ($validSubjectIds as $subjectId) {
+
+                    StudentSubject::Create(
+                    [
+                        'student_id' => $studentId,  
+                        'subject_id' => $subjectId   
+                    ],
+                );
+           
             }
         }
-
+        
+        
+        
         return redirect()->route('students.index')->with('success', 'Subject assigned to selected students.');
         //return redirect()->back()->with('success', 'Subject assigned to selected students.');
     }

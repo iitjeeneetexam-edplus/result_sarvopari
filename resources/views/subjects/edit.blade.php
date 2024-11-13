@@ -59,6 +59,31 @@
 
                         <form action="{{url('subjects/update')}}" method="POST" id="subjectForm" enctype='multipart/form-data'>
                             @csrf
+                            <div class="form-group">
+                                <input type="hidden" name="school_id" id="school_id" value="{{ $schools->id}}">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="standard_id">Select Standard</label>
+                                <select class="form-control" id="standard_id" name="standard_id" required>
+                                    <option value="">select option</option>
+                                </select>
+                                @error('standard_id')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="status">Status</label>
+                                <select class="form-control" id="status" name="status" required>
+                                    <option value="">select option</option>
+                                    <option value="1" {{ isset($data->status) && $data->status == '1' ? 'selected' : '' }}>Active</option>
+                                    <option value="0" {{ isset($data->status) && $data->status == '0' ? 'selected' : '' }}>Inactive</option>
+                                </select>
+                                @error('status')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+
                             <div class="form-group mb-3" id="main_subject">
                                 <input type="hidden" name="subject_id" value="{{$data->id}}">
                                 <label for="subject_name">Subject Name </label>
@@ -71,7 +96,7 @@
                             <div id="optionalDiv" class="hidden ">
                                 <div class="row ">
                                     <div class="col-md-12 is_addmore_subject">
-                                        <button class="btn btn-success " style="float:right" id="addmore_subject" type="button">plus</button>
+                                        <button class="btn btn-success " style="float:right" id="addmore_subject" type="button">Add More</button>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -114,39 +139,8 @@
 
                                 </a>
                             </div>
-                            <div class="form-group mb-3">
-                                <label for="standard_id">Select School</label>
-                                <select name="school_id" id="school" class="form-control">
-                                    @foreach($schools as $school)
-                                    <option value="{{ $school->id }}" {{ isset($school_id->school_id) && $school_id->school_id == $school->id ? 'selected' : '' }}>
-                                        {{ $school->school_name }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="standard_id">Select Standard</label>
-                                <select class="form-control" id="standard_id" name="standard_id" required>
-                                    <option value="">select option</option>
-                                </select>
-                                @error('standard_id')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label for="status">Status</label>
-                                <select class="form-control" id="status" name="status" required>
-                                    <option value="">select option</option>
-                                    <option value="1" {{ isset($data->status) && $data->status == '1' ? 'selected' : '' }}>Active</option>
-                                    <option value="0" {{ isset($data->status) && $data->status == '0' ? 'selected' : '' }}>Inactive</option>
-                                </select>
-                                @error('status')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <button type="submit" class="btn btn-primary">Add Subject</button>
+                           
+                            <button type="submit" class="btn btn-success">Update Subject</button>
                         </form>
                     </div>
                 </div>
@@ -210,9 +204,9 @@ loadStandards(preSelectedSchoolId);
 }
 
 // Call the function when the school dropdown value changes
-$('#school').change(function() {
-var schoolId = $(this).val();
-loadStandards(schoolId);
+$(document).ready(function() {
+    var schoolId = $('#school_id').val();
+    loadStandards(schoolId);  
 });
 
     });
@@ -244,7 +238,7 @@ loadStandards(schoolId);
                                 <div class="row ">
                                 <div class="col-md-12 is_addmore_subject">
                                     
-                                        <button class="btn btn-success " style="float:right" id="" type="button" onclick="is_optional_added_last(${idCounter})">plus</button>
+                                        <button class="btn btn-success " style="float:right" id="" type="button" onclick="is_optional_added_last(${idCounter})">Add More</button>
                                         <div class="is_optional_added_last${idCounter}"></div> 
 
                                     </div>

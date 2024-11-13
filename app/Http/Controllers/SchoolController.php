@@ -22,7 +22,7 @@ class SchoolController extends Controller
     {
         $user = Auth::user();
         $userId = $user->id; 
-        $schools = School::where("user_id",$userId)->paginate(5); 
+        $schools = School::where("user_id",$userId)->paginate(50); 
         return view('school.list', compact('schools'));
     }
 

@@ -18,9 +18,7 @@
                         <form action="{{ route('standards.update') }}" method="POST">
                             @csrf
                             <div class="form-group">
-                                <label for="school_id">School</label>
                                 <input type="hidden" name="id" value="{{ $data->id }}">
-                                <input type="text"  value="{{ $schools->school_name}}" class="form-control" disabled>
                                 <input type="hidden" name="school_id" value="{{ $schools->id}}">
                             </div>
                             <div class="form-group">

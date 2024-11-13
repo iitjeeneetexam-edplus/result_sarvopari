@@ -21,8 +21,8 @@ class MarkController extends Controller
      */
     public function index(Request $request)
     {
-        $data=student::paginate(10);
-        $schools = School::select('id', 'school_name')->where('id',$request->session()->get('school_id'))->get();
+        $data=student::paginate(50);
+        $schools = School::select('id', 'school_name')->where('id',$request->session()->get('school_id'))->first();
         $subjects = Subject::where('subjects.is_optional',1)->get();
         // echo "<pre>";print_r($data);exit;
         return view('mark.list',compact('data','subjects','schools'));
@@ -33,7 +33,8 @@ class MarkController extends Controller
      */
     public function create(Request $request)
     {
-        $schools = School::select('id', 'school_name')->where('id',$request->session()->get('school_id'))->get();
+
+        $schools = School::select('id', 'school_name')->where('id',$request->session()->get('school_id'))->first();
         return view('mark.add',compact('schools'));
     }
 
