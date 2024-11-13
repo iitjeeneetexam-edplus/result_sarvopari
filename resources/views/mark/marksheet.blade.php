@@ -64,6 +64,7 @@ $stdmarkssub = 0;
 $passfail = 0;
 @endphp
 @foreach($data['subjects'] as $no => $subjectslist)
+   @if(!empty($subjectslist['student_id']))
     @if($subjectslist['student_id'] == $student_value['id'])
     <tr style="height: 29pt;">
         <td style="width: 10%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ ++$no }}</td>
@@ -92,14 +93,16 @@ $passfail = 0;
     @endphp
     </tr>
     @endif
+    @endif
     @endforeach
     @foreach($data['optional_subjects'] as $no2=> $value_optional)
+    @if(!empty($value_optional['student_id']))
         @if($value_optional['student_id'] == $student_value['id'])
         <tr style="height: 29pt;">
             <td style="width: 10%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ ++$no2 }}</td>
             <td style="width: 10%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ ucfirst($value_optional['subject_name']) }}</td>
             <td style="width: 10%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ $value_optional['total_marks'] }}</td>
-            <td style="width: 10%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ $value_optional['marks'] ?? ' ' }}</td>
+            <td style="width: 10%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ isset($value_optional['marks']) ? $value_optional['marks']:''  }}</td>
             @php 
                 if($value_optional['marks'] < $value_optional['passing_marks']){
                     $passfail += $passfail+1;
@@ -121,6 +124,7 @@ $passfail = 0;
             @endphp
             
         </tr>
+        @endif
         @endif
         @endforeach
         @php
@@ -171,7 +175,7 @@ $passfail = 0;
 
     </table> 
     <p style="position: absolute; bottom: 20pt; left: 30px; font-size: 16pt;">
-        Date – {{ $student_value['result_date'] }}
+        Date – {{ date('d-m-20y',strtotime($student_value['result_date'])) }}
     </p>
       
        

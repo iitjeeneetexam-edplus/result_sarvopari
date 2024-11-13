@@ -306,7 +306,7 @@ function school(schoolId) {
             $('#subject_name' + id).val('');
         } else {
             optionalDiv2.classList.add('hidden');
-            $('#main_subject' + id).hide();
+            $('#main_subject' + id).show();
             $('#subject_sub_name' + id).val('');
         }
     }
