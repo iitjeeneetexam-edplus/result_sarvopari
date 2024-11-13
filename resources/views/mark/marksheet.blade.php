@@ -175,7 +175,7 @@ $passfail = 0;
 
     </table> 
     <p style="position: absolute; bottom: 20pt; left: 30px; font-size: 16pt;">
-        Date – {{ $student_value['result_date'] }}
+        Date – {{ date('d-m-20y',strtotime($student_value['result_date'])) }}
     </p>
       
        
