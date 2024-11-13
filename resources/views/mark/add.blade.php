@@ -23,20 +23,29 @@
                             <div class="form-group">
                                 <input type="hidden" name="school_id" id="school_id" value="{{ $schools->id}}">
                             </div>
-
+                            <div class="row">
                             <div class="col-md-12">
                                 <label for="standard">Select Standard:</label>
+                            </div>
+                            </div>
+                            <div class="row">
+                            <div class="col-md-10 offset-md-2">
                                 <select name="standard_id" id="standard" class="form-control">
                                     <option value="">Select a Standard</option>
-                                    <!-- Populated via AJAX -->
                                 </select>
                                 @error('standard_id')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
+                            </div>
 
+                            <div class="row">
                             <div class="col-md-12">
                                 <label for="division">Select Division:</label>
+                                </div>
+                                </div>
+                                <div class="row">
+                            <div class="col-md-10 offset-md-2">
                                 <select name="division_id" id="division" class="form-control">
                                     <option value="">Select a Division</option>
                                     <!-- Populated via AJAX -->
@@ -44,10 +53,15 @@
                                 @error('division_id')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
-                            </div>
-
-                            <div class="col-md-12">
+                                </div></div>
+                         
+                                <div class="row">
+                                <div class="col-md-12">
                                 <label for="exam_id">Select Exam:</label>
+                                </div>
+                                </div>
+                                <div class="row">
+                            <div class="col-md-10 offset-md-2">
                                 <select name="exam_id" id="exam_id" class="form-control" require>
                                     <option value="">Select a Exam</option>
                                     <!-- exam list -->
@@ -55,10 +69,16 @@
                                 @error('exam_id')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
-                            </div>
+                                </div>
+                                </div>
                            
-                            <div class="col-md-12">
+                                <div class="row">
+                                <div class="col-md-12">
                                 <label for="subject">Select Subject:</label>
+                                </div>
+                                </div>
+                                <div class="row">
+                                <div class="col-md-10 offset-md-2">
                                 <select name="subject_id" id="subject" class="form-control">
                                     <option value="">Select a Subject</option>
                                     <!-- Populated via AJAX -->
@@ -66,28 +86,50 @@
                                 @error('subject_id')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
-                            </div>
-                            <div class="col-md-12" style="display: none;" id="subject_sub_display">
-                                <label for="subject_sub">Select option Subject:</label>
-                                <select name="subject_sub" id="subject_sub" class="form-control">
+                                </div>
+                                </div>
+                                <div class="row" style="display: none;" id="subject_sub_display">
+                                    <div class="row">
+                                 <div class="col-md-12" >
+
+                                 <label for="subject_sub">Select option Subject:</label>
+                                 </div>
+                                    </div>
+                                    <div class="row">
+                                    <div class="col-md-10 offset-md-2">
+                                 <select name="subject_sub" id="subject_sub" class="form-control">
                                     <option value="">Select a option Subject</option>
                                     <!-- Populated via AJAX -->
                                 </select>
                             </div>
-                            <div class="col-md-12">
+                                </div>
+                                </div>
+                                <div class="row">
+                                <div class="col-md-12">
                                 <label for="total_marks">Total Marks</label>
+                                </div>
+                                    </div>
+                                    <div class="row">
+                                    <div class="col-md-10 offset-md-2">
                                 <input type="text" name="total_marks" id="total_marks" class="form-control" placeholder="Enter Total Marks" require>
                                 @error('total_marks')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
-                            </div>
-                            <div class="col-md-12">
+                                </div>
+                                </div>
+                                <div class="row">
+                                <div class="col-md-12">
                                 <label for="passing_marks">Passing Marks</label>
+                                </div>
+                                </div>
+                                <div class="row">
+                                <div class="col-md-10 offset-md-2">
                                 <input type="text" name="passing_marks" id="passing_marks" class="form-control" placeholder="Enter Passing Marks" require>
                                 @error('passing_marks')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
-                            </div>
+                                </div>
+                                </div>
                             
                             <br>
                             <h4>Student List</h4>

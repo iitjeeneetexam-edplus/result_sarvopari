@@ -22,7 +22,7 @@
                                                 </th>
                                                 <th>Actions</th>
                                                 
-                                                <th>Roll Number</th>
+                                                <th>Roll No.</th>
                                                 <th>Name</th>
                                                 <th>GR No</th>
                                                 <th>UID</th>

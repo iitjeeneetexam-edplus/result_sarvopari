@@ -36,7 +36,7 @@ class SchoolController extends Controller
         $request->validate([
             'school_name' => 'required|string|max:255|unique:schools',
             'address' => 'required|string',
-            'email' => 'required|email|unique:schools',
+            'email' => 'required|email',
             'contact_no' => 'required|regex:/[0-9]{10}/',
             'status' => 'required|in:1,0', 
         ]);
