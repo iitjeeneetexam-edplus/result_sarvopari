@@ -23,7 +23,6 @@
                     </td>
                     <td style="width: 33%; text-align: right; font-size: 14pt; vertical-align: top;">
                         <p style="margin: 0;">Year – {{ $student_value['exam_year'] }}</p>
-                        <p style="margin: 0;margin-top:10px;">UID - {{ $student_value['uid'] }} </p>
                     </td>
                 </tr>
                 <br>
@@ -46,6 +45,7 @@
         </tr>
     </table>
 </div>
+<p style="margin: 0;margin-top:10px;">UID - {{ $student_value['uid'] }} </p>
 <p style="font-size: 16pt; margin: 0; padding: 0px; margin-top: 40px;">Student Name – {{ $student_value['name'] }} </p>
 
 <table style="border-collapse: collapse; width: 100%; margin-top: 10pt;">
