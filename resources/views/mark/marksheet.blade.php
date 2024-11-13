@@ -64,6 +64,7 @@ $stdmarkssub = 0;
 $passfail = 0;
 @endphp
 @foreach($data['subjects'] as $no => $subjectslist)
+   @if(!empty($subjectslist['student_id']))
     @if($subjectslist['student_id'] == $student_value['id'])
     <tr style="height: 29pt;">
         <td style="width: 10%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ ++$no }}</td>
@@ -92,8 +93,10 @@ $passfail = 0;
     @endphp
     </tr>
     @endif
+    @endif
     @endforeach
     @foreach($data['optional_subjects'] as $no2=> $value_optional)
+    @if(!empty($value_optional['student_id']))
         @if($value_optional['student_id'] == $student_value['id'])
         <tr style="height: 29pt;">
             <td style="width: 10%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ ++$no2 }}</td>
@@ -121,6 +124,7 @@ $passfail = 0;
             @endphp
             
         </tr>
+        @endif
         @endif
         @endforeach
         @php
