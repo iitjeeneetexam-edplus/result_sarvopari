@@ -58,22 +58,28 @@
                                                 @endphp
                                                 @if(!empty($subjectNames))
                                                     @foreach($subjects as $optionls) 
-                                                    @foreach($subject_subs as $subject_subsoptions)
-                                                        @foreach($subject_subsoptions as $subjectSub)
-                                                        
-                                                        @if($optionls->id == $subjectSub->subject_id && in_array($subjectSub->id,$subjectNames))
-                                                           <td>{{ $subjectSub->subject_name }}<br></td>
+                                                        @php $hasSubject = false; @endphp
+                                                        @foreach($subject_subs as $subject_subsoptions)
+                                                            @foreach($subject_subsoptions as $subjectSub)
+                                                                @if($optionls->id == $subjectSub->subject_id && in_array($subjectSub->id, $subjectNames))
+                                                                    <td>{{ $subjectSub->subject_name }}<br></td>
+                                                                    @php $hasSubject = true; @endphp
+                                                                    @break 2 
+                                                                @endif
+                                                            @endforeach
+                                                        @endforeach
+                                                        @if(!$hasSubject)
+                                                            <td></td> 
                                                         @endif
-                                                        @endforeach
-                                                        @endforeach
-                                                    
                                                     @endforeach
+
+                                                    {{-- Add additional empty <td> elements if subjectNames count is less than subjects --}}
                                                     @for ($j = count($subjectNames); $j < count($subjects); $j++)
-                                                    <td></td> 
-                                                @endfor
-                                                @else
-                                                <span>No subjects assigned</span>
+                                                    @endfor
                                                 @endif
+
+                                                
+                                               
                                                
                                             </tr>
                                             @php $i++; @endphp
