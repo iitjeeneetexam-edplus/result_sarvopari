@@ -83,7 +83,7 @@ class MarkController extends Controller
                                 'is_optional' => $is_optional,
                                 'total_marks' => $request->input('total_marks'),
                                 'passing_marks' => $request->input('passing_marks'),
-                                'marks' => !empty($marks[$i]) ? $marks[$i] : '',
+                                'marks' => !empty($marks[$i]) ? ceil($marks[$i]) : '',
                             ]);
                         } else {
                             Marks::create([
@@ -93,7 +93,7 @@ class MarkController extends Controller
                                 'is_optional' => $is_optional,
                                 'total_marks' => $request->input('total_marks'),
                                 'passing_marks' => $request->input('passing_marks'),
-                                'marks' => !empty($marks[$i]) ? $marks[$i] : '',
+                                'marks' => !empty($marks[$i]) ? ceil($marks[$i]) : '',
                             ]);
                         }
                         

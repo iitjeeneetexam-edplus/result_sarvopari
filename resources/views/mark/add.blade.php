@@ -136,6 +136,12 @@
                 $.ajax({
                     url: '{{ url("/get-standards") }}/' + schoolId,
                     type: 'GET',
+                    beforeSend: function() { 
+                        $("#dev-loader").show();
+                    },
+                    complete: function() { 
+                        $("#dev-loader").hide();
+                    },   
                     success: function(data) {
                         $('#standard').empty().append('<option value="">Select a Standard</option>');
                         $.each(data, function(key, value) {
@@ -164,6 +170,12 @@
                 $.ajax({
                     url: '{{ url("/get-divisions-subject") }}/' + standardId,
                     type: 'GET',
+                    beforeSend: function() { 
+                        $("#dev-loader").show();
+                    },
+                    complete: function() { 
+                        $("#dev-loader").hide();
+                    },   
                     success: function(data) {
 
                         $('#division').empty().append('<option value="">Select a Division</option>');
@@ -217,6 +229,12 @@
                 $.ajax({
                     url: '{{ url("/get-subjects-sub") }}/' + subject_id,
                     type: 'GET',
+                    beforeSend: function() { 
+                        $("#dev-loader").show();
+                    },
+                    complete: function() { 
+                        $("#dev-loader").hide();
+                    },   
                     success: function(data) {
                         if (data.optional) {
                             if (data.optional.is_optional == '1') {
@@ -256,6 +274,12 @@
             $.ajax({
                 url: '{{ url("/students/marksaddstudentlist") }}/' + division_id + '/' + subject_id + '/' + is_optional+ '/' + exam_id,
                 type: 'GET',
+                beforeSend: function() { 
+                    $("#dev-loader").show();
+                },
+                complete: function() { 
+                    $("#dev-loader").hide();
+                },
                 success: function(data) {
                     $('#studentTable tbody').empty();
                     if (data.students.length > 0) {

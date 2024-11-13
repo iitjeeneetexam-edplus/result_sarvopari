@@ -71,6 +71,12 @@
                     $.ajax({
                         url: '{{ url("/get-standards") }}/' + schoolId,
                         type: 'GET',
+                        beforeSend: function() { 
+                            $("#dev-loader").show();
+                        },
+                        complete: function() { 
+                            $("#dev-loader").hide();
+                        },
                         success: function(data) {
                             $('#standard').empty().append('<option value="">Select a Standard</option>');
                             $.each(data, function(key, value) {
@@ -96,6 +102,12 @@
                     $.ajax({
                         url: '{{ url("/get-divisions") }}/' + standardId,
                         type: 'GET',
+                        beforeSend: function() { 
+                            $("#dev-loader").show();
+                        },
+                        complete: function() { 
+                            $("#dev-loader").hide();
+                        },
                         success: function(data) {
                             $('#division').empty().append('<option value="">Select a Division</option>');
                             $.each(data, function(key, value) {

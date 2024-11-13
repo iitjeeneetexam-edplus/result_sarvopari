@@ -93,6 +93,12 @@
                                 $.ajax({
                                     url: '{{ url("/get-standards") }}/' + schoolId,
                                     type: 'GET',
+                                    beforeSend: function() { 
+                                        $("#dev-loader").show();
+                                    },
+                                    complete: function() { 
+                                        $("#dev-loader").hide();
+                                    },   
                                     success: function(data) {
                                         $('#standard').empty().append('<option value="">Select a Standard</option>');
                                         $.each(data, function(key, value) {
@@ -117,6 +123,13 @@
                                 $.ajax({
                                     url: '{{ url("/get-divisions") }}/' + standardId,
                                     type: 'GET',
+                                    beforeSend: function() { 
+                                        $("#dev-loader").show();
+                                    },
+                                    complete: function() { 
+                                        $("#dev-loader").hide();
+                                    },
+
                                     success: function(data) {
                                         $('#division').empty().append('<option value="">Select a Division</option>');
                                         $.each(data, function(key, value) {
@@ -134,6 +147,12 @@
                                 $.ajax({
                                     url: '{{ url("/get-exam") }}/' + standardId,
                                     type: 'GET',
+                                    beforeSend: function() { 
+                                        $("#dev-loader").show();
+                                    },
+                                    complete: function() { 
+                                        $("#dev-loader").hide();
+                                    },
                                     success: function(data) {
                                         $('#exam').empty().append('<option value="">Select a Exam</option>');
                                         $.each(data, function(key, value) {
@@ -177,6 +196,12 @@
                                 url: '/students/getstudentformarks',
                                 type: 'POST',
                                 data: $(this).serialize(),
+                                beforeSend: function() { 
+                                        $("#dev-loader").show();
+                                    },
+                                    complete: function() { 
+                                        $("#dev-loader").hide();
+                                    },
                                 success: function(data) {
                                     if(data.student !=null){
 
@@ -261,6 +286,7 @@
                             $.ajax({
                                     url: '/marks/delete/' + studentId ,
                                     type: 'GET',
+                                    
                                     success: function(data){
                                         $('#studentdata tbody').empty();
                                         $('form').submit();  
@@ -289,6 +315,12 @@
                             $.ajax({
                                 url: '/marks/edit/' + studentId + '/' + divisionId, 
                                 type: 'GET',
+                                beforeSend: function() { 
+                                        $("#dev-loader").show();
+                                    },
+                                    complete: function() { 
+                                        $("#dev-loader").hide();
+                                    },
                                 success: function(data) {
                                     row.hide();
                                     var editRow = `<tr class="edit-row" data-id="${studentId}">
@@ -451,6 +483,12 @@
                                     $.ajax({
                                         url: '/marks/update', // The URL for updating marks
                                         type: 'POST',
+                                        beforeSend: function() { 
+                                        $("#dev-loader").show();
+                                        },
+                                        complete: function() { 
+                                            $("#dev-loader").hide();
+                                        },
                                         data: formData,
                                         success: function(response) {
                                             if(response == '1'){

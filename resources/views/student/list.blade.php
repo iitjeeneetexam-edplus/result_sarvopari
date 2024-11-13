@@ -201,6 +201,12 @@
             $.ajax({
                 url: '{{ url("/students/edit") }}/' + student_id,
                 type: 'GET',
+                beforeSend: function() { 
+                            $("#dev-loader").show();
+                },
+                complete: function() { 
+                    $("#dev-loader").hide();
+                },
                 success: function(data) {
                     // console.log(data);
                      $("#division_id").val(data.division_id);
@@ -281,20 +287,23 @@
         
 
         $('#editForm').on('submit', function(e) {
-        e.preventDefault(); // Prevent the default form submission
+        e.preventDefault(); 
 
-        // Submit the form via AJAX
         $.ajax({
-            url: $(this).attr('action'),    // Use the form's action attribute URL
+            url: $(this).attr('action'),  
             type: 'POST',
-            data: $(this).serialize(),       // Serialize the form data
+            data: $(this).serialize(), 
+            beforeSend: function() { 
+                $("#dev-loader").show();
+            },
+            complete: function() { 
+                $("#dev-loader").hide();
+            },      
             success: function(response) {
-                // Handle the successful response, then reload the page
                 console.log("Form submitted successfully.");
-                location.reload();           // Refresh the page
+                location.reload();          
             },
             error: function(xhr) {
-                // Handle any errors
                 console.log("Error submitting form:", xhr.responseText);
             }
         });

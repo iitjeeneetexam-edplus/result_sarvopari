@@ -182,6 +182,12 @@ if (schoolId) {
     $.ajax({
         url: '{{ url("/get-standards") }}/' + schoolId,
         type: 'GET',
+        beforeSend: function() { 
+            $("#dev-loader").show();
+        },
+        complete: function() { 
+            $("#dev-loader").hide();
+        },
         success: function(data) {
             console.log(data);
             $('#standard_id').empty().append('<option value="">Select a Standard</option>');
