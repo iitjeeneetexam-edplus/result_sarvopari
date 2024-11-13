@@ -164,7 +164,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function() {
-        // School change event for fetching standards
         $('#school').change(function() {
             var schoolId = $(this).val();
             if (schoolId) {
@@ -172,11 +171,11 @@
                     url: '{{ url("/get-standards") }}/' + schoolId,
                     type: 'GET',
                     beforeSend: function() { 
-                                        $("#dev-loader").show();
-                                    },
-                                    complete: function() { 
-                                        $("#dev-loader").hide();
-                                    },
+                        $("#dev-loader").show();
+                    },
+                    complete: function() { 
+                        $("#dev-loader").hide();
+                    },
                     success: function(data) {
                         $('#standard_id').empty().append('<option value="">Select a Standard</option>');
                         $.each(data, function(key, value) {

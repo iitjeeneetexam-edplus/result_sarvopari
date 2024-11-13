@@ -554,7 +554,6 @@
                                     $("#dev-loader").hide();
                                 },
                                 success: function(response) {
-                                    debugger;
                                     console.log(response.pdfUrl);
                                     window.open(response.pdfUrl, '_blank');
                                 },

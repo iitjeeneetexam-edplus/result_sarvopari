@@ -90,7 +90,7 @@
                                 <div class="row mb-4">
                                     <div class="col-md-4">
                                         <label for="subject">Select Subject:</label>
-                                        <select name="subject_ids[]" id="subject" class="form-control" required>
+                                        <select name="subject_ids[]" id="subject" class="form-control">
                                             <option value="">Select a {{ $optionls->subject_name }}</option>
                                             @foreach($subject_subs as $subject_subsoptions)
                                             @foreach($subject_subsoptions as $subjectSub)
@@ -100,18 +100,46 @@
                                             @endforeach
                                             @endforeach
                                         </select>
+                                       
+
                                     </div>
                                 </div>
                                 @php $i++; @endphp
                                 @endforeach
+                           
                                 <div class="mt-3">
-                                    <button type="submit" class="btn btn-success mb-3" style="float:right">Assign Subject</button>
+                                    <button type="submit" class="btn btn-success mb-3" style="float:right" id="submitBtn">Assign Subject</button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
+            <script>
+                
+                document.getElementById('submitBtn').onclick = function(event) {
+                    let isValid = false; // Flag to track validation
+                    const selects = document.querySelectorAll('select[name="subject_ids[]"]'); // Select all subject select elements
+
+                    // Check if at least one select has a value
+                    selects.forEach((select) => {
+                        if (select.value !== '') {
+                            isValid = true; // If one select has a value, set isValid to true
+                        }
+                    });
+
+                    // If no option is selected, prevent form submission
+                    if (!isValid) {
+                        event.preventDefault(); // Prevent form submission
+                        Swal.fire({
+                            icon: "error",
+                            title: "Result",
+                            text: "Please select one Option!",
+                            });
+                        return;
+                    }
+                };
+            </script>
        
     <!-- Edit Modal -->
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
