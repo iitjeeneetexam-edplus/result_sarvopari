@@ -23,6 +23,7 @@
                                 <th>No</th>
                                 <!-- <th>School Name</th> -->
                                 <th>Standard Name</th>
+                                <th>School Index</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -35,6 +36,7 @@
                                 <td>{{ $i }}</td>
                                 <!-- <td>{{ (!empty($standard->school->school_name))?$standard->school->school_name:''; }}</td> Accessing school name via relationship -->
                                 <td>{{ $standard->standard_name }}</td>
+                                <td>{{ $standard->school_index }}</td>
                                 <td>@if($standard->status == 1)
                                         <button class="btn btn-success">Active</button>
                                     @else

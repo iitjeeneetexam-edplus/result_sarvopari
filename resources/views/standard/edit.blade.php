@@ -28,6 +28,13 @@
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
+                            <div class="form-group mb-3">
+                                <label for="school_index">School Index</label>
+                                <input type="text" class="form-control" id="school_index" name="school_index" value="{{ $data->school_index }}" placeholder="School Index">
+                                @error('school_index')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
                             <div class="form-group">
                                 <label for="status">Status</label>
                                 <select class="form-control" id="status" name="status">

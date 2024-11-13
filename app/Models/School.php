@@ -13,7 +13,7 @@ class School extends Model
     // Specify the fields that are mass assignable
     protected $fillable = [
         'school_name',
-        'school_index',
+        'medium',
         'address',
         'email',
         'contact_no',

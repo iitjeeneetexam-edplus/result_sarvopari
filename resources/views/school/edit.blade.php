@@ -29,9 +29,9 @@
                             </div>
 
                             <div class="form-group mb-3">
-                                <label for="school_index">School Index</label>
-                                <input type="text" class="form-control" id="school_index" name="school_index" value="{{ $data->school_index }}" placeholder="School Index">
-                                @error('school_index')
+                                <label for="medium">Medium</label>
+                                <input type="text" class="form-control" id="medium" name="medium" value="{{ $data->medium }}" placeholder="Medium">
+                                @error('medium')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>

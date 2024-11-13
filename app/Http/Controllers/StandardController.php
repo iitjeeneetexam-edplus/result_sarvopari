@@ -49,6 +49,7 @@ class StandardController extends Controller
             Standard::create([
                 'school_id' => $request->school_id,
                 'standard_name' => $request->standard_name,
+                'school_index' => $request->school_index,
                 'status' => $request->status,
             ]);
             return redirect()->route('standards.index')->with('success', 'Standard added successfully.');
@@ -76,6 +77,7 @@ class StandardController extends Controller
         $standard->update([
             'school_id' => $request->school_id,
             'standard_name' => $request->standard_name,
+            'school_index' => $request->school_index,
             'status' => $request->status,
         ]);
 

@@ -45,7 +45,7 @@ class SchoolController extends Controller
         // Create a new school record
         School::create([
             'school_name' => $request->school_name,
-            'school_index' => $request->school_index,
+            'medium' => $request->medium,
             'address' => $request->address,
             'email' => $request->email,
             'contact_no' => $request->contact_no,
@@ -78,7 +78,7 @@ class SchoolController extends Controller
         // Update the school record
         $school->update([
             'school_name' => $request->school_name,
-            'school_index' => $request->school_index,
+            'medium' => $request->medium,
             'address' => $request->address,
             'email' => $request->email,
             'contact_no' => $request->contact_no,
