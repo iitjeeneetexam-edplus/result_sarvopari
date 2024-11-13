@@ -31,7 +31,7 @@
 
                     <div class="form-group mb-3">
                         <label for="division_name">Division Name</label>
-                        <input type="text" class="form-control" id="division_name" name="division_name" required value="{{ old('division_name')}}" placeholder="Enter Division Name">
+                        <input type="text" class="form-control" id="division_name" name="division_name[]" required value="{{ old('division_name')}}" placeholder="Enter Division Name" required>
                         @error('division_name')
                         <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -50,7 +50,13 @@
                         <div class="text-danger">{{ $message }}</div>
                         @enderror -->
                     </div>
+                    <div class="add-chapter-btn">
+                                <a class="btn" id="addmore">
+                                    &nbsp;&nbsp; Add More Division
 
+                                </a>
+                            </div>
+                           
                     <button type="submit" class="btn btn-primary">Add Division</button>
                     <a href="{{ route('standards.index') }}" class="btn btn-secondary " style="float:right">Back to Create Division</a>
                 </form>
@@ -59,3 +65,39 @@
     </div>
         </div></div>
 </x-app-layout>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        let idCounter = 2;
+        let subjectCounter = 1;
+        $('#addmore').click(function() {
+
+            var chapterHtml = `
+                   <div class="row">
+                     <div class="col-md-10">
+                        <label for="division_name">Division Name</label>
+                        <input type="text" class="form-control" id="division_name" name="division_name[]" required value="{{ old('division_name')}}" placeholder="Enter Division Name">
+                        </div>
+                        <div class="col-md-2 mt-4">
+                           
+                            &nbsp;&nbsp;&nbsp;<button class="btn btn-danger remove-option-second " data-index="" style="width:100px" type="button">cancel</button>
+                        </div> 
+                    </div>`;
+
+            idCounter++;
+            subjectCounter++;
+
+            $('.add-chapter-btn').before(chapterHtml);
+            $('.remove-chapter').click(function() {
+                $(this).closest('.added-chapter').remove();
+            });
+            $('#imageInput').change(function() {
+                readURL(this);
+            });
+        });
+
+    });
+    $(document).on('click', '.remove-option-second', function() {
+        $(this).closest('.row').remove(); // Remove the corresponding input row
+    });
+    </script>

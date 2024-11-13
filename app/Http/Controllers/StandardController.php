@@ -25,7 +25,7 @@ class StandardController extends Controller
         ->whereHas('school', function($query) use ($school_session_id) {
             $query->where('id', $school_session_id);
         })
-            ->paginate(5);
+            ->paginate(50);
          return view('standard.list', compact('standards'));
     }
 

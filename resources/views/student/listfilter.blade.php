@@ -21,16 +21,8 @@
                     <form method="get" action="{{ route('students.getstudent.get') }}">
                         @csrf
                         <div class="row mb-4">
-                            <div class="col-md-4">
-                                <label for="school">School</label>
-                                <select name="school_id" id="school" class="form-control">
-                                    <!-- <option value="">All Schools</option> -->
-                                    @foreach($schools as $school)
-                                    <option value="{{ $school->id }}" {{ request('school_id') == $school->id ? 'selected' : '' }}>
-                                        {{ $school->school_name }}
-                                    </option>
-                                    @endforeach
-                                </select>
+                        <div class="form-group">
+                                <input type="hidden" name="school_id" id="school_id" value="{{ $schools->id}}">
                             </div>
 
                             <div class="col-md-4">
@@ -89,7 +81,7 @@
                     $('#division').empty().append('<option value="">Select a Division</option>');
                 }
         }
-            var preSelectedSchoolId = $('#school').val();
+            var preSelectedSchoolId = $('#school_id').val();
             if (preSelectedSchoolId) {
                 
                 loadStandards(preSelectedSchoolId);

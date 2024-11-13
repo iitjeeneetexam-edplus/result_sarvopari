@@ -24,18 +24,9 @@
                     @error('exam_name')
                     <div class="text-danger">{{ $message }}</div>
                     @enderror
-                    <div class="form-group mb-3">
-                        <label for="standard_id">Select School</label>
-                        <select name="school_id" id="school" class="form-control">
-                            @foreach($schools as $school)
-                            <option value="{{ $school->id }}" 
-                                        {{ isset($selected_School) && $selected_School->id == $school->id ? 'selected' : '' }}>
-                                        {{ $school->school_name }}
-                                    </option>
-
-                            @endforeach
-                        </select>
-                    </div>
+                    <div class="form-group">
+                                <input type="hidden" name="school_id" id="school_id" value="{{ $schools->id}}">
+                            </div>
                     <div class="form-group mb-3">
                         <label for="standard_id">Select Standard</label>
                         <select class="form-control" id="standard_id" name="standard_id" required>
@@ -107,7 +98,7 @@
     }
 
     // Call the function on page load if there is a pre-selected school ID
-    var preSelectedSchoolId = $('#school').val();
+    var preSelectedSchoolId = $('#school_id').val();
     if (preSelectedSchoolId) {
         loadStandards(preSelectedSchoolId);
     }

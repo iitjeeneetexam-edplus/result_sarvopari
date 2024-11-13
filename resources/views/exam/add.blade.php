@@ -23,19 +23,12 @@
                     @error('exam_name')
                     <div class="text-danger">{{ $message }}</div>
                     @enderror
-                    <div class="form-group mb-3">
-                        <label for="standard_id">Select School</label>
-                        <select name="school_id" id="school" class="form-control">
-                            @foreach($schools as $school)
-                            <option value="{{ $school->id }}" {{ request('school_id') == $school->id ? 'selected' : '' }}>
-                                {{ $school->school_name }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </div>
+                    <div class="form-group">
+                                <input type="hidden" name="school_id" id="school_id" value="{{ $schools->id}}">
+                            </div>
                     <div class="form-group mb-3">
                         <label for="exam_year">Exam Year</label>
-                        <input type="text" class="form-control" id="exam_year" name="exam_year" required value="{{ old('date') }}">
+                        <input type="text" class="form-control" id="exam_year" name="exam_year" required value="{{ old('date') }}" placeholder="Enter Exam Year">
                         <span id="date-error" class="text-danger" style="display:none;"></span>
                         @error('exam_year')
                         <div class="text-danger">{{ $message }}</div>
@@ -82,8 +75,7 @@
 <script>
     $(document).ready(function() {
         // School change event for fetching standards
-        var preSelectedStandardId = "{{ old('standard_id', $data->standard_id ?? '') }}"; 
-
+     
         function loadStandards(schoolId) {
                     if (schoolId) {
                         $.ajax({
@@ -106,7 +98,7 @@
                         $('#standard_id').empty().append('<option value="">Select a Standard</option>');
                     }
         }
-        var preSelectedSchoolId = $('#school').val();
+        var preSelectedSchoolId = $('#school_id').val();
         if (preSelectedSchoolId) {
             loadStandards(preSelectedSchoolId);
         }

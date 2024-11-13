@@ -20,18 +20,8 @@
 
                         <form action="{{ url('marks/store') }}" method="POST">
                             @csrf
-                            <div class="col-md-12">
-                                <label for="school">School</label>
-                                <select name="school_id" id="school" class="form-control">
-                                    @foreach($schools as $school)
-                                    <option value="{{ $school->id }}" {{ request('school_id') == $school->id ? 'selected' : '' }}>
-                                        {{ $school->school_name }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                                @error('school_id')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
+                            <div class="form-group">
+                                <input type="hidden" name="school_id" id="school_id" value="{{ $schools->id}}">
                             </div>
 
                             <div class="col-md-12">
@@ -155,7 +145,7 @@
                 $('#division').empty().append('<option value="">Select a Division</option>');
             }
         }
-        var preSelectedSchoolId = $('#school').val();
+        var preSelectedSchoolId = $('#school_id').val();
             if (preSelectedSchoolId) {
                 
                 loadStandards(preSelectedSchoolId);
@@ -288,7 +278,9 @@
                             var row = '<tr>' +
                                 '<td>' + student.roll_no + '</td>' +
                                 '<td>' + student.name + '</td>' +
-                                '<td><input type="text" name="marks[]" value="'+student.marks+'"  min="0" max="' + totalmark + '" step="1" require/> <input type="hidden" name="student_id[]" value="' + student.id + '" /></td>' +
+                                '<td><input type="text" name="marks[]" value="' + (student.marks ? student.marks : '') + '" min="0" max="' + totalmark + '" step="1" required/>' +
+'<input type="hidden" name="student_id[]" value="' + student.id + '" /></td>'+
+
                                 '</tr>';
                             $('#studentTable tbody').append(row);
                         });

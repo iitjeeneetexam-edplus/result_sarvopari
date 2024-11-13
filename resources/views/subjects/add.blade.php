@@ -1,34 +1,5 @@
 @include('sidebar_display')
-<style>
-    .add-chapter-btn {
-        border: 1.5px solid gray;
-        border-radius: 5px;
-        text-align: center;
-        -webkit-box-align: center;
-        -ms-flex-align: center;
-        align-items: center;
-        width: -webkit-fit-content;
-        width: -moz-fit-content;
-        width: fit-content;
-        margin: 0 auto;
-        padding-right: 7px;
-        margin-top: 20px;
-        font-weight: 600;
-        color: var(--primary-color);
-    }
 
-    .add-chapter-btn #addmore i {
-        border: 1.5px solid var(--primary-color);
-        padding: 3px;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .add-chapter-btn label {
-        cursor: pointer;
-        margin-top: 5px;
-    }
-</style>
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -59,6 +30,19 @@
 
                         <form action="{{url('subjects/store')}}" method="POST" id="subjectForm" enctype='multipart/form-data'>
                             @csrf
+                            <div class="form-group">
+                                <input type="hidden" name="school_id" id="school_id" value="{{ $schools->id}}">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="standard_id">Select Standard</label>
+                                <select class="form-control" id="standard_id" name="standard_id" required>
+                                    <option value="">select option</option>
+                                </select>
+                                @error('standard_id')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
+
                             <div class="form-group mb-3" id="main_subject">
                                 <label for="subject_name">Subject Name </label>
                                 <input type="text" class="form-control" id="subject_name" name="subject_name[]" placeholder="Subject Name">
@@ -120,27 +104,7 @@
 
                                 </a>
                             </div>
-                            <div class="form-group mb-3">
-                                <label for="standard_id">Select School</label>
-                                <select name="school_id" id="school" class="form-control">
-                                    <option value="">All Schools</option>
-                                    @foreach($schools as $school)
-                                    <option value="{{ $school->id }}" {{ request('school_id') == $school->id ? 'selected' : '' }}>
-                                        {{ $school->school_name }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label for="standard_id">Select Standard</label>
-                                <select class="form-control" id="standard_id" name="standard_id" required>
-                                    <option value="">select option</option>
-                                </select>
-                                @error('standard_id')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-
+                           
                             <div class="form-group mb-3">
                                 <!-- <label for="status">Status</label> -->
                                 <input type="hidden" name="status" value="1">
@@ -163,32 +127,33 @@
 </x-app-layout>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function() {
-        $('#school').change(function() {
-            var schoolId = $(this).val();
-            if (schoolId) {
-                $.ajax({
-                    url: '{{ url("/get-standards") }}/' + schoolId,
-                    type: 'GET',
-                    beforeSend: function() { 
-                        $("#dev-loader").show();
-                    },
-                    complete: function() { 
-                        $("#dev-loader").hide();
-                    },
-                    success: function(data) {
-                        $('#standard_id').empty().append('<option value="">Select a Standard</option>');
-                        $.each(data, function(key, value) {
-                            $('#standard_id').append('<option value="' + value.id + '">' + value.standard_name + '</option>');
-                        });
-                    }
-                });
-            } else {
+ $(document).ready(function() {
+    var schoolId = $('#school_id').val();
+    school(schoolId);  
+});
+
+function school(schoolId) {
+    if (schoolId) {
+        $.ajax({
+            url: '{{ url("/get-standards") }}/' + schoolId,  
+            type: 'GET',
+            beforeSend: function() {
+                $("#dev-loader").show();
+            },
+            complete: function() {
+                $("#dev-loader").hide();
+            },
+            success: function(data) {
                 $('#standard_id').empty().append('<option value="">Select a Standard</option>');
+                $.each(data, function(key, value) {
+                    $('#standard_id').append('<option value="' + value.id + '">' + value.standard_name + '</option>');
+                });
             }
         });
-
-    });
+    } else {
+        $('#standard_id').empty().append('<option value="">Select a Standard</option>');
+    }
+}
 </script>
 
 <script type="text/javascript">

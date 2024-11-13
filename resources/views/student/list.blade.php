@@ -20,18 +20,19 @@
                                                 <th>
                                                     <input type="checkbox" id="select-all">
                                                 </th>
-                                                <th>No</th>
+                                                <th>Actions</th>
+                                                
                                                 <th>Roll Number</th>
                                                 <th>Name</th>
-                                                <th>GR Number</th>
+                                                <th>GR No</th>
                                                 <th>UID</th>
-                                                <th>Division</th>
+                                                <th>Div</th>
                                                 @if(!empty($subjects))
-                                                @foreach($subjects as $optionls) <!-- Reverse the subjects collection -->
-                                                <th>{{ $optionls->subject_name }}</th>
+                                                @foreach($subjects as $optionls) 
+                                                <th>{{ $optionls->subject_name}}</th>
                                                 @endforeach
                                                 @endif
-                                                <th>Actions</th>
+                                                
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -42,14 +43,17 @@
                                                 <td>
                                                     <input type="checkbox" name="student_ids[]" class="student-checkbox" value="{{ $student->id }}"> 
                                                 </td>
-                                                <td>{{ $i }}</td>
+                                                <td>
+                                                    <a href="#" class="btn btn-sm edit-btn btn-success" data-student-id="{{ $student->id }}">Edit</a>
+                                                    <a  class="btn btn-sm delete-btn btn-danger" href="javascript:void(0);" onclick="confirmDelete({{ $student->id }})">Delete</a>
+                                                </td> 
                                                 <td>{{ $student->roll_no }}</td>
                                                 <td>{{ $student->name }}</td>
                                                 <td>{{ $student->GR_no }}</td>
                                                 <td>{{ $student->uid }}</td>
                                                 <td>{{ $student->division->division_name }}</td>
                                                 @php
-                                                $subjectNames = explode(',', $student->subject_id); // Split the subject names
+                                                $subjectNames = explode(',', $student->subject_id); 
                                                 
                                                 @endphp
                                                 @if(!empty($subjectNames))
@@ -58,8 +62,7 @@
                                                         @foreach($subject_subsoptions as $subjectSub)
                                                         
                                                         @if($optionls->id == $subjectSub->subject_id && in_array($subjectSub->id,$subjectNames))
-                                                        <td>{{ $subjectSub->subject_name }}</td>
-                                                       
+                                                           <td>{{ $subjectSub->subject_name }}<br></td>
                                                         @endif
                                                         @endforeach
                                                         @endforeach
@@ -71,10 +74,7 @@
                                                 @else
                                                 <span>No subjects assigned</span>
                                                 @endif
-                                                <td>
-                                                    <a href="#" class="btn btn-sm edit-btn btn-success" data-student-id="{{ $student->id }}">Edit</a>
-                                                    <a  class="btn btn-sm delete-btn btn-danger" href="javascript:void(0);" onclick="confirmDelete({{ $student->id }})">Delete</a>
-                                                </td> 
+                                               
                                             </tr>
                                             @php $i++; @endphp
                                             @endforeach

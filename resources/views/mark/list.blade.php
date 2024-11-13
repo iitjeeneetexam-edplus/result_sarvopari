@@ -23,16 +23,9 @@
                         <ul id="validationErrors" style="list-style: disc;   color: red;"></ul>
                             @csrf
                             <div class="row mb-4">
-                                <div class="col-md-4">
-                                    <label for="school">Select School</label>
-                                    <select name="school_id" id="school" class="form-control">
-                                        @foreach($schools as $school)
-                                        <option value="{{ $school->id }}" {{ request('school_id') == $school->id ? 'selected' : '' }}>
-                                            {{ $school->school_name }}
-                                        </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                            <div class="form-group">
+                                <input type="hidden" name="school_id" id="school_id" value="{{ $schools->id}}">
+                            </div>
 
                                 <div class="col-md-4">
                                     <label for="standard">Select Standard:</label>
@@ -111,7 +104,7 @@
                                 $('#division').empty().append('<option value="">Select a Division</option>');
                             }
                         }
-                        var preSelectedSchoolId = $('#school').val();
+                        var preSelectedSchoolId = $('#school_id').val();
                         if (preSelectedSchoolId) {
                             
                             loadStandards(preSelectedSchoolId);
@@ -168,12 +161,9 @@
                             event.preventDefault(); 
                             let errors="";
                             $("#validationErrors").html("");
-                            var schoolValue= $('#school').val();
                             var standardValue= $('#standard').val();
                             var divisionValue= $('#division').val();
                             var examValue= $('#exam').val(); 
-                            if(!$.trim(schoolValue))
-                                errors+="<li>Please select school.</li>" 
                             if(!$.trim(standardValue))
                                 errors+="<li>Please select standard.</li>"
                             if(!$.trim(divisionValue))
@@ -186,11 +176,7 @@
                             return;
                         }
                             
-                            if (schoolValue == '') {
-                                console.log(schoolValue);
-                                return;
-                            } 
-
+                          
 
                             $.ajax({
                                 url: '/students/getstudentformarks',
