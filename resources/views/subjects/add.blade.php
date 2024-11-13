@@ -70,7 +70,7 @@
                             <div id="optionalDiv" class="hidden ">
                                 <div class="row ">
                                     <div class="col-md-12 is_addmore_subject">
-                                        <button class="btn btn-success " style="float:right" id="addmore_subject" type="button">plus</button>
+                                        <button class="btn btn-success " style="float:right" id="addmore_subject" type="button">Add More</button>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -209,7 +209,7 @@
                                 <div class="row ">
                                 <div class="col-md-12 is_addmore_subject">
                                     
-                                        <button class="btn btn-success " style="float:right" id="" type="button" onclick="is_optional_added_last(${idCounter})">plus</button>
+                                        <button class="btn btn-success " style="float:right" id="" type="button" onclick="is_optional_added_last(${idCounter})">Add More</button>
                                         <div class="is_optional_added_last${idCounter}"></div> 
 
                                     </div>
