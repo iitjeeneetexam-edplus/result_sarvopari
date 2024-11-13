@@ -200,13 +200,25 @@ class StudentController extends Controller
             $validSubjectIds = array_filter($subjectIds);
             
             foreach ($validSubjectIds as $subjectId) {
-
+                $msubjectid = Subjectsub::where('id',$subjectId)->select('subject_id')->first();
+                $subjecs = Subjectsub::where('subject_id',$msubjectid->subject_id)->pluck('id');
+                $stdDT = StudentSubject::where('student_id',$studentId)->whereIN('subject_id',$subjecs)->first();
+                if($stdDT){
+                    StudentSubject::where('id',$stdDT->id)->update(
+                        [
+                            'student_id' => $studentId,  
+                            'subject_id' => $subjectId   
+                        ],
+                    );
+                }else{
                     StudentSubject::Create(
-                    [
-                        'student_id' => $studentId,  
-                        'subject_id' => $subjectId   
-                    ],
-                );
+                        [
+                            'student_id' => $studentId,  
+                            'subject_id' => $subjectId   
+                        ],
+                    );
+                }
+                    
            
             }
         }
