@@ -33,7 +33,6 @@ class MarkController extends Controller
      */
     public function create(Request $request)
     {
-
         $schools = School::select('id', 'school_name')->where('id',$request->session()->get('school_id'))->get();
         return view('mark.add',compact('schools'));
     }

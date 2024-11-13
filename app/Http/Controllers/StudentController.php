@@ -300,7 +300,7 @@ class StudentController extends Controller
             ->join('standards','standards.id','=','division.standard_id')
             ->join('exams','exams.standard_id','=','standards.id')
             ->join('schools','schools.id','=','standards.school_id')
-            ->select('students.*','standards.standard_name','standards.id as standard_id','schools.school_name','schools.school_index','schools.address','division.division_name','exams.exam_name','exams.exam_year','exams.result_date')
+            ->select('students.*','standards.standard_name','standards.id as standard_id','schools.school_name','standards.school_index','schools.address','division.division_name','exams.exam_name','exams.exam_year','exams.result_date')
             ->whereIn('students.id',$request->student_id)->get()->toarray();
 
             // echo "<pre>";print_r($student);exit;

@@ -10,7 +10,7 @@ class Standard extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $fillable = ['school_id', 'standard_name', 'status'];
+    protected $fillable = ['school_id', 'standard_name','school_index', 'status'];
 
     public function school()
     {
