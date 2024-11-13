@@ -317,6 +317,8 @@
                     if (data.students.length > 0) {
                         var totalmark = $('#total_marks').val();
                         $.each(data.students, function(index, student) {
+                        $('#total_marks').val(student.total_marks);
+                        $('#passing_marks').val(student.passing_marks);
                             var row = '<tr>' +
                                 '<td>' + student.roll_no + '</td>' +
                                 '<td>' + student.name + '</td>' +
