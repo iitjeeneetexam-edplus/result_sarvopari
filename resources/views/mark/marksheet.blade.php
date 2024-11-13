@@ -69,7 +69,7 @@ $passfail = 0;
         <td style="width: 10%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ ++$no }}</td>
         <td style="width: 35%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ ucfirst($subjectslist['subject_name']) }}</td>
         <td style="width: 22%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ $subjectslist['total_marks'] }}</td>
-        <td style="width: 22%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ $subjectslist['marks'] ?? ' ' }}</td>
+        <td style="width: 22%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ isset($subjectslist['marks']) ? ceil($subjectslist['marks']) : ' ' }}</td>
 
         @php 
         if($subjectslist['marks'] < $subjectslist['passing_marks']){

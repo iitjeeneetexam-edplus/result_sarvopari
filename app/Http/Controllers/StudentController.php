@@ -101,7 +101,6 @@ class StudentController extends Controller
             'marks.subject_id',
             'marks.is_optional',
             'marks.id as mark_id',
-           
             
             DB::raw('GROUP_CONCAT(COALESCE(s1.subject_name, s2.subject_name)) as subject_name')
         )
