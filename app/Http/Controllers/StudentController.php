@@ -237,14 +237,13 @@ class StudentController extends Controller
                 ->where('marks.is_optional', $is_optional)
                 ->where('marks.exam_id', $exam_id);
         })
-            ->select('students.id', 'students.name', 'students.roll_no','marks.marks')
+            ->select('students.id', 'students.name', 'students.roll_no','marks.marks','marks.total_marks','marks.passing_marks')
             ->where('division_id', $division_id);
 
             if($is_optional == 1){
                 $studentQY = $studentQY->when($subject_id, function ($query) use ($subject_id,$is_optional,$exam_id) {
                     $query->join('student_subjects', 'students.id', '=', 'student_subjects.student_id')                    
                     ->where('student_subjects.subject_id', $subject_id);
-                    
                 });
             }
             
