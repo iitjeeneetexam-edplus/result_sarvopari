@@ -264,7 +264,7 @@
                             var row = '<tr>' +
                                 '<td>' + student.roll_no + '</td>' +
                                 '<td>' + student.name + '</td>' +
-                                '<td><input type="number" name="marks[]" value="'+student.marks+'"  min="0" max="' + totalmark + '" step="1" require/> <input type="hidden" name="student_id[]" value="' + student.id + '" /></td>' +
+                                '<td><input type="text" name="marks[]" value="'+student.marks+'"  min="0" max="' + totalmark + '" step="1" require/> <input type="hidden" name="student_id[]" value="' + student.id + '" /></td>' +
                                 '</tr>';
                             $('#studentTable tbody').append(row);
                         });
