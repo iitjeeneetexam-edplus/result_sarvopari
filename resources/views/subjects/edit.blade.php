@@ -365,7 +365,7 @@ $(document).ready(function() {
             $('#main_subject' + id).hide();
         } else {
             optionalDiv2.classList.add('hidden');
-            $('#main_subject' + id).hide();
+            $('#main_subject' + id).show();
         }
     }
     $('.remove-option').click(function() {
