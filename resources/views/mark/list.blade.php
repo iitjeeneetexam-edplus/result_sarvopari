@@ -195,9 +195,9 @@
                                     $.each(data.student, function(key, value) {
                                         var studentRow = `<tr class="student-row" data-id="${value.id}">`+
                                             '<td><input type="checkbox" class="student-checkbox" data-id="' + value.id + '"></td>' +
-                                            '<td>' + value.id + '</td>' +
-                                            '<td>' + value.name + '</td>' +
                                             '<td>' + value.roll_no + '</td>' +
+                                            '<td>' + value.name + '</td>' +
+                                           
                                             '<td>' + value.GR_no + '</td>';
                                            
                                         if (data.subject != null) {
@@ -227,9 +227,9 @@
                                     $('.button-div').show();   
                                     $('#studentdata thead tr').append('<th style="width:140px"><input type="checkbox" id="selectAll">&nbsp;&nbsp;&nbsp;&nbsp;</th>');
                                     // Static headers
-                                    $('#studentdata thead tr').append('<th>No</th>');
-                                    $('#studentdata thead tr').append('<th>Student Name</th>');
                                     $('#studentdata thead tr').append('<th>Roll No</th>');
+                                    $('#studentdata thead tr').append('<th>Student Name</th>');
+                                   
                                     $('#studentdata thead tr').append('<th>GR No</th>');
                                     $('#selectAll').on('click', function() {
                                             var isChecked = this.checked;
