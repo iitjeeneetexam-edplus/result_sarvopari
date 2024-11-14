@@ -340,9 +340,8 @@
                             var row = '<tr>' +
                                 '<td>' + student.roll_no + '</td>' +
                                 '<td>' + student.name + '</td>' +
-                                '<td><input type="text" name="marks[]" value="' + (student.marks ? student.marks : '') + '" min="0" max="' + totalmark + '" step="1" required/>' +
-                            '<input type="hidden" name="student_id[]" value="' + student.id + '" /></td>'+
-
+                                '<td><input type="number" min="0" max="100" step=".01" name="marks[]" value="' + (student.marks ? student.marks : '') + '" min="0" max="' + totalmark + '" step="1" required/>' +
+                                '<input type="hidden" name="student_id[]" value="' + student.id + '" /></td>'+
                                 '</tr>';
                             $('#studentTable tbody').append(row);
                         });

@@ -533,7 +533,7 @@
                     }).get();
 
                     $.ajax({
-                        url: "{{ route('generate.pdf') }}",
+                        url: "{{ route('allgenerate.pdf') }}",
                         type: "POST",
                         data: {
                             students: students,

@@ -426,7 +426,18 @@ class StudentController extends Controller
 
             )
             ->get()->toarray(); 
+            $optinalsubjects=array_map(function($row) { 
+                $row["marks"]=(int)round((float)$row["marks"]);
+                 
+                return   $row;
+            }, $optinalsubjects);
             
+            $subjectsData= array_map(function($row) {
+                $row["marks"]=(int)round((float)$row["marks"]);
+                return  $row;
+            }, $subjectsData);
+            
+ 
             // $response_data = [
             //     'student' => $student,
             //     'subjects' => $subjectsData,
@@ -470,7 +481,6 @@ class StudentController extends Controller
     }
     public function generatePDF(Request $request)
     {
-       
         $students = $request->input('students');
         $subjects = $request->input('subjects');
         $baseWidth = 595.28; // A4 width in points (8.27 inches at 72 dpi)
@@ -500,7 +510,7 @@ class StudentController extends Controller
         // Return PDF URL
         $pdfUrl = asset('pdfs/' . basename($pdfPath));
         return response()->json(['pdfUrl' => $pdfUrl]);
-}
+       }
 
         public function subjectmarksPDF(Request $request){
             $schoolname = School::where('id',$request->school_id)->select('school_name')->first();
