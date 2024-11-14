@@ -105,6 +105,7 @@ Route::get('/students/delete/{id}', [StudentController::class, 'deletestudent'])
 Route::post('/student/marksheet', [StudentController::class, 'marksheet'])->name('students.marksheet');
 
 Route::post('/generate-pdf', [StudentController::class, 'generatePDF'])->name('generate.pdf');
+Route::post('/subjectmarks-pdf', [StudentController::class, 'subjectmarksPDF'])->name('generate.pdf');
 
 
 });

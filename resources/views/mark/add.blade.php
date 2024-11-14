@@ -18,7 +18,7 @@
                         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
                         <!-- Display Validation Errors -->
 
-                        <form action="{{ url('marks/store') }}" method="POST">
+                        <form action="{{ url('marks/store') }}" id="subjectMarksForm" method="POST">
                             @csrf
                             <div class="form-group">
                                 <input type="hidden" name="school_id" id="school_id" value="{{ $schools->id}}">
@@ -133,7 +133,7 @@
                             
                             <br>
                             <h4>Student List</h4>
-                            <a class="btn btn-success" onclick="generate_pdf()">PDF</a>
+                            <a class="btn btn-success" onclick="generate_pdf(event)">PDF</a>
                             <table id="studentTable" class="table">
                                 <thead>
                                     <tr>
@@ -161,8 +161,22 @@
 <script src="path/to/your-script.js"></script>
 
 <script>
-    function generate_pdf(){
-            alert('pdf');
+    function generate_pdf(e){
+        e.preventDefault();
+        let formData = new FormData(document.getElementById('subjectMarksForm'));
+        $.ajax({
+                url: '{{ url("/subjectmarks-pdf") }}/',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(data) {
+                    window.open(data.pdfUrl, '_blank');
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
     }
     $(document).ready(function() {
         // School change event for fetching standards
