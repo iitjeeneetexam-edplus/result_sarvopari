@@ -410,5 +410,29 @@ class StudentController extends Controller
             return redirect()->route('marks.index')->with([], "Something went wrong!.", false, 400);
         }
     }
+    public function generatePDF(Request $request)
+    {
+       
+        $students = $request->input('students');
+        $subjects = $request->input('subjects');
+        $pdf = PDF::loadView('mark.studentdatapdf', ['students' => $students,'subjects' => $subjects]);
+        $folderPath = public_path('pdfs');
 
+        if (!File::exists($folderPath)) {
+        File::makeDirectory($folderPath, 0755, true);
+        }
+
+        $baseFileName = 'Markpdf.pdf';
+        $pdfPath = $folderPath . '/' . $baseFileName;
+
+        $counter = 1;
+        while (File::exists($pdfPath)) {
+        $pdfPath = $folderPath . '/Markpdf' . $counter . '.pdf'; 
+        $counter++;
+        }
+
+        file_put_contents($pdfPath, $pdf->output());
+        $pdfUrl = asset('pdfs/' . basename($pdfPath));
+        return response()->json(['pdfUrl'=>$pdfUrl]);
+}
 }

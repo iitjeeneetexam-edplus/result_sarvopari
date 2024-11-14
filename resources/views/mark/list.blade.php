@@ -60,7 +60,8 @@
                     </div>
                     <hr/>
                 <div class="table-container">
-                    <div class="button-div" style="display: none;"><button type="button" class="btn btn-success generateResultButton mb-2" style="float:right">Generate Results</button></div>
+                    <div class="button-div" style="display: none;"><button type="button" class="btn btn-success generateResultButton mb-2" >Generate Results</button>&nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-warning generatePdfButton mb-2" style="float:right">Generate Pdf</button></div>
+                   
                     <table class="table table-bordered" id="studentdata">
                         <thead class="thead-dark">
                             <tr>
@@ -511,6 +512,46 @@
                 //         }
                 //     });
                 //    }
+                $('.generatePdfButton').on('click' , function (){
+                    var students = [];
+                    $('#studentdata tbody tr').each(function() {
+                        var student = {
+                            roll_no: $(this).find('td').eq(1).text(),
+                            name: $(this).find('td').eq(2).text(),
+                            GR_no: $(this).find('td').eq(3).text(),
+                            marks: {}
+                        };
+                        $(this).find('td').slice(4, -1).each(function(index) {
+                            var subjectName = $('#studentdata thead th').eq(index + 4).text().trim();
+                            student.marks[subjectName] = $(this).text().trim();
+                        });
+                        students.push(student);
+                    });
+
+                    var subjects = $('#studentdata thead th').slice(4, -1).map(function() {
+                        return $(this).text().trim();
+                    }).get();
+
+                    $.ajax({
+                        url: "{{ route('generate.pdf') }}",
+                        type: "POST",
+                        data: {
+                            students: students,
+                            subjects: subjects,
+                            _token: '{{ csrf_token() }}' // Add CSRF token for Laravel
+                        },
+                        success: function(response) {
+                            if (response) {
+                                window.open(response.pdfUrl, '_blank');
+                            } else {
+                                console.error('Failed to receive PDF data.');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('AJAX error:', status, error);
+                        }
+                    });
+                });
                 $('.generateResultButton').on('click' , function() { 
                             var selectedStudentIds = []; 
                             $('.student-checkbox:checked').each(function() {
