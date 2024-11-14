@@ -540,6 +540,12 @@
                             subjects: subjects,
                             _token: '{{ csrf_token() }}' // Add CSRF token for Laravel
                         },
+                        beforeSend: function() { 
+                            $("#dev-loader").show();
+                        },
+                        complete: function() { 
+                            $("#dev-loader").hide();
+                        },
                         success: function(response) {
                             if (response) {
                                 window.open(response.pdfUrl, '_blank');
