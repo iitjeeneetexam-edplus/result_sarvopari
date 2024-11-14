@@ -415,24 +415,32 @@ class StudentController extends Controller
        
         $students = $request->input('students');
         $subjects = $request->input('subjects');
-        $pdf = PDF::loadView('mark.studentdatapdf', ['students' => $students,'subjects' => $subjects]);
-        $folderPath = public_path('pdfs');
+        $baseWidth = 595.28; // A4 width in points (8.27 inches at 72 dpi)
+        $additionalWidth = 50; // Additional width per subject
+        $totalWidth = $baseWidth + max(0, (count($subjects) - 5) * $additionalWidth);
 
+        // Create PDF with custom size
+        $pdf = PDF::loadView('mark.studentdatapdf', ['students' => $students, 'subjects' => $subjects])
+                ->setPaper([0, 0, $totalWidth, 841.89]); // Height is A4 in points (11.69 inches)
+
+        // Save PDF in public/pdfs with a unique filename if it exists
+        $folderPath = public_path('pdfs');
         if (!File::exists($folderPath)) {
-        File::makeDirectory($folderPath, 0755, true);
+            File::makeDirectory($folderPath, 0755, true);
         }
 
         $baseFileName = 'Markpdf.pdf';
         $pdfPath = $folderPath . '/' . $baseFileName;
-
         $counter = 1;
         while (File::exists($pdfPath)) {
-        $pdfPath = $folderPath . '/Markpdf' . $counter . '.pdf'; 
-        $counter++;
+            $pdfPath = $folderPath . '/Markpdf' . $counter . '.pdf';
+            $counter++;
         }
 
         file_put_contents($pdfPath, $pdf->output());
+
+        // Return PDF URL
         $pdfUrl = asset('pdfs/' . basename($pdfPath));
-        return response()->json(['pdfUrl'=>$pdfUrl]);
+        return response()->json(['pdfUrl' => $pdfUrl]);
 }
 }
