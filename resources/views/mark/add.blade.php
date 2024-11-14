@@ -133,6 +133,7 @@
                             
                             <br>
                             <h4>Student List</h4>
+                            <a class="btn btn-success" onclick="generate_pdf()">PDF</a>
                             <table id="studentTable" class="table">
                                 <thead>
                                     <tr>
@@ -160,6 +161,9 @@
 <script src="path/to/your-script.js"></script>
 
 <script>
+    function generate_pdf(){
+            alert('pdf');
+    }
     $(document).ready(function() {
         // School change event for fetching standards
         function loadStandards(schoolId) {
@@ -298,7 +302,7 @@
                 getstudentlist(subject_id,1);
             }
         });
-
+        
 
         function getstudentlist(subject_id,is_optional) {
             var division_id = $('#division').val();
@@ -323,7 +327,7 @@
                                 '<td>' + student.roll_no + '</td>' +
                                 '<td>' + student.name + '</td>' +
                                 '<td><input type="text" name="marks[]" value="' + (student.marks ? student.marks : '') + '" min="0" max="' + totalmark + '" step="1" required/>' +
-'<input type="hidden" name="student_id[]" value="' + student.id + '" /></td>'+
+                            '<input type="hidden" name="student_id[]" value="' + student.id + '" /></td>'+
 
                                 '</tr>';
                             $('#studentTable tbody').append(row);

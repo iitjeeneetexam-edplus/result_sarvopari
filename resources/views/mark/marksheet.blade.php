@@ -15,14 +15,14 @@
             <table style="width: 100%; border-bottom: 1pt solid black; font-size: 24pt;">
                 <tr>
                     <td style="width: 33%; font-size: 14pt; vertical-align: top;">
-                        <p style="margin: 0;">Index No - {{ ucfirst($student_value['school_index']) }}</p>
-                        <p style="margin: 0;margin-top:10px;">Exam - {{ ucfirst($student_value['exam_name']) }} </p>
+                        <p style="margin: 0;">Index No - <b>{{ ucfirst($student_value['school_index']) }}</b></p>
+                        <p style="margin: 0;margin-top:10px;">Exam - <b>{{ ucfirst($student_value['exam_name']) }}</b> </p>
                     </td>
                     <td style="width: 34%; text-align: center; padding: 5px; background-color: black; color: white; font-size: 24pt; font-weight: bold; border-radius: 4px;">
                         Result Sheet
                     </td>
                     <td style="width: 33%; text-align: right; font-size: 14pt; vertical-align: top;">
-                        <p style="margin: 0;">Year – {{ $student_value['exam_year'] }}</p>
+                        <p style="margin: 0;">Year – <b>{{ $student_value['exam_year'] }}</b></p>
                     </td>
                 </tr>
                 <br>
@@ -34,19 +34,19 @@
     <table style="width: 100%; font-size: 14pt; border-collapse: collapse;">
         <tr>
             <td style="width: 33%; text-align: left;">
-                G R No - {{ $student_value['GR_no'] }}
+                G R No - <b>{{ $student_value['GR_no'] }}</b>
             </td>
             <td style="width: 80%; text-align: center; font-size: 16pt; ">
-                Standard – {{ ucfirst($student_value['standard_name']) }}
+                Standard – <b>{{ ucfirst($student_value['standard_name']) }}</b>
             </td>
             <td style="width: 33%; text-align: right;">
-                Roll No – {{ $student_value['roll_no'] }}
+                Roll No – <b>{{ $student_value['roll_no'] }}</b>
             </td>
         </tr>
     </table>
 </div>
-<p style="margin: 0;margin-top:10px;">UID - {{ $student_value['uid'] }} </p>
-<p style="font-size: 16pt; margin: 0; padding: 0px; margin-top: 40px;">Student Name – {{ $student_value['name'] }} </p>
+<p style="margin: 0;margin-top:10px;">UID - <b>{{ $student_value['uid'] }}</b> </p>
+<p style="font-size: 16pt; margin: 0; padding: 0px; margin-top: 40px;">Student Name – <b>{{ $student_value['name'] }}</b> </p>
 
 <table style="border-collapse: collapse; width: 100%; margin-top: 10pt;">
     <tr style="height: 40pt; background-color: black; color: white; font-size: 12pt; font-weight: bold;">
@@ -145,7 +145,7 @@ $passfail = 0;
         <table style="width: 100%; font-size: 16pt; border-collapse: collapse;">
             <tr>
                 <td style="text-align: left; padding: 10px;font-size: 14pt">
-                    Percentage – {{ $percentage }}
+                    Percentage – <b>{{ $percentage }}</b>
                 </td>
                 <td style="text-align: right; padding: 10px;font-size: 14pt">
                     Result – @php
@@ -154,7 +154,8 @@ $passfail = 0;
                         }else{
                             $porf = 'Pass';
                         }   
-                    @endphp {{$porf}}
+                    @endphp 
+                    <b>{{$porf}}</b>
                 </td>
             </tr>
         </table>
@@ -175,7 +176,7 @@ $passfail = 0;
 
     </table> 
     <p style="position: absolute; bottom: 20pt; left: 30px; font-size: 16pt;">
-        Date – {{ date('d-m-20y',strtotime($student_value['result_date'])) }}
+        Date – <b>{{ date('d-m-20y',strtotime($student_value['result_date'])) }}</b>
     </p>
       
        
