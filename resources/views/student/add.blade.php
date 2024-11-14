@@ -48,7 +48,7 @@
                                 <input type="file" name="csv_file" class="form-control" required>
                             </div>
                             <br>
-                            <button type="submit" class="btn btn-primary">Upload CSV</button>
+                            <button type="submit" class="btn btn-success">Upload CSV</button>
                             <a href="{{ route('students.index') }}" class="btn btn-secondary" style="float:right">Back to Student</a>
 
                         </form>

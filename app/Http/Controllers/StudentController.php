@@ -158,35 +158,93 @@ class StudentController extends Controller
             'standard_id' => 'required|exists:standards,id',
         ]);
 
-        try{
+        try {
             if (($handle = fopen($request->file('csv_file')->getRealPath(), 'r')) !== false) {
                 $header = fgetcsv($handle, 1000, ',');
-    
+                $lineNumber = 1;
+                $invalidRows = [];
+                $processedUIDs = [];
+        
+                while (($row = fgetcsv($handle, 1000, ',')) !== false) {
+                    
+                    $studentData = array_combine($header, $row);
+                    $missingFields = [];
+                    if (in_array($studentData['UID'], $processedUIDs)) {
+                        return back()->with('error', 'line ' . $lineNumber . ' message = UID already exists: ' . $studentData['UID']);
+                        break;
+                    }
+                    $processedUIDs[] = $studentData['UID'];
+                    $lineNumber++;
+
+                    foreach (['NAME', 'ROLL_NO', 'GR_NO', 'UID'] as $field) {
+                        if (empty($studentData[$field])) {
+                            $missingFields[] = $field;
+                        }
+                    }
+        
+                    if (!empty($missingFields)) $invalidRows[] = ['line' => $lineNumber, 'missing_fields' => $missingFields, 'data' => $studentData];
+
+                }
+        
+                fclose($handle);
+       
+                if (!empty($invalidRows))
+
+                // print_r($invalidRows);exit;
+                return back()->with(
+                    'error',
+                    '<div style="text-align: left;">' . 
+                    '<b>Missing fields on line:</b> ' . $invalidRows[0]['line'] . 
+                    '<br><b>Missing fields:</b> ' . implode(', ', $invalidRows[0]['missing_fields']) . 
+                    '<br><b>Student data:</b><p style="text-align:left">'.json_encode($invalidRows[0]['data']).'</p></div>'
+                );
+                
+                
+                $handle = fopen($request->file('csv_file')->getRealPath(), 'r');
+                fgetcsv($handle, 1000, ','); 
+                
+                DB::beginTransaction();
+        
                 while (($row = fgetcsv($handle, 1000, ',')) !== false) {
                     $studentData = array_combine($header, $row);
-                    Student::Create(
-                        [
-                            'name' => $studentData['NAME'],
-                            'roll_no' => $studentData['ROLL_NO'],
-                            'GR_no' => $studentData['GR_NO'],
-                            'uid' => $studentData['UID'],
-                            'division_id' => $request['division_id']
-                        ]
-                    );
-                }
-    
+                    $existingStudents = Student::where('uid', $studentData['UID'])
+                           ->where('roll_no', $studentData['ROLL_NO'])
+                           ->where('GR_no', $studentData['GR_NO'])
+                           ->get(); // Get all matching students
+
+                        if ($existingStudents->isEmpty()) {
+                            // If no student exists, create a new record
+                            Student::create([
+                                'name' => $studentData['NAME'],
+                                'roll_no' => $studentData['ROLL_NO'],
+                                'GR_no' => $studentData['GR_NO'],
+                                'uid' => $studentData['UID'],
+                                'division_id' => $request['division_id']
+                            ]);
+                        } else {
+                            $existingNames = $existingStudents->pluck('name')->toArray();
+
+                            $existingNames = str_replace('&quot;', '"', $existingNames); 
+                            $studentName = implode(', ', $existingNames); 
+                            return back()->with('error', 'Student name already exists.<br>'.$studentName.'<br>');
+                            
+                        }
+                    }
+        
                 fclose($handle);
+        
+                DB::commit();
+                return redirect()->back()->with('success', 'Students imported successfully!');
             }
-            DB::commit();
-        }catch(Exception $e){
+        
+        } catch (Exception $e) {
             DB::rollBack();
             Log::error('CSV Import Error: ' . $e->getMessage());
             return back()->with('error', 'Error during CSV import.');
         }
-        // Read the CSV file
         
 
-        return redirect()->back()->with('success', 'Students imported successfully!');
+       
     }
 
     public function assignSubject(Request $request)
