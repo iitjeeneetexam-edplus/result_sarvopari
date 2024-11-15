@@ -23,7 +23,7 @@
                     </td>
                     <td style="width: 33%; text-align: right; font-size: 14pt; vertical-align: top;">
                         <p style="margin: 0;">Year – <b>{{ $student_value['exam_year'] }}</b></p>
-                        <p style="margin: 0;"> <b>{{ $student_value['medium'] }}</b></p>
+                        <p style="margin: 0;margin-top:10px;"> <b>{{ $student_value['medium'] }}</b></p>
                     </td>
                     
                 </tr>
