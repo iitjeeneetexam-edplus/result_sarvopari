@@ -10,7 +10,7 @@
                 <p style="text-align: center; font-size: 14pt; padding: 0; margin: 0;">{{ $student_value['address'] }}</p>
             </div>
         </div>
-<br>
+        <br>
         <div style="width: 100%; margin-bottom: 10pt;">
             <table style="width: 100%; border-bottom: 1pt solid black; font-size: 24pt;">
                 <tr>
@@ -23,7 +23,7 @@
                     </td>
                     <td style="width: 33%; text-align: right; font-size: 14pt; vertical-align: top;">
                         <p style="margin: 0;">Year – <b>{{ $student_value['exam_year'] }}</b></p>
-                        <p style="margin: 0;">Medium – <b>{{ $student_value['medium'] }}</b></p>
+                        <p style="margin: 0;"> <b>{{ $student_value['medium'] }}</b></p>
                     </td>
                     
                 </tr>
@@ -39,7 +39,7 @@
                 G R No - <b>{{ $student_value['GR_no'] }}</b>
             </td>
             <td style="width: 80%; text-align: center; font-size: 16pt; ">
-                Standard – <b>{{ ucfirst($student_value['standard_name']) }}</b>
+                Standard – <b>{{ ucfirst($student_value['standard_name']) }}-{{$student_value['division_name']}}</b>
             </td>
             <td style="width: 33%; text-align: right;">
                 Roll No – <b>{{ $student_value['roll_no'] }}</b>
@@ -157,7 +157,7 @@ $passfail = 0;
                 <td style="text-align: left; padding: 10px;font-size: 14pt">
                     Percentage – <b>{{ round($percentage, 2) }}%</b>
                 </td>
-                <td style="text-align: right; padding: 10px;font-size: 14pt">
+                <td style="text-align: center; padding: 10px;font-size: 14pt">
                     Result – @php
                         if($passfail >= 1) {
                             $porf = 'Fail';
@@ -167,6 +167,7 @@ $passfail = 0;
                     @endphp 
                     <b>{{$porf}}</b>
                 </td>
+                <td style="text-align: right; padding: 10px;font-size: 14pt">Rank - <b>1</b></td>
             </tr>
         </table>
 </div>
@@ -185,7 +186,7 @@ $passfail = 0;
         </tr>
 
     </table> 
-    <p style="position: absolute; bottom: 20pt; left: 30px; font-size: 16pt;">
+    <p style="position: absolute;  left: 30px; font-size: 12pt;">
         Date – <b>{{ date('d-m-20y',strtotime($student_value['result_date'])) }}</b>
     </p>
       
