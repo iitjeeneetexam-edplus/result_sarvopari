@@ -228,10 +228,10 @@
                                     $('.button-div').show();   
                                     $('#studentdata thead tr').append('<th style="width:49px;"><input type="checkbox" id="selectAll">&nbsp;&nbsp;&nbsp;&nbsp;</th>');
                                     // Static headers
-                                    $('#studentdata thead tr').append('<th style="width:46px">Roll No</th>');
-                                    $('#studentdata thead tr').append('<th style="width:375px">Student Name</th>');
+                                    $('#studentdata thead tr').append('<th style="width:46px"><center>Roll No</center></th>');
+                                    $('#studentdata thead tr').append('<th style="width:375px"><center>Student Name</center></th>');
                                    
-                                    $('#studentdata thead tr').append('<th>GR No</th>');
+                                    $('#studentdata thead tr').append('<th><center>GR No</center></th>');
                                     $('#selectAll').on('click', function() {
                                             var isChecked = this.checked;
                                             $('.student-checkbox').prop('checked', isChecked);
@@ -255,13 +255,13 @@
                                                         ? totalmarks[index].total_marks 
                                                         : '';
 
-                                            $('#studentdata thead tr').append('<th>' + subjectName.trim() + '<br> (' + marks + ')</th>');
+                                            $('#studentdata thead tr').append('<th>' + subjectName.trim() + '<center><br> (' + marks + ')</center></th>');
                                         });
                                     }
-                                    $('#studentdata thead tr').append('<th>Action</th>');
+                                    $('#studentdata thead tr').append('<th><center>Action</center></th>');
                                 },
                                 error: function(xhr, status, error) {
-                                    $('#studentdata thead tr').append('<th>No data Found!</th>');
+                                    $('#studentdata thead tr').append('<th><center>No data Found!</center></th>');
                                 }
                             });
                         });
@@ -313,9 +313,9 @@
                                     var editRow = `<tr class="edit-row" data-id="${studentId}">
                                         <td>${studentId}</td>
                                         <td><button class="btn btn-success">Result</button></td>
-                                        <td><label>${row.find('td').eq(2).text()}</label></td>
-                                        <td><label>${row.find('td').eq(3).text()}</label></td>
-                                        <td><label>${row.find('td').eq(4).text()}<label></td>`;
+                                        <td><label>${row.find('td').eq(2).text()}</label>></td>
+                                        <td><center><label>${row.find('td').eq(3).text()}</label></center></td>
+                                        <td><center><label>${row.find('td').eq(4).text()}<label></center></td>`;
                                         // alert(data.subject_ids);
                                       // Split main and optional subject IDs
                                       var is_optional = row.find('input[name="is_optional[]"]').map(function() {
