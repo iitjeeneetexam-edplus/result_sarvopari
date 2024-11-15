@@ -76,14 +76,17 @@ $passfail = 0;
         if($subjectslist['marks'] < $subjectslist['passing_marks']){
             $passfail += $passfail+1;
         }
+        $smbper = $subjectslist['total_marks'] ? ($subjectslist['marks'] / $subjectslist['total_marks']) * 100 : 0;
         $grade = match (true) {
-            $subjectslist['marks'] >= 90 => 'A+',
-            $subjectslist['marks'] >= 80 => 'A',
-            $subjectslist['marks'] >= 70 => 'B+',
-            $subjectslist['marks'] >= 60 => 'B',
-            $subjectslist['marks'] >= 50 => 'C',
-            $subjectslist['marks'] >= 40 => 'D',
-            default => 'F'
+                    $smbper >= 91 => 'A1',
+                    $smbper >= 81 => 'A2',
+                    $smbper >= 71 => 'B1',
+                    $smbper >= 61 => 'B2',
+                    $smbper >= 51 => 'C1',
+                    $smbper >= 41 => 'C2',
+                    $smbper >= 33 => 'D',
+                    $smbper >= 21 => 'E1',
+                    $smbper <= 20 => 'E2',
         };
         @endphp
         <td style="width: 15%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ $grade }}</td>
@@ -107,14 +110,18 @@ $passfail = 0;
                 if($value_optional['marks'] < $value_optional['passing_marks']){
                     $passfail += $passfail+1;
                 }
+
+                $subper = $value_optional['total_marks'] ? ($value_optional['marks'] / $value_optional['total_marks']) * 100 : 0;
                 $grade = match (true) {
-                    $value_optional['marks'] >= 90 => 'A+',
-                    $value_optional['marks'] >= 80 => 'A',
-                    $value_optional['marks'] >= 70 => 'B+',
-                    $value_optional['marks'] >= 60 => 'B',
-                    $value_optional['marks'] >= 50 => 'C',
-                    $value_optional['marks'] >= 40 => 'D',
-                    default => 'F'
+                    $subper >= 91 => 'A1',
+                    $subper >= 81 => 'A2',
+                    $subper >= 71 => 'B1',
+                    $subper >= 61 => 'B2',
+                    $subper >= 51 => 'C1',
+                    $subper >= 41 => 'C2',
+                    $subper >= 33 => 'D',
+                    $subper >= 21 => 'E1',
+                    $subper <= 20 => 'E2',
                 };
                 @endphp
                 <td style="width: 15%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ $grade }}</td>
