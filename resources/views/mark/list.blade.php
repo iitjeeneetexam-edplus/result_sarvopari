@@ -192,7 +192,7 @@
                                 success: function(data) {
                                     if(data.student !=null){
 
-                                    $('table tbody').empty();
+                                    $('table tbody').html("");
                                     $.each(data.student, function(key, value) {
                                         var studentRow = `<tr class="student-row" data-id="${value.id}">`+
                                             '<td ><input type="checkbox" class="student-checkbox" data-id="' + value.id + '" ></td>' +
