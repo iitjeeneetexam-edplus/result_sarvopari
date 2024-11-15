@@ -311,8 +311,8 @@
                                 success: function(data) {
                                     row.hide();
                                     var editRow = `<tr class="edit-row" data-id="${studentId}">
-                                        <td>${studentId}</td>
-                                        <td><button class="btn btn-success">Result</button></td>
+                                        <td></td>
+                                        <td><label>${row.find('td').eq(1).text()}</label></td>
                                         <td><label>${row.find('td').eq(2).text()}</label>></td>
                                         <td><label>${row.find('td').eq(3).text()}</label></td>
                                         <td><label>${row.find('td').eq(4).text()}<label></td>`;
@@ -358,7 +358,7 @@
                                         editRow += `<td>`;
                                         if (cellText != '') {
                                             
-                                            editRow += `<input type="text" id="myTextbox" data-mark_index="${index}" style="width:150px; justify-self:center" class="form-control" value="${cellText}" name="marks[]" />`;
+                                            editRow += `<input type="text" id="myTextbox" data-mark_index="${mainIndex}" style="width:150px; justify-self:center" class="form-control" value="${cellText}" name="marks[]" />`;
                                         } 
                                         // else {
                                         //     editRow += `<input type="text" id="myTextbox" style="width:150px; justify-self:center" class="form-control" name="marks[]" />`;

@@ -27,7 +27,7 @@
 
                             <div class="col-md-4">
                                 <label for="standard">Select Standard:</label>
-                                <select name="standard_id" id="standard" class="form-control">
+                                <select name="standard_id" id="standard" class="form-control" required>
                                     <option value="">Select a Standard</option>
                                     <!-- Populated via AJAX -->
                                 </select>
