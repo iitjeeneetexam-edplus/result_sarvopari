@@ -1,7 +1,7 @@
  
 <div id="pdfContent" style="font-family: system-ui, sans-serif;">
 @foreach($data['student'] as $student_value)
-    <div style="width: 170mm; height: 260mm; padding: 20px; box-sizing: border-box; border: 3px solid black; border-radius: 4px; font-family: Calibri, sans-serif;">
+    <div style="width: 170mm; height: 260mm; padding: 10px; box-sizing: border-box; border: 3px solid black; border-radius: 4px; font-family: Calibri, sans-serif;">
         <div style="width: 100%; margin-bottom: 10pt;">
             <div style="border-radius: 4px; border: 2pt solid black; padding: 15pt; height: 67pt;">
                 <h1 style="text-align: center; font-size: 40pt; font-weight: bold; margin: 0; padding: 0;">{{ ucfirst($student_value['school_name']) }}
@@ -140,6 +140,7 @@ $passfail = 0;
         $totalmarks_total = $subsubjtotalMarksSum + $totalMarksSum;
         $stdmark = $stdmarkssub + $stdmarks;
         $percentage = $totalmarks_total ? ($stdmark / $totalmarks_total) * 100 : 0;
+        
         @endphp
             <!-- Additional rows can be added here -->
             <tr style="height: 30pt; color: white; font-size: 12pt; font-weight: bold;">
@@ -172,7 +173,7 @@ $passfail = 0;
 
 
         
-        <div style="width: 100%; margin-top: 120px;">
+<div style="width: 100%; margin-top: 100px;">
     <table style="width: 100%; font-size: 16pt; border-collapse: collapse;">
         <tr>
             <td style="text-align: left; padding: 10px;font-size: 14pt">
