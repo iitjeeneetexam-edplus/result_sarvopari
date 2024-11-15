@@ -111,7 +111,7 @@
                                     </div>
                                     <div class="row">
                                     <div class="col-md-10 offset-md-2">
-                                <input type="text" name="total_marks" id="total_marks" class="form-control" placeholder="Enter Total Marks" require>
+                                <input type="text" name="total_marks" id="total_marks" class="form-control" value="{{ old('total_marks') }}" placeholder="Enter Total Marks" require>
                                 @error('total_marks')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -124,7 +124,7 @@
                                 </div>
                                 <div class="row">
                                 <div class="col-md-10 offset-md-2">
-                                <input type="text" name="passing_marks" id="passing_marks" class="form-control" placeholder="Enter Passing Marks" require>
+                                <input type="text" name="passing_marks" id="passing_marks" class="form-control" value="{{ old('passing_marks') }}" placeholder="Enter Passing Marks" require>
                                 @error('passing_marks')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -341,7 +341,7 @@
                             var row = '<tr>' +
                                 '<td>' + student.roll_no + '</td>' +
                                 '<td>' + student.name + '</td>' +
-                                '<td><input type="text"  step=".01" name="marks[]" value="' + (student.marks ? student.marks : '') + '" min="0" max="' + totalmark + '"  pattern="^(100|[1-9]?[0-9]|AB)$"  title="Enter a number between 1 and 100, or AB for absent"  />' +
+                                '<td><input type="text"  step=".01" name="marks[]"  value="' + (student.marks ? student.marks : '') + '" min="0" max="' + totalmark + '"  pattern="^(100|[1-9]?[0-9]|AB)$"  title="Enter a number between 1 and 100, or AB for absent"  />' +
                                 '<input type="hidden" name="student_id[]" value="' + student.id + '" /></td>'+
                                 '</tr>';
                             $('#studentTable tbody').append(row);
