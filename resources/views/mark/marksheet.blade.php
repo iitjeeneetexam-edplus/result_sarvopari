@@ -1,7 +1,7 @@
  
 <div id="pdfContent" style="font-family: system-ui, sans-serif;">
 @foreach($data['student'] as $student_value)
-    <div style="width: 170mm; height: 260mm; padding: 20px; box-sizing: border-box; border: 3px solid black; border-radius: 4px; font-family: Calibri, sans-serif;">
+    <div style="width: 170mm; height: 260mm; padding: 10px; box-sizing: border-box; border: 3px solid black; border-radius: 4px; font-family: Calibri, sans-serif;">
         <div style="width: 100%; margin-bottom: 10pt;">
             <div style="border-radius: 4px; border: 2pt solid black; padding: 15pt; height: 67pt;">
                 <h1 style="text-align: center; font-size: 40pt; font-weight: bold; margin: 0; padding: 0;">{{ ucfirst($student_value['school_name']) }}
@@ -10,7 +10,7 @@
                 <p style="text-align: center; font-size: 14pt; padding: 0; margin: 0;">{{ $student_value['address'] }}</p>
             </div>
         </div>
-<br>
+        <br>
         <div style="width: 100%; margin-bottom: 10pt;">
             <table style="width: 100%; border-bottom: 1pt solid black; font-size: 24pt;">
                 <tr>
@@ -23,7 +23,7 @@
                     </td>
                     <td style="width: 33%; text-align: right; font-size: 14pt; vertical-align: top;">
                         <p style="margin: 0;">Year – <b>{{ $student_value['exam_year'] }}</b></p>
-                        <p style="margin: 0;">Medium – <b>{{ $student_value['medium'] }}</b></p>
+                        <p style="margin: 0;"> <b>{{ $student_value['medium'] }}</b></p>
                     </td>
                     
                 </tr>
@@ -39,7 +39,7 @@
                 G R No - <b>{{ $student_value['GR_no'] }}</b>
             </td>
             <td style="width: 80%; text-align: center; font-size: 16pt; ">
-                Standard – <b>{{ ucfirst($student_value['standard_name']) }}</b>
+                Standard – <b>{{ ucfirst($student_value['standard_name']) }}-{{$student_value['division_name']}}</b>
             </td>
             <td style="width: 33%; text-align: right;">
                 Roll No – <b>{{ $student_value['roll_no'] }}</b>
@@ -140,6 +140,7 @@ $passfail = 0;
         $totalmarks_total = $subsubjtotalMarksSum + $totalMarksSum;
         $stdmark = $stdmarkssub + $stdmarks;
         $percentage = $totalmarks_total ? ($stdmark / $totalmarks_total) * 100 : 0;
+        
         @endphp
             <!-- Additional rows can be added here -->
             <tr style="height: 30pt; color: white; font-size: 12pt; font-weight: bold;">
@@ -156,7 +157,7 @@ $passfail = 0;
                 <td style="text-align: left; padding: 10px;font-size: 14pt">
                     Percentage – <b>{{ round($percentage, 2) }}%</b>
                 </td>
-                <td style="text-align: right; padding: 10px;font-size: 14pt">
+                <td style="text-align: center; padding: 10px;font-size: 14pt">
                     Result – @php
                         if($passfail >= 1) {
                             $porf = 'Fail';
@@ -166,13 +167,14 @@ $passfail = 0;
                     @endphp 
                     <b>{{$porf}}</b>
                 </td>
+                <td style="text-align: right; padding: 10px;font-size: 14pt">Rank - <b>1</b></td>
             </tr>
         </table>
 </div>
 
 
         
-        <div style="width: 100%; margin-top: 120px;">
+<div style="width: 100%; margin-top: 100px;">
     <table style="width: 100%; font-size: 16pt; border-collapse: collapse;">
         <tr>
             <td style="text-align: left; padding: 10px;font-size: 14pt">
@@ -184,7 +186,7 @@ $passfail = 0;
         </tr>
 
     </table> 
-    <p style="position: absolute; bottom: 20pt; left: 30px; font-size: 16pt;">
+    <p style="position: absolute;  left: 30px; font-size: 12pt;">
         Date – <b>{{ date('d-m-20y',strtotime($student_value['result_date'])) }}</b>
     </p>
       

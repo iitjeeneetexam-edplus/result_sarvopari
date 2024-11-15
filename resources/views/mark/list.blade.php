@@ -196,19 +196,19 @@
                                     $.each(data.student, function(key, value) {
                                         var studentRow = `<tr class="student-row" data-id="${value.id}">`+
                                             '<td ><input type="checkbox" class="student-checkbox" data-id="' + value.id + '" ></td>' +
-                                            '<td>' + value.roll_no + '</td>' +
+                                            '<td><center>' + value.roll_no + '</center></td>' +
                                             '<td>' + value.name + '</td>' +
                                            
-                                            '<td>' + value.GR_no + '</td>';
+                                            '<td><center>' + value.GR_no + '</center></td>';
                                            
                                         if (data.subject != null) {
                                             var subjectsArray = data.subject.split(',');
                                             $.each(subjectsArray, function(index, subjectName) {
-                                                studentRow += `<td>
+                                                studentRow += `<td><center>
                                                                 <input type="hidden" name="is_optional[]" value="${value.is_optional[subjectName.trim()] || ''}">
                                                                 <input type="hidden" name="mark_id[]" value="${value.mark_id[subjectName.trim()] || ''}">
                                                                 ${value.marks[subjectName.trim()] || ''}
-                                                            </td>`;
+                                                            </center></td>`;
                                                             });
                                         }
                                         studentRow += `<td><button class="openModalBtn btn btn-success" data-id="${value.id}" data-division-id="${value.division_id}" >Edit</button>
@@ -314,8 +314,8 @@
                                         <td>${studentId}</td>
                                         <td><button class="btn btn-success">Result</button></td>
                                         <td><label>${row.find('td').eq(2).text()}</label>></td>
-                                        <td><center><label>${row.find('td').eq(3).text()}</label></center></td>
-                                        <td><center><label>${row.find('td').eq(4).text()}<label></center></td>`;
+                                        <td><label>${row.find('td').eq(3).text()}</label></td>
+                                        <td><label>${row.find('td').eq(4).text()}<label></td>`;
                                         // alert(data.subject_ids);
                                       // Split main and optional subject IDs
                                       var is_optional = row.find('input[name="is_optional[]"]').map(function() {
