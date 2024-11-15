@@ -377,7 +377,7 @@ class StudentController extends Controller
             ->join('standards','standards.id','=','division.standard_id')
             ->join('exams','exams.standard_id','=','standards.id')
             ->join('schools','schools.id','=','standards.school_id')
-            ->select('students.*','standards.standard_name','standards.id as standard_id','schools.school_name','standards.school_index','schools.address','division.division_name','exams.exam_name','exams.exam_year','exams.result_date')
+            ->select('students.*','standards.standard_name','standards.id as standard_id','schools.school_name','schools.medium','standards.school_index','schools.address','division.division_name','exams.exam_name','exams.exam_year','exams.result_date')
             ->whereIn('students.id',$request->student_id)->get()->toarray();
 
             // echo "<pre>";print_r($student);exit;
@@ -513,56 +513,56 @@ class StudentController extends Controller
         return response()->json(['pdfUrl' => $pdfUrl]);
        }
 
-        public function subjectmarksPDF(Request $request){
-            $schoolname = School::where('id',$request->school_id)->select('school_name')->first();
-            $standardname = Standard::where('id',$request->standard_id)->select('standard_name')->first();
-            $divisionname = Division::where('id',$request->division_id)->select('division_name')->first();
-            $total_marks = $request->total_marks;
-            $passing_marks = $request->passing_marks;
+    public function subjectmarksPDF(Request $request){
+        $schoolname = School::where('id',$request->school_id)->select('school_name')->first();
+        $standardname = Standard::where('id',$request->standard_id)->select('standard_name')->first();
+        $divisionname = Division::where('id',$request->division_id)->select('division_name')->first();
+        $total_marks = $request->total_marks;
+        $passing_marks = $request->passing_marks;
 
-            if($request->subject_sub){
-                $subjectname = Subjectsub::where('id',$request->subject_sub)->select('subject_name')->first();
-            }else{
-                $subjectname = Subject::where('id',$request->subject_id)->select('subject_name')->first();
-
-            }
-
-            foreach ($request->student_id as $i=>$studentId) {                
-                $studentname = Student::where('id',$studentId)->select('name','roll_no')->first();
-                        $students[] = [
-                            'name'=>$studentname->name,
-                            'roll_no'=>$studentname->roll_no,
-                            'marks' => !empty($request->marks[$i]) ? ceil($request->marks[$i]) : '',
-                        ];
-                    
-            }
-            $pdf = PDF::loadView('mark.subjectsmarks', ['school_name'=>$schoolname->school_name,
-                'standard_name'=>$standardname->standard_name,
-                'division_name'=>$divisionname->division_name,
-                'total_marks'=>$request->total_marks,
-                'passing_marks'=>$request->passing_marks,
-                'subject_name'=>$subjectname->subject_name,
-                'students'=>$students
-            ]);
-
-                $folderPath = public_path('pdfs');
-                if (!File::exists($folderPath)) {
-                    File::makeDirectory($folderPath, 0755, true);
-                }
-        
-                $baseFileName = 'subjectsmarks.pdf';
-                $pdfPath = $folderPath . '/' . $baseFileName;
-                $counter = 1;
-                while (File::exists($pdfPath)) {
-                    $pdfPath = $folderPath . '/subjectsmarks' . $counter . '.pdf';
-                    $counter++;
-                }
-        
-                file_put_contents($pdfPath, $pdf->output());
-        
-                // Return PDF URL
-                $pdfUrl = asset('pdfs/' . basename($pdfPath));
-                return response()->json(['pdfUrl' => $pdfUrl]);
+        if($request->subject_sub){
+            $subjectname = Subjectsub::where('id',$request->subject_sub)->select('subject_name')->first();
+        }else{
+            $subjectname = Subject::where('id',$request->subject_id)->select('subject_name')->first();
 
         }
+
+        foreach ($request->student_id as $i=>$studentId) {                
+            $studentname = Student::where('id',$studentId)->select('name','roll_no')->first();
+                    $students[] = [
+                        'name'=>$studentname->name,
+                        'roll_no'=>$studentname->roll_no,
+                        'marks' => !empty($request->marks[$i]) ? ceil($request->marks[$i]) : '',
+                    ];
+                
+        }
+        $pdf = PDF::loadView('mark.subjectsmarks', ['school_name'=>$schoolname->school_name,
+            'standard_name'=>$standardname->standard_name,
+            'division_name'=>$divisionname->division_name,
+            'total_marks'=>$request->total_marks,
+            'passing_marks'=>$request->passing_marks,
+            'subject_name'=>$subjectname->subject_name,
+            'students'=>$students
+        ]);
+
+            $folderPath = public_path('pdfs');
+            if (!File::exists($folderPath)) {
+                File::makeDirectory($folderPath, 0755, true);
+            }
+    
+            $baseFileName = 'subjectsmarks.pdf';
+            $pdfPath = $folderPath . '/' . $baseFileName;
+            $counter = 1;
+            while (File::exists($pdfPath)) {
+                $pdfPath = $folderPath . '/subjectsmarks' . $counter . '.pdf';
+                $counter++;
+            }
+    
+            file_put_contents($pdfPath, $pdf->output());
+    
+            // Return PDF URL
+            $pdfUrl = asset('pdfs/' . basename($pdfPath));
+            return response()->json(['pdfUrl' => $pdfUrl]);
+
+    }
 }
