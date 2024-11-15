@@ -14,6 +14,8 @@ use App\Models\Subjectsub;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 class SchoolController extends Controller
@@ -64,13 +66,27 @@ class SchoolController extends Controller
          
     }
     public function update(Request $request){
+        $id= $request->id;
         $school = School::findOrFail($request->id);
 
         // Validate the request data, allowing the current school's email and name to be unique to itself
         $request->validate([
             'school_name' => 'required|string|max:255|unique:schools,school_name,' . $request->id,
             'address' => 'required|string',
-            'email' => 'required|email|unique:schools,email,' . $request->id,
+            'email' => [
+                'required',
+                'email',
+                function ($attribute, $value, $fail) use ($id) {
+                    $exists = DB::table('schools')
+                                ->where('email', $value)
+                                ->where('id', '==', $id) // Exclude current record
+                                ->exists();
+                    
+                    if ($exists) {
+                        $fail('The email has already been taken.');
+                    }
+                },
+            ],
             'contact_no' => 'required|regex:/[0-9]{10}/',
             'status' => 'required|in:1,0', 
         ]);
