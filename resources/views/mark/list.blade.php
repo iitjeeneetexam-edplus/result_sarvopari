@@ -400,7 +400,7 @@
 
                                     
 
-                                    var regex = /^[0-9]+$/;
+                                    var regex = /^(100|[1-9]?[0-9]|AB)$/;
                                     var textboxValue = $('#myTextbox').val();
                                     if (textboxValue === '') {
                                        
@@ -438,37 +438,21 @@
                                             'X-CSRF-TOKEN': csrfToken
                                         }
                                     });
-                            
-                                    // let mainSubjectIds = $('input[name="main_subject_id[]"]').map(function() {
-                                    //     return $(this).val();
-                                    // }).get();
-                                    // let optional_subject_id = $('input[name="optional_subject_id[]"]').map(function() {
-                                    //     return $(this).val();
-                                    // }).get();
-                                    // let is_optional = $('input[name="is_optional[]"]').map(function() {
-                                    //     return $(this).val();
-                                    // }).get();
                                     let marks = $('input[name="marks[]"]').map(function() {
                                         return $(this).val();
                                     }).get();
                                     let mark_id = $('input[name="marks_id[]"]').map(function() {
                                         return $(this).val();
                                     }).get();
-                                    // console.log(mainSubjectIds);
-                                    // console.log(optional_subject_id);
-                                    // console.log(is_optional);
-                                    console.log(marks);
-                                    console.log(mark_id);
                                     let formData = {
                                         'mark_id[]': mark_id,
                                         'marks[]': marks,
-                                        // You can add other fields if needed
                                     };
                                       
                                     
                                  
                                     $.ajax({
-                                        url: '/marks/update', // The URL for updating marks
+                                        url: '/marks/update', 
                                         type: 'POST',
                                         beforeSend: function() { 
                                         $("#dev-loader").show();

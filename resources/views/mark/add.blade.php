@@ -133,7 +133,7 @@
                             
                             <br>
                             <h4>Student List</h4>
-                            <div class="pdf"><a class="btn btn-success" onclick="generate_pdf(event)" style="display: none;" >PDF</a><p><b>Note:</b>1 and 100, or 'AB' for absent</p></div>
+                            <div class="pdf" style="display: none;" ><a class="btn btn-success" onclick="generate_pdf(event)" >PDF</a><br><p><b>Note:1 and 100, or 'AB' for absent</b></p></div>
                             <table id="studentTable" class="table">
                                 <thead>
                                     <tr>
