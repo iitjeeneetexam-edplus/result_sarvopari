@@ -90,7 +90,7 @@ class StudentController extends Controller
                 ->where('marks.is_optional', '1');
         })
         ->where('students.division_id', $divisionId)
-        ->orwhere('marks.exam_id', $exam_id)
+        ->where('marks.exam_id', $exam_id) 
         ->select(
             'students.id',
             'students.name',
@@ -106,6 +106,7 @@ class StudentController extends Controller
             DB::raw('GROUP_CONCAT(COALESCE(s1.subject_name, s2.subject_name)) as subject_name')
         )
         ->groupBy('students.id','students.name','students.roll_no', 'students.GR_no','marks.marks', 'marks.exam_id','marks.subject_id','marks.is_optional','marks.id','students.division_id')
+        ->orderBy('students.roll_no','asc')
         ->get();
     $students = [];
     foreach ($query as $item) {
