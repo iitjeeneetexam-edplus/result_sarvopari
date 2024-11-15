@@ -155,8 +155,7 @@ class StudentController extends Controller
 
     public function import(Request $request)
     {
-        
-        DB::beginTransaction();
+         
         $request->validate([
             'csv_file' => 'required|mimes:csv,txt|max:2048',
             'school_id' => 'required|exists:schools,id',
