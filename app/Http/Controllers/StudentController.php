@@ -134,14 +134,14 @@ class StudentController extends Controller
         $subjects = Subject::where('standard_id', $standardId)->pluck('subject_name');
         $subjectString = $subjects->implode(', ');
 
-        // $total_marks = Subject::leftjoin('marks','marks.subject_id','=','subjects.id')
-        //                     ->leftjoin('subject_subs','subject_subs.subject_id','=','subjects.id')
-        //                     ->where('standard_id', $standardId)
-        //                     ->pluck('total_marks');
-        $total_marks = Marks::where('exam_id', $exam_id)
-              ->select('subject_id', 'total_marks') // Select only the needed columns
-              ->groupBy('subject_id', 'total_marks') // Group by subject_id and total_marks
-              ->get()->toarray();
+        $total_marks = Subject::leftjoin('marks','marks.subject_id','=','subjects.id')
+                            ->leftjoin('subject_subs','subject_subs.subject_id','=','subjects.id')
+                            ->where('standard_id', $standardId)
+                            ->pluck('marks.total_marks','subjects.subject_name');
+        // $total_marks = Marks::where('exam_id', $exam_id)
+        //       ->select('subject_id', 'total_marks') // Select only the needed columns
+        //       ->groupBy('subject_id', 'total_marks') // Group by subject_id and total_marks
+        //       ->get()->toarray();
 
   
                             // print_r($total_marks);exit;
