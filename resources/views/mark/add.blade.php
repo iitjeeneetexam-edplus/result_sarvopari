@@ -133,7 +133,7 @@
                             
                             <br>
                             <h4>Student List</h4>
-                            <a class="btn btn-success" onclick="generate_pdf(event)">PDF</a>
+                            <div class="pdf"><a class="btn btn-success" onclick="generate_pdf(event)" style="display: none;" >PDF</a><p><b>Note:</b>1 and 100, or 'AB' for absent</p></div>
                             <table id="studentTable" class="table">
                                 <thead>
                                     <tr>
@@ -332,6 +332,7 @@
                 },
                 success: function(data) {
                     $('#studentTable tbody').empty();
+                    $('.pdf').show();
                     if (data.students.length > 0) {
                         var totalmark = $('#total_marks').val();
                         $.each(data.students, function(index, student) {
@@ -340,7 +341,7 @@
                             var row = '<tr>' +
                                 '<td>' + student.roll_no + '</td>' +
                                 '<td>' + student.name + '</td>' +
-                                '<td><input type="number" min="0" max="100" step=".01" name="marks[]" value="' + (student.marks ? student.marks : '') + '" min="0" max="' + totalmark + '" step="1" required/>' +
+                                '<td><input type="text"  step=".01" name="marks[]" value="' + (student.marks ? student.marks : '') + '" min="0" max="' + totalmark + '"  pattern="^(100|[1-9]?[0-9]|AB)$"  title="Enter a number between 1 and 100, or AB for absent"  />' +
                                 '<input type="hidden" name="student_id[]" value="' + student.id + '" /></td>'+
                                 '</tr>';
                             $('#studentTable tbody').append(row);

@@ -108,6 +108,7 @@ class StudentController extends Controller
         ->groupBy('students.id','students.name','students.roll_no', 'students.GR_no','marks.marks', 'marks.exam_id','marks.subject_id','marks.is_optional','marks.id','students.division_id')
         ->orderBy('students.roll_no','asc')
         ->get();
+
     $students = [];
     foreach ($query as $item) {
         $students[$item->id]['id'] = $item->id;
@@ -161,9 +162,10 @@ class StudentController extends Controller
             'school_id' => 'required|exists:schools,id',
             'standard_id' => 'required|exists:standards,id',
         ]);
-
+        
         try {
             if (($handle = fopen($request->file('csv_file')->getRealPath(), 'r')) !== false) {
+              
                 $header = fgetcsv($handle, 1000, ',');
                 $lineNumber = 1;
                 $invalidRows = [];
@@ -189,7 +191,7 @@ class StudentController extends Controller
                     if (!empty($missingFields)) $invalidRows[] = ['line' => $lineNumber, 'missing_fields' => $missingFields, 'data' => $studentData];
 
                 }
-        
+                
                 fclose($handle);
        
                 if (!empty($invalidRows))
@@ -203,12 +205,11 @@ class StudentController extends Controller
                     '<br><b>Student data:</b><p style="text-align:left">'.json_encode($invalidRows[0]['data']).'</p></div>'
                 );
                 
-                
+               
                 $handle = fopen($request->file('csv_file')->getRealPath(), 'r');
                 fgetcsv($handle, 1000, ','); 
                 
-                DB::beginTransaction();
-        
+                DB::beginTransaction(); 
                 while (($row = fgetcsv($handle, 1000, ',')) !== false) {
                     $studentData = array_combine($header, $row);
                     $existingStudents = Student::where('uid', $studentData['UID'])
@@ -216,7 +217,9 @@ class StudentController extends Controller
                            ->where('GR_no', $studentData['GR_NO'])
                            ->get(); // Get all matching students
 
-                        if ($existingStudents->isEmpty()) {
+                        if ($existingStudents->isEmpty()) { 
+                           
+
                             // If no student exists, create a new record
                             Student::create([
                                 'name' => $studentData['NAME'],
@@ -225,6 +228,7 @@ class StudentController extends Controller
                                 'uid' => $studentData['UID'],
                                 'division_id' => $request['division_id']
                             ]);
+                            
                         } else {
                             $existingNames = $existingStudents->pluck('name')->toArray();
 
@@ -234,10 +238,11 @@ class StudentController extends Controller
                             
                         }
                     }
-        
+                    
                 fclose($handle);
-        
+                
                 DB::commit();
+                
                 return redirect()->back()->with('success', 'Students imported successfully!');
             }
         
@@ -431,15 +436,22 @@ class StudentController extends Controller
 
             )
             ->get()->toarray(); 
-            $optinalsubjects=array_map(function($row) { 
-                $row["marks"]=(int)round((float)$row["marks"]);
-                 
-                return   $row;
+            $optinalsubjects = array_map(function($row) {
+                if (strtolower($row["marks"]) === "AB") {
+                    $row["marks"] = "AB";
+                } else {
+                    $row["marks"] = (int) round((float) $row["marks"]);
+                }
+                return $row;
             }, $optinalsubjects);
             
-            $subjectsData= array_map(function($row) {
-                $row["marks"]=(int)round((float)$row["marks"]);
-                return  $row;
+            $subjectsData = array_map(function($row) {
+                if (strtolower($row["marks"]) === "AB") {
+                    $row["marks"] = "AB";
+                } else {
+                    $row["marks"] = (int) round((float) $row["marks"]);
+                }
+                return $row;
             }, $subjectsData);
             
  
