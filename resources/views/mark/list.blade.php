@@ -196,22 +196,20 @@
                                     $.each(data.student, function(key, value) {
                                         var studentRow = `<tr class="student-row" data-id="${value.id}">`+
                                             '<td ><input type="checkbox" class="student-checkbox" data-id="' + value.id + '" ></td>' +
-                                            '<td><center>' + value.roll_no + '</center></td>' +
+                                            '<td>' + value.roll_no + '</td>' +
                                             '<td>' + value.name + '</td>' +
-                                           
-                                            '<td><center>' + value.GR_no + '</center></td>';
+                                            '<td>' + value.GR_no + '</td>';
                                            
                                         if (data.subject != null) {
                                             var subjectsArray = data.subject.split(',');
                                             $.each(subjectsArray, function(index, subjectName) {
-                                                studentRow += `<td><center>
+                                                studentRow += `<td>
                                                                 <input type="hidden" name="is_optional[]" value="${value.is_optional[subjectName.trim()] || ''}">
-                                                                <input type="hidden" name="mark_id[]" value="${value.mark_id[subjectName.trim()] || ''}">
-                                                                ${value.marks[subjectName.trim()] || ''}
-                                                            </center></td>`;
+                                                                <input type="hidden" name="mark_id[]" value="${value.mark_id[subjectName.trim()] || ''}">${value.marks[subjectName.trim()] || ''}
+                                                               </td>`;
                                                             });
                                         }
-                                        studentRow += `<td><button class="openModalBtn btn btn-success" data-id="${value.id}" data-division-id="${value.division_id}" >Edit</button>
+                                        studentRow += `<td><button class="openModalBtn btn btn-success" data-id="${value.id}" data-division-id="${value.division_id}">Edit</button>
                                         </td>`;
                                         //&nbsp&nbsp<button class="openBtndelete btn btn-danger" data-id="${value.id}">Delete</button>
                                         studentRow += '</tr>';
@@ -290,15 +288,7 @@
 
                             var divisionId = $(this).data('division-id');
                             var row = $(this).closest('.student-row');
-                            // let tdElement = row.find('td').eq(5);
-                            // let isOptionalValues = [];
-
-                            // tdElement.find('input[name="is_optional[]"]').each(function(_, input) {
-                            //     isOptionalValues.push(input.value);
-                            // });
-
-                            // console.log(isOptionalValues);
-
+                          
                             $.ajax({
                                 url: '/marks/edit/' + studentId + '/' + divisionId, 
                                 type: 'GET',
@@ -313,52 +303,37 @@
                                     var editRow = `<tr class="edit-row" data-id="${studentId}">
                                         <td></td>
                                         <td><label>${row.find('td').eq(1).text()}</label></td>
-                                        <td><label>${row.find('td').eq(2).text()}</label>></td>
-                                        <td><label>${row.find('td').eq(3).text()}</label></td>
-                                        <td><label>${row.find('td').eq(4).text()}<label></td>`;
-                                        // alert(data.subject_ids);
-                                      // Split main and optional subject IDs
+                                        <td><label>${row.find('td').eq(2).text()}</label></td>
+                                        <td><label>${row.find('td').eq(3).text()}</label></td>`;
                                       var is_optional = row.find('input[name="is_optional[]"]').map(function() {
                                             return $(this).val(); // Collect each value into an array
                                         }).get();
                                         var mark_id = row.find('input[name="mark_id[]"]').map(function() {
                                             return $(this).val(); // Collect each value into an array
                                         }).get();
-                                        // console.log(marks_id);
-
-                                        console.log(is_optional);
+                                  
                                     var optional_subject_ids_get = data.optional_subject_ids.split(',');
                                     var main_subject_ids_get = data.main_subject_ids.split(',');
 
-                                    // Define the arrays for subjects and marks
                                     var subjectsArray = data.optional_subject != null ? data.optional_subject.split(',') : [];
                                     var mainIndex = 0, optionalIndex = 0;
-
-                                    // Loop through each subject
                                     $.each(subjectsArray, function(index, subjectName) {
-                                        // Check if the cell has text
-                                        var cellText = row.find('td').eq(5 + index).text().trim();
-                                        // editRow += `<tr>`; // Wrap each set in a new table row for alignment
-
-                                        // Add Main Subject ID
-
+                                        if (row && row.find('td').length > (4 + index)) {
+                                            var cellText = row.find('td').eq(4 + index).text().trim();
+                                        }
                                         if (optionalIndex < optional_subject_ids_get.length) {
                                             editRow += `<input type="hidden" class="form-control" value="${optional_subject_ids_get[optionalIndex]}" name="optional_subject_id[]">`;
                                             optionalIndex++;
                                         }
-
                                         if (mainIndex < main_subject_ids_get.length) {
                                             editRow += `<input type="hidden" class="form-control" value="${main_subject_ids_get[mainIndex]}" name="main_subject_id[]">`;
                                             mainIndex++;
                                         }
                                          editRow +=`<input type="hidden"  style="width:150px; justify-self:center" class="form-control" value="${is_optional[index]}" name="is_optional[]" />`;
-                                        // Add Optional Subject ID
                                         editRow += `<input type="hidden"  style="width:150px; justify-self:center" class="form-control" value="${mark_id[index]}" name="marks_id[]" />`;
-                                        // Add Marks input field or blank value if cellText is empty
                                         editRow += `<td>`;
                                         if (cellText != '') {
-                                            
-                                            editRow += `<input type="text" id="myTextbox" data-mark_index="${mainIndex}" style="width:150px; justify-self:center" class="form-control" value="${cellText}" name="marks[]" />`;
+                                            editRow += `<input type="text" id="myTextbox"  style="width:150px; justify-self:center" class="form-control" value="${cellText}" name="marks[]" />`;
                                         } 
                                         // else {
                                         //     editRow += `<input type="text" id="myTextbox" style="width:150px; justify-self:center" class="form-control" name="marks[]" />`;
@@ -366,24 +341,15 @@
                                         editRow += `</td>`;
                                     });
 
-                                    // Add error message outside the loop for all fields
                                     editRow += `<span id="errorMessage" style="color: red; display: none;">This field is required.</span>`;
-
-                                            // Arrays to store main subject IDs, optional subject IDs, and marks
-                                       
-                                           
-
                                     editRow += `<td><div class="d-flex"><button type="button" class="btn btn-warning cancelEditBtn">Back</button>&nbsp&nbsp<button type="button" class="btn btn-success saveEditBtn">Update</button></div></td></tr>`;
-                                    
                                     row.after(editRow);
                                 },
                                 error: function(xhr, status, error) {
-                                    console.error('Error fetching data:', error);
                                     alert('Error fetching data');
                                 }
                             });
                         });
-
                                 $(document).on('click', '.cancelEditBtn', function() {
                                     var editRow = $(this).closest('.edit-row');
                                     var row = editRow.prev('.student-row'); 
@@ -391,8 +357,6 @@
                                     editRow.toggle();
                                     row.toggle();
                                 });
-
-                                                                
                                 $(document).on('click', '.saveEditBtn', function() {
                                     //validation 
                                     event.preventDefault(); 
@@ -403,14 +367,13 @@
                                     var regex = /^(100|[1-9]?[0-9]|AB)$/;
                                     var textboxValue = $('#myTextbox').val();
                                     if (textboxValue === '') {
-                                       
                                         $('#myTextbox').css('border', '2px solid red');
                                         $('#myTextbox').addClass('invalid');
                                         $('#errorMessage').show(); 
                                         setTimeout(function() {
                                             $('#myTextbox').removeClass('invalid');
                                         }, 500);
-                                        return; // Show error message
+                                        return; 
                                     } else if (!regex.test(textboxValue)) {
                                             $('#myTextbox').addClass('invalid');
                                             $('#errorMessage').text('Please enter only integer values (no decimals or symbols).').show();
@@ -420,14 +383,11 @@
                                             $('#errorMessage').text('Please enter a value between 0 and 100.').show();
                                             return;
                                         } else {
-                                        // Remove red border if textbox is not empty
                                         $('#myTextbox').removeClass('invalid');
                                         $('#errorMessage').hide();
-                                        $('#myTextbox').css('border', ''); // Reset border style
+                                        $('#myTextbox').css('border', ''); 
                                     }
-
-                                    
-                                    var editRow = $(this).closest('.edit-row'); // Store reference to the edit row
+                                    var editRow = $(this).closest('.edit-row'); 
                                     var row = editRow.prev('.student-row');     
                                     var studentId = localStorage.getItem('studentId');
                                     var csrfToken = $('meta[name="csrf-token"]').attr('content');
@@ -448,9 +408,6 @@
                                         'mark_id[]': mark_id,
                                         'marks[]': marks,
                                     };
-                                      
-                                    
-                                 
                                     $.ajax({
                                         url: '/marks/update', 
                                         type: 'POST',
@@ -465,10 +422,8 @@
                                             if(response == '1'){
                                                 $('form').submit();  
                                             }
-                                            // row.hide();
                                         },
                                         error: function(xhr, status, error) {
-                                            console.error('Error saving data:', error);
                                         }
                                     });
                                 });

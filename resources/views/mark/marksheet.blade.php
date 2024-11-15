@@ -1,6 +1,58 @@
- 
+@php
+    $studentPercentages = [];
+    $rankList = [];
+    $rank = 1;
+
+    foreach ($data['student'] as $student) {
+        $totalMarksSum = 0;
+        $stdmarks = 0;
+        $subsubjtotalMarksSum = 0;
+        $stdmarkssub = 0;
+        $passfail = 0;
+
+        foreach ($data['subjects'] as $subject) {
+            if ($subject['student_id'] == $student['id']) {
+                $totalMarksSum += $subject['total_marks'];
+                $stdmarks += $subject['marks'];
+                if ($subject['marks'] < $subject['passing_marks']) {
+                    $passfail = 1; 
+                }
+            }
+        }
+
+        foreach ($data['optional_subjects'] as $optionalSubject) {
+            if ($optionalSubject['student_id'] == $student['id']) {
+                $subsubjtotalMarksSum += $optionalSubject['total_marks'];
+                $stdmarkssub += $optionalSubject['marks'];
+                if ($optionalSubject['marks'] < $optionalSubject['passing_marks']) {
+                    $passfail = 1; 
+                }
+            }
+        }
+
+        $totalmarks_total = $subsubjtotalMarksSum + $totalMarksSum;
+        $stdmark = $stdmarkssub + $stdmarks;
+        $percentage = $totalmarks_total ? ($stdmark / $totalmarks_total) * 100 : 0;
+
+        if ($passfail == 0) {
+            $studentPercentages[] = ['id' => $student['id'], 'percentage' => $percentage];
+        }
+    }
+
+    usort($studentPercentages, function ($a, $b) {
+        return $b['percentage'] <=> $a['percentage'];
+    });
+
+    foreach ($studentPercentages as $studentData) {
+        $rankList[$studentData['id']] = $rank++;
+    }
+@endphp
+
 <div id="pdfContent" style="font-family: system-ui, sans-serif;">
 @foreach($data['student'] as $student_value)
+        @php
+            $studentRank = $rankList[$student_value['id']] ?? 'N/A';
+        @endphp
     <div style="width: 170mm; height: 260mm; padding: 10px; box-sizing: border-box; border: 3px solid black; border-radius: 4px; font-family: Calibri, sans-serif;">
         <div style="width: 100%; margin-bottom: 10pt;">
             <div style="border-radius: 4px; border: 2pt solid black; padding: 15pt; height: 67pt;">
@@ -23,7 +75,7 @@
                     </td>
                     <td style="width: 33%; text-align: right; font-size: 14pt; vertical-align: top;">
                         <p style="margin: 0;">Year – <b>{{ $student_value['exam_year'] }}</b></p>
-                        <p style="margin: 0;"> <b>{{ $student_value['medium'] }}</b></p>
+                        <p style="margin: 0;margin-top:10px;"> <b>{{ $student_value['medium'] }}</b></p>
                     </td>
                     
                 </tr>
@@ -156,7 +208,7 @@ $passfail = 0;
         <div style="width: 100%; margin-top: 15pt;">
         <table style="width: 100%; font-size: 16pt; border-collapse: collapse;">
             <tr>
-                <td style="text-align: left; padding: 10px;font-size: 14pt">
+                <td style="text-align: left; padding: 8px;font-size: 14pt">
                     Percentage – <b>{{ round($percentage, 2) }}%</b>
                 </td>
                 <td style="text-align: center; padding: 10px;font-size: 14pt">
@@ -165,11 +217,14 @@ $passfail = 0;
                             $porf = 'Fail';
                         }else{
                             $porf = 'Pass';
-                        }   
+                        }  
                     @endphp 
                     <b>{{$porf}}</b>
                 </td>
-                <td style="text-align: right; padding: 10px;font-size: 14pt">Rank - <b>1</b></td>
+                <td style="text-align: right; padding: 10px;font-size: 14pt">
+                    Rank – <b> {{ $studentRank }} </b>
+                </td>
+                
             </tr>
         </table>
 </div>
@@ -198,4 +253,3 @@ $passfail = 0;
     </div>
     @endforeach
 </div>
- 
