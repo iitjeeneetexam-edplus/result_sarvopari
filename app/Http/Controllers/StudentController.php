@@ -50,6 +50,7 @@ class StudentController extends Controller
             )
             ->groupBy('students.id', 'students.name', 'students.roll_no','students.GR_no','students.uid', 'students.division_id') 
             ->wherenull('student_subjects.deleted_at')
+            ->orderBy('students.roll_no', 'asc')
             ->get();
            
 

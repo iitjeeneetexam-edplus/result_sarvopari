@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Student extends Model
 {
-    use SoftDeletes;
     protected $fillable = ['name', 'roll_no', 'GR_no','uid', 'division_id'];
 
     public function school()
