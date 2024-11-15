@@ -23,7 +23,9 @@
                     </td>
                     <td style="width: 33%; text-align: right; font-size: 14pt; vertical-align: top;">
                         <p style="margin: 0;">Year – <b>{{ $student_value['exam_year'] }}</b></p>
+                        <p style="margin: 0;">Medium – <b>{{ $student_value['medium'] }}</b></p>
                     </td>
+                    
                 </tr>
                 <br>
             </table>
@@ -152,7 +154,7 @@ $passfail = 0;
         <table style="width: 100%; font-size: 16pt; border-collapse: collapse;">
             <tr>
                 <td style="text-align: left; padding: 10px;font-size: 14pt">
-                    Percentage – <b>{{ $percentage }}</b>
+                    Percentage – <b>{{ round($percentage, 2) }}%</b>
                 </td>
                 <td style="text-align: right; padding: 10px;font-size: 14pt">
                     Result – @php
