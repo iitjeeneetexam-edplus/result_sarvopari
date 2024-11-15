@@ -20,13 +20,13 @@
                                                 <th>
                                                     <input type="checkbox" id="select-all">
                                                 </th>
-                                                <th>Actions</th>
+                                                <th style="text-align: center;">Actions</th>
                                                 
-                                                <th>Roll No.</th>
-                                                <th>Name</th>
-                                                <th>GR No</th>
-                                                <th>UID</th>
-                                                <th>Div</th>
+                                                <th style="text-align: center;">Roll No.</th>
+                                                <th style="text-align: center;">Name</th>
+                                                <th style="text-align: center;">GR No</th>
+                                                <th style="text-align: center;">UID</th>
+                                                <th style="text-align: center;">Div</th>
                                                 @if(!empty($subjects))
                                                 @foreach($subjects as $optionls) 
                                                 <th>{{ $optionls->subject_name}}</th>
@@ -43,15 +43,15 @@
                                                 <td>
                                                     <input type="checkbox" name="student_ids[]" class="student-checkbox" value="{{ $student->id }}"> 
                                                 </td>
-                                                <td>
+                                                <td style="text-align: center;">
                                                     <a href="#" class="btn btn-sm edit-btn btn-success" data-student-id="{{ $student->id }}">Edit</a>
                                                     <a  class="btn btn-sm delete-btn btn-danger" href="javascript:void(0);" onclick="confirmDelete({{ $student->id }})">Delete</a>
                                                 </td> 
-                                                <td>{{ $student->roll_no }}</td>
-                                                <td>{{ $student->name }}</td>
-                                                <td>{{ $student->GR_no }}</td>
-                                                <td>{{ $student->uid }}</td>
-                                                <td>{{ $student->division->division_name }}</td>
+                                                <td style="text-align: center;">{{ $student->roll_no }}</td>
+                                                <td >{{ $student->name }}</td>
+                                                <td style="text-align: center;">{{ $student->GR_no }}</td>
+                                                <td style="text-align: center;">{{ $student->uid }}</td>
+                                                <td style="text-align: center;">{{ $student->division->division_name }}</td>
                                                 @php
                                                 $subjectNames = explode(',', $student->subject_id); 
                                                 
