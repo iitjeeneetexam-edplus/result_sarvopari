@@ -48,7 +48,7 @@
     </table>
 </div>
 <p style="margin: 0;margin-top:10px;">UID - <b>{{ $student_value['uid'] }}</b> </p>
-<p style="font-size: 16pt; margin: 0; padding: 0px; margin-top: 40px;">Student Name – <b>{{ $student_value['name'] }}</b> </p>
+<p style="font-size: 16pt; margin: 0; padding: 0px; margin-top: 20px;">Student Name – <b>{{ $student_value['name'] }}</b> </p>
 
 <table style="border-collapse: collapse; width: 100%; margin-top: 10pt;">
     <tr style="height: 40pt; background-color: black; color: white; font-size: 12pt; font-weight: bold;">
@@ -174,19 +174,19 @@ $passfail = 0;
 
 
         
-<div style="width: 100%; margin-top: 100px;">
+<div style="width: 100%; margin-top: 60px;">
     <table style="width: 100%; font-size: 16pt; border-collapse: collapse;">
         <tr>
-            <td style="text-align: left; padding: 10px;font-size: 14pt">
+            <td style="text-align: left; padding: 5px;font-size: 14pt">
                 Class Teacher Sign
             </td>
-            <td style="text-align: right; padding: 10px;font-size: 14pt">
+            <td style="text-align: right; padding: 5px;font-size: 14pt">
                 Principal Sign
             </td>
         </tr>
 
     </table> 
-    <p style="position: absolute;  left: 30px; font-size: 12pt;">
+    <p style="position: absolute; margin-top: 2px; left: 20px; font-size: 12pt;">
         Date – <b>{{ date('d-m-20y',strtotime($student_value['result_date'])) }}</b>
     </p>
       
