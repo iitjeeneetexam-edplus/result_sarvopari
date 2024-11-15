@@ -360,7 +360,11 @@
                                 $(document).on('click', '.saveEditBtn', function() {
                                     //validation 
                                     event.preventDefault(); 
-                                    var regex = /^[0-9]+$/;
+                                    // var markIndex = $(this).attr('data-mark_index');
+
+                                    
+
+                                    var regex = /^(100|[1-9]?[0-9]|AB)$/;
                                     var textboxValue = $('#myTextbox').val();
                                     if (textboxValue === '') {
                                         $('#myTextbox').css('border', '2px solid red');
@@ -394,16 +398,6 @@
                                             'X-CSRF-TOKEN': csrfToken
                                         }
                                     });
-                            
-                                    // let mainSubjectIds = $('input[name="main_subject_id[]"]').map(function() {
-                                    //     return $(this).val();
-                                    // }).get();
-                                    // let optional_subject_id = $('input[name="optional_subject_id[]"]').map(function() {
-                                    //     return $(this).val();
-                                    // }).get();
-                                    // let is_optional = $('input[name="is_optional[]"]').map(function() {
-                                    //     return $(this).val();
-                                    // }).get();
                                     let marks = $('input[name="marks[]"]').map(function() {
                                         return $(this).val();
                                     }).get();

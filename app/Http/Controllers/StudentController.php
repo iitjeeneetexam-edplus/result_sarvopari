@@ -156,7 +156,7 @@ class StudentController extends Controller
 
     public function import(Request $request)
     {
-         
+        
         $request->validate([
             'csv_file' => 'required|mimes:csv,txt|max:2048',
             'school_id' => 'required|exists:schools,id',
@@ -437,20 +437,12 @@ class StudentController extends Controller
             )
             ->get()->toarray(); 
             $optinalsubjects = array_map(function($row) {
-                if (strtolower($row["marks"]) === "AB") {
-                    $row["marks"] = "AB";
-                } else {
                     $row["marks"] = (int) round((float) $row["marks"]);
-                }
                 return $row;
             }, $optinalsubjects);
             
             $subjectsData = array_map(function($row) {
-                if (strtolower($row["marks"]) === "AB") {
-                    $row["marks"] = "AB";
-                } else {
                     $row["marks"] = (int) round((float) $row["marks"]);
-                }
                 return $row;
             }, $subjectsData);
             
@@ -470,7 +462,6 @@ class StudentController extends Controller
             });
             
             $data = ['student'=>$filteredStudents,'subjects'=>$subjectsData,'optional_subjects'=>$optinalsubjects]; 
-            // echo "<pre>";print_r($data);exit;
             $pdf = PDF::loadView('mark.marksheet', ['data' => $data]);
             // return $pdf->download('marksheet.pdf');
             $folderPath = public_path('pdfs');

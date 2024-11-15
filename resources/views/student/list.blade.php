@@ -54,7 +54,6 @@
                                                 <td style="text-align: center;">{{ $student->division->division_name }}</td>
                                                 @php
                                                 $subjectNames = explode(',', $student->subject_id); 
-                                                
                                                 @endphp
                                                 @if(!empty($subjectNames))
                                                     @foreach($subjects as $optionls) 
