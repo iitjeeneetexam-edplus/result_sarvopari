@@ -126,7 +126,10 @@ class StudentController extends Controller
         
         
         }
-        
+         
+        usort($students, function ($a, $b) {
+            return $a['roll_no'] <=> $b['roll_no'];
+        });
         $subjects = Subject::where('standard_id', $standardId)->pluck('subject_name');
         $subjectString = $subjects->implode(', ');
 
@@ -298,6 +301,7 @@ class StudentController extends Controller
                 ->where('marks.exam_id', $exam_id);
         })
             ->select('students.id', 'students.name', 'students.roll_no','marks.marks','marks.total_marks','marks.passing_marks')
+            ->orderBy('students.roll_no','asc')
             ->where('division_id', $division_id);
 
             if($is_optional == 1){
