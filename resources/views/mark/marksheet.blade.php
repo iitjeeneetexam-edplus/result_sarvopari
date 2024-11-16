@@ -50,6 +50,9 @@
 
 <div id="pdfContent" style="font-family: system-ui, sans-serif;">
 @foreach($data['student'] as $student_value)
+@php
+        $index_no = 1; // Reset index_no for each student
+    @endphp
         @php
             $studentRank = $rankList[$student_value['id']] ?? 'N/A';
         @endphp
@@ -110,6 +113,7 @@
         <td style="width: 22%; border: 1pt solid black; text-align: center;height: 20pt;">Obtain Marks</td>
         <td style="width: 15%; border: 1pt solid black; text-align: center;height: 20pt;">Grade</td>
     </tr>
+    
     @php
 $totalMarksSum = 0;
 $stdmarks = 0;
@@ -117,79 +121,56 @@ $subsubjtotalMarksSum = 0;
 $stdmarkssub = 0;
 $passfail = 0;
 @endphp
-@foreach($data['subjects'] as $no => $subjectslist)
-   @if(!empty($subjectslist['student_id']))
-    @if($subjectslist['student_id'] == $student_value['id'])
-    <tr style="height: 29pt;">
-        <td style="width: 10%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ ++$no }}</td>
-        <td style="width: 35%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ ucfirst($subjectslist['subject_name']) }}</td>
-        <td style="width: 22%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ $subjectslist['total_marks'] }}</td> 
-        <td style="width: 22%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ 
-                                                                                                                  $subjectslist['marks']
-        }}</td>
+@php $index_no=1 @endphp
+@php
+// Merge subjects and optional_subjects
+$allSubjects = array_merge($data['subjects'], $data['optional_subjects']);
+@endphp
 
-        @php 
-        if($subjectslist['marks'] < $subjectslist['passing_marks']){
-            $passfail += $passfail+1;
-        }
-        $smbper = $subjectslist['total_marks'] ? ($subjectslist['marks'] / $subjectslist['total_marks']) * 100 : 0;
-        $grade = match (true) {
-                    $smbper >= 91 => 'A1',
-                    $smbper >= 81 => 'A2',
-                    $smbper >= 71 => 'B1',
-                    $smbper >= 61 => 'B2',
-                    $smbper >= 51 => 'C1',
-                    $smbper >= 41 => 'C2',
-                    $smbper >= 33 => 'D',
-                    $smbper >= 21 => 'E1',
-                    $smbper <= 20 => 'E2',
-        };
-        @endphp
-        <td style="width: 15%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ $grade }}</td>
-        @php
-    $totalMarksSum += $subjectslist['total_marks'];
-    $stdmarks += $subjectslist['marks'];
-    @endphp
-    </tr>
-    @endif
-    @endif
-    @endforeach
-    @foreach($data['optional_subjects'] as $no2=> $value_optional)
-    @if(!empty($value_optional['student_id']))
-        @if($value_optional['student_id'] == $student_value['id'])
+@foreach($allSubjects as $no => $subject)
+    @if(!empty($subject['student_id']) && $subject['student_id'] == $student_value['id'])
+        
         <tr style="height: 29pt;">
-            <td style="width: 10%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ ++$no2 }}</td>
-            <td style="width: 10%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ ucfirst($value_optional['subject_name']) }}</td>
-            <td style="width: 10%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ $value_optional['total_marks'] }}</td>
-            <td style="width: 10%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ isset($value_optional['marks']) ? $value_optional['marks']:''  }}</td>
-            @php 
-                if($value_optional['marks'] < $value_optional['passing_marks']){
-                    $passfail += $passfail+1;
+            <td style="width: 10%; border: 1pt solid black; text-align: center; font-size: 12pt; height: 30pt;">
+                {{ $index_no }}
+            </td>
+            <td style="width: 35%; border: 1pt solid black; text-align: center; font-size: 12pt; height: 30pt;">
+                {{ ucfirst($subject['subject_name']) }}
+            </td>
+            <td style="width: 22%; border: 1pt solid black; text-align: center; font-size: 12pt; height: 30pt;">
+                {{ $subject['total_marks'] }}
+            </td>
+            <td style="width: 22%; border: 1pt solid black; text-align: center; font-size: 12pt; height: 30pt;">
+                {{ $subject['marks']  }}
+            </td>
+            @php
+                if ($subject['marks'] < $subject['passing_marks']) {
+                    $passfail += 1;
                 }
 
-                $subper = $value_optional['total_marks'] ? ($value_optional['marks'] / $value_optional['total_marks']) * 100 : 0;
+                $percentage = $subject['total_marks'] ? ($subject['marks'] / $subject['total_marks']) * 100 : 0;
                 $grade = match (true) {
-                    $subper >= 91 => 'A1',
-                    $subper >= 81 => 'A2',
-                    $subper >= 71 => 'B1',
-                    $subper >= 61 => 'B2',
-                    $subper >= 51 => 'C1',
-                    $subper >= 41 => 'C2',
-                    $subper >= 33 => 'D',
-                    $subper >= 21 => 'E1',
-                    $subper <= 20 => 'E2',
+                    $percentage >= 91 => 'A1',
+                    $percentage >= 81 => 'A2',
+                    $percentage >= 71 => 'B1',
+                    $percentage >= 61 => 'B2',
+                    $percentage >= 51 => 'C1',
+                    $percentage >= 41 => 'C2',
+                    $percentage >= 33 => 'D',
+                    $percentage >= 21 => 'E1',
+                    $percentage <= 20 => 'E2',
                 };
-                @endphp
-                <td style="width: 15%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ $grade }}</td>
-            @php
-            $subsubjtotalMarksSum += $value_optional['total_marks'];
-            $stdmarkssub += $value_optional['marks'];
+
+                $totalMarksSum += $subject['total_marks'];
+                $stdmarks += $subject['marks'];
             @endphp
-            
+            <td style="width: 15%; border: 1pt solid black; text-align: center; font-size: 12pt; height: 30pt;">
+                {{ $grade }}
+            </td>
         </tr>
-        @endif
-        @endif
-        @endforeach
+        @php $index_no++; @endphp
+    @endif
+@endforeach
         @php
         $totalmarks_total = $subsubjtotalMarksSum + $totalMarksSum;
         $stdmark = $stdmarkssub + $stdmarks;

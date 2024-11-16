@@ -382,11 +382,22 @@ class StudentController extends Controller
     public function marksheet(Request $request){
         
         try{ 
-            $student=Student::join('division','division.id','=','students.division_id')
-            ->join('standards','standards.id','=','division.standard_id')
-            ->join('exams','exams.standard_id','=','standards.id')
-            ->join('schools','schools.id','=','standards.school_id')
-            ->select('students.*','standards.standard_name','standards.id as standard_id','schools.school_name','schools.medium','standards.school_index','schools.address','division.division_name','exams.exam_name','exams.exam_year','exams.result_date')
+            $student=Student::leftjoin('division','division.id','=','students.division_id')
+            ->leftjoin('standards','standards.id','=','division.standard_id')
+            ->leftjoin('exams','exams.standard_id','=','standards.id')
+            ->leftjoin('schools','schools.id','=','standards.school_id')
+            ->select('students.*',
+                      'standards.standard_name',
+                      'standards.id as standard_id',
+                      'schools.school_name',
+                      'schools.medium',
+                      'standards.school_index',
+                      'schools.address',
+                      'division.division_name',
+                      'exams.exam_name',
+                      'exams.exam_year',
+                      'exams.result_date'
+                    )
             ->whereIn('students.id',$request->student_id)->get()->toarray();
 
             // echo "<pre>";print_r($student);exit;
@@ -462,6 +473,7 @@ class StudentController extends Controller
             });
             
             $data = ['student'=>$filteredStudents,'subjects'=>$subjectsData,'optional_subjects'=>$optinalsubjects]; 
+            // echo "<pre>";print_r($data);exit;
             $pdf = PDF::loadView('mark.marksheet', ['data' => $data]);
             // return $pdf->download('marksheet.pdf');
             $folderPath = public_path('pdfs');
