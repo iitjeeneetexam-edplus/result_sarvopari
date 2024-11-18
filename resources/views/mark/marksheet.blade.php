@@ -133,7 +133,6 @@ if ($mrkses < $subject['passing_marks']) {
                     @endphp
                     @php $index_no=1 @endphp
                     @php
-                    // Merge subjects and optional_subjects
                     $allSubjects = array_merge($data['subjects'], $data['optional_subjects']);
                     @endphp
 
@@ -177,9 +176,8 @@ if ($mrkses < $subject['passing_marks']) {
                             $percentage <= 20=> 'E2',
                                 };
                                 @endphp
-                                <td style="width: 15%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ $grade }}</td>
                                 @php
-                                $subsubjtotalMarksSum += $value_optional['total_marks'];
+                                $subsubjtotalMarksSum += $subject['total_marks'];
                                 $stdmarkssub += $mrkses;
                                 @endphp
                                 <td style="width: 15%; border: 1pt solid black; text-align: center; font-size: 12pt; height: 30pt;">
