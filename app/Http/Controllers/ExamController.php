@@ -20,7 +20,7 @@ class ExamController extends Controller
         $exams = Exam::leftJoin('standards', 'standards.id', '=', 'exams.standard_id')
         ->select('exams.*', 'standards.standard_name')
         ->where('standards.school_id', $school_session_id)
-        ->paginate(5);
+        ->get();
         return view('exam.list', compact('exams'));
     }
 
@@ -35,6 +35,7 @@ class ExamController extends Controller
     {
         $request->validate([
             'exam_name' => 'required|string|max:255',
+            'is_practical' => 'required',
             'standard_id' => 'required|exists:standards,id',
             'date' => 'required',
             'result_date' => 'required',
@@ -65,6 +66,7 @@ class ExamController extends Controller
             'exam_name' => 'required|string|max:255|unique:exams,exam_name,' . $exam->id . ',id,standard_id,' . $request->standard_id,
             'standard_id' => 'required|exists:standards,id',
             'date' => 'required|date',
+            'is_practical' => 'required',
         ]);
 
         $exam->update($request->all());

@@ -21,6 +21,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Exam Name</th>
+                                <th>Exam Type</th>
                                 <th>Standard</th>
                                 <th>Exam Date</th>
                                 <th>Action</th>
@@ -32,7 +33,8 @@
                             <tr>
                                 <td>{{ $i }}</td>
                                 <td>{{ $exam->exam_name }}</td>
-                                <td>{{ $exam->standard_name }}</td> <!-- Display associated standard -->
+                                <td>{{ ucfirst($exam->is_practical) }}</td>
+                                <td>{{ $exam->standard_name }}</td> 
                                 <td>{{ date('d-m-20y',strtotime($exam->date)) }}</td>
                                 <td><a href="{{url('exam/edit/'.$exam->id)}}" class="btn btn-success">Edit</a>&nbsp;&nbsp;<a href="javascript:void(0);" onclick="confirmDelete({{ $exam->id }})" class="btn btn-danger">Delete</a></td>
                          
@@ -42,7 +44,6 @@
                         </tbody>
                     </table>
                 </div>
-                    <div style="float:right"> {{ $exams->links('pagination::bootstrap-4') }} </div>
                 </div>
             </div>
         </div>

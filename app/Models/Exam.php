@@ -10,7 +10,7 @@ class Exam extends Model
 {
     use HasFactory,SoftDeletes;
 
-    protected $fillable = ['exam_name','exam_year', 'standard_id', 'date','result_date']; // Add total_marks
+    protected $fillable = ['exam_name','is_practical','exam_year', 'standard_id', 'date','result_date']; // Add total_marks
 
     public function standard()
     {

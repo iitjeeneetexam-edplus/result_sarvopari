@@ -23,6 +23,20 @@
                     @error('exam_name')
                     <div class="text-danger">{{ $message }}</div>
                     @enderror
+                    <div class="form-group mb-3">
+                        <label for="standard_id">Select Exam Type</label>
+                        <select class="form-control" id="is_practical" name="is_practical" required>
+                            <option value="">select option</option>
+                            <option value="practical">practical</option>
+                            <option value="theory">theory</option>
+
+
+                        </select>
+                        @error('is_practical')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+
                     <div class="form-group">
                                 <input type="hidden" name="school_id" id="school_id" value="{{ $schools->id}}">
                             </div>

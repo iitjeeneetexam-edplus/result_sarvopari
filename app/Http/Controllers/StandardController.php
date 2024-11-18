@@ -24,8 +24,8 @@ class StandardController extends Controller
         $standards = Standard::with('school')
         ->whereHas('school', function($query) use ($school_session_id) {
             $query->where('id', $school_session_id);
-        })
-            ->paginate(50);
+        })->get();
+            // ->paginate(50);
          return view('standard.list', compact('standards'));
     }
 

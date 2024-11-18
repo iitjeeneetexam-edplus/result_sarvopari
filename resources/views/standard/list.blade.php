@@ -51,7 +51,6 @@
                     </table>
                 </div>
                     <!-- Pagination Links -->
-                    <div style="float:right"> {{ $standards->links('pagination::bootstrap-4') }} </div>
                 </div>
             </div>
         </div>
