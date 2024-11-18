@@ -64,7 +64,7 @@ class ExamController extends Controller
         $request->validate([
             'exam_name' => 'required|string|max:255|unique:exams,exam_name,' . $exam->id . ',id,standard_id,' . $request->standard_id,
             'standard_id' => 'required|exists:standards,id',
-            'date' => 'required|date|after_or_equal:' . now()->format('Y-m-d'),
+            'date' => 'required|date',
         ]);
 
         $exam->update($request->all());

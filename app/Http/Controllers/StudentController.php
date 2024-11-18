@@ -437,16 +437,19 @@ class StudentController extends Controller
             )
             ->get()->toarray(); 
             $optinalsubjects = array_map(function($row) {
+                if ($row["marks"] !== 'AB') {
                     $row["marks"] = (int) round((float) $row["marks"]);
+                }
                 return $row;
             }, $optinalsubjects);
             
             $subjectsData = array_map(function($row) {
+                if ($row["marks"] !== 'AB') {
                     $row["marks"] = (int) round((float) $row["marks"]);
+                }
                 return $row;
             }, $subjectsData);
             
- 
             // $response_data = [
             //     'student' => $student,
             //     'subjects' => $subjectsData,
@@ -460,7 +463,6 @@ class StudentController extends Controller
             $filteredStudents = array_filter($student, function ($st) use ($tempMerge) {  
                return is_array($tempMerge) && isset($st['id']) && in_array($st['id'], $tempMerge);
             });
-            
             $data = ['student'=>$filteredStudents,'subjects'=>$subjectsData,'optional_subjects'=>$optinalsubjects]; 
             $pdf = PDF::loadView('mark.marksheet', ['data' => $data]);
             // return $pdf->download('marksheet.pdf');

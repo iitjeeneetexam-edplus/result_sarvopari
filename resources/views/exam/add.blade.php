@@ -56,7 +56,7 @@
 
                     <div class="form-group mb-3">
                         <label for="result_date">Result Date</label>
-                        <input type="date" class="form-control" id="result_date" name="result_date" required value="{{ old('date') }}">
+                        <input type="date" class="form-control" id="result_date" name="result_date" required value="{{ old('result_date') }}">
                         <span id="date-error" class="text-danger" style="display:none;"></span>
                         @error('result_date')
                         <div class="text-danger">{{ $message }}</div>

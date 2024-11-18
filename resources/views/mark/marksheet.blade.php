@@ -12,9 +12,14 @@
 
         foreach ($data['subjects'] as $subject) {
             if ($subject['student_id'] == $student['id']) {
+                if (!isset($subject['marks']) || $subject['marks'] == 'AB') {
+                        $mrkses = 0;
+                    }else{
+                        $mrkses = $subject['marks'];
+                    }
                 $totalMarksSum += $subject['total_marks'];
-                $stdmarks += $subject['marks'];
-                if ($subject['marks'] < $subject['passing_marks']) {
+                $stdmarks += $mrkses;
+                if ($mrkses < $subject['passing_marks']) {
                     $passfail = 1; 
                 }
             }
@@ -22,9 +27,14 @@
 
         foreach ($data['optional_subjects'] as $optionalSubject) {
             if ($optionalSubject['student_id'] == $student['id']) {
+                    if (!isset($optionalSubject['marks']) || $optionalSubject['marks'] == 'AB') {
+                        $opmrkses = 0;
+                    }else{
+                        $opmrkses = $optionalSubject['marks'];
+                    }
                 $subsubjtotalMarksSum += $optionalSubject['total_marks'];
-                $stdmarkssub += $optionalSubject['marks'];
-                if ($optionalSubject['marks'] < $optionalSubject['passing_marks']) {
+                $stdmarkssub += $opmrkses;
+                if ($opmrkses < $optionalSubject['passing_marks']) {
                     $passfail = 1; 
                 }
             }
@@ -49,7 +59,7 @@
 @endphp
 
 <div id="pdfContent" style="font-family: system-ui, sans-serif;">
-@foreach($data['student'] as $student_value)
+    @foreach($data['student'] as $student_value)
         @php
             $studentRank = $rankList[$student_value['id']] ?? 'N/A';
         @endphp
@@ -84,7 +94,7 @@
         </div>
 
 
-        <div style="width: 100%; margin-top: 10px;">
+    <div style="width: 100%; margin-top: 10px;">
     <table style="width: 100%; font-size: 14pt; border-collapse: collapse;">
         <tr>
             <td style="width: 33%; text-align: left;">
@@ -98,11 +108,11 @@
             </td>
         </tr>
     </table>
-</div>
-<p style="margin: 0;margin-top:10px;">UID - <b>{{ $student_value['uid'] }}</b> </p>
-<p style="font-size: 16pt; margin: 0; padding: 0px; margin-top: 20px;">Student Name – <b>{{ $student_value['name'] }}</b> </p>
+    </div>
+    <p style="margin: 0;margin-top:10px;">UID - <b>{{ $student_value['uid'] }}</b> </p>
+    <p style="font-size: 16pt; margin: 0; padding: 0px; margin-top: 20px;">Student Name – <b>{{ $student_value['name'] }}</b> </p>
 
-<table style="border-collapse: collapse; width: 100%; margin-top: 10pt;">
+    <table style="border-collapse: collapse; width: 100%; margin-top: 10pt;">
     <tr style="height: 40pt; background-color: black; color: white; font-size: 12pt; font-weight: bold;">
         <td style="width: 10%; border: 1pt solid black; text-align: center;height: 20pt; ">No</td>
         <td style="width: 35%; border: 1pt solid black; text-align: center;height: 20pt;">Subject</td>
@@ -111,28 +121,31 @@
         <td style="width: 15%; border: 1pt solid black; text-align: center;height: 20pt;">Grade</td>
     </tr>
     @php
-$totalMarksSum = 0;
-$stdmarks = 0;
-$subsubjtotalMarksSum = 0;
-$stdmarkssub = 0;
-$passfail = 0;
-@endphp
-@foreach($data['subjects'] as $no => $subjectslist)
-   @if(!empty($subjectslist['student_id']))
+    $totalMarksSum = 0;
+    $stdmarks = 0;
+    $subsubjtotalMarksSum = 0;
+    $stdmarkssub = 0;
+    $passfail = 0;
+    @endphp
+    @foreach($data['subjects'] as $no => $subjectslist)
+    @if(!empty($subjectslist['student_id']))
     @if($subjectslist['student_id'] == $student_value['id'])
     <tr style="height: 29pt;">
         <td style="width: 10%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ ++$no }}</td>
         <td style="width: 35%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ ucfirst($subjectslist['subject_name']) }}</td>
         <td style="width: 22%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ $subjectslist['total_marks'] }}</td> 
-        <td style="width: 22%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ 
-                                                                                                                  $subjectslist['marks']
-        }}</td>
+        <td style="width: 22%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{  $subjectslist['marks']}}</td>
 
         @php 
-        if($subjectslist['marks'] < $subjectslist['passing_marks']){
+        if($subjectslist['marks'] == 'AB'){
+            $mrkses = 0;
+        }else{
+            $mrkses = $subjectslist['marks'];
+        }
+        if($mrkses < $subjectslist['passing_marks']){
             $passfail += $passfail+1;
         }
-        $smbper = $subjectslist['total_marks'] ? ($subjectslist['marks'] / $subjectslist['total_marks']) * 100 : 0;
+        $smbper = $subjectslist['total_marks'] ? ($mrkses / $subjectslist['total_marks']) * 100 : 0;
         $grade = match (true) {
                     $smbper >= 91 => 'A1',
                     $smbper >= 81 => 'A2',
@@ -147,9 +160,9 @@ $passfail = 0;
         @endphp
         <td style="width: 15%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ $grade }}</td>
         @php
-    $totalMarksSum += $subjectslist['total_marks'];
-    $stdmarks += $subjectslist['marks'];
-    @endphp
+        $totalMarksSum += $subjectslist['total_marks'];
+        $stdmarks += $mrkses;
+        @endphp
     </tr>
     @endif
     @endif
@@ -163,11 +176,18 @@ $passfail = 0;
             <td style="width: 10%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ $value_optional['total_marks'] }}</td>
             <td style="width: 10%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ isset($value_optional['marks']) ? $value_optional['marks']:''  }}</td>
             @php 
-                if($value_optional['marks'] < $value_optional['passing_marks']){
+
+            if($value_optional['marks'] == 'AB'){
+                $mrkses = 0;
+            }else{
+                $mrkses = $value_optional['marks'];
+            }
+
+                if($mrkses < $value_optional['passing_marks']){
                     $passfail += $passfail+1;
                 }
 
-                $subper = $value_optional['total_marks'] ? ($value_optional['marks'] / $value_optional['total_marks']) * 100 : 0;
+                $subper = $value_optional['total_marks'] ? ($mrkses / $value_optional['total_marks']) * 100 : 0;
                 $grade = match (true) {
                     $subper >= 91 => 'A1',
                     $subper >= 81 => 'A2',
@@ -183,7 +203,7 @@ $passfail = 0;
                 <td style="width: 15%; border: 1pt solid black; text-align: center; font-size: 12pt;height: 30pt;">{{ $grade }}</td>
             @php
             $subsubjtotalMarksSum += $value_optional['total_marks'];
-            $stdmarkssub += $value_optional['marks'];
+            $stdmarkssub += $mrkses;
             @endphp
             
         </tr>
@@ -201,7 +221,6 @@ $passfail = 0;
                 <td colspan="3" style="background-color: black; border: 1pt solid black; text-align: center;height: 20pt;" >Total Obtain Marks</td>
                 <td style="background-color: black; border: 1pt solid black; text-align: center;height: 20pt;">{{ $stdmark }}</td>
                 <td style="border: 1pt solid black; background-color: black;height: 20pt;"></td>
-
             </tr>
         </table>
 
@@ -227,11 +246,11 @@ $passfail = 0;
                 
             </tr>
         </table>
-</div>
+    </div>
 
 
         
-<div style="width: 100%; margin-top: 60px;">
+    <div style="width: 100%; margin-top: 60px;">
     <table style="width: 100%; font-size: 16pt; border-collapse: collapse;">
         <tr>
             <td style="text-align: left; padding: 5px;font-size: 14pt">
@@ -248,7 +267,7 @@ $passfail = 0;
     </p>
       
        
-</div>
+    </div>
 
     </div>
     @endforeach
