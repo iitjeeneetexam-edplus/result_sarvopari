@@ -164,7 +164,12 @@
                             $("#validationErrors").html("");
                             var standardValue= $('#standard').val();
                             var divisionValue= $('#division').val();
+                           
+
                             var examValue= $('#exam').val(); 
+                            sessionStorage.setItem('standard', standardValue);
+                            sessionStorage.setItem('division', divisionValue);
+                            sessionStorage.setItem('exam', examValue);
                             if(!$.trim(standardValue))
                                 errors+="<li>Please select standard.</li>"
                             if(!$.trim(divisionValue))
@@ -511,7 +516,9 @@
                             $('.student-checkbox:checked').each(function() {
                                 selectedStudentIds.push($(this).data('id'));
                             });
-
+                            var standard = sessionStorage.getItem('standard');
+                            var division = sessionStorage.getItem('division');
+                            var exam = sessionStorage.getItem('exam');
                             if (selectedStudentIds.length === 0) {
                                 Swal.fire({
                                     icon: "error",
@@ -526,6 +533,9 @@
                                 method: 'POST',
                                 data: {
                                     student_id: selectedStudentIds,
+                                    standard : standard,
+                                    division : division,
+                                    exam : exam,
                                     _token: '{{ csrf_token() }}',  
                                 },
                                 beforeSend: function() { 
