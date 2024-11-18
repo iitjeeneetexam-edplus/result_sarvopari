@@ -380,28 +380,40 @@ class StudentController extends Controller
     }
 
     public function marksheet(Request $request){
-        
+        // print_r($request->all());exit;
         try{ 
-            $student=Student::join('division','division.id','=','students.division_id')
-            ->join('standards','standards.id','=','division.standard_id')
-            ->join('exams','exams.standard_id','=','standards.id')
-            ->join('schools','schools.id','=','standards.school_id')
-            ->select('students.*','standards.standard_name','standards.id as standard_id','schools.school_name','schools.medium','standards.school_index','schools.address','division.division_name','exams.exam_name','exams.exam_year','exams.result_date')
-            ->whereIn('students.id',$request->student_id)->get()->toarray();
-
-            // echo "<pre>";print_r($student);exit;
+            $student=Student::leftjoin('division','division.id','=','students.division_id')
+            ->leftjoin('standards','standards.id','=','division.standard_id')
+            ->leftjoin('exams','exams.standard_id','=','standards.id')
+            ->leftjoin('schools','schools.id','=','standards.school_id')
+            ->select('students.*',
+                      'standards.standard_name',
+                      'standards.id as standard_id',
+                      'schools.school_name',
+                      'schools.medium',
+                      'standards.school_index',
+                      'schools.address',
+                      'division.division_name',
+                      'exams.exam_name',
+                      'exams.exam_year',
+                      'exams.result_date'
+                    )
+            ->whereIn('students.id',$request->student_id)
+            ->where('exams.id',$request->exam)
+            ->get()
+            ->toarray();
             $standard_id=0;
             if(!empty($student))
             {
              $standard_id=$student[0]['standard_id'];
             }
-         
             $subjectsData = Subject::leftJoin('marks', function ($join) {
                 $join->on('marks.subject_id', '=', 'subjects.id')
                      ->where('marks.is_optional', '0');
             })
             ->where('subjects.standard_id', $standard_id)
             ->whereIn('marks.student_id', $request->student_id)
+            ->where('marks.exam_id', $request->exam)
             ->select(
                 'subjects.subject_name',
                 'subjects.id',
@@ -414,14 +426,13 @@ class StudentController extends Controller
                 'marks.student_id',
             )
             ->get()->toarray();
-           
-
             $optinalsubjects = Subject::join('subject_subs','subject_subs.subject_id','=','subjects.id')
             ->leftJoin('marks', function ($join) {
                 $join->on('marks.subject_id', '=', 'subject_subs.id')
                      ->where('marks.is_optional', '1');
             })
             ->where('subjects.standard_id', $standard_id)
+            ->where('marks.exam_id', $request->exam)
             ->whereIn('marks.student_id', $request->student_id)
             ->select(
                 'subject_subs.subject_name',
@@ -464,6 +475,7 @@ class StudentController extends Controller
                return is_array($tempMerge) && isset($st['id']) && in_array($st['id'], $tempMerge);
             });
             $data = ['student'=>$filteredStudents,'subjects'=>$subjectsData,'optional_subjects'=>$optinalsubjects]; 
+            // echo "<pre>";print_r($data);exit;
             $pdf = PDF::loadView('mark.marksheet', ['data' => $data]);
             // return $pdf->download('marksheet.pdf');
             $folderPath = public_path('pdfs');
