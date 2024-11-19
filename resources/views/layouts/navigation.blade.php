@@ -97,7 +97,8 @@
         <a class="{{ Request::segment(1) == 'exam' ? 'active' : '' }}" href="{{url('exam')}}">Exam</a>
         <a class="{{ Request::segment(1) == 'students' ? 'active' : '' }}" href="{{url('students')}}">Student</a>
         <a class="{{ Request::segment(1) == 'marks' ? 'active' : '' }}" href="{{url('marks')}}">Mark</a>
-     </div>
+        <a class="{{ Request::segment(1) == 'finalexam' ? 'active' : '' }}" href="{{url('final_exam_markssheet')}}">Final Exam Mark Sheet</a>
+    </div>
     <!-- Responsive Navigation Menu -->
    
 </nav>
@@ -106,7 +107,7 @@
         Swal.fire({
             icon: 'success',
             title: 'Success',
-            html: '{{ session('success') }}',
+            html: "{{ session('success') }}",
             timer: 3000,
             showConfirmButton: false
         });

@@ -338,7 +338,6 @@ class StudentController extends Controller
         ]);
     
         $student = Student::find($request->studentid);
-    
         if (!$student) {
             return redirect()->back()->with('error', 'Student not found');
         }

@@ -242,8 +242,6 @@ if ($mrkses < $subject['passing_marks']) {
                     <p style="position: absolute; margin-top: 2px; left: 20px; font-size: 12pt;">
                         Date – <b>{{ date('d-m-20y',strtotime($student_value['result_date'])) }}</b>
                     </p>
-
-
                 </div>
 
             </div>

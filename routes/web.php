@@ -106,6 +106,7 @@ Route::post('/student/marksheet', [StudentController::class, 'marksheet'])->name
 
 Route::post('/generate-pdf', [StudentController::class, 'generatePDF'])->name('allgenerate.pdf');
 Route::post('/subjectmarks-pdf', [StudentController::class, 'subjectmarksPDF'])->name('generate.pdf');
+Route::post('/finalexam', [StudentController::class, 'final_exam_markssheet'])->name('final_exam_markssheet.pdf');
 
 
 });
