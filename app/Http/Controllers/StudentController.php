@@ -71,6 +71,24 @@ class StudentController extends Controller
 
         return view('student.list', compact('students','subjects','subject_subs','divisiions'));
     }
+    public function getfinalstudent(Request $request){
+        $divisionId = $request->input('division_id');
+        // $standardId = $request->input('standard_id');
+        $exam_id = $request->input('exam_id');
+        $query = Student::leftJoin('marks', 'marks.student_id', '=', 'students.id')
+        ->where('students.division_id', $divisionId)
+        ->whereIn('marks.exam_id', $exam_id) 
+        ->select(
+            'students.id',
+            'students.name',
+               
+        )
+        ->groupBy('students.id','students.name',)
+        ->orderBy('students.id','asc')
+        ->get()->toarray();
+
+        return response()->json(['student'=>$query]);
+    }
     public function getstudentformarks(Request $request){
     //    print_r($request->all());exit;
         $divisionId = $request->input('division_id');
@@ -377,7 +395,99 @@ class StudentController extends Controller
         }
         return response()->json($subdl);
     }
+    public function all_marksheet(Request $request){
+        
+        $studentDta=Student::leftjoin('division','division.id','=','students.division_id')
+                            ->leftjoin('standards','standards.id','=','division.standard_id')
+                            ->leftjoin('exams','exams.standard_id','=','standards.id')
+                            ->leftjoin('schools','schools.id','=','standards.school_id')
+                             ->whereIn('students.id',$request->student_id)
+                             ->select('students.*',
+                                'standards.standard_name',
+                                'standards.id as standard_id',
+                                'schools.school_name',
+                                'schools.medium',
+                                'standards.school_index',
+                                'schools.address',
+                                'division.division_name',
+                                'exams.exam_name',
+                                'exams.exam_year',
+                                'exams.result_date'
+                            )->get();
+        foreach($studentDta as $value){
+            $markDta = Student::leftJoin('marks', 'marks.student_id', '=', 'students.id')
+            ->leftJoin('exams', 'exams.id', '=', 'marks.exam_id')
+            ->leftJoin(DB::raw('
+                (
+                    SELECT id, subject_name AS subject_name FROM subjects
+                    UNION ALL
+                    SELECT id, subject_name AS subject_name FROM subject_subs
+                ) AS combined_subjects
+            '), 'combined_subjects.id', '=', 'marks.subject_id')
+            ->where('students.division_id', $request->division)
+            ->whereIn('marks.exam_id', explode(',', $request->exam))
+            ->whereIn('students.id', explode(',', $value->id))
+            ->select(
+                'marks.student_id',
+                'marks.total_marks',
+                'marks.marks',
+                'exams.exam_name',
+                'combined_subjects.subject_name'
+            )
+            ->get();
+        
+             $marks=[];
+             foreach($markDta as $value2){
 
+                 $marks[]=['id'=>$value2->student_id,
+                           'exam_name'=>$value2->exam_name,
+                           'total_marks'=>$value2->total_marks,
+                           'marks'=>$value2->marks,'subject_name'=>$value2->subject_name];
+             }   
+             $data[]=[
+                    'id'=>$value->id,
+                    'student_name'=>$value->name,
+                    
+                    'standard_id'=>$value->standard_id,
+                    'standard_name'=>$value->standard_name,
+                    'school_name'=>$value->school_name,
+                    'medium'=>$value->medium,
+                    'school_index'=>$value->school_index,
+                    'address'=>$value->address,
+                    'division_name'=>$value->division_name,
+                    'exam_name'=>$value->exam_name,
+                    'exam_year'=>$value->exam_year,
+                    'result_date'=>$value->result_date,
+                    'marks'=>$marks,
+                ];
+            
+
+        }
+        echo "<pre>";print_r($data);exit;
+        $pdf = PDF::loadView('mark.marksheet', ['data' => $data]);
+            // return $pdf->download('marksheet.pdf');
+            $folderPath = public_path('pdfs');
+
+            if (!File::exists($folderPath)) {
+            File::makeDirectory($folderPath, 0755, true);
+            }
+
+            $baseFileName = 'marksheet.pdf';
+            $pdfPath = $folderPath . '/' . $baseFileName;
+
+            $counter = 1;
+            while (File::exists($pdfPath)) {
+            $pdfPath = $folderPath . '/marksheet' . $counter . '.pdf'; 
+            $counter++;
+            }
+
+            file_put_contents($pdfPath, $pdf->output());
+            $pdfUrl = asset('pdfs/' . basename($pdfPath));
+            return response()->json(['pdfUrl'=>$pdfUrl]);
+
+       
+        // echo "<pre>";print_r($data);exit;
+    }
     public function marksheet(Request $request){
         // print_r($request->all());exit;
         try{ 
@@ -584,5 +694,9 @@ class StudentController extends Controller
             $pdfUrl = asset('pdfs/' . basename($pdfPath));
             return response()->json(['pdfUrl' => $pdfUrl]);
 
+    }
+    public function final_marksheet(Request $request){
+        $schools = School::select('id', 'school_name')->where('id',$request->session()->get('school_id'))->first();
+        return view('mark.finalmarksheet', compact('schools'));
     }
 }

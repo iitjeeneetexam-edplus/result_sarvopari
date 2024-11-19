@@ -85,6 +85,7 @@ Route::get('/students', [StudentController::class, 'index'])->name('students.ind
 Route::get('/students/getstudent/{sid}/{did}', [StudentController::class, 'getstudents'])->name('students.getstudent');
 Route::get('/students/getstudent', [StudentController::class, 'getstudents'])->name('students.getstudent.get');
 Route::post('/students/getstudentformarks', [StudentController::class, 'getstudentformarks'])->name('students.getstudentformarks');
+Route::post('/students/getfinalstudent', [StudentController::class, 'getfinalstudent'])->name('students.getfinalstudent');
 Route::get('/students/add', [StudentController::class, 'showImportForm'])->name('students.importForm');
 Route::post('/students/import', [StudentController::class, 'import'])->name('students.import');
 
@@ -103,10 +104,11 @@ Route::put('/students/update', [StudentController::class, 'updatestudent'])->nam
 Route::get('/students/delete/{id}', [StudentController::class, 'deletestudent'])->name('students.delete');
 
 Route::post('/student/marksheet', [StudentController::class, 'marksheet'])->name('students.marksheet');
+Route::post('/student/final-marksheet', [StudentController::class, 'all_marksheet'])->name('students.final_marksheet');
 
 Route::post('/generate-pdf', [StudentController::class, 'generatePDF'])->name('allgenerate.pdf');
 Route::post('/subjectmarks-pdf', [StudentController::class, 'subjectmarksPDF'])->name('generate.pdf');
-Route::post('/finalexam', [StudentController::class, 'final_exam_markssheet'])->name('final_exam_markssheet.pdf');
+Route::get('/marksheet', [StudentController::class, 'final_marksheet'])->name('marksheet');
 
 
 });

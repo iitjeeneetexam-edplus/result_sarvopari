@@ -97,7 +97,7 @@
         <a class="{{ Request::segment(1) == 'exam' ? 'active' : '' }}" href="{{url('exam')}}">Exam</a>
         <a class="{{ Request::segment(1) == 'students' ? 'active' : '' }}" href="{{url('students')}}">Student</a>
         <a class="{{ Request::segment(1) == 'marks' ? 'active' : '' }}" href="{{url('marks')}}">Mark</a>
-        <a class="{{ Request::segment(1) == 'finalexam' ? 'active' : '' }}" href="{{url('final_exam_markssheet')}}">Final Exam Mark Sheet</a>
+        <a class="{{ Request::segment(1) == 'marksheet' ? 'active' : '' }}" href="{{url('marksheet')}}">Final Exam Mark Sheet</a>
     </div>
     <!-- Responsive Navigation Menu -->
    
