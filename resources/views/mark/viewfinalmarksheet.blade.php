@@ -38,7 +38,7 @@ $passfail = 0;
                                 Result Sheet
                             </td>
                             <td style="width: 33%; text-align: right; font-size: 14pt; vertical-align: top;">
-                                <p style="margin: 0;margin-top:10px;"> <b>$student_value['medium']</b></p>
+                                <p style="margin: 0;margin-top:10px;"> <b>{{$student_value['medium']}}</b></p>
                             </td>
 
                         </tr>
