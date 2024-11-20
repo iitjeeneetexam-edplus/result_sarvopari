@@ -67,96 +67,51 @@ $passfail = 0;
 
                 <table style="border-collapse: collapse; width: 100%; margin-top: 10pt;">
                 <div style="text-align: center; margin-bottom: 20px;">
-        <h3 style="margin: 0;">પરીક્ષણ નંબર: 18</h3>
-        <p style="margin: 0;">છકખસ નં. 02.274</p>
+       
     </div>
 
     <!-- Main Table -->
     <table border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
         <thead>
             <tr>
-                <th style="background-color: #f0f0f0;" rowspan="2">વિષય</th>
-                <th style="background-color: #f0f0f0;" colspan="2">પ્રથમ પરીક્ષા</th>
-                <th style="background-color: #f0f0f0;" colspan="2">બીજી પરીક્ષા</th>
-                <th style="background-color: #f0f0f0;">આંતરિક ગુણ</th>
-                <th style="background-color: #f0f0f0;" colspan="2">વાર્ષિક પરીક્ષા</th>
-                <th style="background-color: #f0f0f0;">કુલ ગુણ</th>
-                <th style="background-color: #f0f0f0;">ગ્રેડ</th>
-                <th style="background-color: #f0f0f0;">ટકા</th>
+                <th style="background-color: #f0f0f0;" rowspan="2">Subjects</th>
+                @if(isset($student_value['exam']))
+                @foreach($student_value['exam'] as $exam_value)
+                <th style="background-color: #f0f0f0;" colspan="2">{{$exam_value['exam_name']}}</th>
+                @endforeach
+                @endif
+                <th style="background-color: #f0f0f0;">Total Marks</th>
+                <th style="background-color: #f0f0f0;">Optain Marks</th>
+                <th style="background-color: #f0f0f0;">sidhi gun</th>
+                <th style="background-color: #f0f0f0;">krupa gun</th>
+                <th style="background-color: #f0f0f0;">Grade</th>
+                <th style="background-color: #f0f0f0;">Percentage</th>
+
             </tr>
             <tr>
-                <th style="background-color: #f0f0f0;">50</th>
-                <th style="background-color: #f0f0f0;">50</th>
-                <th style="background-color: #f0f0f0;">50</th>
-                <th style="background-color: #f0f0f0;">50</th>
-                <th style="background-color: #f0f0f0;">20</th>
-                <th style="background-color: #f0f0f0;">120</th>
-                <th style="background-color: #f0f0f0;">100</th>
-                <th style="background-color: #f0f0f0;"></th>
-                <th style="background-color: #f0f0f0;"></th>
+           
             </tr>
         </thead>
         <tbody>
+        @if(isset($student_value['exam']))
+        @foreach($student_value['exam'] as $exam_value)
+          @if(isset($exam_value['subject_Data']))
+           @foreach($exam_value['subject_Data'] as $subject_value)
             <tr>
-                <td>ભૌતિક વિજ્ઞાન</td>
-                <td>40</td>
-                <td>32</td>
-                <td>16</td>
-                <td>---</td>
-                <td>88</td>
-                <td>73</td>
-                <td>174</td>
-                <td>B+</td>
-                <td>73%</td>
+                <td>{{ $subject_value['subject_name']}}</td>
+                    @if(isset($subject_value['marks']))
+                    @foreach($subject_value['marks'] as $mark_value)
+                        <td >{{ $mark_value['marks']}}</td>
+                    @endforeach
+                    @endif
             </tr>
-            <tr>
-                <td>રાસાયણ વિજ્ઞાન</td>
-                <td>35</td>
-                <td>30</td>
-                <td>17</td>
-                <td>---</td>
-                <td>82</td>
-                <td>68</td>
-                <td>170</td>
-                <td>B</td>
-                <td>70.60%</td>
-            </tr>
-            <tr>
-                <td>ગણિત</td>
-                <td>37</td>
-                <td>37</td>
-                <td>16</td>
-                <td>---</td>
-                <td>90</td>
-                <td>75</td>
-                <td>190</td>
-                <td>B+</td>
-                <td>75%</td>
-            </tr>
-            <tr>
-                <td>અંગ્રેજી</td>
-                <td>21</td>
-                <td>32</td>
-                <td>15</td>
-                <td>---</td>
-                <td>68</td>
-                <td>57</td>
-                <td>158</td>
-                <td>C+</td>
-                <td>57%</td>
-            </tr>
-            <tr>
-                <td>કંપ્યુટર</td>
-                <td>41</td>
-                <td>38</td>
-                <td>17</td>
-                <td>---</td>
-                <td>96</td>
-                <td>80</td>
-                <td>200</td>
-                <td>A</td>
-                <td>80%</td>
-            </tr>
+            @endforeach
+            @endif
+            @endforeach
+            @endif
+
+        
+            
         </tbody>
         <tfoot>
             <tr>
@@ -171,8 +126,8 @@ $passfail = 0;
 
     <!-- Footer Section -->
     <div style="margin-top: 20px; text-align: left;">
-        <p style="margin: 0;">પરિણામ તારીખ: 04-05-2020</p>
-        <p style="margin: 0;">વર્ગ શિક્ષકની સહી:</p>
+        <p style="margin: 0;">Date: 04-05-2020</p>
+        <p style="margin: 0;">Signature:</p>
     </div>
             @endforeach
         </div>
