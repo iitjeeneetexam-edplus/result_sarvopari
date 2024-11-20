@@ -508,7 +508,7 @@ class StudentController extends Controller
                         ];
                             
                     }
-                    echo "<pre>";print_r($data);exit;
+                    // echo "<pre>";print_r($data);exit;
             $pdf = PDF::loadView('mark.viewfinalmarksheet', ['student' => $data]);
             // return $pdf->download('marksheet.pdf');
             $folderPath = public_path('pdfs');

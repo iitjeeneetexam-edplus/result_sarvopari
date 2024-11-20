@@ -66,60 +66,113 @@ $passfail = 0;
                 <p style="font-size: 16pt; margin: 0; padding: 0px; margin-top: 20px;">Student Name – <b>{{ $student_value['student_name'] }}</b> </p>
 
                 <table style="border-collapse: collapse; width: 100%; margin-top: 10pt;">
-                    <tr style="height: 40pt; background-color: black; color: white; font-size: 12pt; font-weight: bold;">
-                        <td style="width: 10%; border: 1pt solid black; text-align: center;height: 20pt; ">Subject Name</td>
-                    </tr>
-                    
-                    @foreach($student_value['exam'] as $exam_array)
-                      @foreach($exam_array['marks'] as $marks_array)
-                      <tr style="height: 29pt;">
-                         <td style="width: 10%; border: 1pt solid black; text-align: center; font-size: 12pt; height: 30pt;">
-                            {{$marks_array['subject_name']}}
-                        </td>
-                        </tr>
-                        @endforeach
-                        @endforeach
-                     
-                   
-                </table>
+                <div style="text-align: center; margin-bottom: 20px;">
+        <h3 style="margin: 0;">પરીક્ષણ નંબર: 18</h3>
+        <p style="margin: 0;">છકખસ નં. 02.274</p>
+    </div>
 
-                <div style="width: 100%; margin-top: 15pt;">
-                    <table style="width: 100%; font-size: 16pt; border-collapse: collapse;">
-                        <tr>
-                            <td style="text-align: left; padding: 8px;font-size: 14pt">
-                                Percentage – <b></b>
-                            </td>
-                            <td style="text-align: center; padding: 10px;font-size: 14pt">
-                                Result – 
-                                <b></b>
-                            </td>
-                            <td style="text-align: right; padding: 10px;font-size: 14pt">
-                                Rank – <b>  </b>
-                            </td>
+    <!-- Main Table -->
+    <table border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
+        <thead>
+            <tr>
+                <th style="background-color: #f0f0f0;" rowspan="2">વિષય</th>
+                <th style="background-color: #f0f0f0;" colspan="2">પ્રથમ પરીક્ષા</th>
+                <th style="background-color: #f0f0f0;" colspan="2">બીજી પરીક્ષા</th>
+                <th style="background-color: #f0f0f0;">આંતરિક ગુણ</th>
+                <th style="background-color: #f0f0f0;" colspan="2">વાર્ષિક પરીક્ષા</th>
+                <th style="background-color: #f0f0f0;">કુલ ગુણ</th>
+                <th style="background-color: #f0f0f0;">ગ્રેડ</th>
+                <th style="background-color: #f0f0f0;">ટકા</th>
+            </tr>
+            <tr>
+                <th style="background-color: #f0f0f0;">50</th>
+                <th style="background-color: #f0f0f0;">50</th>
+                <th style="background-color: #f0f0f0;">50</th>
+                <th style="background-color: #f0f0f0;">50</th>
+                <th style="background-color: #f0f0f0;">20</th>
+                <th style="background-color: #f0f0f0;">120</th>
+                <th style="background-color: #f0f0f0;">100</th>
+                <th style="background-color: #f0f0f0;"></th>
+                <th style="background-color: #f0f0f0;"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>ભૌતિક વિજ્ઞાન</td>
+                <td>40</td>
+                <td>32</td>
+                <td>16</td>
+                <td>---</td>
+                <td>88</td>
+                <td>73</td>
+                <td>174</td>
+                <td>B+</td>
+                <td>73%</td>
+            </tr>
+            <tr>
+                <td>રાસાયણ વિજ્ઞાન</td>
+                <td>35</td>
+                <td>30</td>
+                <td>17</td>
+                <td>---</td>
+                <td>82</td>
+                <td>68</td>
+                <td>170</td>
+                <td>B</td>
+                <td>70.60%</td>
+            </tr>
+            <tr>
+                <td>ગણિત</td>
+                <td>37</td>
+                <td>37</td>
+                <td>16</td>
+                <td>---</td>
+                <td>90</td>
+                <td>75</td>
+                <td>190</td>
+                <td>B+</td>
+                <td>75%</td>
+            </tr>
+            <tr>
+                <td>અંગ્રેજી</td>
+                <td>21</td>
+                <td>32</td>
+                <td>15</td>
+                <td>---</td>
+                <td>68</td>
+                <td>57</td>
+                <td>158</td>
+                <td>C+</td>
+                <td>57%</td>
+            </tr>
+            <tr>
+                <td>કંપ્યુટર</td>
+                <td>41</td>
+                <td>38</td>
+                <td>17</td>
+                <td>---</td>
+                <td>96</td>
+                <td>80</td>
+                <td>200</td>
+                <td>A</td>
+                <td>80%</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td style="font-weight: bold;">કુલ ગુણ</td>
+                <td colspan="6"></td>
+                <td style="font-weight: bold;">353</td>
+                <td style="font-weight: bold;">424</td>
+                <td style="font-weight: bold;">A</td>
+            </tr>
+        </tfoot>
+    </table>
 
-                        </tr>
-                    </table>
-                </div>
-
-
-
-                <div style="width: 100%; margin-top: 60px;">
-                    <table style="width: 100%; font-size: 16pt; border-collapse: collapse;">
-                        <tr>
-                            <td style="text-align: left; padding: 5px;font-size: 14pt">
-                                Class Teacher Sign
-                            </td>
-                            <td style="text-align: right; padding: 5px;font-size: 14pt">
-                                Principal Sign
-                            </td>
-                        </tr>
-
-                    </table>
-                    <p style="position: absolute; margin-top: 2px; left: 20px; font-size: 12pt;">
-                        Date – <b></b>
-                    </p>
-                </div>
-
-            </div>
+    <!-- Footer Section -->
+    <div style="margin-top: 20px; text-align: left;">
+        <p style="margin: 0;">પરિણામ તારીખ: 04-05-2020</p>
+        <p style="margin: 0;">વર્ગ શિક્ષકની સહી:</p>
+    </div>
             @endforeach
         </div>
