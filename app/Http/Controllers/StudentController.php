@@ -413,10 +413,8 @@ class StudentController extends Controller
                     foreach($studentDta as $value){
                         $examDta = Student::leftJoin('marks', 'marks.student_id', '=', 'students.id')
                         ->leftJoin('exams', 'exams.id', '=', 'marks.exam_id')
-                        ->select('exams.*')
-                        ->where('students.division_id', $request->division)
+                        ->select('exams.*','marks.is_optional')
                         ->whereIn('marks.exam_id', explode(',', $request->exam))
-                        ->whereIn('students.id', explode(',', $value->id))
                         ->get();
                         $exam= [];
                         $exam = []; 
@@ -438,6 +436,7 @@ class StudentController extends Controller
                             ->groupBy('combined_subjects.subject_id', 'combined_subjects.subject_name', 'students.id')
                             ->select(
                                 'combined_subjects.subject_name',
+                                'combined_subjects.subject_id',
                                 'students.id AS student_id'
                             )
                             ->get();
@@ -450,10 +449,13 @@ class StudentController extends Controller
                                     ->where('students.division_id', $request->division)
                                     ->whereIn('marks.exam_id', explode(',', $exam_value->id))
                                     ->whereIn('students.id', explode(',', $value->id))
+                                    ->where('marks.subject_id', $subject_value->subject_id)
+                                    ->where('marks.is_optional', $exam_value->is_optional)
                                     ->select(
                                         'marks.student_id',
                                         'marks.total_marks',
-                                        'marks.marks'
+                                        'marks.marks',
+                                        'marks.subject_id'
                                     )
                                     ->get();
                         
@@ -465,7 +467,8 @@ class StudentController extends Controller
                                         : 'AB';
                         
                                     $marks[] = [
-                                        'id' => $value2->student_id,
+                                        'student_id' => $value2->student_id,
+                                        'subject_id' => $value2->subject_id,
                                         'total_marks' => $value2->total_marks,
                                         'marks' => $value2->marks,
                                     ];
@@ -473,6 +476,7 @@ class StudentController extends Controller
                         
                                 $subject_Data[] = [
                                     'subject_name' => $subject_value->subject_name,
+                                    'subject_id' => $subject_value->subject_id,
                                     'marks' => $marks,
                                 ];
                             }
