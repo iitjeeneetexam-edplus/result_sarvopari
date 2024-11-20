@@ -115,7 +115,7 @@ $passfail = 0;
         </tbody>
         <tfoot>
             <tr>
-                <td style="font-weight: bold;">કુલ ગુણ</td>
+                <td style="font-weight: bold;">Total Obtain Marks</td>
                 <td colspan="6"></td>
                 <td style="font-weight: bold;">353</td>
                 <td style="font-weight: bold;">424</td>
