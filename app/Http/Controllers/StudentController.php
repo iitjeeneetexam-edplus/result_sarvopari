@@ -468,6 +468,7 @@ class StudentController extends Controller
                                         'id' => $value2->student_id,
                                         'total_marks' => $value2->total_marks,
                                         'marks' => $value2->marks,
+                                        'exam_id' => $exam_value->id,
                                     ];
                                 }
                         
