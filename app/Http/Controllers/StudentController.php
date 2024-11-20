@@ -471,6 +471,7 @@ class StudentController extends Controller
                                         'subject_id' => $value2->subject_id,
                                         'total_marks' => $value2->total_marks,
                                         'marks' => $value2->marks,
+                                        'exam_id' => $exam_value->id,
                                     ];
                                 }
                         
@@ -511,7 +512,7 @@ class StudentController extends Controller
                         ];
                             
                     }
-                    echo "<pre>";print_r($data);exit;
+                    // echo "<pre>";print_r($data);exit;
             $pdf = PDF::loadView('mark.viewfinalmarksheet', ['student' => $data]);
             // return $pdf->download('marksheet.pdf');
             $folderPath = public_path('pdfs');
