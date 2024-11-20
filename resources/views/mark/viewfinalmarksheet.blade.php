@@ -33,14 +33,12 @@ $passfail = 0;
                         <tr>
                             <td style="width: 33%; font-size: 14pt; vertical-align: top;">
                                 <p style="margin: 0;">Index No - <b>{{ ucfirst($student_value['school_index']) }}</b></p>
-                                <p style="margin: 0;margin-top:10px;">Exam - <b>exam_name</b> </p>
                             </td>
                             <td style="width: 34%; text-align: center; padding: 5px; background-color: black; color: white; font-size: 24pt; font-weight: bold; border-radius: 4px;">
                                 Result Sheet
                             </td>
                             <td style="width: 33%; text-align: right; font-size: 14pt; vertical-align: top;">
-                                <p style="margin: 0;">Year – <b>exam_year</b></p>
-                                <p style="margin: 0;margin-top:10px;"> <b>medium</b></p>
+                                <p style="margin: 0;margin-top:10px;"> <b>$student_value['medium']</b></p>
                             </td>
 
                         </tr>
@@ -69,47 +67,20 @@ $passfail = 0;
 
                 <table style="border-collapse: collapse; width: 100%; margin-top: 10pt;">
                     <tr style="height: 40pt; background-color: black; color: white; font-size: 12pt; font-weight: bold;">
-                        <td style="width: 10%; border: 1pt solid black; text-align: center;height: 20pt; ">No</td>
-                        <td style="width: 35%; border: 1pt solid black; text-align: center;height: 20pt;">Subject</td>
-                        <td style="width: 22%; border: 1pt solid black; text-align: center;height: 20pt;">Total Marks</td>
-                        <td style="width: 22%; border: 1pt solid black; text-align: center;height: 20pt;">Obtain Marks</td>
-                        <td style="width: 15%; border: 1pt solid black; text-align: center;height: 20pt;">Grade</td>
+                        <td style="width: 10%; border: 1pt solid black; text-align: center;height: 20pt; ">Subject Name</td>
                     </tr>
-
-                    @php
-                    $totalMarksSum = 0;
-                    $stdmarks = 0;
-                    $subsubjtotalMarksSum = 0;
-                    $stdmarkssub = 0;
-                    $passfail = 0;
-                    @endphp
-                    @php $index_no=1 @endphp
+                    
+                    @foreach($student_value['exam'] as $exam_array)
+                      @foreach($exam_array['marks'] as $marks_array)
+                      <tr style="height: 29pt;">
+                         <td style="width: 10%; border: 1pt solid black; text-align: center; font-size: 12pt; height: 30pt;">
+                            {{$marks_array['subject_name']}}
+                        </td>
+                        </tr>
+                        @endforeach
+                        @endforeach
+                     
                    
-
-                   
-                    <tr style="height: 29pt;">
-                        <td style="width: 10%; border: 1pt solid black; text-align: center; font-size: 12pt; height: 30pt;">
-                            index
-                        </td>
-                        <td style="width: 35%; border: 1pt solid black; text-align: center; font-size: 12pt; height: 30pt;">
-                          subject_name
-                        </td>
-                        <td style="width: 22%; border: 1pt solid black; text-align: center; font-size: 12pt; height: 30pt;">
-                           total_marks
-                        </td>
-                        <td style="width: 22%; border: 1pt solid black; text-align: center; font-size: 12pt; height: 30pt;">
-                           marks
-                        </td>
-                        
-                                <td style="width: 15%; border: 1pt solid black; text-align: center; font-size: 12pt; height: 30pt;">
-                                    grade
-                                </td>
-                    </tr>
-                    <tr style="height: 30pt; color: white; font-size: 12pt; font-weight: bold;">
-                        <td colspan="3" style="background-color: black; border: 1pt solid black; text-align: center;height: 20pt;">Total Obtain Marks</td>
-                        <td style="background-color: black; border: 1pt solid black; text-align: center;height: 20pt;">stdmark</td>
-                        <td style="border: 1pt solid black; background-color: black;height: 20pt;"></td>
-                    </tr>
                 </table>
 
                 <div style="width: 100%; margin-top: 15pt;">
