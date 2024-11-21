@@ -108,7 +108,12 @@
                                         @foreach($exam_subject_value['marks'] as $mark_value)
                                             <td>{{ $mark_value['marks'] }}</td>
                                             @php
-                                                $obtainmarks += $mark_value['marks']; // Add to total
+                                                if($mark_value['marks'] == 'AB'){
+                                                    $marks = 0;
+                                                }else{
+                                                    $marks =$mark_value['marks'];
+                                                }
+                                                $obtainmarks += $marks; // Add to total
                                                 $totalMarks += $mark_value['total_marks'];
                                                 $marksFound = true;
                                             @endphp
@@ -177,8 +182,8 @@
                 <td style="font-weight: bold;">{{$maintotalobtn}}</td>
                 <td style="font-weight: bold;"></td>
                 <td style="font-weight: bold;"></td>
-                <td style="font-weight: bold;">{{ $percentages =$maintotalobtn ? ($maintotalobtn / $hundradtotal) * 100 : 0; }}% </td>
                 <td style="font-weight: bold;"></td>
+                <td style="font-weight: bold;">{{ $percentages =$maintotalobtn ? ($maintotalobtn / $hundradtotal) * 100 : 0; }}%</td>
             </tr>
         </tfoot>
     </table>
