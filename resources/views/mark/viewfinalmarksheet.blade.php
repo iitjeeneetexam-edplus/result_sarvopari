@@ -79,6 +79,10 @@
         <tbody>
         @php
             $printedSubjects = [];
+            $mainobtainmarks = 0;
+            $maintotalobtn = 0;
+            $maintotalMarks = 0;
+            $hundradtotal = 0;
         @endphp
 
         @if(isset($student_value['exam']))
@@ -91,7 +95,7 @@
 
                         @php
                             $totalMarks = 0; 
-                            $obtainmarks = 0;
+                            $obtainmarks = 0;                            
                         @endphp
 
                         @foreach($student_value['exam'] as $exam_loop)
@@ -118,8 +122,41 @@
                             @endif
                         @endforeach
 
-                        <td><strong>{{ $totalMarks }}</strong></td>
                         <td><strong>{{ $obtainmarks }}</strong></td>
+                        <td><strong>@php 
+                            if($totalMarks > 100){
+                                $obtainmks = $totalMarks ? ($obtainmarks * 100) / $totalMarks : 0; 
+                                $btnmks = round($obtainmks);
+                                $hundradtotal = 100;
+                            } else{
+                                $btnmks = $obtainmarks;
+                                $hundradtotal = 100;
+                            }
+                            
+                            $mainobtainmarks += $obtainmarks;
+                            $maintotalobtn += $btnmks;
+                            $maintotalMarks += $totalMarks;
+                            @endphp
+                            {{ $btnmks }}
+                        </strong></td>
+                        <td></td>
+                        <td></td>
+                        <td>@php
+                            $percentage=$btnmks ? ($btnmks / 100) * 100 : 0;
+                            $grade=match (true) {
+                            $percentage>= 91 => 'A1',
+                            $percentage >= 81 => 'A2',
+                            $percentage >= 71 => 'B1',
+                            $percentage >= 61 => 'B2',
+                            $percentage >= 51 => 'C1',
+                            $percentage >= 41 => 'C2',
+                            $percentage >= 33 => 'D',
+                            $percentage >= 21 => 'E1',
+                            $percentage <= 20=> 'E2',
+                            };
+                            @endphp
+                        {{$grade}}</td>
+                        <td></td>
                     </tr>
 
                     @php
@@ -135,10 +172,13 @@
         <tfoot>
             <tr>
                 <td style="font-weight: bold;">Total Obtain Marks</td>
-                <td colspan="6"></td>
-                <td style="font-weight: bold;">353</td>
-                <td style="font-weight: bold;">424</td>
-                <td style="font-weight: bold;">A</td>
+                <td colspan="2">{{$maintotalMarks}}</td>
+                <td style="font-weight: bold;">{{$mainobtainmarks}}</td>
+                <td style="font-weight: bold;">{{$maintotalobtn}}</td>
+                <td style="font-weight: bold;"></td>
+                <td style="font-weight: bold;"></td>
+                <td style="font-weight: bold;">{{ $percentages =$maintotalobtn ? ($maintotalobtn / $hundradtotal) * 100 : 0; }}% </td>
+                <td style="font-weight: bold;"></td>
             </tr>
         </tfoot>
     </table>
