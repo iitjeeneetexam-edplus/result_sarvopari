@@ -4,7 +4,7 @@
 <div style="font-family: system-ui, sans-serif; ">
            
           
-            <div style="width: 170mm; height: 260mm; padding: 10px; border: 3px solid black; border-radius: 4px; font-family: Calibri, sans-serif;">
+            <div style="width: 190mm; height: 260mm; padding: 10px; border: 3px solid black; border-radius: 4px; font-family: Calibri, sans-serif;">
                 <div style="width: 100%; margin-bottom: 10pt;">
                     <div style="border-radius: 4px; border: 2pt solid black; padding: 15pt; height: 67pt;">
                         <h1 style="text-align: center; font-size: 40pt; font-weight: bold; margin: 0; padding: 0;">{{ ucfirst($student_value['school_name']) }}
@@ -49,7 +49,7 @@
                     </table>
                 </div>
                 <p style="margin: 0;margin-top:10px;">UID - <b>{{ $student_value['uid'] }}</b> </p>
-                <p style="font-size: 16pt; margin: 0; padding: 0px; margin-top: 20px;">Student Name – <b>{{ $student_value['student_name'] }}</b> </p>
+                <p style="font-size: 16pt; margin: 0; padding: 0px; margin-top: 20px;">Student Name - <b>{{ $student_value['student_name'] }}</b> </p>
 
                <br>
             
