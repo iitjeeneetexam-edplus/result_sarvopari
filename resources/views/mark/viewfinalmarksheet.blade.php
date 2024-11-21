@@ -40,10 +40,10 @@
                                 G R No - <b>{{ $student_value['gr_no'] }}</b>
                             </td>
                             <td style="width: 80%; text-align: center; font-size: 16pt; ">
-                                Standard – <b>{{ ucfirst($student_value['standard_name']) }}-{{$student_value['division_name']}}</b>
+                                Standard - <b>{{ ucfirst($student_value['standard_name']) }}-{{$student_value['division_name']}}</b>
                             </td>
                             <td style="width: 33%; text-align: right;">
-                                Roll No – <b>{{ $student_value['roll_no'] }}</b>
+                                Roll No - <b>{{ $student_value['roll_no'] }}</b>
                             </td>
                         </tr>
                     </table>
