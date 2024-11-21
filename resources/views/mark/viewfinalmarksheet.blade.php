@@ -132,10 +132,10 @@
                             if($totalMarks > 100){
                                 $obtainmks = $totalMarks ? ($obtainmarks * 100) / $totalMarks : 0; 
                                 $btnmks = round($obtainmks);
-                                $hundradtotal = 100;
+                                $hundradtotal += 100;
                             } else{
                                 $btnmks = $obtainmarks;
-                                $hundradtotal = 100;
+                                $hundradtotal += $totalMarks;
                             }
                             
                             $mainobtainmarks += $obtainmarks;
@@ -177,7 +177,7 @@
         <tfoot>
             <tr>
                 <td style="font-weight: bold;">Total Obtain Marks</td>
-                <td colspan="2">{{$maintotalMarks}}</td>
+                <td colspan="{{ count($student_value['exam'])}}">{{$maintotalMarks}}</td>
                 <td style="font-weight: bold;">{{$mainobtainmarks}}</td>
                 <td style="font-weight: bold;">{{$maintotalobtn}}</td>
                 <td style="font-weight: bold;"></td>
