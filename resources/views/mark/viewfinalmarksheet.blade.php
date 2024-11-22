@@ -192,18 +192,23 @@
             </tr>
         </tfoot>
     </table>
-<div style="margin-top: 20px; text-align: left;">
-<p style="margin: 0;">{{Date: 04-05-2020}}</p>
+
+
+    <table style="width: 100%; margin-top: 150px;">
+    <tr>
+        <td style="text-align: left;">Teacher Signature:</td>
+        <td style="text-align: right;">Principal Signature:</td>
+    </tr>
+</table>
 
 
 </div>
-<div style="margin-top: 20px; text-align: left;">
-<p style="margin: 0;">Teacher Signature:</p>
+<div style="position: absolute; margin-top: -70px; left: 20px; font-size: 12pt;">
+<p >Date: 04-05-2020</p>
+
+
 </div>
-<div style="text-align: Right;">
-<p style="margin: 0;">Principal Signature:</p>
-</div>
-</div>
+
 
 @if(!$loop->last)
     <div style="page-break-after: always;"></div>
