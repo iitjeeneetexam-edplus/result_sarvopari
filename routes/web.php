@@ -109,6 +109,7 @@ Route::post('/student/final-marksheet', [StudentController::class, 'all_markshee
 Route::post('/generate-pdf', [StudentController::class, 'generatePDF'])->name('allgenerate.pdf');
 Route::post('/subjectmarks-pdf', [StudentController::class, 'subjectmarksPDF'])->name('generate.pdf');
 Route::get('/marksheet', [StudentController::class, 'final_marksheet'])->name('marksheet');
+Route::get('/marksheet/sidhi_gun/{id}', [StudentController::class, 'sidhi_gun'])->name('sidhi_gun');
 
 
 });

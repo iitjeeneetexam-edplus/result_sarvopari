@@ -396,6 +396,126 @@ class StudentController extends Controller
         }
         return response()->json($subdl);
     }
+    public function sidhi_gun($id){
+        $studentDta=Student::leftjoin('division','division.id','=','students.division_id')
+                            ->leftjoin('standards','standards.id','=','division.standard_id')
+                            ->leftjoin('schools','schools.id','=','standards.school_id')
+                             ->where('students.id',$id)
+                             ->select('students.*',
+                                'standards.standard_name',
+                                'standards.id as standard_id',
+                                'schools.school_name',
+                                'schools.medium',
+                                'standards.school_index',
+                                'schools.address',
+                                'division.division_name',
+                            )->get();
+                            $data=[];
+                    foreach($studentDta as $value){
+                        $examDta = Exam::whereIn('standard_id', explode(',',$value['standard_id']))->get();
+                        $exam= [];
+
+                        foreach ($examDta as $exam_value) {
+                            $subjectDta1 = Student::leftJoin('division', 'division.id', '=', 'students.division_id')
+                                                    ->leftJoin('standards', 'standards.id', '=', 'division.standard_id')
+                                                    ->leftJoin('subjects', 'subjects.standard_id', '=', 'standards.id')
+                                                    ->where('students.id', explode(',', $value->id))
+                                                    ->where('subjects.is_optional','0')
+                                                    ->select(
+                                                        'subjects.subject_name',
+                                                        'subjects.is_optional',
+                                                        'subjects.id as subject_id',
+                                                        'students.id AS student_id'
+                                                    )
+                                                    ->get()
+                                                    ->toArray(); 
+
+                                                $subjectDta2 = Subject::leftJoin('subject_subs', 'subject_subs.subject_id', '=', 'subjects.id')
+                                                    ->leftJoin('student_subjects', 'student_subjects.subject_id', '=', 'subject_subs.id')
+                                                    ->where('subjects.is_optional','1')
+                                                    ->where('student_subjects.student_id', $value->id)
+                                                    ->select(
+                                                        'subject_subs.subject_name',
+                                                        'subjects.is_optional',
+                                                        'subject_subs.id as subject_id',
+                                                        'student_subjects.student_id AS student_id'
+                                                    )
+                                                    ->get()
+                                                    ->toArray(); 
+
+                                                $get_subject_Data = array_merge($subjectDta1, $subjectDta2);
+                                        $subject_Data =[];    
+                                    foreach ($get_subject_Data as $subject_value) {
+                                        
+                                        $markDta = Student::leftJoin('marks', 'marks.student_id', '=', 'students.id')
+                                            ->whereIn('marks.exam_id', explode(',', $exam_value->id))
+                                            ->where('students.id', $id)
+                                            ->where('marks.subject_id', $subject_value['subject_id'])
+                                            ->where('marks.is_optional', $subject_value['is_optional'])
+                                            ->select(
+                                                'marks.student_id',
+                                                'marks.total_marks',
+                                                'marks.marks',
+                                                'marks.subject_id'
+                                            )
+                                            ->get();
+                                
+                                        $marks = []; 
+                                
+                                        foreach ($markDta as $value2) {
+                                            $value2->marks = $value2->marks !== 'AB' 
+                                                ? (int) round((float) $value2->marks) 
+                                                : 'AB';
+                                
+                                            $marks[] = [
+                                                'student_id' => $value2->student_id,
+                                                'subject_id' => $value2->subject_id,
+                                                'total_marks' => $value2->total_marks,
+                                                'marks' => $value2->marks,
+                                                'exam_id' => $exam_value->id,
+                                            ];
+                                        }
+                                
+                                        $subject_Data[] = [
+                                            'subject_name' => $subject_value['subject_name'],
+                                            'subject_id' => $subject_value['subject_id'],
+                                            'marks' => $marks,
+                                        ];
+                                    }
+                                
+                                    $exam[] = [
+                                        'exam_id' => $exam_value->id,
+                                        'exam_name' => $exam_value->exam_name,
+                                        'exam_year' => $exam_value->exam_year,
+                                        'result_date' => $exam_value->result_date,
+                                        'subject_Data' => $subject_Data,
+                                    ];
+                                }
+                                
+                                $data[]=[
+                                    'id'=>$value->id,
+                                    'student_name'=>$value->name,
+                                    'roll_no'=>$value->roll_no,
+                                    'gr_no'=>$value->GR_no,
+                                    'uid'=>$value->uid,
+                                    'school_index'=>$value->school_index,
+                                    'medium'=>$value->medium,
+                                    'division_name'=>$value->division_name,
+                                    'address'=>$value->address,
+                                    'standard_id'=>$value->standard_id,
+                                    'standard_name'=>$value->standard_name,
+                                    'school_name'=>$value->school_name,
+                                    'medium'=>$value->medium,
+                                    'school_index'=>$value->school_index,
+                                    'address'=>$value->address,
+                                    'division_name'=>$value->division_name,
+                                    'exam'=>$exam,
+                                ];
+                                    
+                            }
+                            // echo "<pre>";print_r($data);exit;
+       return view('mark.sidhi_gun', compact('data'));
+    }
     public function all_marksheet(Request $request){
         
         $studentDta=Student::leftjoin('division','division.id','=','students.division_id')

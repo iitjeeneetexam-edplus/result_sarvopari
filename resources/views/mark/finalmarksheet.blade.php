@@ -186,9 +186,14 @@
 
                                     $('table tbody').html("");
                                     $.each(data.student, function(key, value) {
-                                        var studentRow = `<tr class="student-row" data-id="${value.id}">`+
-                                            '<td ><input type="checkbox" class="student-checkbox" data-id="' + value.id + '" ></td>' +
-                                            '<td>' + value.name + '</td>' ;
+                                        var baseUrl = "{{ url('marksheet/sidhi_gun') }}";
+                                        var studentRow = `<tr class="student-row" data-id="${value.id}">
+                                            <td><input type="checkbox" class="student-checkbox" data-id="${value.id}"></td>
+                                            <td>${value.name}</td>
+                                            <td><a href="${baseUrl}/${value.id}" class="btn btn-warning">View</a></td>
+                                        </tr>`;
+
+
                                          studentRow += '</tr>';
                                         $('#studentdata tbody').append(studentRow);
                                        
@@ -200,7 +205,9 @@
                                     $('#studentdata thead tr').empty();
                                     $('.button-div').show();   
                                     $('#studentdata thead tr').append('<th style="width:49px;"><input type="checkbox" id="selectAll">&nbsp;&nbsp;&nbsp;&nbsp;</th>');
+                                    
                                     $('#studentdata thead tr').append('<th style="width:375px">Student Name</th>');
+                                    $('#studentdata thead tr').append('<th style="width:49px;">Action</th>');
                                     $('#selectAll').on('click', function() {
                                             var isChecked = this.checked;
                                             $('.student-checkbox').prop('checked', isChecked);
