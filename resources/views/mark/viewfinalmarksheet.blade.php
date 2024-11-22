@@ -92,7 +92,6 @@
                 @if(!in_array($subject_value['subject_id'], $printedSubjects))
                     <tr>
                         <td>{{ $subject_value['subject_name'] }}</td>
-
                         @php
                             $totalMarks = 0; 
                             $obtainmarks = 0;                            
@@ -183,7 +182,7 @@
                 <td style="font-weight: bold;"></td>
                 <td style="font-weight: bold;"></td>
                 <td style="font-weight: bold;"></td>
-                <td style="font-weight: bold;">{{ $percentages =$maintotalobtn ? ($maintotalobtn / $hundradtotal) * 100 : 0; }}%</td>
+                <td style="font-weight: bold;">@php $percentages =$maintotalobtn ? ($maintotalobtn / $hundradtotal) * 100 : 0; @endphp {{round($percentages,2)}}%</td>
             </tr>
         </tfoot>
     </table>
