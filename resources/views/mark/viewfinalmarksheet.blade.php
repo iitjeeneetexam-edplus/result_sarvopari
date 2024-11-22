@@ -194,11 +194,15 @@
     </table>
 <div style="margin-top: 20px; text-align: left;">
 <p style="margin: 0;">Date: 04-05-2020</p>
-<p style="margin: 0;">Signature:</p>
 
 
 </div>
-
+<div style="margin-top: 50px; text-align: left;">
+<p style="margin: 0;">Teacher Signature:</p>
+</div>
+<div style="margin-top: 20px; text-align: Right;">
+<p style="margin: 0;">Principal Signature:</p>
+</div>
 </div>
 
 @endforeach
