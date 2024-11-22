@@ -194,6 +194,8 @@
     </table>
 <div style="margin-top: 20px; text-align: left;">
 <p style="margin: 0;">{{Date: 04-05-2020}}</p>
+
+
 </div>
 <div style="margin-top: 20px; text-align: left;">
 <p style="margin: 0;">Teacher Signature:</p>
@@ -203,6 +205,8 @@
 </div>
 </div>
 
+@if(!$loop->last)
+    <div style="page-break-after: always;"></div>
+    @endif
 @endforeach
-<div style="page-break-after: always;"></div>
 </div>
