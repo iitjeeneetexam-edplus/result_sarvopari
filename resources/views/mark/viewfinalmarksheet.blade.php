@@ -170,13 +170,14 @@
                     </tr>
 
                     @php
-                        $printedSubjects[] = $subject_value['subject_id']; // Mark subject as printed
+                        $printedSubjects[] = $subject_value['subject_id']; 
                     @endphp
                 @endif
             @endforeach
         @endif
     @endforeach
 @endif
+
 
         </tbody>
         <tfoot>
@@ -200,8 +201,6 @@
         <td style="text-align: right;">Principal Signature:</td>
     </tr>
 </table>
-
-
 </div>
 <div style="position: absolute; margin-top: -70px; left: 20px; font-size: 12pt;">
 <p >Date: 04-05-2020</p>
