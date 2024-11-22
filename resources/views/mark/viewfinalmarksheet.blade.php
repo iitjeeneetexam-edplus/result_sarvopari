@@ -194,7 +194,7 @@
     </table>
 
 
-    <table style="width: 100%; margin-top: 150px;">
+    <table style="width: 100%; margin-top: 110px;">
     <tr>
         <td style="text-align: left;">Teacher Signature:</td>
         <td style="text-align: right;">Principal Signature:</td>
