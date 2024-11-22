@@ -105,6 +105,7 @@
                             @if(isset($exam_loop['subject_Data']))
                                 @foreach($exam_loop['subject_Data'] as $exam_subject_value)
                                     @if($exam_subject_value['subject_id'] == $subject_value['subject_id'])
+                                    @if(isset($exam_subject_value['marks']) && count($exam_subject_value['marks']) > 0)
                                         @foreach($exam_subject_value['marks'] as $mark_value)
                                             <td>{{ $mark_value['marks'] }}</td>
                                             @php
@@ -118,6 +119,11 @@
                                                 $marksFound = true;
                                             @endphp
                                         @endforeach
+                                        @else
+                                        @php
+                                            $totalMarks += $mark_value['total_marks'];
+                                        @endphp
+                                    @endif
                                     @endif
                                 @endforeach
                             @endif
@@ -190,9 +196,12 @@
 <div style="margin-top: 20px; text-align: left;">
 <p style="margin: 0;">Date: 04-05-2020</p>
 <p style="margin: 0;">Signature:</p>
-</div>
-</div>
-<div style="page-break-after: always;"></div>
-@endforeach
 
+
+</div>
+
+</div>
+
+@endforeach
+<div style="page-break-after: always;"></div>
 </div>
