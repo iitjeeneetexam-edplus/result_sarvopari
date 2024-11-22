@@ -431,17 +431,15 @@ class StudentController extends Controller
                                                     ->get()
                                                     ->toArray(); 
 
-                                                $subjectDta2 = Student::leftJoin('division', 'division.id', '=', 'students.division_id')
-                                                    ->leftJoin('standards', 'standards.id', '=', 'division.standard_id')
-                                                    ->leftJoin('subjects', 'subjects.standard_id', '=', 'standards.id')
-                                                    ->leftJoin('subject_subs', 'subject_subs.subject_id', '=', 'subjects.id')
+                                                $subjectDta2 = Subject::leftJoin('subject_subs', 'subject_subs.subject_id', '=', 'subjects.id')
+                                                    ->leftJoin('student_subjects', 'student_subjects.subject_id', '=', 'subject_subs.id')
                                                     ->where('subjects.is_optional','1')
-                                                    ->whereIn('students.id', explode(',', $value->id))
+                                                    ->whereIn('student_subjects.student_id', explode(',', $value->id))
                                                     ->select(
                                                         'subject_subs.subject_name',
                                                         'subjects.is_optional',
                                                         'subject_subs.id as subject_id',
-                                                        'students.id AS student_id'
+                                                        'student_subjects.student_id AS student_id'
                                                     )
                                                     ->get()
                                                     ->toArray(); 
