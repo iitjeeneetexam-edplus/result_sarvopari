@@ -516,8 +516,11 @@ class StudentController extends Controller
                             // echo "<pre>";print_r($data);exit;
        return view('mark.sidhi_gun', compact('data'));
     }
-    public function all_marksheet(Request $request){
+
+    public function siddhi_gunstore(Request $request){
         
+    }
+    public function all_marksheet(Request $request){
         $studentDta=Student::leftjoin('division','division.id','=','students.division_id')
                             ->leftjoin('standards','standards.id','=','division.standard_id')
                             ->leftjoin('schools','schools.id','=','standards.school_id')
