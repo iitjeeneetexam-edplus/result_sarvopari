@@ -33,8 +33,6 @@
                         @endif
                         <th style="background-color: #f0f0f0;" >Total Marks</th>
                         <th style="background-color: #f0f0f0;" >Obtain Marks</th>
-                        <th style="background-color: #f0f0f0;">sidhi gun</th>
-                        <th style="background-color: #f0f0f0;" >krupa gun</th>
                         <th style="background-color: #f0f0f0;">Grade</th>
                         <th style="background-color: #f0f0f0;">Percentage</th>
                     </tr>
@@ -115,16 +113,6 @@
                                             @endphp
                                             {{ $btnmks }}
                                         </strong></td>
-                                        <form method="post" id="siddhiGunForm" action="{{ url('/siddhi_gun/store') }}">
-                                            @csrf
-                                            <td>
-                                            <input type="text" name="student_id" value="{{$student_value['id']}}" class="form-control">
-                                            <input type="text" name="subject_id" value="{{$subject_value['subject_id']}}" class="form-control"> 
-                                            <input type="text" name="exam_id" value="{{$exam_loop['exam_id']}}" class="form-control">  
-                                            <input type="text" name="is_optional" value="{{$subject_value['is_optional']}}" class="form-control"> 
-                                            <input type="text" name="sidhi_gun" class="form-control"></td>
-                                        </form>
-                                        <td></td>
                                         <td>@php
                                             $percentage=$btnmks ? ($btnmks / 100) * 100 : 0;
                                             $grade=match (true) {
@@ -140,7 +128,6 @@
                                             };
                                             @endphp
                                         {{$grade}}</td>
-                                        <td></td>
                                     </tr>
 
                                     @php
@@ -158,8 +145,6 @@
                         <td colspan="{{ count($student_value['exam'])}}">{{$maintotalMarks}}</td>
                         <td style="font-weight: bold;">{{$mainobtainmarks}}</td>
                         <td style="font-weight: bold;">{{$maintotalobtn}}</td>
-                        <td style="font-weight: bold;"></td>
-                        <td style="font-weight: bold;"></td>
                         <td style="font-weight: bold;"></td>
                         <td style="font-weight: bold;">@php $percentages =$maintotalobtn ? ($maintotalobtn / $hundradtotal) * 100 : 0; @endphp {{round($percentages,2)}}%</td>
                     </tr>
