@@ -523,6 +523,7 @@ class StudentController extends Controller
         Siddhigun::create([
             'student_id'=>$request->student_id,
             'subject_id'=>$request->subject_id,
+            'is_optional'=>$request->subject_id,
             'exam_id'=>$request->exam_id,
             'sidhi_gun'=>$request->sidhi_gun,
         ]);

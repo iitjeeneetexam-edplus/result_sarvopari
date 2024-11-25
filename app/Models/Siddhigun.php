@@ -12,5 +12,6 @@ class Siddhigun extends Model
         'exam_id',
         'subject_id',
         'sidhi_gun',
+        'is_optional'
     ];
 }
