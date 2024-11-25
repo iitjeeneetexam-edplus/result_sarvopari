@@ -518,7 +518,12 @@ class StudentController extends Controller
     }
 
     public function siddhi_gunstore(Request $request){
-        
+        echo $request->student_id;
+        echo $request->subject_id;
+        echo $request->exam_id;
+        echo $request->sidhi_gun;
+
+        exit;
     }
     public function all_marksheet(Request $request){
         $studentDta=Student::leftjoin('division','division.id','=','students.division_id')
