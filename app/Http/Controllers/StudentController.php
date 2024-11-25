@@ -6,6 +6,7 @@ use App\Models\Division;
 use App\Models\Exam;
 use App\Models\Marks;
 use App\Models\School;
+use App\Models\Siddhigun;
 use App\Models\Standard;
 use App\Models\Student;
 use App\Models\StudentSubject;
@@ -518,12 +519,12 @@ class StudentController extends Controller
     }
 
     public function siddhi_gunstore(Request $request){
-        echo $request->student_id;
-        echo $request->subject_id;
-        echo $request->exam_id;
-        echo $request->sidhi_gun;
-
-        exit;
+        Siddhigun::create([
+            'student_id'=>$request->student_id,
+            'subject_id'=>$request->subject_id,
+            'exam_id'=>$request->exam_id,
+            'sidhi_gun'=>$request->sidhi_gun,
+        ]);
     }
     public function all_marksheet(Request $request){
         $studentDta=Student::leftjoin('division','division.id','=','students.division_id')
