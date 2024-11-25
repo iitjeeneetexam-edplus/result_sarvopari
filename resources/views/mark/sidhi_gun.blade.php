@@ -115,13 +115,13 @@
                                             @endphp
                                             {{ $btnmks }}
                                         </strong></td>
-                                        <form method="post" action="{{ url('/siddhi_gun/store') }}">
+                                        <form method="post" id="siddhiGunForm" action="{{ url('/siddhi_gun/store') }}">
                                             @csrf
                                             <td>
-                                            <input type="hidden" name="student_id" value="{{$student_value['id']}}" class="form-control">
-                                            <input type="hidden" name="subject_id" value="{{$subject_value['subject_id']}}" class="form-control"> 
-                                            <input type="hidden" name="exam_id" value="{{$exam_loop['exam_id']}}" class="form-control">  
-                                            <input type="hidden" name="is_optional" value="{{$subject_value['is_optional']}}" class="form-control"> 
+                                            <input type="text" name="student_id" value="{{$student_value['id']}}" class="form-control">
+                                            <input type="text" name="subject_id" value="{{$subject_value['subject_id']}}" class="form-control"> 
+                                            <input type="text" name="exam_id" value="{{$exam_loop['exam_id']}}" class="form-control">  
+                                            <input type="text" name="is_optional" value="{{$subject_value['is_optional']}}" class="form-control"> 
                                             <input type="text" name="sidhi_gun" class="form-control"></td>
                                         </form>
                                         <td></td>
@@ -175,10 +175,19 @@
 </x-app-layout>
 
 <script>
-    document.querySelector('input[name="sidhi_gun"]').addEventListener('keydown', function (e) {
-        if (e.key === 'Enter') {
-            e.preventDefault(); // Prevent default form submission behavior
-            document.getElementById('siddhiGunForm').submit(); // Submit the form explicitly
+    document.addEventListener('DOMContentLoaded', function () {
+        const sidhiGunInput = document.querySelector('input[name="sidhi_gun"]');
+        const siddhiGunForm = document.getElementById('siddhiGunForm');
+
+        if (sidhiGunInput && siddhiGunForm) {
+            sidhiGunInput.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault(); // Prevent default form submission behavior
+                    siddhiGunForm.submit(); // Submit the form explicitly
+                }
+            });
+        } else {
+            console.error('Form or input not found.');
         }
     });
 </script>
