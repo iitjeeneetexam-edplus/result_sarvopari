@@ -479,6 +479,7 @@ class StudentController extends Controller
                                         $subject_Data[] = [
                                             'subject_name' => $subject_value['subject_name'],
                                             'subject_id' => $subject_value['subject_id'],
+                                            'is_optional'=> $subject_value['is_optional'],
                                             'marks' => $marks,
                                         ];
                                     }
