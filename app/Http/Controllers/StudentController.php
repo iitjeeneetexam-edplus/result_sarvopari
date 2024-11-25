@@ -13,6 +13,7 @@ use App\Models\StudentSubject;
 use App\Models\Subject;
 use App\Models\Subjectsub;
 use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\Performance_grace_Model;
 
 use Exception;
 use Illuminate\Support\Facades\File;
@@ -531,6 +532,34 @@ class StudentController extends Controller
             ]);
         }
         
+    }
+    public function performance_grace(Request $request){
+        $performance=Performance_grace_Model::first();
+        // echo "<pre>";print_r($performance);exit;
+        return view('mark.performance_grace',compact('performance'));
+    }
+    public function performance_grace_add(Request $request){
+       
+        if (!empty($request['id'])) {
+            $performanceGrace = Performance_grace_Model::findOrFail($request['id']);
+            $performanceGrace->update([
+                'performance' => $request['performance'],
+                'grace' => $request['grace'],
+            ]);
+    
+            $message = 'Record updated successfully.';
+            return back()->with('success', $message);
+        } else {
+            Performance_grace_Model::create([
+                'performance' => $request['performance'],
+                'grace' => $request['grace'],
+            ]);
+    
+            $message = 'Record added successfully.';
+            return back()->with('success', $message);
+        }
+    
+       
     }
     public function all_marksheet(Request $request){
         $studentDta=Student::leftjoin('division','division.id','=','students.division_id')

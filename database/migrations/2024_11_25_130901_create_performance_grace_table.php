@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('krupa_sidhi_gun', function (Blueprint $table) {
+        Schema::create('performance_grace', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('student_id')->constrained('students');
-            $table->foreignId('exam_id')->constrained('exams');
-            $table->string('subject_id');
-            $table->string('sidhi_gun');
+            $table->integer('performance');
+            $table->integer('grace');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('krupa_sidhi_gun');
+        Schema::dropIfExists('performance_grace');
     }
 };

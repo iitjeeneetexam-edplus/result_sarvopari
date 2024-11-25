@@ -98,6 +98,7 @@
         <a class="{{ Request::segment(1) == 'students' ? 'active' : '' }}" href="{{url('students')}}">Student</a>
         <a class="{{ Request::segment(1) == 'marks' ? 'active' : '' }}" href="{{url('marks')}}">Mark</a>
         <a class="{{ Request::segment(1) == 'marksheet' ? 'active' : '' }}" href="{{url('marksheet')}}">Final Exam Mark Sheet</a>
+        <a class="{{ Request::segment(1) == 'performance-grace' ? 'active' : '' }}" href="{{url('performance-grace')}}">Add Performance/Grace</a>
     </div>
     <!-- Responsive Navigation Menu -->
    
