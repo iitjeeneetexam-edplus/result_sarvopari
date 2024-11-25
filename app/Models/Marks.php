@@ -19,5 +19,7 @@ class Marks extends Model
         'total_marks',
         'passing_marks',
         'marks',
+        'performance_mark',
+        'grace_mark'
     ];
 }

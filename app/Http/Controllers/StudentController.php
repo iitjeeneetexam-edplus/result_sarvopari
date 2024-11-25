@@ -520,13 +520,17 @@ class StudentController extends Controller
     }
 
     public function siddhi_gunstore(Request $request){
-        Siddhigun::create([
-            'student_id'=>$request->student_id,
-            'subject_id'=>$request->subject_id,
-            'is_optional'=>$request->is_optional, 
-            'exam_id'=>$request->exam_id,
-            'sidhi_gun'=>$request->sidhi_gun,
-        ]);
+        $meksid = Marks::where('student_id',$request->student_id)
+        ->where('subject_id',$request->subject_id)
+        ->where('exam_id',$request->exam_id)
+        ->where('is_optional',$request->is_optional)->first();
+        if($meksid){
+            Marks::where('id',$meksid->id)->update([
+                'performance_mark'=>$request->sidhi_gun,
+                'grace_mark'=>$request->grace,
+            ]);
+        }
+        
     }
     public function all_marksheet(Request $request){
         $studentDta=Student::leftjoin('division','division.id','=','students.division_id')
