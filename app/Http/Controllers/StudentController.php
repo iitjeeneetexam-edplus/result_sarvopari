@@ -543,6 +543,7 @@ class StudentController extends Controller
         if (!empty($request['id'])) {
             $performanceGrace = Performance_grace_Model::findOrFail($request['id']);
             $performanceGrace->update([
+                'school_id'=>$request->session()->get('school_id'),
                 'performance' => $request['performance'],
                 'grace' => $request['grace'],
             ]);
@@ -551,8 +552,10 @@ class StudentController extends Controller
             return back()->with('success', $message);
         } else {
             Performance_grace_Model::create([
+                'school_id'=>$request->session()->get('school_id'),
                 'performance' => $request['performance'],
                 'grace' => $request['grace'],
+
             ]);
     
             $message = 'Record added successfully.';

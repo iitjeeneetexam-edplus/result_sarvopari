@@ -9,6 +9,6 @@ class Performance_grace_Model extends Model
     protected $table = 'performance_grace';
 
     protected $fillable = [
-        'performance', 'grace'
+        'school_id','performance', 'grace'
     ];
 }
