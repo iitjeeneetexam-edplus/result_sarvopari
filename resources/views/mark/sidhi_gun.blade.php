@@ -120,7 +120,8 @@
                                             <td>
                                             <input type="hidden" name="student_id" value="{{$student_value['id']}}" class="form-control">
                                             <input type="hidden" name="subject_id" value="{{$subject_value['subject_id']}}" class="form-control"> 
-                                            <input type="hidden" name="exam_id" value="{{$exam_loop['exam_id']}}" class="form-control">    
+                                            <input type="hidden" name="exam_id" value="{{$exam_loop['exam_id']}}" class="form-control">  
+                                            <input type="hidden" name="is_optional" value="{{$subject_value['is_optional']}}" class="form-control"> 
                                             <input type="text" name="sidhi_gun" class="form-control"></td>
                                         </form>
                                         <td></td>
