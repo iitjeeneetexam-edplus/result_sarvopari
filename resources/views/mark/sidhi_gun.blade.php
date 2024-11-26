@@ -141,9 +141,11 @@
                                             @csrf
                                             <td>
                                             @if($ned)
-                                                <input type="text" name="performance_mark[]" id="performance_mark{{$subject_value['subject_id']}}" style="display: none;" value="{{$ned}}" class="form-control">
+                                                <input type="text" name="performance_mark[]" id="performance_mark{{$subject_value['subject_id']}}" value="{{$ned}}" class="form-control">
                                                 
-                                            @else  
+                                            @else 
+                                            <input type="text" name="performance_mark[]" id="" style="display: none;" value="" class="form-control">
+                                                
                                             @endif
                                             <input type="hidden" name="student_id" value="{{$student_value['id']}}" class="form-control">
                                             <input type="hidden" name="subject_id[]" value="{{$subject_value['subject_id']}}" class="form-control"> 
@@ -152,8 +154,9 @@
                                             </td>
                                         
                                         <td>@if($ned && $perform < 0 )    
-                                                <input type="text" name="grace" id="grace{{$subject_value['subject_id']}}"  class="form-control">
+                                                <input type="text" name="grace[]" id="grace{{$subject_value['subject_id']}}"  class="form-control">
                                             @else
+                                             <input type="hidden" name="grace[]" value="0"  class="form-control">
                                             @endif
                                         </td>
                                         
@@ -231,9 +234,9 @@
     
 </script>
 <script>
-  $(document).ready(function () {
-    $('input[name="grace"]').on('keyup', function (e) {
-    if (e.key === 'Enter') {
+    $('input[name="grace"]').on('keydown', function (e) {
+        if (e.shiftKey && e.key === 'Tab') {
+            e.preventDefault(); 
         const subjectId = $(this).attr('id').replace('grace', ''); 
         const graceMark = $('#grace_get').val();
         if(graceMark == '0'){
@@ -248,7 +251,6 @@
                 icon: "error",
                 text: "Please enter a valid grace mark",
                 });
-            e.preventDefault();
         } else {
             const totalMarks = performanceMark - graceMarks;
             const totalgrace = graceMark - graceMarks;
@@ -264,5 +266,4 @@
     }
 });
 
-    });
 </script>

@@ -523,6 +523,7 @@ class StudentController extends Controller
     }
 
     public function siddhi_gunstore(Request $request){
+        echo "<pre>";print_r($request->all());exit;
         foreach($request->subject_id as $is=>$subjects){
             $meksid = Marks::where('student_id',$request->student_id)
             ->where('subject_id',$subjects)
