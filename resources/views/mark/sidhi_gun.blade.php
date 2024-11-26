@@ -57,6 +57,7 @@
                         $grace = $student_value['grace_mark'];
                     @endphp
                     <input type="hidden" id="grace_get" value="{{$grace}}">
+                    <input type="hidden" id="grace_get_second" value="{{$grace}}">
 
                     @if(isset($student_value['exam']))
                     @foreach($student_value['exam'] as $exam_value)
@@ -232,9 +233,14 @@
     if (e.key === 'Enter') {
         const subjectId = $(this).attr('id').replace('grace', ''); 
         const graceMark = $('#grace_get').val();
-       
+        if(graceMark == '0'){
+
+            const graceMark = $("#grace_get_second").val() - parseFloat($(this).val());
+        }
+        
         const performanceMark = parseFloat($('#performance_mark' + subjectId).val()) || 0;
         const graceMarks = parseFloat($(this).val()) || 0;
+        alert(graceMarks);
         if (graceMark < graceMarks) {
             Swal.fire({
                 icon: "error",
