@@ -151,7 +151,7 @@
                                             <input type="hidden" name="is_optional[]" value="{{$subject_value['is_optional']}}" class="form-control"> 
                                             </td>                                        
                                         <td>@if($ned && $perform < 0 )    
-                                                <input type="text" name="grace[]" id="grace{{$subject_value['subject_id']}}" class="form-control">
+                                                <input type="text" name="grace" id="grace{{$subject_value['subject_id']}}"  class="form-control">
                                             @else
                                             @endif
                                         </td>
@@ -222,7 +222,7 @@
                 }
             });
         } else {
-            console.error('Form or input not found.');
+          
         }
     });
     
@@ -240,7 +240,6 @@
         
         const performanceMark = parseFloat($('#performance_mark' + subjectId).val()) || 0;
         const graceMarks = parseFloat($(this).val()) || 0;
-        alert(graceMarks);
         if (graceMark < graceMarks) {
             Swal.fire({
                 icon: "error",
@@ -254,6 +253,7 @@
                 const graceMark = $('#grace_get').val();
             }
             $("#grace_get").val(totalgrace);
+            $("#grace_value").val(totalgrace);
             $('#performance_mark' + subjectId).show();
             $('#performance_mark' + subjectId).val(totalMarks);
         
