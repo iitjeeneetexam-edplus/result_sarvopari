@@ -511,7 +511,6 @@ class StudentController extends Controller
                                     'standard_name'=>$value->standard_name,
                                     'school_name'=>$value->school_name,
                                     'medium'=>$value->medium,
-                                    'school_index'=>$value->school_index,
                                     'address'=>$value->address,
                                     'division_name'=>$value->division_name,
                                     'performance_mark'=>$getpergracmark->performance,

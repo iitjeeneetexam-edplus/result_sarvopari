@@ -51,6 +51,10 @@
                         $maintotalMarks = 0;
                         $hundradtotal = 0;
                         $pasingmarks = 0;
+                        $needmark = 0;
+                        $pasorfl = 0;
+                        $perform = $student_value['performance_mark'];
+                        $grace = $student_value['grace_mark'];
                     @endphp
 
                     @if(isset($student_value['exam']))
@@ -68,7 +72,6 @@
                                         @foreach($student_value['exam'] as $exam_loop)
                                             @php
                                                 $marksFound = false;
-                                                $pasingmarks='';
                                             @endphp
                                             
                                             @if(isset($exam_loop['subject_Data']))
@@ -105,7 +108,7 @@
                                         @endforeach
 
                                         <td><strong>{{ $obtainmarks }}</strong></td>
-                                        <td><strong>{{ $pasingmarks }}</strong>@php 
+                                        <td>@php 
                                             if($totalMarks > 100){
                                                 $obtainmks = $totalMarks ? ($obtainmarks * 100) / $totalMarks : 0; 
                                                 $btnmks = round($obtainmks);
@@ -118,21 +121,42 @@
                                             $mainobtainmarks += $obtainmarks;
                                             $maintotalobtn += $btnmks;
                                             $maintotalMarks += $totalMarks;
+
+                                            if( $pasingmarks > $btnmks){
+                                                $pasorfl += 1;
+                                                $needmark += $pasingmarks - $btnmks;
+                                                $ned = $pasingmarks - $btnmks;
+                                                $perform = $perform - $ned;
+                                            }else{
+                                                $ned = 0;
+                                                $perform = $perform - 0;
+                                            }
+
                                             @endphp
                                             {{ $btnmks }}
                                         </strong></td>
                                         <form method="post" id="siddhiGunForm" action="{{ url('/siddhi_gun/store') }}">
                                             @csrf
                                             <td>
+                                            @if($ned)
+                                                <input type="hidden" name="performance_mark" value="{{$ned}}" class="form-control">
+                                                {{$ned}}  
+                                            @else  
+                                            @endif
                                             <input type="hidden" name="student_id" value="{{$student_value['id']}}" class="form-control">
                                             <input type="hidden" name="subject_id" value="{{$subject_value['subject_id']}}" class="form-control"> 
                                             <input type="hidden" name="exam_id" value="{{$exam_loop['exam_id']}}" class="form-control">  
                                             <input type="hidden" name="is_optional" value="{{$subject_value['is_optional']}}" class="form-control"> 
-                                            
+                                            </td>
                                         </form>
-                                        <td></td>
+                                        <td>@if($ned && $perform < 0 )    
+                                                <input type="text" name="grace" class="form-control">
+                                            @else
+                                            @endif
+                                        </td>
                                         <td>@php
-                                            $percentage=$btnmks ? ($btnmks / 100) * 100 : 0;
+                                            $percn = $btnmks+$ned;
+                                            $percentage=$percn ? ($percn / 100) * 100 : 0;
                                             $grade=match (true) {
                                             $percentage>= 91 => 'A1',
                                             $percentage >= 81 => 'A2',
@@ -163,9 +187,13 @@
                         <td colspan="{{ count($student_value['exam'])}}">{{$maintotalMarks}}</td>
                         <td style="font-weight: bold;">{{$mainobtainmarks}}</td>
                         <td style="font-weight: bold;">{{$maintotalobtn}}</td>
-                        <td style="font-weight: bold;"><input type="text" name="sidhi_gun" class="form-control"></td></td>
-                        <td style="font-weight: bold;"><input type="text" name="sidhi_gun" class="form-control"></td></td>
+                        <td style="font-weight: bold;">
+                            @php 
+                                $nedadorno = $student_value['performance_mark']+$student_value['grace_mark'];
+                            @endphp
+                        </td>
                         <td style="font-weight: bold;"></td>
+                        <td style="font-weight: bold;">@if($needmark < $nedadorno || $pasorfl == 0 ) Pass @else Fail @endif </td>
                         <td style="font-weight: bold;">@php $percentages =$maintotalobtn ? ($maintotalobtn / $hundradtotal) * 100 : 0; @endphp {{round($percentages,2)}}%</td>
                     </tr>
                 </tfoot>
@@ -195,4 +223,5 @@
             console.error('Form or input not found.');
         }
     });
+    
 </script>
