@@ -49,6 +49,7 @@
                         $maintotalobtn = 0;
                         $maintotalMarks = 0;
                         $hundradtotal = 0;
+                        $pasingmarks = 0;
                     @endphp
 
                     @if(isset($student_value['exam']))
@@ -82,11 +83,13 @@
                                                                 $obtainmarks += $marks; 
                                                                 $totalMarks += $mark_value['total_marks'];
                                                                 $marksFound = true;
+                                                                $pasingmarks = $mark_value['passing_marks'];
                                                             @endphp
                                                         @endforeach
                                                         @else
                                                         @php
                                                             $totalMarks += $mark_value['total_marks'];
+                                                            $pasingmarks = $mark_value['passing_marks'];
                                                         @endphp
                                                     @endif
                                                     @endif
@@ -114,15 +117,16 @@
                                             $maintotalMarks += $totalMarks;
                                             @endphp
                                             {{ $btnmks }}
+                                            {{ $pasingmarks }}
                                         </strong></td>
                                         <form method="post" id="siddhiGunForm" action="{{ url('/siddhi_gun/store') }}">
                                             @csrf
                                             <td>
-                                            <input type="text" name="student_id" value="{{$student_value['id']}}" class="form-control">
-                                            <input type="text" name="subject_id" value="{{$subject_value['subject_id']}}" class="form-control"> 
-                                            <input type="text" name="exam_id" value="{{$exam_loop['exam_id']}}" class="form-control">  
-                                            <input type="text" name="is_optional" value="{{$subject_value['is_optional']}}" class="form-control"> 
-                                            <input type="text" name="sidhi_gun" class="form-control"></td>
+                                            <input type="hidden" name="student_id" value="{{$student_value['id']}}" class="form-control">
+                                            <input type="hidden" name="subject_id" value="{{$subject_value['subject_id']}}" class="form-control"> 
+                                            <input type="hidden" name="exam_id" value="{{$exam_loop['exam_id']}}" class="form-control">  
+                                            <input type="hidden" name="is_optional" value="{{$subject_value['is_optional']}}" class="form-control"> 
+                                            
                                         </form>
                                         <td></td>
                                         <td>@php
@@ -158,8 +162,8 @@
                         <td colspan="{{ count($student_value['exam'])}}">{{$maintotalMarks}}</td>
                         <td style="font-weight: bold;">{{$mainobtainmarks}}</td>
                         <td style="font-weight: bold;">{{$maintotalobtn}}</td>
-                        <td style="font-weight: bold;"></td>
-                        <td style="font-weight: bold;"></td>
+                        <td style="font-weight: bold;"><input type="text" name="sidhi_gun" class="form-control"></td></td>
+                        <td style="font-weight: bold;"><input type="text" name="sidhi_gun" class="form-control"></td></td>
                         <td style="font-weight: bold;"></td>
                         <td style="font-weight: bold;">@php $percentages =$maintotalobtn ? ($maintotalobtn / $hundradtotal) * 100 : 0; @endphp {{round($percentages,2)}}%</td>
                     </tr>

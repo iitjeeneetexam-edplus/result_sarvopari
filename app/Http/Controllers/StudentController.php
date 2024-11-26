@@ -398,7 +398,7 @@ class StudentController extends Controller
         }
         return response()->json($subdl);
     }
-    public function sidhi_gun($id){
+    public function sidhi_gun(Request $request,$id){
         $studentDta=Student::leftjoin('division','division.id','=','students.division_id')
                             ->leftjoin('standards','standards.id','=','division.standard_id')
                             ->leftjoin('schools','schools.id','=','standards.school_id')
@@ -457,6 +457,7 @@ class StudentController extends Controller
                                             ->select(
                                                 'marks.student_id',
                                                 'marks.total_marks',
+                                                'marks.passing_marks',
                                                 'marks.marks',
                                                 'marks.subject_id'
                                             )
@@ -475,6 +476,7 @@ class StudentController extends Controller
                                                 'total_marks' => $value2->total_marks,
                                                 'marks' => $value2->marks,
                                                 'exam_id' => $exam_value->id,
+                                                'passing_marks' => $exam_value->passing_marks,
                                             ];
                                         }
                                 
@@ -494,7 +496,7 @@ class StudentController extends Controller
                                         'subject_Data' => $subject_Data,
                                     ];
                                 }
-                                
+                                $getpergracmark = Performance_grace_Model::where('school_id',$request->session()->get('school_id'))->first();
                                 $data[]=[
                                     'id'=>$value->id,
                                     'student_name'=>$value->name,
@@ -512,6 +514,8 @@ class StudentController extends Controller
                                     'school_index'=>$value->school_index,
                                     'address'=>$value->address,
                                     'division_name'=>$value->division_name,
+                                    'performance_mark'=>$getpergracmark->performance,
+                                    'grace_mark'=>$getpergracmark->grace,
                                     'exam'=>$exam,
                                 ];
                                     

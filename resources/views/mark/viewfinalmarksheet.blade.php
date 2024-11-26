@@ -154,15 +154,15 @@
                         <td>@php
                             $percentage=$btnmks ? ($btnmks / 100) * 100 : 0;
                             $grade=match (true) {
-                            $percentage>= 91 => 'A1',
-                            $percentage >= 81 => 'A2',
-                            $percentage >= 71 => 'B1',
-                            $percentage >= 61 => 'B2',
-                            $percentage >= 51 => 'C1',
-                            $percentage >= 41 => 'C2',
-                            $percentage >= 33 => 'D',
-                            $percentage >= 21 => 'E1',
-                            $percentage <= 20=> 'E2',
+                                $percentage>= 91 => 'A1',
+                                $percentage >= 81 => 'A2',
+                                $percentage >= 71 => 'B1',
+                                $percentage >= 61 => 'B2',
+                                $percentage >= 51 => 'C1',
+                                $percentage >= 41 => 'C2',
+                                $percentage >= 33 => 'D',
+                                $percentage >= 21 => 'E1',
+                                $percentage <= 20=> 'E2',
                             };
                             @endphp
                         {{$grade}}</td>
