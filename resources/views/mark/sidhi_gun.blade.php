@@ -33,8 +33,6 @@
                         @endif
                         <th style="background-color: #f0f0f0;" >Total Marks</th>
                         <th style="background-color: #f0f0f0;" >Obtain Marks</th>
-                        <th style="background-color: #f0f0f0;">sidhi gun</th>
-                        <th style="background-color: #f0f0f0;" >krupa gun</th>
                         <th style="background-color: #f0f0f0;">Grade</th>
                         <th style="background-color: #f0f0f0;">Percentage</th>
                     </tr>
@@ -144,7 +142,6 @@
                                             };
                                             @endphp
                                         {{$grade}}</td>
-                                        <td></td>
                                     </tr>
 
                                     @php
