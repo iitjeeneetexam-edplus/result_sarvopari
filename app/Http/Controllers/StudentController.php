@@ -523,16 +523,19 @@ class StudentController extends Controller
     }
 
     public function siddhi_gunstore(Request $request){
-        $meksid = Marks::where('student_id',$request->student_id)
-        ->where('subject_id',$request->subject_id)
-        ->where('exam_id',$request->exam_id)
-        ->where('is_optional',$request->is_optional)->first();
-        if($meksid){
+        foreach($request->subject_id as $is=>$subjects){
+            $meksid = Marks::where('student_id',$request->student_id[$is])
+            ->where('subject_id',$subjects)
+            ->where('exam_id',$request->exam_id[$is])
+            ->where('is_optional',$request->is_optional[$is])->first();
+            if($meksid){
             Marks::where('id',$meksid->id)->update([
                 'performance_mark'=>$request->sidhi_gun,
                 'grace_mark'=>$request->grace,
             ]);
         }
+        }
+        
         
     }
     public function performance_grace(Request $request){
