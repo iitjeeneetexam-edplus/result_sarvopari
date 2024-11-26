@@ -148,13 +148,13 @@
                                             <input type="hidden" name="subject_id[]" value="{{$subject_value['subject_id']}}" class="form-control"> 
                                             <input type="hidden" name="exam_id[]" value="{{$exam_loop['exam_id']}}" class="form-control">  
                                             <input type="hidden" name="is_optional[]" value="{{$subject_value['is_optional']}}" class="form-control"> 
-                                            </td>                                        
+                                            </td>
+                                        </form>
                                         <td>@if($ned && $perform < 0 )    
                                                 <input type="text" name="grace[]" id="grace{{$subject_value['subject_id']}}" class="form-control">
                                             @else
                                             @endif
                                         </td>
-                                        </form>
                                         <td>@php
                                             $percn = $btnmks+$ned;
                                             $percentage=$percn ? ($percn / 100) * 100 : 0;
