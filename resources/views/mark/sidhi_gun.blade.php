@@ -140,8 +140,7 @@
                                             @csrf
                                             <td>
                                             @if($ned)
-                                                <input type="text" name="performance_mark" id="performance_mark{{$subject_value['subject_id']}}" value="{{$ned}}" class="form-control">
-                                                <input type="text" name="performance_mark" id="performance_mark_second{{$subject_value['subject_id']}}" style="display: none;" class="form-control">
+                                                <input type="text" name="performance_mark" id="performance_mark{{$subject_value['subject_id']}}" style="display: none;" value="{{$ned}}" class="form-control">
                                                 
                                             @else  
                                             @endif
@@ -245,13 +244,12 @@
         } else {
             const totalMarks = performanceMark - graceMarks;
             const totalgrace = graceMark - graceMarks;
-            alert(totalgrace);
             if(totalgrace == '0'){
                 const graceMark = $('#grace_get').val();
             }
             $("#grace_get").val(totalgrace);
-            $('#performance_mark_second' + subjectId).show();
-            $('#performance_mark_second' + subjectId).val(totalMarks);
+            $('#performance_mark' + subjectId).show();
+            $('#performance_mark' + subjectId).val(totalMarks);
         
         }
     }
