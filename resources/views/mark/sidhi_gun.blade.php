@@ -33,6 +33,9 @@
                         @endif
                         <th style="background-color: #f0f0f0;" >Total Marks</th>
                         <th style="background-color: #f0f0f0;" >Obtain Marks</th>
+                        <th style="background-color: #f0f0f0;" >Performance</th>
+                        <th style="background-color: #f0f0f0;" >Grace</th>
+               
                         <th style="background-color: #f0f0f0;">Grade</th>
                         <th style="background-color: #f0f0f0;">Percentage</th>
                     </tr>
@@ -65,11 +68,14 @@
                                         @foreach($student_value['exam'] as $exam_loop)
                                             @php
                                                 $marksFound = false;
+                                                $pasingmarks='';
                                             @endphp
+                                            
                                             @if(isset($exam_loop['subject_Data']))
                                                 @foreach($exam_loop['subject_Data'] as $exam_subject_value)
                                                     @if($exam_subject_value['subject_id'] == $subject_value['subject_id'])
                                                     @if(isset($exam_subject_value['marks']) && count($exam_subject_value['marks']) > 0)
+         
                                                         @foreach($exam_subject_value['marks'] as $mark_value)
                                                             <td>{{ $mark_value['marks'] }}</td>
                                                             @php
@@ -81,14 +87,13 @@
                                                                 $obtainmarks += $marks; 
                                                                 $totalMarks += $mark_value['total_marks'];
                                                                 $marksFound = true;
-                                                                $pasingmarks = $mark_value['passing_marks'];
+                                                                if (isset($mark_value['passing_marks'])) {
+                                                                    $pasingmarks= $mark_value['passing_marks'];
+                                                                }
                                                             @endphp
                                                         @endforeach
                                                         @else
-                                                        @php
-                                                            $totalMarks += $mark_value['total_marks'];
-                                                            $pasingmarks = $mark_value['passing_marks'];
-                                                        @endphp
+                                                        
                                                     @endif
                                                     @endif
                                                 @endforeach
@@ -100,7 +105,7 @@
                                         @endforeach
 
                                         <td><strong>{{ $obtainmarks }}</strong></td>
-                                        <td><strong>@php 
+                                        <td><strong>{{ $pasingmarks }}</strong>@php 
                                             if($totalMarks > 100){
                                                 $obtainmks = $totalMarks ? ($obtainmarks * 100) / $totalMarks : 0; 
                                                 $btnmks = round($obtainmks);
@@ -115,7 +120,6 @@
                                             $maintotalMarks += $totalMarks;
                                             @endphp
                                             {{ $btnmks }}
-                                            {{ $pasingmarks }}
                                         </strong></td>
                                         <form method="post" id="siddhiGunForm" action="{{ url('/siddhi_gun/store') }}">
                                             @csrf

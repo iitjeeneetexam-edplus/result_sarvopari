@@ -476,7 +476,7 @@ class StudentController extends Controller
                                                 'total_marks' => $value2->total_marks,
                                                 'marks' => $value2->marks,
                                                 'exam_id' => $exam_value->id,
-                                                'passing_marks' => $exam_value->passing_marks,
+                                                'passing_marks' => $value2->passing_marks,
                                             ];
                                         }
                                 
@@ -520,7 +520,6 @@ class StudentController extends Controller
                                 ];
                                     
                             }
-                            // echo "<pre>";print_r($data);exit;
        return view('mark.sidhi_gun', compact('data'));
     }
 
