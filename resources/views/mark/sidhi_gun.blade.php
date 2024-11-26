@@ -137,7 +137,7 @@
                                             @endphp
                                             {{ $btnmks }}
                                         </strong></td>
-                                        <form method="post" id="siddhiGunForm" action="{{ url('/siddhi_gun/store') }}">
+                                        <form method="post"  action="{{ url('/siddhi_gun/store') }}">
                                             @csrf
                                             <td>
                                             @if($ned)
@@ -145,17 +145,18 @@
                                                 
                                             @else  
                                             @endif
-                                            <input type="hidden" name="student_id[]" value="{{$student_value['id']}}" class="form-control">
+                                            <input type="hidden" name="student_id" value="{{$student_value['id']}}" class="form-control">
                                             <input type="hidden" name="subject_id[]" value="{{$subject_value['subject_id']}}" class="form-control"> 
-                                            <input type="hidden" name="exam_id[]" value="{{$exam_loop['exam_id']}}" class="form-control">  
+                                            <input type="hidden" name="exam_id" value="{{$exam_loop['exam_id']}}" class="form-control">  
                                             <input type="hidden" name="is_optional[]" value="{{$subject_value['is_optional']}}" class="form-control"> 
                                             </td>
-                                        </form>
+                                        
                                         <td>@if($ned && $perform < 0 )    
                                                 <input type="text" name="grace[]" id="grace{{$subject_value['subject_id']}}" class="form-control">
                                             @else
                                             @endif
                                         </td>
+                                        
                                         <td>@php
                                             $percn = $btnmks+$ned;
                                             $percentage=$percn ? ($percn / 100) * 100 : 0;
@@ -202,6 +203,8 @@
     </table>
 
 @endforeach
+<button class="btn btn-success">Submit</button>
+                                        </form> 
                     </div>
                 </div>
             </div>
@@ -210,21 +213,21 @@
 </x-app-layout>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const sidhiGunInput = document.querySelector('input[name="sidhi_gun"]');
-        const siddhiGunForm = document.getElementById('siddhiGunForm');
+    // document.addEventListener('DOMContentLoaded', function () {
+    //     const sidhiGunInput = document.querySelector('input[name="sidhi_gun"]');
+    //     const siddhiGunForm = document.getElementById('siddhiGunForm');
 
-        if (sidhiGunInput && siddhiGunForm) {
-            sidhiGunInput.addEventListener('keydown', function (e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault(); 
-                    siddhiGunForm.submit(); 
-                }
-            });
-        } else {
-            console.error('Form or input not found.');
-        }
-    });
+    //     if (sidhiGunInput && siddhiGunForm) {
+    //         sidhiGunInput.addEventListener('keydown', function (e) {
+    //             if (e.key === 'Enter') {
+    //                 e.preventDefault(); 
+    //                 siddhiGunForm.submit(); 
+    //             }
+    //         });
+    //     } else {
+    //         console.error('Form or input not found.');
+    //     }
+    // });
     
 </script>
 <script>

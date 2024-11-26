@@ -524,14 +524,14 @@ class StudentController extends Controller
 
     public function siddhi_gunstore(Request $request){
         foreach($request->subject_id as $is=>$subjects){
-            $meksid = Marks::where('student_id',$request->student_id[$is])
+            $meksid = Marks::where('student_id',$request->student_id)
             ->where('subject_id',$subjects)
-            ->where('exam_id',$request->exam_id[$is])
+            ->where('exam_id',$request->exam_id)
             ->where('is_optional',$request->is_optional[$is])->first();
-            if($meksid){
+            if($meksid && $request->performance_mark[$is]){
             Marks::where('id',$meksid->id)->update([
-                'performance_mark'=>$request->sidhi_gun,
-                'grace_mark'=>$request->grace,
+                'performance_mark'=>$request->performance_mark[$is],
+                'grace_mark'=>$request->grace[$is],
             ]);
         }
         }
