@@ -56,6 +56,7 @@
                         $perform = $student_value['performance_mark'];
                         $grace = $student_value['grace_mark'];
                     @endphp
+                    <input type="hidden" id="grace_get" value="{{$grace}}">
 
                     @if(isset($student_value['exam']))
                     @foreach($student_value['exam'] as $exam_value)
@@ -139,18 +140,19 @@
                                             @csrf
                                             <td>
                                             @if($ned)
-                                                <input type="hidden" name="performance_mark" value="{{$ned}}" class="form-control">
-                                                {{$ned}}  
+                                                <input type="text" name="performance_mark" id="performance_mark{{$subject_value['subject_id']}}" value="{{$ned}}" class="form-control">
+                                                <input type="text" name="performance_mark" id="performance_mark_second{{$subject_value['subject_id']}}" style="display: none;" class="form-control">
+                                                
                                             @else  
                                             @endif
-                                            <input type="hidden" name="student_id" value="{{$student_value['id']}}" class="form-control">
+                                            <!-- <input type="hidden" name="student_id" value="{{$student_value['id']}}" class="form-control">
                                             <input type="hidden" name="subject_id" value="{{$subject_value['subject_id']}}" class="form-control"> 
                                             <input type="hidden" name="exam_id" value="{{$exam_loop['exam_id']}}" class="form-control">  
-                                            <input type="hidden" name="is_optional" value="{{$subject_value['is_optional']}}" class="form-control"> 
+                                            <input type="hidden" name="is_optional" value="{{$subject_value['is_optional']}}" class="form-control">  -->
                                             </td>
                                         </form>
                                         <td>@if($ned && $perform < 0 )    
-                                                <input type="text" name="grace" class="form-control">
+                                                <input type="text" name="grace" id="grace{{$subject_value['subject_id']}}" class="form-control">
                                             @else
                                             @endif
                                         </td>
@@ -215,8 +217,8 @@
         if (sidhiGunInput && siddhiGunForm) {
             sidhiGunInput.addEventListener('keydown', function (e) {
                 if (e.key === 'Enter') {
-                    e.preventDefault(); // Prevent default form submission behavior
-                    siddhiGunForm.submit(); // Submit the form explicitly
+                    e.preventDefault(); 
+                    siddhiGunForm.submit(); 
                 }
             });
         } else {
@@ -224,4 +226,36 @@
         }
     });
     
+</script>
+<script>
+  $(document).ready(function () {
+    $('input[name="grace"]').on('keyup', function (e) {
+    if (e.key === 'Enter') {
+        const subjectId = $(this).attr('id').replace('grace', ''); 
+        const graceMark = $('#grace_get').val();
+       
+        const performanceMark = parseFloat($('#performance_mark' + subjectId).val()) || 0;
+        const graceMarks = parseFloat($(this).val()) || 0;
+        if (graceMark < graceMarks) {
+            Swal.fire({
+                icon: "error",
+                text: "Please enter a valid grace mark",
+                });
+            e.preventDefault();
+        } else {
+            const totalMarks = performanceMark - graceMarks;
+            const totalgrace = graceMark - graceMarks;
+            alert(totalgrace);
+            if(totalgrace == '0'){
+                const graceMark = $('#grace_get').val();
+            }
+            $("#grace_get").val(totalgrace);
+            $('#performance_mark_second' + subjectId).show();
+            $('#performance_mark_second' + subjectId).val(totalMarks);
+        
+        }
+    }
+});
+
+    });
 </script>
