@@ -143,7 +143,7 @@
                                            
                                             @if($ned)
                                                 <input type="hidden" id="ned_mark{{$subject_value['subject_id']}}" value="{{$ned}}">
-                                                <input type="text" name="performance_mark[]" id="performance_mark{{$subject_value['subject_id']}}" value="{{$ned}}" class="form-control">
+                                                <input type="text" name="performance_mark[]" id="performance_mark{{$subject_value['subject_id']}}" value="{{$ned}}" class="form-control" readonly disabled>
                                                 
                                             @else 
                                             <!-- <input type="text" name="performance_mark[]" id="performance_mark{{$subject_value['subject_id']}}" style="display: none;" value="" class="form-control"> -->
@@ -235,24 +235,20 @@
 $(document).ready(function () {
     $(document).on('click', '.submit_grace', function (e) {
         e.preventDefault();
-        let totalGrace = 0; 
-
+        
         const subjectId = $(this).data('subject-id');
         const graceMark = parseFloat($('#grace_get').val()) || 0; 
         const ned_mark = parseFloat($('#ned_mark'+ subjectId).val()) || 0; 
         const performanceMark = parseFloat($('#performance_mark' + subjectId).val()) || 0; 
         const graceInput = $('#grace' + subjectId).val(); 
 
+       
         
-        $('#subject' + subjectId + ' .grace-input').each(function () {
-            const enteredGraceMark = parseFloat($(this).val()) || 0;
-            totalGrace += enteredGraceMark;
-        });
-        $('#result' + subjectId).text('Total Grace Value '+ totalGrace);
-        
-        if(graceMark=='0'){
+         if(graceMark=='0'){
             const graceMark = parseFloat($('#grace_get_second').val()) || 0; 
         }
+        // alert(graceInput);
+        // alert(graceMark);
         if (graceMark === 0 || graceInput > graceMark) {
             Swal.fire({
                 icon: "error",
@@ -269,7 +265,7 @@ $(document).ready(function () {
         }
          const remainingGrace = ned_mark - graceInput;
          const updatedPerformanceMark = ned_mark - graceInput;
-         $('#grace_get').val(graceInput);
+        //  $('#grace_get').val(graceInput);
          $('#performance_mark' + subjectId).val(updatedPerformanceMark).show();
 
             Swal.fire({
