@@ -227,27 +227,14 @@
 </x-app-layout>
 
 <script>
-    // document.addEventListener('DOMContentLoaded', function () {
-    //     const sidhiGunInput = document.querySelector('input[name="sidhi_gun"]');
-    //     const siddhiGunForm = document.getElementById('siddhiGunForm');
-
-    //     if (sidhiGunInput && siddhiGunForm) {
-    //         sidhiGunInput.addEventListener('keydown', function (e) {
-    //             if (e.key === 'Enter') {
-    //                 e.preventDefault(); 
-    //                 siddhiGunForm.submit(); 
-    //             }
-    //         });
-    //     } else {
-    //         console.error('Form or input not found.');
-    //     }
-    // });
+   
     
 </script>
 <script>
 $(document).ready(function () {
     $(document).on('click', '.submit_grace', function (e) {
-        e.preventDefault(); // Prevent default behavior
+        e.preventDefault();
+        let totalGrace = 0; // Initialize total grace to 0
 
         const subjectId = $(this).data('subject-id');
         const graceMark = parseFloat($('#grace_get').val()) || 0; 
@@ -255,7 +242,11 @@ $(document).ready(function () {
         const secondGraceMark = parseFloat($('#grace_get_second').val()) || 0;
         const performanceMark = parseFloat($('#performance_mark' + subjectId).val()) || 0; 
         const enteredGraceMark = parseFloat($('#grace' + subjectId).val()) || 0; 
-       
+        $('#grace_get').val(enteredGraceMark);
+        
+        if(graceMark=='0'){
+            const graceMark = parseFloat($('#grace_get_second').val()) || 0; 
+        }
         if (graceMark === 0 || enteredGraceMark > graceMark) {
             Swal.fire({
                 icon: "error",
@@ -266,18 +257,19 @@ $(document).ready(function () {
         if(ned_mark < enteredGraceMark){
             Swal.fire({
                 icon: "error",
-                text: "Please enter a valid grace mark.",
+                text: "Please enter a valid grace marks.",
             });
             return; 
         }
-        const remainingGrace = ned_mark - enteredGraceMark;
+         const remainingGrace = ned_mark - enteredGraceMark;
          const updatedPerformanceMark = ned_mark - enteredGraceMark;
-          $('#performance_mark' + subjectId).val(updatedPerformanceMark).show();
+        //  $('#grace_get').val(remainingGrace);
+         $('#performance_mark' + subjectId).val(updatedPerformanceMark).show();
 
-        Swal.fire({
-            icon: "success",
-            text: "Grace mark and performance mark updated successfully.",
-        });
+            Swal.fire({
+                icon: "success",
+                text: "Grace mark and performance mark updated successfully.",
+            });
     });
 });
 
