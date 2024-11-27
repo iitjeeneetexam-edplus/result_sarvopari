@@ -523,7 +523,6 @@ class StudentController extends Controller
     }
 
     public function siddhi_gunstore(Request $request){
-        echo "<pre>";print_r($request->all());exit;
         foreach($request->subject_id as $is=>$subjects){
             $meksid = Marks::where('student_id',$request->student_id)
             ->where('subject_id',$subjects)
@@ -630,7 +629,9 @@ class StudentController extends Controller
                                                 'marks.student_id',
                                                 'marks.total_marks',
                                                 'marks.marks',
-                                                'marks.subject_id'
+                                                'marks.subject_id',
+                                                'marks.performance_mark',
+                                                'marks.grace_mark',
                                             )
                                             ->get();
                                 
@@ -647,6 +648,8 @@ class StudentController extends Controller
                                                 'total_marks' => $value2->total_marks,
                                                 'marks' => $value2->marks,
                                                 'exam_id' => $exam_value->id,
+                                                'performance_mark' => $exam_value->performance_mark,
+                                                'grace_mark' => $exam_value->grace_mark,
                                             ];
                                         }
                                 

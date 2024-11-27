@@ -141,7 +141,7 @@
                                             @csrf
                                             <td>
                                             @if($ned)
-                                                <input type="text" name="performance_mark[]" id="performance_mark{{$subject_value['subject_id']}}" value="{{$ned}}" class="form-control">
+                                            <input type="text" name="performance_mark[]" id="performance_mark{{$subject_value['subject_id']}}" value="{{$ned}}" class="form-control">
                                                 
                                             @else 
                                             <input type="text" name="performance_mark[]" id="" style="display: none;" value="" class="form-control">
@@ -203,11 +203,11 @@
                         <td style="font-weight: bold;">@php $percentages =$maintotalobtn ? ($maintotalobtn / $hundradtotal) * 100 : 0; @endphp {{round($percentages,2)}}%</td>
                     </tr>
                 </tfoot>
-    </table>
+        </table>
 
-@endforeach
-<button class="btn btn-success">Submit</button>
-                                        </form> 
+                @endforeach
+                    <button class="btn btn-success">Submit</button>
+                    </form> 
                     </div>
                 </div>
             </div>
@@ -234,7 +234,7 @@
     
 </script>
 <script>
-    $('input[name="grace"]').on('keydown', function (e) {
+    $('input[name="grace"]').on('blur', function (e) {
         if (e.shiftKey && e.key === 'Tab') {
             e.preventDefault(); 
         const subjectId = $(this).attr('id').replace('grace', ''); 
