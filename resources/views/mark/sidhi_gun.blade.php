@@ -235,7 +235,7 @@
 $(document).ready(function () {
     $(document).on('click', '.submit_grace', function (e) {
         e.preventDefault();
-        let totalGrace = 0; // Initialize total grace to 0
+        let totalGrace = 0; 
 
         const subjectId = $(this).data('subject-id');
         const graceMark = parseFloat($('#grace_get').val()) || 0; 
