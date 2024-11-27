@@ -282,7 +282,32 @@ $(document).ready(function () {
                 text: "Grace mark and performance mark updated successfully.",
             });
     });
+
+   
 });
 
 
 </script>
+<Script>
+    $(document).ready(function () {
+        const performance = parseFloat($('#grace_get').val()) || 0; // Get performance value
+    let previousResult = performance; // Initialize previousResult with performance value
+
+    $('input[id^="performance_mark"]').each(function (index) {
+        const currentInput = $(this); // Current input element
+        const nedValue = parseFloat(currentInput.val()) || 0; // Get current ned value
+
+        // For the first text box
+        if (index === 0) {
+            const result = performance - nedValue; // Calculate the result for the first box
+            // currentInput.val(result); // Update the first text box
+            previousResult = result; // Update previousResult for the next iteration
+        } else {
+            // For subsequent text boxes
+            const result = nedValue-previousResult; // Subtract nedValue from previousResult
+            currentInput.val(result); // Update the current input with the result
+            previousResult = result; // Update previousResult for the next iteration
+        }
+    });
+});
+</Script>
