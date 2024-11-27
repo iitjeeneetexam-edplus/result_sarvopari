@@ -158,7 +158,9 @@
                                         <td>@if($ned && $perform < 0 )    
                                          <form id="grace_form" >
                                              <div class="d-flex">
-                                                <input type="text" name="grace[]" id="grace{{$subject_value['subject_id']}}"  class="form-control">
+                                                <input type="number"min="0" 
+               step="1" 
+               oninput="this.value = this.value.replace(/[^0-9]/g, '')"  name="grace[]" id="grace{{$subject_value['subject_id']}}"  class="form-control">
                                                 &nbsp;&nbsp;
                                                 <button type="button" class="btn btn-success submit_grace" data-subject-id="{{$subject_value['subject_id']}}">Submit</button>
                                                 </div
