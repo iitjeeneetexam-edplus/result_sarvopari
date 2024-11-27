@@ -137,14 +137,16 @@
                                             @endphp
                                             {{ $btnmks }}
                                         </strong></td>
-                                        <form method="post"  action="{{ url('/siddhi_gun/store') }}">
+                                        <form method="post" id='somelink' action="{{ url('/siddhi_gun/store') }}">
                                             @csrf
                                             <td>
+                                           
                                             @if($ned)
-                                            <input type="text" name="performance_mark[]" id="performance_mark{{$subject_value['subject_id']}}" value="{{$ned}}" class="form-control">
+                                                <input type="hidden" id="ned_mark{{$subject_value['subject_id']}}" value="{{$ned}}">
+                                                <input type="text" name="performance_mark[]" id="performance_mark{{$subject_value['subject_id']}}" value="{{$ned}}" class="form-control">
                                                 
                                             @else 
-                                            <input type="text" name="performance_mark[]" id="" style="display: none;" value="" class="form-control">
+                                            <!-- <input type="text" name="performance_mark[]" id="performance_mark{{$subject_value['subject_id']}}" style="display: none;" value="" class="form-control"> -->
                                                 
                                             @endif
                                             <input type="hidden" name="student_id" value="{{$student_value['id']}}" class="form-control">
@@ -154,7 +156,16 @@
                                             </td>
                                         
                                         <td>@if($ned && $perform < 0 )    
-                                                <input type="text" name="grace[]" id="grace{{$subject_value['subject_id']}}"  class="form-control">
+                                         <form id="grace_form" >
+                                             <div class="d-flex">
+                                                <input type="number"min="0" 
+               step="1" 
+               oninput="this.value = this.value.replace(/[^0-9]/g, '')"  name="grace[]" id="grace{{$subject_value['subject_id']}}"  class="form-control">
+                                                &nbsp;&nbsp;
+                                                <button type="button" class="btn btn-success submit_grace" data-subject-id="{{$subject_value['subject_id']}}">Submit</button>
+                                                </div
+                                             >
+                                            </form>
                                             @else
                                              <input type="hidden" name="grace[]" value="0"  class="form-control">
                                             @endif
@@ -234,36 +245,41 @@
     
 </script>
 <script>
-    $('input[name="grace"]').on('blur', function (e) {
-        if (e.shiftKey && e.key === 'Tab') {
-            e.preventDefault(); 
-        const subjectId = $(this).attr('id').replace('grace', ''); 
-        const graceMark = $('#grace_get').val();
-        if(graceMark == '0'){
+$(document).ready(function () {
+    $(document).on('click', '.submit_grace', function (e) {
+        e.preventDefault(); // Prevent default behavior
 
-            const graceMark = $("#grace_get_second").val() - parseFloat($(this).val());
-        }
-        
-        const performanceMark = parseFloat($('#performance_mark' + subjectId).val()) || 0;
-        const graceMarks = parseFloat($(this).val()) || 0;
-        if (graceMark < graceMarks) {
+        const subjectId = $(this).data('subject-id');
+        const graceMark = parseFloat($('#grace_get').val()) || 0; 
+        const ned_mark = parseFloat($('#ned_mark'+ subjectId).val()) || 0; 
+        const secondGraceMark = parseFloat($('#grace_get_second').val()) || 0;
+        const performanceMark = parseFloat($('#performance_mark' + subjectId).val()) || 0; 
+        const enteredGraceMark = parseFloat($('#grace' + subjectId).val()) || 0; 
+       
+        if (graceMark === 0 || enteredGraceMark > graceMark) {
             Swal.fire({
                 icon: "error",
-                text: "Please enter a valid grace mark",
-                });
-        } else {
-            const totalMarks = performanceMark - graceMarks;
-            const totalgrace = graceMark - graceMarks;
-            if(totalgrace == '0'){
-                const graceMark = $('#grace_get').val();
-            }
-            $("#grace_get").val(totalgrace);
-            $("#grace_value").val(totalgrace);
-            $('#performance_mark' + subjectId).show();
-            $('#performance_mark' + subjectId).val(totalMarks);
-        
+                text: "Please enter a valid grace mark.",
+            });
+            return; 
         }
-    }
+        if(ned_mark < enteredGraceMark){
+            Swal.fire({
+                icon: "error",
+                text: "Please enter a valid grace mark.",
+            });
+            return; 
+        }
+        const remainingGrace = ned_mark - enteredGraceMark;
+         const updatedPerformanceMark = ned_mark - enteredGraceMark;
+          $('#performance_mark' + subjectId).val(updatedPerformanceMark).show();
+
+        Swal.fire({
+            icon: "success",
+            text: "Grace mark and performance mark updated successfully.",
+        });
+    });
 });
+
 
 </script>
