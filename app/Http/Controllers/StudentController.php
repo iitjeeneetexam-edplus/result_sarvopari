@@ -648,8 +648,8 @@ class StudentController extends Controller
                                                 'total_marks' => $value2->total_marks,
                                                 'marks' => $value2->marks,
                                                 'exam_id' => $exam_value->id,
-                                                'performance_mark' => $exam_value->performance_mark,
-                                                'grace_mark' => $exam_value->grace_mark,
+                                                'performance_mark' => $value2->performance_mark,
+                                                'grace_mark' => $value2->grace_mark,
                                             ];
                                         }
                                 

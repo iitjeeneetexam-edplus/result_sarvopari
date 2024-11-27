@@ -66,9 +66,9 @@
                 @endforeach
                 @endif
                 <th style="background-color: #f0f0f0;" >Total Marks</th>
+                <th style="background-color: #f0f0f0;" >Obtain Marks</th>
                 <th style="background-color: #f0f0f0;" >Performance</th>
                 <th style="background-color: #f0f0f0;" >Grace</th>
-                <th style="background-color: #f0f0f0;" >Obtain Marks</th>                
                 <th style="background-color: #f0f0f0;">Grade</th>
                 <th style="background-color: #f0f0f0;">Percentage</th>
             </tr>
@@ -106,14 +106,15 @@
                                     @if($exam_subject_value['subject_id'] == $subject_value['subject_id'])
                                     @if(isset($exam_subject_value['marks']) && count($exam_subject_value['marks']) > 0)
                                         @foreach($exam_subject_value['marks'] as $mark_value)
-                                            <td>{{ $mark_value['marks'] }}</td>
-                                            <td>{{ $mark_value['performance_mark'] }}</td>
+                                            <td>{{ $mark_value['marks'] }}</td>                                            
                                             @php
                                                 if($mark_value['marks'] == 'AB'){
                                                     $marks = 0;
                                                 }else{
                                                     $marks =$mark_value['marks'];
                                                 }
+                                                $performmark = $mark_value['performance_mark'];
+                                                $gracemmark = $mark_value['grace_mark'];
                                                 $obtainmarks += $marks; // Add to total
                                                 $totalMarks += $mark_value['total_marks'];
                                                 $marksFound = true;
@@ -129,7 +130,6 @@
                             @endif
 
                             @if(!$marksFound)
-                                <td></td>
                                 <td></td>
                             @endif
                         @endforeach
@@ -151,9 +151,12 @@
                             @endphp
                             {{ $btnmks }}
                         </strong></td>
-                        <td></td>
+                        <td>{{$performmark}}</td>
+                        <td>{{$gracemmark}}</td>
                         <td>@php
-                            $percentage=$btnmks ? ($btnmks / 100) * 100 : 0;
+                            $tolgrac = $performmark+$gracemmark;
+                            $perct = $tolgrac+$btnmks;
+                            $percentage=$perct ? ($perct / 100) * 100 : 0;
                             $grade=match (true) {
                                 $percentage>= 91 => 'A1',
                                 $percentage >= 81 => 'A2',
