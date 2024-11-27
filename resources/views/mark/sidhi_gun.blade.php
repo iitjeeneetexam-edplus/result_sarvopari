@@ -290,24 +290,40 @@ $(document).ready(function () {
 </script>
 <Script>
     $(document).ready(function () {
-        const performance = parseFloat($('#grace_get').val()) || 0; // Get performance value
-    let previousResult = performance; // Initialize previousResult with performance value
+        const performance = parseFloat($('#grace_get').val()) || 0; 
+    let previousResult = performance; 
+
+    const subjectId = $(this).data('subject-id');
 
     $('input[id^="performance_mark"]').each(function (index) {
-        const currentInput = $(this); // Current input element
-        const nedValue = parseFloat(currentInput.val()) || 0; // Get current ned value
+      var t = previousResult - $(this).val();
+      var tt =  $(this).val()  ;
+       console.log("previousResult:"+ previousResult + " value:" + tt + "t: " + t) ; 
+       
+        // console.log($(this).val());
 
-        // For the first text box
-        if (index === 0) {
-            const result = performance - nedValue; // Calculate the result for the first box
-            // currentInput.val(result); // Update the first text box
-            previousResult = result; // Update previousResult for the next iteration
-        } else {
-            // For subsequent text boxes
-            const result = nedValue-previousResult; // Subtract nedValue from previousResult
-            currentInput.val(result); // Update the current input with the result
-            previousResult = result; // Update previousResult for the next iteration
-        }
+        // const currentInput = $(this); 
+        // const nedValue = parseFloat(currentInput.val()) || 0; 
+        // console.log(currentInput.val());
+         
+        // if (index === 0  ) {
+        //     previousResult = performance - nedValue;
+        
+        // } else {
+        //     if(previousResult==null || previousResult==''){
+        //         return;     
+        //     }else{
+                
+        //         previousResults = nedValue - previousResult;
+                
+        //         currentInput.val(previousResults);
+     
+        //     }  
+              
+   
+           
+        // }
+        
     });
 });
 </Script>
