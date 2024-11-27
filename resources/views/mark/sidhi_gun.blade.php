@@ -57,8 +57,7 @@
                         $grace = $student_value['grace_mark'];
                     @endphp
                     <input type="hidden" id="grace_get" value="{{$grace}}">
-                    <input type="hidden" id="grace_get_second" value="{{$grace}}">
-
+                    
                     @if(isset($student_value['exam']))
                     @foreach($student_value['exam'] as $exam_value)
                         @if(isset($exam_value['subject_Data']))
@@ -160,7 +159,7 @@
                                              <div class="d-flex subject-grace" id="subject{{$subject_value['subject_id']}}">
                                                 <input type="number"min="0" 
                step="1" 
-               oninput="this.value = this.value.replace(/[^0-9]/g, '')"  name="grace[]" id="grace{{$subject_value['subject_id']}}"  class="form-control grace-input">
+               oninput="this.value = this.value.replace(/[^0-9]/g, '')"  name="grace[]" id="grace_input{{$subject_value['subject_id']}}"  class="form-control grace-input">
                                                 &nbsp;&nbsp;
                                                 <button type="button" class="btn btn-success submit_grace" data-subject-id="{{$subject_value['subject_id']}}">Submit</button>
                                                 </div
@@ -240,16 +239,26 @@ $(document).ready(function () {
         const graceMark = parseFloat($('#grace_get').val()) || 0; 
         const ned_mark = parseFloat($('#ned_mark'+ subjectId).val()) || 0; 
         const performanceMark = parseFloat($('#performance_mark' + subjectId).val()) || 0; 
-        const graceInput = $('#grace' + subjectId).val(); 
-
-       
+        const graceInput = $('#grace_input' + subjectId).val(); 
         
-         if(graceMark=='0'){
-            const graceMark = parseFloat($('#grace_get_second').val()) || 0; 
-        }
-        // alert(graceInput);
-        // alert(graceMark);
-        if (graceMark === 0 || graceInput > graceMark) {
+        let totalGrace = 0;
+        $('input[id^="grace_input"]').each(function() {
+            const graceInput = $(this).val(); 
+            totalGrace += parseFloat(graceInput) || 0;
+          
+        });
+         if(totalGrace > graceMark)
+         {
+            Swal.fire({
+                icon: "error",
+                text: "Please enter a valid grace mark .",
+            });
+            return; 
+         }
+        
+
+        
+         if (graceMark === 0 || graceInput > graceMark) {
             Swal.fire({
                 icon: "error",
                 text: "Please enter a valid grace mark.",
