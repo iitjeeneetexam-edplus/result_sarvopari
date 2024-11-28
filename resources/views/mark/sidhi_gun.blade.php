@@ -57,6 +57,7 @@
                         $grace = $student_value['grace_mark'];
                     @endphp
                     <input type="hidden" id="grace_get" value="{{$grace}}">
+                    <input type="hidden" id="perform_get" value="{{$perform}}">
                     
                     @if(isset($student_value['exam']))
                     @foreach($student_value['exam'] as $exam_value)
@@ -290,40 +291,44 @@ $(document).ready(function () {
 </script>
 <Script>
     $(document).ready(function () {
-        const performance = parseFloat($('#grace_get').val()) || 0; 
-    let previousResult = performance; 
-
-    const subjectId = $(this).data('subject-id');
-
-    $('input[id^="performance_mark"]').each(function (index) {
-      var t = previousResult - $(this).val();
-      var tt =  $(this).val()  ;
-       console.log("previousResult:"+ previousResult + " value:" + tt + "t: " + t) ; 
-       
-        // console.log($(this).val());
-
-        // const currentInput = $(this); 
-        // const nedValue = parseFloat(currentInput.val()) || 0; 
-        // console.log(currentInput.val());
-         
-        // if (index === 0  ) {
-        //     previousResult = performance - nedValue;
-        
-        // } else {
-        //     if(previousResult==null || previousResult==''){
-        //         return;     
-        //     }else{
-                
-        //         previousResults = nedValue - previousResult;
-                
-        //         currentInput.val(previousResults);
-     
-        //     }  
-              
-   
+        const performance = parseFloat($('#perform_get').val()) || 0; 
+        const grace_get = parseFloat($('#grace_get').val()) || 0; 
+        const totalAssign =performance+grace_get;
+        const TotalNeeded=0;
+        if(totalAssign<TotalNeeded)
+        {
            
-        // }
-        
-    });
+        }
+        else if(TotalNeeded < performance)
+        {
+            let previousResult  = performance; 
+            let finalResult = previousResult; 
+            const subjectId = $(this).data('subject-id');
+             $('input[id^="performance_mark"]').each(function (index) {
+                const currentInput = $(this); 
+                const nedValue = parseFloat(currentInput.val()) || 0; 
+                if (index === 0  ) {
+                    previousResult = performance - nedValue;
+                    currentInput.val(nedValue);
+                } else {
+                    if(previousResult==null || previousResult==''){
+                        return;     
+                    }else{
+                        const initialPreviousResult = previousResult;
+                        const calculatedResult = Math.abs(previousResult - nedValue);
+                        const increase = previousResult - initialPreviousResult;
+                        currentInput.val(nedValue);
+                        previousResult = increase; 
+                    }
+                }  
+            });  
+                finalResult = previousResult;
+        }
+        else 
+        {
+            const grasLimite=TotalNeeded-performance;
+
+        }
+
 });
 </Script>
