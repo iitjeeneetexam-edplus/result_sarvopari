@@ -253,7 +253,8 @@ foreach($data as $student_value) {
                                             @endif
                                         </td>
                                         
-                                        <td>@php
+                                        <td>@if($ned == 0)
+                                        @php
                                             $percn = $btnmks+$ned;
                                             $percentage=$percn ? ($percn / 100) * 100 : 0;
                                             $grade=match (true) {
@@ -268,7 +269,14 @@ foreach($data as $student_value) {
                                             $percentage <= 20=> 'E2',
                                             };
                                             @endphp
-                                        {{$grade}}</td>
+                                        {{$grade}}
+                                        @else
+                                        @php
+                                        $percn = $btnmks;
+                                        @endphp
+                                        <p id="grade_display_{{$subject_value['subject_id']}}"></p>
+                                        @endif
+                                        <input type="hidden" name="prc" value="{{$percn}}" id="prc{{$subject_value['subject_id']}}"></td>
                                     </tr>
 
                                     @php
@@ -326,8 +334,24 @@ $(document).ready(function () {
         const ned_mark = parseFloat($('#ned_mark'+ subjectId).val()) || 0; 
         const performanceMark = parseFloat($('#performance_mark' + subjectId).val()) || 0; 
         const graceInput = $('#grace_input' + subjectId).val(); 
-        
+        const prc = $('#prc' + subjectId).val();
         let totalGrace = 0;
+        const percn = (graceInput)+(prc);
+        const percentage = percn ? (percn / 100) * 100 : 0;
+            let grade = '';
+            
+            if (percentage >= 91) grade = 'A1';
+            else if (percentage >= 81) grade = 'A2';
+            else if (percentage >= 71) grade = 'B1';
+            else if (percentage >= 61) grade = 'B2';
+            else if (percentage >= 51) grade = 'C1';
+            else if (percentage >= 41) grade = 'C2';
+            else if (percentage >= 33) grade = 'D';
+            else if (percentage >= 21) grade = 'E1';
+            else grade = 'E2';
+
+            $('#grade_display_' + subjectId).text('Grade: ' + grade);
+
         $('input[id^="grace_input"]').each(function() {
             const graceInput = $(this).val(); 
             totalGrace += parseFloat(graceInput) || 0;
@@ -414,6 +438,22 @@ $(document).ready(function () {
             const grasLimite=TotalNeeded-performance;
 
         }
+        const prc = $('#prc' + subjectId).val();
+        const percn = (nedValue)+(prc);
+        const percentage = percn ? (percn / 100) * 100 : 0;
+        let grade = '';
+
+        if (percentage >= 91) grade = 'A1';
+            else if (percentage >= 81) grade = 'A2';
+            else if (percentage >= 71) grade = 'B1';
+            else if (percentage >= 61) grade = 'B2';
+            else if (percentage >= 51) grade = 'C1';
+            else if (percentage >= 41) grade = 'C2';
+            else if (percentage >= 33) grade = 'D';
+            else if (percentage >= 21) grade = 'E1';
+            else grade = 'E2';
+            
+            $('#grade_display_' + subjectId).text('Grade: ' + grade);
 
 });
 </Script>
