@@ -1,4 +1,81 @@
 @include('sidebar_display')
+@php
+
+foreach($data as $student_value) {
+    $printedSubjects = [];
+    $mainobtainmarks = 0;
+    $maintotalobtn = 0;
+    $maintotalMarks = 0;
+    $hundradtotal = 0;
+    $pasingmarks = 0;
+    $needmark = 0;
+    $pasorfl = 0;
+    $totalneed = 0;
+    $perform = $student_value['performance_mark'];
+    $grace = $student_value['grace_mark'];
+    if(isset($student_value['exam'])){
+        foreach($student_value['exam'] as $exam_value){
+            if(isset($exam_value['subject_Data'])){
+                foreach($exam_value['subject_Data'] as $subject_value){
+                    if(!in_array($subject_value['subject_id'], $printedSubjects)){
+                        $totalMarks = 0; 
+                        $obtainmarks = 0;
+                        foreach($student_value['exam'] as $exam_loop){
+                            $marksFound = false;
+                            if(isset($exam_loop['subject_Data'])){
+                                foreach($exam_loop['subject_Data'] as $exam_subject_value){
+                                    if($exam_subject_value['subject_id'] == $subject_value['subject_id']){
+                                        if(isset($exam_subject_value['marks']) && count($exam_subject_value['marks']) > 0){
+                                            foreach($exam_subject_value['marks'] as $mark_value){
+                                                if($mark_value['marks'] == 'AB'){
+                                                    $marks = 0;
+                                                }else{
+                                                    $marks =$mark_value['marks'];
+                                                }
+                                                $obtainmarks += $marks; 
+                                                $totalMarks += $mark_value['total_marks'];
+                                                $marksFound = true;
+                                                if (isset($mark_value['passing_marks'])) {
+                                                    $pasingmarks= $mark_value['passing_marks'];
+                                                }
+                                            }
+                                        }
+                                    } 
+                                }
+                            }
+                        }
+                            if($totalMarks > 100){
+                                                $obtainmks = $totalMarks ? ($obtainmarks * 100) / $totalMarks : 0; 
+                                                $btnmks = round($obtainmks);
+                                                $hundradtotal += 100;
+                                            } else{
+                                                $btnmks = $obtainmarks;
+                                                $hundradtotal += $totalMarks;
+                                            }
+                                            
+                                            $mainobtainmarks += $obtainmarks;
+                                            $maintotalobtn += $btnmks;
+                                            $maintotalMarks += $totalMarks;
+
+                                            if( $pasingmarks > $btnmks){
+                                                $pasorfl += 1;
+                                                $needmark += $pasingmarks - $btnmks;
+                                                $ned = $pasingmarks - $btnmks;
+                                                $perform = $perform - $ned;
+                                            }else{
+                                                $ned = 0;
+                                                $perform = $perform - 0;
+                                            }
+                                            $totalneed += $ned;
+                        
+                    }
+                }
+            }
+        }
+    }
+}
+    
+@endphp
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -20,8 +97,7 @@
                     @foreach($data as $student_value) 
                     <p style="font-size: 16pt; margin: 0; padding: 0px; margin-top: 20px;">Student Name - <b>{{ $student_value['student_name'] }}</b> </p>
 
-<br>
-    
+                    <br>
             <table class="table table-bordered" border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
                 <thead>
                     <tr>
@@ -53,6 +129,7 @@
                         $pasingmarks = 0;
                         $needmark = 0;
                         $pasorfl = 0;
+                        $performm = $student_value['performance_mark'];
                         $perform = $student_value['performance_mark'];
                         $grace = $student_value['grace_mark'];
                     @endphp
@@ -126,14 +203,13 @@
 
                                             if( $pasingmarks > $btnmks){
                                                 $pasorfl += 1;
-                                                $needmark += $pasingmarks - $btnmks;
+                                                
                                                 $ned = $pasingmarks - $btnmks;
                                                 $perform = $perform - $ned;
                                             }else{
                                                 $ned = 0;
                                                 $perform = $perform - 0;
                                             }
-
                                             @endphp
                                             {{ $btnmks }}
                                         </strong></td>
@@ -153,9 +229,9 @@
                                             <input type="hidden" name="subject_id[]" value="{{$subject_value['subject_id']}}" class="form-control"> 
                                             <input type="hidden" name="exam_id" value="{{$exam_loop['exam_id']}}" class="form-control">  
                                             <input type="hidden" name="is_optional[]" value="{{$subject_value['is_optional']}}" class="form-control"> 
-                                            </td>
+                                        </td>
                                         
-                                        <td>@if($ned && $perform < 0 )    
+                                        <td>@if($needmark > $performm)    
                                          <form id="grace_form" >
                                              <div class="d-flex subject-grace" id="subject{{$subject_value['subject_id']}}">
                                                 <input type="number"min="0" 
