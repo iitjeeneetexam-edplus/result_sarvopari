@@ -38,8 +38,11 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="exam">Select exam:</label>
-                                    <select name="exam_id[]" id="exam" class="form-control" multiple>
-                                    </select>
+                                    <!-- <select name="exam_id[]" id="exam" class="form-control" multiple>
+                                    </select> -->
+                                    <div id="examd" class="form-control checkbox-container">
+
+                                    </div>
                                 </div>
 
                                
@@ -119,7 +122,10 @@
 
                                     success: function(data) {
                                         $.each(data, function(key, value) {
-                                            $('#exam').append('<option value="' + value.id + '">' + value.exam_name + '</option>');
+                                            $('#examd').append('<div class="form-check">' +
+                                                '<input class="form-check-input" type="checkbox" name="exam_id[]" id="exam" value="' + value.id + '">' +
+                                                '<label class="form-check-label" for="exam_' + value.id + '">' + value.exam_name + '</label>' +
+                                            '</div>');
                                         });
                                     }
                                 });
