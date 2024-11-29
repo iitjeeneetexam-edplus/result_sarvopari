@@ -318,8 +318,10 @@ $(document).ready(function () {
         const percn = (graceInput)+(prc);
         const percentage = percn ? (percn / 100) * 100 : 0;
             let grade = '';
+        
             
-            getgrade(percentage,grade);
+            
+        getgrade(percentage,grade,subjectId);
 
         $('input[id^="grace_input"]').each(function() {
             const graceInput = $(this).val(); 
@@ -383,60 +385,77 @@ $(document).ready(function () {
         
         
         const total_need_mark = parseFloat($('#total_need_mark').val()) || 0; 
-        const subjectIds = document.querySelectorAll('#subject_id'); // Select all inputs with class "subject_id"
-        const values = Array.from(subjectIds).map(input => input.value);
-        values.forEach(subjectId => {
+            // Get all subject IDs
+        const subjectInputs = document.querySelectorAll('#subject_id');
+        const subjectIds = Array.from(subjectInputs).map(input => input.value);
+
+        // Get all performance values
+        const performanceInputs = document.querySelectorAll('input[name="performance[]"]');
+        const performances = Array.from(performanceInputs).map(input => input.value);
+
+        // Combine subject IDs and performances into a single array
+        const mergedArray = subjectIds.map((subjectId, index) => ({
+            subjectId: subjectId,
+            performance: performances[index]
+        }));
+
+        // Iterate over the merged array
+        mergedArray.forEach(item => {
+            const { subjectId, performance } = item;
+
+            // Show form based on some condition
             if (total_need_mark <= totalAssign) {
                 $("#form_show" + subjectId).show();
             }
-        });   
+            const prc = $('#prc' + subjectId).val();
+            const percn = Number(performance) + Number(prc); // Ensure numeric addition
+            const percentage = percn ? (percn / 100) * 100 : 0;
+
+            let grade = '';
+            getgrade(percentage, grade,subjectId);
+        });
+
+
+       
+
+
         if(totalAssign < TotalNeeded) 
         {
           
         }
         else if(TotalNeeded < totalAssign)
         {
-            // let previousResult  = performance; 
-            // let finalResult = previousResult; 
-            // const subjectId = $(this).data('subject-id');
-            //  $('input[id^="performance_mark"]').each(function (index) {
-            //     const currentInput = $(this); 
-            //     const nedValue = parseFloat(currentInput.val()) || 0; 
-            //     if (index === 0  ) {
-            //         previousResult = performance - nedValue;
+            let previousResult  = performance; 
+            let finalResult = previousResult; 
+            const subjectId = $(this).data('subject-id');
+             $('input[id^="performance_mark"]').each(function (index) {
+                const currentInput = $(this); 
+                const nedValue = parseFloat(currentInput.val()) || 0; 
+                if (index === 0  ) {
+                    previousResult = performance - nedValue;
                     
-            //         currentInput.val(nedValue);
-            //     } else {
-            //         if(previousResult==null || previousResult==''){
-            //             return;     
-            //         }else{
-            //             const initialPreviousResult = previousResult;
-            //             const calculatedResult = Math.abs(previousResult - nedValue);
-            //             const increase = previousResult - initialPreviousResult;
-            //             currentInput.val(nedValue);
-            //             previousResult = increase; 
-            //         }
-            //     }  
-            // });  
-            //     finalResult = previousResult;
+                    currentInput.val(nedValue);
+                } else {
+                    if(previousResult==null || previousResult==''){
+                        return;     
+                    }else{
+                        const initialPreviousResult = previousResult;
+                        const calculatedResult = Math.abs(previousResult - nedValue);
+                        const increase = previousResult - initialPreviousResult;
+                        currentInput.val(nedValue);
+                        previousResult = increase; 
+                    }
+                }  
+            });  
+                finalResult = previousResult;
         }
         else 
         {
             const grasLimite=TotalNeeded-performance;
         }
-        const prc = $('#prc' + subjectId).val();
-        const percn = (nedValue)+(prc);
-        const percentage = percn ? (percn / 100) * 100 : 0;
-        console.log(nedValue);
-        let grade = '';
-        getgrade(percentage,grade);
-        
-
-
-           
+       
 });
-    function getgrade(percentage,grade){
-                alert(percentage);
+    function getgrade(percentage,grade,subjectId){
             if (percentage >= 91) grade = 'A1';
             else if (percentage >= 81) grade = 'A2';
             else if (percentage >= 71) grade = 'B1';
