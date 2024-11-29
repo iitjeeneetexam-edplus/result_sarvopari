@@ -333,15 +333,20 @@
                 success: function(data) {
                     $('#studentTable tbody').empty();
                     $('.pdf').show();
-                    if (data.students.length > 0) {
-                        var totalmark = $('#total_marks').val();
+                    if (data.students.length > 0) {                        
                         $.each(data.students, function(index, student) {
                         $('#total_marks').val(student.total_marks);
                         $('#passing_marks').val(student.passing_marks);
+                        var totalmark = parseFloat($('#total_marks').val());
+                        alert(totalmark);
                             var row = '<tr>' +
                                 '<td>' + student.roll_no + '</td>' +
                                 '<td>' + student.name + '</td>' +
-                                '<td><input type="text"  step=".01" name="marks[]"  value="' + (student.marks ? student.marks : '') + '" min="0" max="' + totalmark + '"  pattern="^(100|[1-9]?[0-9]|AB)$"  title="Enter a number between 1 and 100, or AB for absent"  />' +
+                                '<td>'+
+                                '<input type="text" name="marks[]" value="' + (student.marks ? student.marks : '') + '" ' +
+                                'pattern="^(00|[1-9]?[0-9]|' + totalmark + '|AB)$" ' +
+                                'title="Enter a valid mark between 00 and ' + totalmark + ', or AB for absent" ' +
+                                'max="' + totalmark + '" min="0" class="marks-input" />' +
                                 '<input type="hidden" name="student_id[]" value="' + student.id + '" /></td>'+
                                 '</tr>';
                             $('#studentTable tbody').append(row);
@@ -355,4 +360,5 @@
             });
         }
     });
+
 </script>
