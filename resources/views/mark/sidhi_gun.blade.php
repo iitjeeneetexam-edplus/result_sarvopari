@@ -319,17 +319,7 @@ $(document).ready(function () {
         const percentage = percn ? (percn / 100) * 100 : 0;
             let grade = '';
             
-            if (percentage >= 91) grade = 'A1';
-            else if (percentage >= 81) grade = 'A2';
-            else if (percentage >= 71) grade = 'B1';
-            else if (percentage >= 61) grade = 'B2';
-            else if (percentage >= 51) grade = 'C1';
-            else if (percentage >= 41) grade = 'C2';
-            else if (percentage >= 33) grade = 'D';
-            else if (percentage >= 21) grade = 'E1';
-            else grade = 'E2';
-
-            $('#grade_display_' + subjectId).text('Grade: ' + grade);
+            getgrade(percentage,grade);
 
         $('input[id^="grace_input"]').each(function() {
             const graceInput = $(this).val(); 
@@ -436,8 +426,15 @@ $(document).ready(function () {
         const percn = (nedValue)+(prc);
         const percentage = percn ? (percn / 100) * 100 : 0;
         let grade = '';
+        getgrade(percentage,grade);
+        
 
-        if (percentage >= 91) grade = 'A1';
+
+           
+});
+    function getgrade(percentage,grade){
+                alert(percentage);
+            if (percentage >= 91) grade = 'A1';
             else if (percentage >= 81) grade = 'A2';
             else if (percentage >= 71) grade = 'B1';
             else if (percentage >= 61) grade = 'B2';
@@ -447,7 +444,6 @@ $(document).ready(function () {
             else if (percentage >= 21) grade = 'E1';
             else grade = 'E2';
             
-            $('#grade_display_' + subjectId).text('Grade: ' + grade);
-
-});
+            $('#grade_display_' + subjectId).text(grade);
+    }
 </Script>
