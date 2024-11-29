@@ -255,7 +255,7 @@
         </table>
 
                 @endforeach
-                    <button class="btn btn-success">Submit</button>
+                    <button class="btn btn-success mb-3" style="float:right">Submit</button>
                     </form> 
                     </div>
                 </div>
