@@ -338,6 +338,7 @@ $(document).ready(function () {
         });
          if(totalGrace > graceMark)
          {
+            $('#grace_input'+subjectId).val(0);
             Swal.fire({
                 icon: "error",
                 text: "Please enter a valid grace mark .",
@@ -348,6 +349,7 @@ $(document).ready(function () {
 
         
          if (graceMark === 0 || graceInput > graceMark) {
+            $('#grace_input'+subjectId).val(0);
             Swal.fire({
                 icon: "error",
                 text: "Please enter a valid grace mark.",
