@@ -242,12 +242,13 @@
                         <td style="font-weight: bold;">{{$mainobtainmarks}}</td>
                         <td style="font-weight: bold;">{{$maintotalobtn}}</td>
                         <td style="font-weight: bold;">
-                            @php 
-                                $nedadorno = $student_value['performance_mark']+$student_value['grace_mark'];
-                            @endphp
+                           <?php 
+                                $nedadorno = $student_value['performance_mark'] + $student_value['grace_mark'];
+                            
+                      ?>
                         </td>
                         <td style="font-weight: bold;"></td>
-                        <td style="font-weight: bold;">@if($finalTotal < $nedadorno || $pasorfl == 0 ) Pass @else Fail @endif </td>
+                        <td style="font-weight: bold;">@if($finalTotal <= $nedadorno) Pass @else Fail @endif </td>
                         <td style="font-weight: bold;">@php $percentages =$maintotalobtn ? ($maintotalobtn / $hundradtotal) * 100 : 0; @endphp {{round($percentages,2)}}%</td>
                     </tr>
                 </tfoot>

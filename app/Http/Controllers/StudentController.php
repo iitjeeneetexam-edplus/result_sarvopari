@@ -503,6 +503,7 @@ class StudentController extends Controller
                                     ];
                                 }
                                 $getpergracmark = Performance_grace_Model::where('school_id',$request->session()->get('school_id'))->first();
+                                // echo"<pre>";print_r($getpergracmark);exit;
                                 $data[]=[
                                     'id'=>$value->id,
                                     'student_name'=>$value->name,
