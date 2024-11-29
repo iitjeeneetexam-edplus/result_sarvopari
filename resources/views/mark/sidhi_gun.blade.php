@@ -94,6 +94,8 @@
                                                                 }else{
                                                                     $marks =$mark_value['marks'];
                                                                 }
+                                                                $performmark = $mark_value['performance_mark'];
+                                                                $gracemmark = $mark_value['grace_mark'];
                                                                 $obtainmarks += $marks; 
                                                                 $totalMarks += $mark_value['total_marks'];
                                                                 $marksFound = true;
@@ -157,14 +159,11 @@
                                            
                                            
                                             @if($ned)
-                                           <input type="hidden" name="performance[]" id="performance_mark_label_hidden{{$subject_value['subject_id']}}">  
-                                           <label id="performance_mark_label{{$subject_value['subject_id']}}" readonly disabled  ><label> 
+                                           <input type="hidden" name="performance[]" id="performance_mark_label_hidden{{$subject_value['subject_id']}}" value="{{$performmark}}">  
+                                           <label id="performance_mark_label{{$subject_value['subject_id']}}" readonly disabled  >{{$performmark}}<label> 
                                            @else
-                                           <input type="hidden" name="performance[]" value="0"  class="form-control">
-                                           
+                                           <input type="hidden" name="performance[]" value="0"  class="form-control">                                           
                                            @endif
-                                          
-                                        
                                            </td>
                                        
                                            
@@ -184,7 +183,7 @@
                                              @if($ned)
                                                 <input type="number"min="0" 
                step="1" 
-               oninput="this.value = this.value.replace(/[^0-9]/g, '')"  name="grace[]" id="grace_input{{$subject_value['subject_id']}}"  class="form-control grace-input">
+               oninput="this.value = this.value.replace(/[^0-9]/g, '')"  name="grace[]" id="grace_input{{$subject_value['subject_id']}}" value="{{$gracemmark}}"  class="form-control grace-input">
                                                 &nbsp;&nbsp;
                                                 <button type="button" class="btn btn-success submit_grace" data-subject-id="{{$subject_value['subject_id']}}">Submit</button>
                                                 </div
