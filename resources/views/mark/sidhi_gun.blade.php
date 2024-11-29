@@ -437,6 +437,7 @@ $(document).ready(function () {
         const prc = $('#prc' + subjectId).val();
         const percn = (nedValue)+(prc);
         const percentage = percn ? (percn / 100) * 100 : 0;
+        console.log(nedValue);
         let grade = '';
 
         if (percentage >= 91) grade = 'A1';
