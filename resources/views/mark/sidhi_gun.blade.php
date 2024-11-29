@@ -143,12 +143,30 @@
                                             
                                             {{ $btnmks }}
                                         </strong></td>
-                                        <td>@if($ned) <input type="text" name="performance_mark[]" id="performance_mark{{$subject_value['subject_id']}}" value="{{$ned}}" class="form-control" readonly disabled>@endif</td>
-                                        <td>@if($ned)
-                                           <input type="hidden" name="performance[]" id="performance_mark_label_hidden{{$subject_value['subject_id']}}">  
-                                           <label id="performance_mark_label{{$subject_value['subject_id']}}" readonly disabled style="display: none;"><label> @endif</td>
                                         <form method="post" id='somelink' action="{{ url('/siddhi_gun/store') }}">
-                                            @csrf
+                                        @csrf
+
+                                        <input type="hidden" name="student_id" value="{{$student_value['id']}}" class="form-control">
+                                            <input type="hidden" name="subject_id[]" id="subject_id" value="{{$subject_value['subject_id']}}" class="form-control"> 
+                                            <input type="hidden" name="exam_id" value="{{$exam_loop['exam_id']}}" class="form-control">  
+                                            <input type="hidden" name="is_optional[]" value="{{$subject_value['is_optional']}}" class="form-control"> 
+
+
+                                        <td>@if($ned) <input type="text" name="performance_mark[]" id="performance_mark{{$subject_value['subject_id']}}" value="{{$ned}}" class="form-control" readonly disabled>@endif</td>
+                                        <td>
+                                           
+                                           
+                                            @if($ned)
+                                           <input type="hidden" name="performance[]" id="performance_mark_label_hidden{{$subject_value['subject_id']}}" value="0">  
+                                           <label id="performance_mark_label{{$subject_value['subject_id']}}" readonly disabled  ><label> 
+                                           @else
+                                           <input type="hidden" name="performance[]" value="0"  class="form-control">
+                                           
+                                           @endif
+                                          
+                                        
+                                           </td>
+                                       
                                            
                                             @if($ned)
                                                 <input type="hidden" id="ned_mark{{$subject_value['subject_id']}}" value="{{$ned}}">
@@ -157,15 +175,11 @@
                                             <!-- <input type="text" name="performance_mark[]" id="performance_mark{{$subject_value['subject_id']}}" style="display: none;" value="" class="form-control"> -->
                                                 
                                             @endif
-                                            <input type="hidden" name="student_id" value="{{$student_value['id']}}" class="form-control">
-                                            <input type="hidden" name="subject_id[]" id="subject_id" value="{{$subject_value['subject_id']}}" class="form-control"> 
-                                            <input type="hidden" name="exam_id" value="{{$exam_loop['exam_id']}}" class="form-control">  
-                                            <input type="hidden" name="is_optional[]" value="{{$subject_value['is_optional']}}" class="form-control"> 
+                                           
                                         </td>
                                         
                                         <td>
                                              <div style="display: none;" id="form_show{{$subject_value['subject_id']}}">
-                                         <form id="grace_form" >
                                              <div class="d-flex subject-grace" id="subject{{$subject_value['subject_id']}}">
                                              @if($ned)
                                                 <input type="number"min="0" 
@@ -176,9 +190,11 @@
                                                 </div
                                              >
                                              <p id="result{{$subject_value['subject_id']}}"></p>
-                                             @endif
-                                            </form>
+
+                                             @else
                                              <input type="hidden" name="grace[]" value="0"  class="form-control">
+                                            
+                                             @endif
                                              </div>
                                         </td>
                                         
@@ -342,7 +358,7 @@ $(document).ready(function () {
         if(ned_mark < graceInput){
             Swal.fire({
                 icon: "error",
-                text: "Please enter a valid grace marks.",
+                text: "Please enter a valid grace marks.maximum enter grace:-"+graceMark,
             });
             return; 
         }
@@ -416,7 +432,6 @@ $(document).ready(function () {
         else 
         {
             const grasLimite=TotalNeeded-performance;
-             console.log(grasLimite);
         }
         const prc = $('#prc' + subjectId).val();
         const percn = (nedValue)+(prc);

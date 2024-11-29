@@ -459,7 +459,11 @@ class StudentController extends Controller
                                                 'marks.total_marks',
                                                 'marks.passing_marks',
                                                 'marks.marks',
-                                                'marks.subject_id'
+                                                'marks.subject_id',
+                                                'marks.subject_id',
+                                                'marks.subject_id',
+                                                'marks.performance_mark',
+                                                'marks.grace_mark',
                                             )
                                             ->get();
                                 
@@ -477,6 +481,8 @@ class StudentController extends Controller
                                                 'marks' => $value2->marks,
                                                 'exam_id' => $exam_value->id,
                                                 'passing_marks' => $value2->passing_marks,
+                                                'performance_mark' => $value2->performance_mark,
+                                                'grace_mark' => $value2->grace_mark,
                                             ];
                                         }
                                 
@@ -528,14 +534,15 @@ class StudentController extends Controller
             ->where('subject_id',$subjects)
             ->where('exam_id',$request->exam_id)
             ->where('is_optional',$request->is_optional[$is])->first();
-            if($meksid && $request->performance_mark[$is]){
+            if($meksid){
             Marks::where('id',$meksid->id)->update([
-                'performance_mark'=>$request->performance_mark[$is],
+                'performance_mark'=>$request->performance[$is],
                 'grace_mark'=>$request->grace[$is],
             ]);
         }
         }
-        
+        $message = 'Record added successfully.';
+        return back()->with('success', $message);
         
     }
     public function performance_grace(Request $request){
