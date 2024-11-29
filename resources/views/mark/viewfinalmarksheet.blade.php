@@ -83,6 +83,14 @@
             $maintotalobtn = 0;
             $maintotalMarks = 0;
             $hundradtotal = 0;
+            $pasingmarks = 0;
+            $pasorfl = 0;
+            $performm = $student_value['performance_mark'];
+            $perform = $student_value['performance_mark'];
+            $grace = $student_value['grace_mark'];
+            $nedadorno = $performm+$grace;
+            
+            
         @endphp
 
         @if(isset($student_value['exam']))
@@ -99,6 +107,7 @@
 
                         @foreach($student_value['exam'] as $exam_loop)
                             @php
+                                $get_total = 0;
                                 $marksFound = false;
                             @endphp
                             @if(isset($exam_loop['subject_Data']))
@@ -113,6 +122,9 @@
                                                 }else{
                                                     $marks =$mark_value['marks'];
                                                 }
+                                                if (isset($mark_value['passing_marks'])) {
+                                                    $pasingmarks= $mark_value['passing_marks'];
+                                                }
                                                 $performmark = $mark_value['performance_mark'];
                                                 $gracemmark = $mark_value['grace_mark'];
                                                 $obtainmarks += $marks; // Add to total
@@ -121,9 +133,7 @@
                                             @endphp
                                         @endforeach
                                         @else
-                                        @php
-                                            $totalMarks += $mark_value['total_marks'];
-                                        @endphp
+                                        
                                     @endif
                                     @endif
                                 @endforeach
@@ -148,6 +158,18 @@
                             $mainobtainmarks += $obtainmarks;
                             $maintotalobtn += $btnmks;
                             $maintotalMarks += $totalMarks;
+
+                            if( $pasingmarks > $btnmks){
+                                $pasorfl += 1;
+                                $ned = $pasingmarks - $btnmks;
+                                $perform = $perform - $ned;
+                            }else{
+                                $ned = 0;
+                                $perform = $perform - 0;
+                            }
+                            $finalTotal = 0;
+                            $get_total = $get_total + $ned;
+                            $finalTotal += $get_total;
                             @endphp
                             {{ $btnmks }}
                         </strong></td>
@@ -192,7 +214,7 @@
                 <td style="font-weight: bold;">{{$maintotalobtn}}</td>
                 <td style="font-weight: bold;"></td>
                 <td style="font-weight: bold;"></td>
-                <td style="font-weight: bold;"></td>
+                <td style="font-weight: bold;">@if($finalTotal < $nedadorno || $pasorfl == 0 ) Pass @else Fail @endif </td>
                 <td style="font-weight: bold;">@php $percentages =$maintotalobtn ? ($maintotalobtn / $hundradtotal) * 100 : 0; @endphp {{round($percentages,2)}}%</td>
             </tr>
         </tfoot>

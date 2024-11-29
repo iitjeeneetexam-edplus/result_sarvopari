@@ -676,7 +676,8 @@ class StudentController extends Controller
                                         'subject_Data' => $subject_Data,
                                     ];
                                 }
-                                
+                                $getpergracmark = Performance_grace_Model::where('school_id',$request->session()->get('school_id'))->first();
+
                                 $data[]=[
                                     'id'=>$value->id,
                                     'student_name'=>$value->name,
@@ -694,6 +695,8 @@ class StudentController extends Controller
                                     'school_index'=>$value->school_index,
                                     'address'=>$value->address,
                                     'division_name'=>$value->division_name,
+                                    'performance_mark'=>$getpergracmark->performance,
+                                    'grace_mark'=>$getpergracmark->grace,
                                     'exam'=>$exam,
                                 ];
                                     
@@ -702,6 +705,7 @@ class StudentController extends Controller
                             $baseWidth = 580.28; // A4 width in points (8.27 inches at 72 dpi)
             $additionalWidth = 50; // Additional width per subject
             $totalWidth = $baseWidth + max(0, (6 - 5) * $additionalWidth);
+
             $pdf = PDF::loadView('mark.viewfinalmarksheet', ['student' => $data])->setPaper([0, 0, $totalWidth, 841.89]);
             // return $pdf->download('marksheet.pdf');
             $folderPath = public_path('pdfs');
