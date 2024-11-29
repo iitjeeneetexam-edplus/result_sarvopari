@@ -157,7 +157,7 @@
                                            
                                            
                                             @if($ned)
-                                           <input type="hidden" name="performance[]" id="performance_mark_label_hidden{{$subject_value['subject_id']}}" value="0">  
+                                           <input type="hidden" name="performance[]" id="performance_mark_label_hidden{{$subject_value['subject_id']}}">  
                                            <label id="performance_mark_label{{$subject_value['subject_id']}}" readonly disabled  ><label> 
                                            @else
                                            <input type="hidden" name="performance[]" value="0"  class="form-control">
