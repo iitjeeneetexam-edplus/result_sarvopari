@@ -346,7 +346,6 @@
                                 '<input type="text" name="marks[]" value="' + (student.marks || '') + '" ' +
                                 'title="Enter a valid mark between 00 and ' + totalmark + ', or AB for absent" ' +
                                 'max="' + totalmark + '" min="0" class="marks-input" />';
-
                                 '</tr>';
                             $('#studentTable tbody').append(row);
                           
