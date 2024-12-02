@@ -133,7 +133,7 @@
                             
                             <br>
                             <h4>Student List</h4>
-                            <div class="pdf" style="display: none;" ><a class="btn btn-success" onclick="generate_pdf(event)" >PDF</a><br><p><b>Note:1 and 100, or 'AB' for absent</b></p></div>
+                            <div class="pdf" style="display: none;" ><a class="btn btn-success" onclick="generate_pdf(event)" >PDF</a><br><p><b>Note:0 and 100, or 'AB' for absent</b></p></div>
                             <table id="studentTable" class="table">
                                 <thead>
                                     <tr>
@@ -344,8 +344,10 @@
                                 '<td>'+
                                 '<input type="hidden" name="student_id[]" value="' + (student.id ? student.id : '') + '" />'+
                                 '<input type="text" name="marks[]" value="' + (student.marks || '') + '" ' +
-                                'title="Enter a valid mark between 00 and ' + totalmark + ', or AB for absent" ' +
-                                'max="' + totalmark + '" min="0" class="marks-input" />';
+                                'oninput="validateMarks(this)" ' +
+                                'min="0" max="' + totalmark + '"'+
+                                'title="Enter a valid mark between 0 and ' + totalmark + ', or AB for absent" class="marks-input" />' +
+                                '</td>' +
                                 '</tr>';
                             $('#studentTable tbody').append(row);
                           
@@ -360,5 +362,23 @@
             });
         }
     });
+
+    function validateMarks(input) {
+        
+    const maxMarks = parseFloat(input.getAttribute('max')); // Retrieve max value from the input
+    const value = input.value.trim().toUpperCase();
+    if (value === 'AB') {
+        input.setCustomValidity(''); // Clear any previous error for 'AB'
+        return;
+    }
+
+    const numericValue = parseFloat(value);
+
+    if (!/^\d+$/.test(value) || numericValue < 0 || numericValue > maxMarks) {
+        input.setCustomValidity('Invalid marks. Must be between 0 and ' + maxMarks + ', or AB.');
+    } else {
+        input.setCustomValidity(''); // Clear validation if valid
+    }
+}
 
 </script>
