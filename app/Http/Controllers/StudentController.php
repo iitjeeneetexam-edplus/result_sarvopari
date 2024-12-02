@@ -415,6 +415,7 @@ class StudentController extends Controller
                                 'division.division_name',
                             )->get();
                             $data=[];
+                            // echo "<pre>";print_r($studentDta);exit;
                     foreach($studentDta as $value){
                         $examDta = Exam::whereIn('standard_id', explode(',',$value['standard_id']))->whereIn('id', explode(',',$exam_id))->get();
                         $exam= [];
@@ -424,6 +425,7 @@ class StudentController extends Controller
                                                     ->leftJoin('standards', 'standards.id', '=', 'division.standard_id')
                                                     ->leftJoin('subjects', 'subjects.standard_id', '=', 'standards.id')
                                                     ->where('students.id', explode(',', $value->id))
+                                                    ->whereIn('subjects.standard_id', explode(',',$value['standard_id']))
                                                     ->where('subjects.is_optional','0')
                                                     ->select(
                                                         'subjects.subject_name',
@@ -437,6 +439,7 @@ class StudentController extends Controller
                                                 $subjectDta2 = Subject::leftJoin('subject_subs', 'subject_subs.subject_id', '=', 'subjects.id')
                                                     ->leftJoin('student_subjects', 'student_subjects.subject_id', '=', 'subject_subs.id')
                                                     ->where('subjects.is_optional','1')
+                                                    ->whereIn('subjects.standard_id', explode(',',$value['standard_id']))
                                                     ->where('student_subjects.student_id', $value->id)
                                                     ->select(
                                                         'subject_subs.subject_name',
@@ -448,6 +451,7 @@ class StudentController extends Controller
                                                     ->toArray(); 
 
                                                 $get_subject_Data = array_merge($subjectDta1, $subjectDta2);
+                                                
                                         $subject_Data =[];    
                                     foreach ($get_subject_Data as $subject_value) {
                                         
@@ -504,6 +508,7 @@ class StudentController extends Controller
                                         'subject_Data' => $subject_Data,
                                     ];
                                 }
+                                // echo "hi".$request->session()->get('school_id');exit;
                                 $getpergracmark = Performance_grace_Model::where('school_id',$request->session()->get('school_id'))->first();
                                 // echo"<pre>";print_r($getpergracmark);exit;
                                 $data[]=[
@@ -550,7 +555,7 @@ class StudentController extends Controller
         
     }
     public function performance_grace(Request $request){
-        $performance=Performance_grace_Model::first();
+        $performance=Performance_grace_Model::where('school_id',$request->session()->get('school_id'))->first();
         // echo "<pre>";print_r($performance);exit;
         return view('mark.performance_grace',compact('performance'));
     }
