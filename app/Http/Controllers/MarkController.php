@@ -183,7 +183,7 @@ class MarkController extends Controller
         
         $markIds = $request->input('mark_id');
         $marks = $request->input('marks');
-
+        
         $filteredMarkIds = array_filter($markIds, function($value) {
             return !empty($value);
         });
@@ -195,7 +195,8 @@ class MarkController extends Controller
                 if ($mark) {
                     $mark->marks = $marks[$index];
                     $mark->save();
-                    
+                }else{
+                    Marks::create([]);
                 }
             }
             return 1;
