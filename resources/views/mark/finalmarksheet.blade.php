@@ -177,6 +177,11 @@
                             $("#validationErrors").html(errors);
                             return;
                         }
+
+                        var exam_id = [];
+                            $('input[type="checkbox"]:checked').each(function () {
+                                exam_id.push($(this).val());
+                            });
                             $.ajax({
                                 url: '/students/getfinalstudent',
                                 type: 'POST',
@@ -196,7 +201,13 @@
                                         var studentRow = `<tr class="student-row" data-id="${value.id}">
                                             <td><input type="checkbox" class="student-checkbox" data-id="${value.id}"></td>
                                             <td>${value.name}</td>
-                                            <td><a href="${baseUrl}/${value.id}" class="btn btn-warning">View</a></td>
+                                            <td>
+                                             <form action="${baseUrl}" method="post">
+                                             @csrf
+                                               <input type="hidden" value="${value.id}" name="id">
+                                               <input type="hidden" value="${exam_id}" name="exam_id">
+                                               <input type="submit" name="submit" value="View" class="btn btn-success">
+                                             </form>
                                         </tr>`;
 
 

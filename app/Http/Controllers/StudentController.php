@@ -398,7 +398,9 @@ class StudentController extends Controller
         }
         return response()->json($subdl);
     }
-    public function sidhi_gun(Request $request,$id){
+    public function sidhi_gun(Request $request){
+        $id= $request->input('id');
+        $exam_id = $request->input('exam_id');
         $studentDta=Student::leftjoin('division','division.id','=','students.division_id')
                             ->leftjoin('standards','standards.id','=','division.standard_id')
                             ->leftjoin('schools','schools.id','=','standards.school_id')
@@ -414,7 +416,7 @@ class StudentController extends Controller
                             )->get();
                             $data=[];
                     foreach($studentDta as $value){
-                        $examDta = Exam::whereIn('standard_id', explode(',',$value['standard_id']))->get();
+                        $examDta = Exam::whereIn('standard_id', explode(',',$value['standard_id']))->whereIn('id', explode(',',$exam_id))->get();
                         $exam= [];
 
                         foreach ($examDta as $exam_value) {
@@ -526,6 +528,7 @@ class StudentController extends Controller
                                 ];
                                     
                             }
+                        //   echo "<pre>";print_r($data);exit;  
        return view('mark.sidhi_gun', compact('data'));
     }
 
