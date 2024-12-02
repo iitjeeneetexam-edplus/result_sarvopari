@@ -102,14 +102,17 @@ class StudentController extends Controller
 
         $query = Student::with('division:id,division_name')
         ->leftJoin('marks', 'marks.student_id', '=', 'students.id')
-        ->leftJoin('subjects as s1', function ($join) {
+        ->leftJoin('subjects as s1', function ($join) use ($exam_id) {
             $join->on('s1.id', '=', 'marks.subject_id')
-                ->where('marks.is_optional', '0');
+                ->where('marks.is_optional', '=', 0)
+                ->where('marks.exam_id', '=', $exam_id); 
         })
-        ->leftJoin('subject_subs as s2', function ($join) {
+        ->leftJoin('subject_subs as s2', function ($join) use ($exam_id) {
             $join->on('s2.id', '=', 'marks.subject_id')
-                ->where('marks.is_optional', '1');
+                ->where('marks.is_optional', '=', 1)
+                ->where('marks.exam_id', '=', $exam_id);
         })
+        
         ->where('students.division_id', $divisionId)
         ->where('marks.exam_id', $exam_id) 
         ->select(
