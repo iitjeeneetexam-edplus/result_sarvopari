@@ -43,7 +43,7 @@ class MarkController extends Controller
      */
     public function store(Request $request)
     {
-         echo "<pre>";print_r($request->all());exit;
+        // echo "<pre>";print_r($request->all());exit;
         //DB::beginTransaction();
         $request->validate([
             'school_id' => 'required|exists:schools,id',
@@ -84,7 +84,7 @@ class MarkController extends Controller
                                 'is_optional' => $is_optional,
                                 'total_marks' => $request->input('total_marks'),
                                 'passing_marks' => $request->input('passing_marks'),
-                                'marks' => !empty($marks[$i]) ? $marks[$i] : '',
+                                'marks' =>  $marks[$i],
                             ]);
                         } else {
                             Marks::create([
@@ -94,13 +94,13 @@ class MarkController extends Controller
                                 'is_optional' => $is_optional,
                                 'total_marks' => $request->input('total_marks'),
                                 'passing_marks' => $request->input('passing_marks'),
-                                'marks' => !empty($marks[$i]) ? $marks[$i] : '',
+                                'marks' => $marks[$i],
                             ]);
                         }
                         
                 }                
             }
-            // return redirect()->route('marks.create')->with('success', 'Marks added successfully.');
+            return redirect()->route('marks.create')->with('success', 'Marks added successfully.');
             //DB::commit();
         }catch(Exception $e){
             return redirect()->route('marks.create')->with('fail', $e);
