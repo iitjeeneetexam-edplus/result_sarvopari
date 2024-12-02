@@ -238,7 +238,7 @@
                 <tfoot>
                     <tr>
                         <td style="font-weight: bold;">Total Obtain Marks</td>
-                        <td colspan="{{ count($student_value['exam'])}}">{{$maintotalMarks}}</td>
+                        <td colspan="{{ count($student_value['exam'])}}"></td>
                         <td style="font-weight: bold;">{{$mainobtainmarks}}</td>
                         <td style="font-weight: bold;">{{$maintotalobtn}}</td>
                         <td style="font-weight: bold;">
@@ -255,7 +255,12 @@
         </table>
 
                 @endforeach
-                    <button class="btn btn-success mb-3" style="float:right">Submit</button>
+
+                @if($finalTotal < $nedadorno || $pasorfl == 0 )  
+                <button class="btn btn-success mb-3" style="float:right">Submit</button>
+                 @else  
+                 <button class="btn btn-success mb-3" style="float:right" disabled>Submit</button> @endif
+                   
                     </form> 
                     </div>
                 </div>
