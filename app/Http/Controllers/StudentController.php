@@ -158,6 +158,7 @@ class StudentController extends Controller
         $total_marks = Subject::leftjoin('marks','marks.subject_id','=','subjects.id')
                             ->leftjoin('subject_subs','subject_subs.subject_id','=','subjects.id')
                             ->where('standard_id', $standardId)
+                            ->where('marks.exam_id', $exam_id)
                             ->pluck('marks.total_marks','subjects.subject_name');
         // $total_marks = Marks::where('exam_id', $exam_id)
         //       ->select('subject_id', 'total_marks') // Select only the needed columns
@@ -427,8 +428,6 @@ class StudentController extends Controller
                                                     ->where('students.id', explode(',', $value->id))
                                                     ->whereIn('subjects.standard_id', explode(',',$value['standard_id']))
                                                     ->where('subjects.is_optional','0')
-                                                    ->whereNull('subjects.deleted_at')
-
                                                     ->select(
                                                         'subjects.subject_name',
                                                         'subjects.is_optional',
@@ -443,8 +442,6 @@ class StudentController extends Controller
                                                     ->where('subjects.is_optional','1')
                                                     ->whereIn('subjects.standard_id', explode(',',$value['standard_id']))
                                                     ->where('student_subjects.student_id', $value->id)
-                                                    ->whereNull('subject_subs.deleted_at')
-
                                                     ->select(
                                                         'subject_subs.subject_name',
                                                         'subjects.is_optional',

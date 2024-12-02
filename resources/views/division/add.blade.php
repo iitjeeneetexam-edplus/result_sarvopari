@@ -57,7 +57,7 @@
                                 </a>
                             </div>
                            
-                    <button type="submit" class="btn btn-primary">Add Division</button>
+                    <button type="submit" class="btn btn-success">Add Division</button>
                     <a href="{{ route('standards.index') }}" class="btn btn-secondary " style="float:right">Back to Create Division</a>
                 </form>
             </div>
