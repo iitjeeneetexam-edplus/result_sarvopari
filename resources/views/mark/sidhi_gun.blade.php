@@ -31,8 +31,8 @@
                         <th style="background-color: #f0f0f0;" >{{$exam_value['exam_name']}}</th>
                         @endforeach
                         @endif
-                        <th style="background-color: #f0f0f0;" >Total Marks</th>
                         <th style="background-color: #f0f0f0;" >Obtain Marks</th>
+                        <th style="background-color: #f0f0f0;" >Out of 100</th>
                         <th style="background-color: #f0f0f0;" >Passing Mark</th>
                         <th style="background-color: #f0f0f0;" >Performance</th>
                         <th style="background-color: #f0f0f0;" >Grace</th>
