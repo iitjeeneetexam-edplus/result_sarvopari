@@ -243,11 +243,11 @@
                                
                                     $('#studentdata thead tr').empty();
                                     $('.button-div').show();   
-                                    $('#studentdata thead tr').append('<th style="width:49px;"><input type="checkbox" id="selectAll">&nbsp;&nbsp;&nbsp;&nbsp;</th>');
+                                    $('#studentdata thead tr').append('<th style="width:49px;"><input type="checkbox" id="selectAllstd">&nbsp;&nbsp;&nbsp;&nbsp;</th>');
                                     
                                     $('#studentdata thead tr').append('<th style="width:375px">Student Name</th>');
                                     $('#studentdata thead tr').append('<th style="width:49px;">Action</th>');
-                                    $('#selectAll').on('click', function() {
+                                    $('#selectAllstd').on('click', function() {
                                             var isChecked = this.checked;
                                             $('.student-checkbox').prop('checked', isChecked);
                                         });
@@ -255,9 +255,9 @@
                                         // Individual Student Checkbox Click
                                         $('#studentdata').on('click', '.student-checkbox', function() {
                                             if ($('.student-checkbox:checked').length === $('.student-checkbox').length) {
-                                                $('#selectAll').prop('checked', true);
+                                                $('#selectAllstd').prop('checked', true);
                                             } else {
-                                                $('#selectAll').prop('checked', false);
+                                                $('#selectAllstd').prop('checked', false);
                                             }
                                         });
                                   
