@@ -84,7 +84,8 @@ class MarkController extends Controller
                                 'is_optional' => $is_optional,
                                 'total_marks' => $request->input('total_marks'),
                                 'passing_marks' => $request->input('passing_marks'),
-                                'marks' =>  $marks[$i],
+                                'marks' => (isset($marks[$i]) && ($marks[$i] !== '' || $marks[$i] === '0')) ? $marks[$i] : '',
+
                             ]);
                         } else {
                             Marks::create([
@@ -94,19 +95,15 @@ class MarkController extends Controller
                                 'is_optional' => $is_optional,
                                 'total_marks' => $request->input('total_marks'),
                                 'passing_marks' => $request->input('passing_marks'),
-                                'marks' => $marks[$i],
+                                'marks' => (isset($marks[$i]) && ($marks[$i] !== '' || $marks[$i] === '0')) ? $marks[$i] : '',
                             ]);
                         }
                         
                 }                
             }
             return redirect()->route('marks.create')->with('success', 'Marks added successfully.');
-            //DB::commit();
         }catch(Exception $e){
             return redirect()->route('marks.create')->with('fail', $e);
-            //DB::rollBack();
-            //Log::error('Marks add Error: ' . $e->getMessage());
-            // return back()->with('error', 'Error during Marks add.');
         }
     }
 
