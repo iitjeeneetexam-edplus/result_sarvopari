@@ -254,21 +254,18 @@
                                         var totalmarks = data.total_marks;
 
                                         $.each(totalmarks, function(subjectName, marks) {
-    marks = marks === null ? "" : marks; // Handle null marks
+                                            marks = marks === null ? "" : marks; 
 
-    // Check if subjectName contains multiple subjects separated by commas
-    let subjects = subjectName.split(','); // Split the string by commas
+                                            let subjects = subjectName.split(','); 
 
-    // Loop through each subject in the exploded array
-    $.each(subjects, function(index, subject) {
-        subject = subject.trim(); // Trim whitespace around the subject
+                                            $.each(subjects, function(index, subject) {
+                                                subject = subject.trim(); 
 
-        // Append each subject individually to the table
-        $('#studentdata thead tr').append(
-            '<th>' + subject + '<center><br> (' + marks + ')</center></th>'
-        );
-    });
-});
+                                                $('#studentdata thead tr').append(
+                                                    '<th>' + subject + '<center><br> (' + marks + ')</center></th>'
+                                                );
+                                            });
+                                        });
                                     }
                                     $('#studentdata thead tr').append('<th><center>Action</center></th>');
                                 },
