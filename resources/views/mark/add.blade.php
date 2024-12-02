@@ -364,8 +364,8 @@
     });
 
     function validateMarks(input) {
-        
-    const maxMarks = parseFloat(input.getAttribute('max')); // Retrieve max value from the input
+       //$maxvl =  $('#total_marks').val();
+    const maxMarks = parseFloat($('#total_marks').val()); // Retrieve max value from the input
     const value = input.value.trim().toUpperCase();
     if (value === 'AB') {
         input.setCustomValidity(''); // Clear any previous error for 'AB'
