@@ -41,7 +41,7 @@
                                     <!-- <select name="exam_id[]" id="exam" class="form-control" multiple>
                                     </select> -->
                                     <div id="examd" class="form-control checkbox-container">
-
+                                
                                     </div>
                                 </div>
 
@@ -121,11 +121,33 @@
                                     },
 
                                     success: function(data) {
+                                        let selectAllCheckbox = document.createElement('input');
+                                        selectAllCheckbox.type = 'checkbox';
+                                        selectAllCheckbox.className = 'form-check-input';
+                                        selectAllCheckbox.id = 'selectAll';
+
+                                        let selectAllLabel = document.createElement('label');
+                                        selectAllLabel.className = 'form-check-label';
+                                        selectAllLabel.htmlFor = 'selectAll';
+                                        selectAllLabel.innerText = 'Select All';
+
+                                        // Append the checkbox and label to a container
+                                        let container = document.getElementById('examd'); // Replace with your container ID
+                                        container.appendChild(selectAllCheckbox);
+                                        container.appendChild(selectAllLabel);
                                         $.each(data, function(key, value) {
+                                            
                                             $('#examd').append('<div class="form-check">' +
                                                 '<input class="form-check-input" type="checkbox" name="exam_id[]" id="exam" value="' + value.id + '">' +
                                                 '<label class="form-check-label" for="exam_' + value.id + '">' + value.exam_name + '</label>' +
                                             '</div>');
+                                        });
+                                        // Dynamically create the "Select All" checkbox
+
+
+                                        $('#selectAll').on('change', function () {
+                                            const isChecked = $(this).is(':checked');
+                                            $('input[name="exam_id[]"]').prop('checked', isChecked);
                                         });
                                     }
                                 });
