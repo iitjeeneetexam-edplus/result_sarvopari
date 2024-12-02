@@ -43,7 +43,7 @@ class MarkController extends Controller
      */
     public function store(Request $request)
     {
-        //  print_r($request->all());exit;
+         echo "<pre>";print_r($request->all());exit;
         //DB::beginTransaction();
         $request->validate([
             'school_id' => 'required|exists:schools,id',
@@ -73,9 +73,10 @@ class MarkController extends Controller
                     ->where('subject_id',$subjectid)
                     ->where('exam_id',$request->input('exam_id'))
                     ->where('is_optional',$is_optional)->value('id');
-                    
+                   
 
                         if (!empty($markId)) {
+                            
                             Marks::where('id', $markId)->update([
                                 'student_id' => $studentId,
                                 'subject_id' => $subjectid,
@@ -99,7 +100,7 @@ class MarkController extends Controller
                         
                 }                
             }
-            return redirect()->route('marks.create')->with('success', 'Marks added successfully.');
+            // return redirect()->route('marks.create')->with('success', 'Marks added successfully.');
             //DB::commit();
         }catch(Exception $e){
             return redirect()->route('marks.create')->with('fail', $e);

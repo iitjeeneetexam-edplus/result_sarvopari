@@ -344,9 +344,10 @@
                                 '<td>' + student.name + '</td>' +
                                 '<td>'+
                                 '<input type="text" name="marks[]" value="' + (student.marks ? student.marks : '') + '" ' +
-                                'pattern="^(00|[1-9]?[0-9]|' + totalmark + '|AB)$" ' +
-                                'title="Enter a valid mark between 00 and ' + totalmark + ', or AB for absent" ' +
-                                'max="' + totalmark + '" min="0" class="marks-input" />' +
+'pattern="^(00|[1-9]?[0-9]|' + totalmark + '|AB)$" ' +
+'title="Enter a valid mark between 00 and ' + totalmark + ', or AB for absent" ' +
+'max="' + totalmark + '" min="0" class="marks-input" />'
+
                                 '<input type="hidden" name="student_id[]" value="' + student.id + '" /></td>'+
                                 '</tr>';
                             $('#studentTable tbody').append(row);
