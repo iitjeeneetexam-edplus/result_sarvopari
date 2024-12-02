@@ -111,7 +111,7 @@
                                     </div>
                                     <div class="row">
                                     <div class="col-md-10 offset-md-2">
-                                <input type="text" name="total_marks" id="total_marks" class="form-control" value="{{ old('total_marks') }}" placeholder="Enter Total Marks" require>
+                                <input type="text" name="total_marks" id="total_marks" class="form-control" value="{{ old('total_marks') }}" onkeyup="totalmarksvi()" placeholder="Enter Total Marks" require>
                                 @error('total_marks')
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
@@ -133,7 +133,7 @@
                             
                             <br>
                             <h4>Student List</h4>
-                            <div class="pdf" style="display: none;" ><a class="btn btn-success" onclick="generate_pdf(event)" >PDF</a><br><p><b>Note:0 and 100, or 'AB' for absent</b></p></div>
+                            <div class="pdf" style="display: none;" ><a class="btn btn-success" onclick="generate_pdf(event)" >PDF</a><br><p><b>Note:0 and <b id="note"></b>, or 'AB' for absent</b></p></div>
                             <table id="studentTable" class="table">
                                 <thead>
                                     <tr>
@@ -337,6 +337,7 @@
                         $.each(data.students, function(index, student) {
                         $('#total_marks').val(student.total_marks);
                         $('#passing_marks').val(student.passing_marks);
+                        totalmarksvi();
                         let totalmark = parseFloat($('#total_marks').val());
                             let row = '<tr>' +
                                 '<td>' + student.roll_no + '</td>' +
@@ -381,4 +382,8 @@
     }
 }
 
+function totalmarksvi(){
+   var total_marks =  $('#total_marks').val();
+   $('#note').html(total_marks);
+}
 </script>
