@@ -427,6 +427,8 @@ class StudentController extends Controller
                                                     ->where('students.id', explode(',', $value->id))
                                                     ->whereIn('subjects.standard_id', explode(',',$value['standard_id']))
                                                     ->where('subjects.is_optional','0')
+                                                    ->whereNull('subjects.deleted_at')
+
                                                     ->select(
                                                         'subjects.subject_name',
                                                         'subjects.is_optional',
@@ -441,6 +443,8 @@ class StudentController extends Controller
                                                     ->where('subjects.is_optional','1')
                                                     ->whereIn('subjects.standard_id', explode(',',$value['standard_id']))
                                                     ->where('student_subjects.student_id', $value->id)
+                                                    ->whereNull('subject_subs.deleted_at')
+
                                                     ->select(
                                                         'subject_subs.subject_name',
                                                         'subjects.is_optional',
