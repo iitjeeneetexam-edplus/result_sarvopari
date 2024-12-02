@@ -195,8 +195,7 @@ class MarkController extends Controller
                 if ($mark) {
                     $mark->marks = $marks[$index];
                     $mark->save();
-                }else{
-                    Marks::create([]);
+                    
                 }
             }
             return 1;

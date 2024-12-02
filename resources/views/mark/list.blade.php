@@ -343,13 +343,12 @@
                                             editRow += `<input type="hidden" class="form-control" value="${main_subject_ids_get[mainIndex]}" name="main_subject_id[]">`;
                                             mainIndex++;
                                         }
-                                        editRow +=`<input type="hidden"  style="width:150px; justify-self:center" class="form-control" value="${is_optional[index]}" name="is_optional[]" />`;
+                                         editRow +=`<input type="hidden"  style="width:150px; justify-self:center" class="form-control" value="${is_optional[index]}" name="is_optional[]" />`;
                                         editRow += `<input type="hidden"  style="width:150px; justify-self:center" class="form-control" value="${mark_id[index]}" name="marks_id[]" />`;
-                                        editRow +=`<input type="hidden"  style="width:150px; justify-self:center" class="form-control" value="${studentId}" name="student_id" />`;
                                         editRow += `<td>`;
-                                        //if (cellText != '') {
-                                           editRow += `<input type="text" id="myTextbox"  style="width:150px; justify-self:center" class="form-control" value="${cellText}" name="marks[]" />`;
-                                        //} 
+                                        if (cellText != '') {
+                                            editRow += `<input type="text" id="myTextbox"  style="width:150px; justify-self:center" class="form-control" value="${cellText}" name="marks[]" />`;
+                                        } 
                                         // else {
                                         //     editRow += `<input type="text" id="myTextbox" style="width:150px; justify-self:center" class="form-control" name="marks[]" />`;
                                         // }
@@ -419,26 +418,9 @@
                                     let mark_id = $('input[name="marks_id[]"]').map(function() {
                                         return $(this).val();
                                     }).get();
-                                    let is_optional = $('input[name="is_optional[]"]').map(function() {
-                                        return $(this).val();
-                                    }).get();                                    
-                                    let optional_subject_id = $('input[name="optional_subject_id[]"]').map(function() {
-                                        return $(this).val();
-                                    }).get();
-                                    let main_subject_id = $('input[name="main_subject_id[]"]').map(function() {
-                                        return $(this).val();
-                                    }).get();
-                                    let student_id = $('input[name="student_id"]').map(function() {
-                                        return $(this).val();
-                                    }).get();
-                                    
                                     let formData = {
                                         'mark_id[]': mark_id,
                                         'marks[]': marks,
-                                        'is_optional[]':is_optional,
-                                        'optional_subject_id[]':optional_subject_id,
-                                        'main_subject_id[]':main_subject_id,
-                                        'student_id':student_id
                                     };
                                     $.ajax({
                                         url: '/marks/update', 
