@@ -159,8 +159,8 @@
                                            
                                            
                                             @if($ned)
-                                           <input type="text" name="performance[]" id="performance_mark_label_hidden{{$subject_value['subject_id']}}" value="{{$performmark}}">  
-                                           <label id="performance_mark_label{{$subject_value['subject_id']}}" readonly disabled  >{{$performmark}}<label> 
+                                           <input type="text" name="performance[]" id="performance_mark_label_hidden{{$subject_value['subject_id']}}" value="{{$performm}}">  
+                                           <!-- <label id="performance_mark_label{{$subject_value['subject_id']}}" readonly disabled  >{{$performmark}}<label>  -->
                                            @else
                                            <input type="hidden" name="performance[]" value="0"  class="form-control">                                           
                                            @endif
@@ -181,12 +181,13 @@
                                              <div style="display: none;" id="form_show{{$subject_value['subject_id']}}">
                                              <div class="d-flex subject-grace" id="subject{{$subject_value['subject_id']}}">
                                              @if($ned)
+                                              <div class="d-flex grace-disable{{$subject_value['subject_id']}}">
                                                 <input type="number"min="0" 
                step="1" 
                oninput="this.value = this.value.replace(/[^0-9]/g, '')"  name="grace[]" id="grace_input{{$subject_value['subject_id']}}" value=""  class="form-control grace-input">
                                                 &nbsp;&nbsp;
                                                 <button type="button" class="btn btn-success submit_grace" data-subject-id="{{$subject_value['subject_id']}}">Submit</button>
-                                                </div
+                                              </div></div
                                              >
                                              <p id="result{{$subject_value['subject_id']}}"></p>
 
@@ -275,47 +276,9 @@
     
 </script>
 <script>
-$(document).ready(function () {
+
 //grace calculation code
-    $(document).ready(function() {
-    const graceLimit = 10; // Set the maximum allowed sum
-    let currentTotal = 0; // Track the current sum
-
-    const totalAssign =performance+grace_get;
- const TotalNeeded = parseFloat($('#total_need_mark').val()) || 0;
- if(TotalNeeded < totalAssign)
-    {
-        let previousResult  = performance; 
-        let finalResult = previousResult; 
-        const subjectId = $(this).data('subject-id');
-    }
-    });
-    $(".grace-input").on("input", function() {
-        
-        currentTotal = 0;
-        $(".grace-input").each(function() {
-            const value = parseInt($(this).val()) || 0; 
-            currentTotal += value;
-        });
-
-        
-        if (currentTotal >= graceLimit) {
-            $(".grace-input").each(function() {
-                if (!$(this).val()) {
-                    $(this).prop("disabled", true); 
-                }
-            });
-        } else {
-            $(".grace-input").prop("disabled", false); 
-        }
-
-
-
-    });
-});
-
-
-
+    
 
 
 
@@ -437,14 +400,14 @@ $(document).ready(function () {
 
        
 
-
+        // console.log(TotalNeeded+"<"+totalAssign);
         if(totalAssign < TotalNeeded) 
         {
           
         }
-        else if(TotalNeeded < totalAssign)
+        else if(TotalNeeded <= totalAssign)
         {
-           
+          
             let previousResult  = performance; 
             let graceresult2 = grace_get;
             let finalResult = previousResult; 
@@ -470,10 +433,11 @@ $(document).ready(function () {
             });  
                 finalResult = previousResult;
                 $('input[id^="performance_mark_label_hidden"]').each(function (index) {
+                   
                 const currentInputHidden = $(this); 
                 const performanceMarkInput = $('input[id^="performance_mark"]').eq(index); 
                 const nedValue = parseFloat(performanceMarkInput.val()) || 0; 
-                
+               
                
                 if (index === 0) {
                     previousResult2 = performance - nedValue; 
@@ -490,7 +454,7 @@ $(document).ready(function () {
                     }
                 }
             });
-
+           
                 finalResult = previousResult2; 
 
                 $('input[id^="grace_input"]').each(function (index) {
@@ -544,4 +508,94 @@ $(document).ready(function () {
             
             $('#grade_display_' + subjectId).text(grade);
     }
+
+
+    $(document).ready(function() {
+    const graceLimit = 10; // Set the maximum allowed sum
+    let currentTotal = 0; // Track the current sum
+
+    const totalAssign =performance+grace_get;
+    const TotalNeeded = parseFloat($('#total_need_mark').val()) || 0;
+    if(TotalNeeded < totalAssign)
+    {
+        // let previousResult  = performance; 
+        // let finalResult = previousResult; 
+        // const subjectId = $(this).data('subject-id');
+    }
+    
+    function updateGraceInputs() {
+        let currentTotal = 0;
+        $(".grace-input").each(function () {
+            const value = parseInt($(this).val()) || 0;
+            currentTotal += value;
+        });
+
+        if (currentTotal >= graceLimit) {
+            const subjectInputs = document.querySelectorAll('.grace-input');
+
+    subjectInputs.forEach(input => {
+        input.addEventListener("input", function () {
+            const subjectId = this.id.replace('grace_input', ''); // Extract subject ID from the ID
+            const submitButton = document.querySelector(`.submit_grace[data-subject-id="${subjectId}"]`);
+
+            // If the input value is empty, disable the button
+            if (!this.value.trim()) {
+                submitButton.disabled = true;
+            } else {
+                submitButton.disabled = false;
+            }
+        });
+    });
+
+    // On page load, disable all buttons where inputs are empty
+    subjectInputs.forEach(input => {
+        const subjectId = input.id.replace('grace_input', '');
+        const submitButton = document.querySelector(`.submit_grace[data-subject-id="${subjectId}"]`);
+
+        if (!input.value.trim()) {
+            submitButton.disabled = true;
+        }
+    });
+            
+            
+        } else {
+            const subjectInputs = document.querySelectorAll('.grace-input');
+
+subjectInputs.forEach(input => {
+    input.addEventListener("input", function () {
+        const subjectId = this.id.replace('grace_input', ''); // Extract subject ID from the ID
+        const submitButton = document.querySelector(`.submit_grace[data-subject-id="${subjectId}"]`);
+
+        // If the input value is empty, disable the button
+        if (!this.value.trim()) {
+            submitButton.disabled = true;
+        } else {
+            submitButton.disabled = false;
+        }
+    });
+});
+
+// On page load, disable all buttons where inputs are empty
+subjectInputs.forEach(input => {
+    const subjectId = input.id.replace('grace_input', '');
+    const submitButton = document.querySelector(`.submit_grace[data-subject-id="${subjectId}"]`);
+
+    if (!input.value.trim()) {
+        submitButton.disabled = true;
+    }
+});
+        }
+    }
+
+    // Bind the event listener for input
+    $(".grace-input").on("input", function () {
+        updateGraceInputs();
+    });
+
+    // Call the function on page load
+    updateGraceInputs();
+});
+
+
+
 </Script>
