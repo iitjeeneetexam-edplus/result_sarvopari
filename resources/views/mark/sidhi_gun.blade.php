@@ -159,7 +159,7 @@
                                            
                                            
                                             @if($ned)
-                                           <input type="text" name="performance[]" id="performance_mark_label_hidden{{$subject_value['subject_id']}}" value="{{$performm}}">  
+                                           <input type="text" name="performance[]" id="performance_mark_label_hidden{{$subject_value['subject_id']}}" value="{{(!empty($performmark))?$performmark:''}}">  
                                            <!-- <label id="performance_mark_label{{$subject_value['subject_id']}}" readonly disabled  >{{$performmark}}<label>  -->
                                            @else
                                            <input type="hidden" name="performance[]" value="0"  class="form-control">                                           
@@ -359,6 +359,7 @@
 </script>
 <Script>
     $(document).ready(function () {
+      
        
         const performance = parseFloat($('#perform_get').val()) || 0; 
         const grace_get = parseFloat($('#grace_get').val()) || 0; 
@@ -407,7 +408,7 @@
         }
         else if(TotalNeeded <= totalAssign)
         {
-          
+            // console.log("hi"); 
             let previousResult  = performance; 
             let previousResult2  = performance; 
             let graceresult2 = grace_get;
@@ -415,9 +416,10 @@
             let finalResult2 = previousResult2; 
             const subjectId = $(this).data('subject-id');
              $('input[id^="performance_mark"]').each(function (index) {
-                const currentInput = $(this); 
+                const currentInput = $(this);
+                
                 const nedValue = parseFloat(currentInput.val()) || 0; 
-                   
+               
                 if (index === 0 ) {
                     previousResult = performance - nedValue;
                     currentInput.val(nedValue);
@@ -438,9 +440,17 @@
                 const currentInputHidden = $(this); 
                 const performanceMarks = document.querySelectorAll('input[name="performance_mark[]"]');
                 
-                const nedValue2 = parseFloat(performanceMarks[index].value) || 0; // Get the value for performance_mark from the current index
+                const nedValue2 = parseFloat(performanceMarks[index].value) || 0; 
                 
+                
+                // $('input[id^="grace_input"]').each(function(index) {
+                // const grace_input = $(this); 
+                // const performanceMarks = document.querySelectorAll('input[name="performance_mark[]"]');
+                
+                // const nedValue2 = parseFloat(performanceMarks[index].value) || 0; 
+                // console.log(performance+""+nedValue2);
                 if (index === 0) {
+                    
                     if(performance>nedValue2){
                         previousResult2 = performance - nedValue2; 
                         currentInputHidden.val(nedValue2);
@@ -454,13 +464,20 @@
                         return; 
                     } else {
                         const initialPreviousResult = previousResult2;
-                        const calculatedResult = Math.abs(previousResult2 - nedValue2); 
+                        const calculatedResult = Math.abs(previousResult2 - nedValue2);
+                        if(previousResult2<nedValue2){
+                            currentInputHidden.val(previousResult2); 
+                            previousResult2 = calculatedResult;
+                        }else{
+                            currentInputHidden.val(nedValue2); 
+                            previousResult2 = calculatedResult;
+                        }
                         
-                        currentInputHidden.val(previousResult2); 
-                        previousResult2 = calculatedResult; 
                     }
                 }
-            });
+              
+        
+        });
                 finalResult2 = previousResult2; 
 
                 $('input[id^="grace_input"]').each(function (index) {
@@ -471,35 +488,61 @@
                 const performark = $('input[id^="performance_mark"]').eq(index); 
                 const performarkneed = parseFloat(performark.val()) || 0;
 
+
+
                 const performanceMarks = document.querySelectorAll('input[name="performance_mark[]"]');
                 
-                const nedValue2 = parseFloat(performanceMarks[index].value) || 0;
+                const nedValue2 = parseFloat(performanceMarks[index].value) || 0; 
+              
 
 
+
+                // $('input[id^="performance_mark"]').each(function (outerIndex) {
+                //     const currentInput = $(this).val();
+                //     const currentInput2 = $(`input[id^="performance_mark_label_hidden"]:eq(${outerIndex})`).val();
+                    //  console.log(`Comparing: ${currentInput2}`);
+               
+
+
+                // const performanceMarks = document.querySelectorAll('input[name="performance_mark[]"]');
+                
+                // const nedValue2 = parseFloat(performanceMarks[index].value) || 0;
+
+
+                
                 if(performarkneed!=nedValue)
                 {
                     
+                    
                     if (index === 0) {
-                    graceresult2 = grace_get - nedValue; 
+                    // graceresult2 = grace_get - nedValue; 
+                    graceresult2 = nedValue2 - nedValue; 
                     currentInputHidden.val(graceresult2); 
                     
                 
                 } else {
+                   
                     if (graceresult2 == null || graceresult2 === '') {
                         return; 
                     } else {
                         const initialPreviousResult = graceresult2;
-                        const calculatedResult = Math.abs(graceresult2 - nedValue); 
+                        // const calculatedResult = Math.abs(graceresult2 - nedValue); 
+                        // const calculatedResult = Math.abs(graceresult2 - nedValue); 
+                        const calculatedResult = Math.abs(nedValue2 - nedValue); 
                           
                         currentInputHidden.val(calculatedResult); 
                         graceresult2 = calculatedResult; 
                     }
+                    
                 }
+                    if(performarkneed==nedValue){
+                        currentInputHidden.val("");
+                    }
                 }
-                
-               
                 
             });
+                
+            
 
                 finalResult = graceresult2; 
 
