@@ -159,7 +159,7 @@
                                            
                                            
                                             @if($ned)
-                                           <input type="text" name="performance[]" id="performance_mark_label_hidden{{$subject_value['subject_id']}}" value="{{(!empty($performmark))?$performmark:''}}">  
+                                           <input type="text" name="performance[]" id="performance_mark_label_hidden{{$subject_value['subject_id']}}"  disabled>  
                                            <!-- <label id="performance_mark_label{{$subject_value['subject_id']}}" readonly disabled  >{{$performmark}}<label>  -->
                                            @else
                                            <input type="hidden" name="performance[]" value="0"  class="form-control">                                           
@@ -182,11 +182,17 @@
                                              <div class="d-flex subject-grace" id="subject{{$subject_value['subject_id']}}">
                                              @if($ned)
                                               <div class="d-flex grace-disable{{$subject_value['subject_id']}}">
-                                                <input type="number"min="0" 
-               step="1" 
-               oninput="this.value = this.value.replace(/[^0-9]/g, '')"  name="grace[]" id="grace_input{{$subject_value['subject_id']}}" value=""  class="form-control grace-input">
-                                                &nbsp;&nbsp;
-                                                <button type="button" class="btn btn-success submit_grace" data-subject-id="{{$subject_value['subject_id']}}">Submit</button>
+                                              <input 
+                                                    type="number" 
+                                                    min="0" 
+                                                    step="1" 
+                                                    oninput="this.value = this.value.replace(/[^0-9]/g, '')" 
+                                                    name="grace[]" 
+                                                    id="grace_input{{$subject_value['subject_id']}}" 
+                                                    onchange="handleKeyDown(this, {{$subject_value['subject_id']}},{{$ned}})" 
+
+                                                    class="form-control grace-input">
+                                                <!-- <button type="button" class="btn btn-success submit_grace" data-subject-id="{{$subject_value['subject_id']}}">Submit</button> -->
                                               </div></div
                                              >
                                              <p id="result{{$subject_value['subject_id']}}"></p>
@@ -273,160 +279,46 @@
 
 <script>
    
-    
-</script>
-<script>
-
-//grace calculation code
-    
-
-
-
-
-
-       
-    $(document).on('click', '.submit_grace', function (e) {
-        e.preventDefault();
-        
-        const subjectId = $(this).data('subject-id');
-        const graceMark = parseFloat($('#grace_get').val()) || 0; 
-        
-        const ned_mark = parseFloat($('#ned_mark'+ subjectId).val()) || 0; 
-        const performanceMark = parseFloat($('#performance_mark' + subjectId).val()) || 0; 
-        const graceInput = $('#grace_input' + subjectId).val(); 
-        const prc = $('#prc' + subjectId).val();
-        let totalGrace = 0;
-        const percn = (graceInput)+(prc);
-        const percentage = percn ? (percn / 100) * 100 : 0;
-            let grade = '';
-        
-            
-            
-        getgrade(percentage,grade,subjectId);
-
-        $('input[id^="grace_input"]').each(function() {
-            const graceInput = $(this).val(); 
-            totalGrace += parseFloat(graceInput) || 0;
-          
-        });
-         if(totalGrace > graceMark)
-         {
-            $('#grace_input'+subjectId).val(0);
-            Swal.fire({
-                icon: "error",
-                text: "Please enter a valid grace mark .",
-            });
-            return; 
-         }
-        
-
-        
-         if (graceMark === 0 || graceInput > graceMark) {
-            $('#grace_input'+subjectId).val(0);
-            Swal.fire({
-                icon: "error",
-                text: "Please enter a valid grace mark.",
-            });
-            return; 
-        }
-        if(ned_mark < graceInput){
-            Swal.fire({
-                icon: "error",
-                text: "Please enter a valid grace marks.maximum enter grace:-"+graceMark,
-            });
-            return; 
-        }
-         const remainingGrace = ned_mark - graceInput;
-         const updatedPerformanceMark = ned_mark - graceInput;
-        //  $('#grace_get').val(graceInput);
-        // $('#performance_mark_label'+subjectId).show();
-        // $('#performance_mark_label_hidden' + subjectId).val(updatedPerformanceMark).show();
-        // $('#performance_mark_label' + subjectId).text(updatedPerformanceMark).show();
-        $('#grace_input' + subjectId).text(2).show();
-      
-
-
-            Swal.fire({
-                icon: "success",
-                text: "Grace mark and performance mark updated successfully.",
-            });
-    });
-
+   $(document).ready(function () {
+    const graceMark = parseFloat($('#grace_get').val()) || 0; 
+    const perform_get = parseFloat($('#perform_get').val()) || 0; 
+    const total=graceMark+perform_get;
+    const requirement_mark = parseFloat($('#total_need_mark').val()) || 0;
    
+    if(requirement_mark <= perform_get){
+        autoset()
 
-
-
-</script>
-<Script>
-    $(document).ready(function () {
-      
-       
-        const performance = parseFloat($('#perform_get').val()) || 0; 
-        const grace_get = parseFloat($('#grace_get').val()) || 0; 
-        const totalAssign =performance+grace_get;
-        const TotalNeeded = parseFloat($('#total_need_mark').val()) || 0;
-        
-        
-        const total_need_mark = parseFloat($('#total_need_mark').val()) || 0; 
-            // Get all subject IDs
-        const subjectInputs = document.querySelectorAll('#subject_id');
-        const subjectIds = Array.from(subjectInputs).map(input => input.value);
-
-        // Get all performance values
-        const performanceInputs = document.querySelectorAll('input[name="performance[]"]');
-        const performances = Array.from(performanceInputs).map(input => input.value);
-
-        // Combine subject IDs and performances into a single array
-        const mergedArray = subjectIds.map((subjectId, index) => ({
-            subjectId: subjectId,
-            performance: performances[index]
-        }));
-
-        // Iterate over the merged array
-        mergedArray.forEach(item => {
-            const { subjectId, performance } = item;
-
-            // Show form based on some condition
-            if (total_need_mark <= totalAssign) {
-                $("#form_show" + subjectId).show();
-            }
-            const prc = $('#prc' + subjectId).val();
-            const percn = Number(performance) + Number(prc); // Ensure numeric addition
-            const percentage = percn ? (percn / 100) * 100 : 0;
-
-            let grade = '';
-            getgrade(percentage, grade,subjectId);
+    } 
+    else if(requirement_mark > total){
+        console.log('fail');
+    }
+    else if(requirement_mark > perform_get && requirement_mark <= total){
+        document.querySelectorAll('input[name="subject_id[]"]').forEach(function(input) {
+            const subjectId = input.value; 
+            
+            $("#form_show" + subjectId).show();// Log the value
         });
 
+        
 
-       
 
-        // console.log(TotalNeeded+"<"+totalAssign);
-        if(totalAssign < TotalNeeded) 
-        {
-          
-        }
-        else if(TotalNeeded <= totalAssign)
-        {
-            // console.log("hi"); 
-            let previousResult  = performance; 
-            let previousResult2  = performance; 
-            let graceresult2 = grace_get;
-            let finalResult = previousResult; 
-            let finalResult2 = previousResult2; 
-            const subjectId = $(this).data('subject-id');
-             $('input[id^="performance_mark"]').each(function (index) {
+        
+    }
+
+
+    function autoset(){
+        $('input[id^="performance_mark"]').each(function (index) {
                 const currentInput = $(this);
-                
                 const nedValue = parseFloat(currentInput.val()) || 0; 
-               
+                
                 if (index === 0 ) {
-                    if(performance<nedValue){
-                        previousResult = performance - nedValue;
+                    if(perform_get<nedValue){
+                        previousResult = perform_get - nedValue;
+                        
                         currentInput.val(performance);
             
                     }else{
-                        previousResult = performance - nedValue;
+                        previousResult = perform_get - nedValue;
                         currentInput.val(nedValue);
                     }
                 } else {
@@ -442,6 +334,8 @@
                 }  
             });  
                 finalResult = previousResult;
+
+
                 $('input[id^="performance_mark_label_hidden"]').each(function(index) {
                 const currentInputHidden = $(this); 
                 const performanceMarks = document.querySelectorAll('input[name="performance_mark[]"]');
@@ -485,180 +379,468 @@
         
         });
                 finalResult2 = previousResult2; 
+    }
 
-                $('input[id^="grace_input"]').each(function (index) {
-                      
-                const currentInputHidden = $(this); 
-                const performanceMarkInput = $('input[id^="performance_mark_label_hidden"]').eq(index); 
-                const nedValue = parseFloat(performanceMarkInput.val()) || 0; 
-                const performark = $('input[id^="performance_mark"]').eq(index); 
-                const performarkneed = parseFloat(performark.val()) || 0;
+  
+
+   });
+
+   function handleKeyDown(element,subject_id,need_mark) {
+    
+    const graceMark = parseFloat($('#grace_get').val()) || 0; 
+    const perform_get = parseFloat($('#perform_get').val()) || 0; 
+    const total=graceMark+perform_get;
+    const requirement_mark = parseFloat($('#total_need_mark').val()) || 0;
+    const current_input= $(element).val();
+    var grace_limit=requirement_mark-perform_get;
+    let global_graceset = 0; 
+    let global_performance_set = 0; 
+    
+       
+        
+    $('input[name="grace[]"]').each(function (index) {
+        
+        const current_input = parseFloat($(this).val()) || 0; 
+        global_graceset += current_input; 
+    });
+  
+    if(need_mark < current_input){
+
+        $("#grace_input"+subject_id).val(0);
+    }
+    if(grace_limit < current_input){
+        
+        global_graceset +=grace_limit;
+        $("#grace_input"+subject_id).val(0);
+    }else{
+       
+        if(global_graceset > grace_limit){
+            
+             $("#grace_input"+subject_id).val(0);
+        }
+    }
+
+
+    const set_performance = Math.abs(need_mark - current_input);
+    
+    if(set_performance >= perform_get){
+        
+        global_performance_set += current_input; 
+        $("#grace_input"+subject_id).val(0);
+        $("#performance_mark_label_hidden"+subject_id).val(set_performance);
+
+        
+
+    }else{
+    //     if(global_performance_set > perform_get){
+            $("#performance_mark_label_hidden"+subject_id).val(set_performance);
+    //    }else{
+    //     $("#performance_mark_label_hidden"+subject_id).val(set_performance);
+    //    }
+        
+    }
+    // console.log(need_mark);
+    // if(set_performance == 0){
+        // $("#performance_mark_label_hidden"+subject_id).val(need_mark); 
+    // }
+
+    
+    
+    
 
 
 
-                const performanceMarks = document.querySelectorAll('input[name="performance_mark[]"]');
+   
+}
+
+
+
+</script>
+<script>
+
+//grace calculation code
+    
+
+
+
+
+
+       
+    // $(document).on('click', '.submit_grace', function (e) {
+    //     e.preventDefault();
+        
+    //     const subjectId = $(this).data('subject-id');
+    //     const graceMark = parseFloat($('#grace_get').val()) || 0; 
+        
+    //     const ned_mark = parseFloat($('#ned_mark'+ subjectId).val()) || 0; 
+    //     const performanceMark = parseFloat($('#performance_mark' + subjectId).val()) || 0; 
+    //     const graceInput = $('#grace_input' + subjectId).val(); 
+    //     const prc = $('#prc' + subjectId).val();
+    //     let totalGrace = 0;
+    //     const percn = (graceInput)+(prc);
+    //     const percentage = percn ? (percn / 100) * 100 : 0;
+    //         let grade = '';
+        
+            
+            
+    //     getgrade(percentage,grade,subjectId);
+
+    //     $('input[id^="grace_input"]').each(function() {
+    //         const graceInput = $(this).val(); 
+    //         totalGrace += parseFloat(graceInput) || 0;
+          
+    //     });
+    //      if(totalGrace > graceMark)
+    //      {
+    //         $('#grace_input'+subjectId).val(0);
+    //         Swal.fire({
+    //             icon: "error",
+    //             text: "Please enter a valid grace mark .",
+    //         });
+    //         return; 
+    //      }
+        
+
+        
+    //      if (graceMark === 0 || graceInput > graceMark) {
+    //         $('#grace_input'+subjectId).val(0);
+    //         Swal.fire({
+    //             icon: "error",
+    //             text: "Please enter a valid grace mark.",
+    //         });
+    //         return; 
+    //     }
+    //     if(ned_mark < graceInput){
+    //         Swal.fire({
+    //             icon: "error",
+    //             text: "Please enter a valid grace marks.maximum enter grace:-"+graceMark,
+    //         });
+    //         return; 
+    //     }
+    //      const remainingGrace = ned_mark - graceInput;
+    //      const updatedPerformanceMark = ned_mark - graceInput;
+    //     //  $('#grace_get').val(graceInput);
+    //     // $('#performance_mark_label'+subjectId).show();
+    //     // $('#performance_mark_label_hidden' + subjectId).val(updatedPerformanceMark).show();
+    //     // $('#performance_mark_label' + subjectId).text(updatedPerformanceMark).show();
+    //     $('#grace_input' + subjectId).text(2).show();
+      
+
+
+    //         Swal.fire({
+    //             icon: "success",
+    //             text: "Grace mark and performance mark updated successfully.",
+    //         });
+    // });
+
+   
+
+
+
+</script>
+<Script>
+
+//     $(document).ready(function () {
+      
+       
+//         const performance = parseFloat($('#perform_get').val()) || 0; 
+//         const grace_get = parseFloat($('#grace_get').val()) || 0; 
+//         const totalAssign =performance+grace_get;
+//         const TotalNeeded = parseFloat($('#total_need_mark').val()) || 0;
+        
+        
+//         const total_need_mark = parseFloat($('#total_need_mark').val()) || 0; 
+//             // Get all subject IDs
+//         const subjectInputs = document.querySelectorAll('#subject_id');
+//         const subjectIds = Array.from(subjectInputs).map(input => input.value);
+
+//         // Get all performance values
+//         const performanceInputs = document.querySelectorAll('input[name="performance[]"]');
+//         const performances = Array.from(performanceInputs).map(input => input.value);
+
+//         // Combine subject IDs and performances into a single array
+//         const mergedArray = subjectIds.map((subjectId, index) => ({
+//             subjectId: subjectId,
+//             performance: performances[index]
+//         }));
+
+//         // Iterate over the merged array
+//         mergedArray.forEach(item => {
+//             const { subjectId, performance } = item;
+
+//             // Show form based on some condition
+//             if (total_need_mark <= totalAssign) {
+//                 $("#form_show" + subjectId).show();
+//             }
+//             const prc = $('#prc' + subjectId).val();
+//             const percn = Number(performance) + Number(prc); // Ensure numeric addition
+//             const percentage = percn ? (percn / 100) * 100 : 0;
+
+//             let grade = '';
+//             getgrade(percentage, grade,subjectId);
+//         });
+
+
+       
+
+//         // console.log(TotalNeeded+"<"+totalAssign);
+//         if(totalAssign < TotalNeeded) 
+//         {
+          
+//         }
+//         else if(TotalNeeded <= totalAssign)
+//         {
+//             // console.log("hi"); 
+//             let previousResult  = performance; 
+//             let previousResult2  = performance; 
+//             let graceresult2 = grace_get;
+//             let finalResult = previousResult; 
+//             let finalResult2 = previousResult2; 
+//             const subjectId = $(this).data('subject-id');
+//              $('input[id^="performance_mark"]').each(function (index) {
+//                 const currentInput = $(this);
                 
-                const nedValue2 = parseFloat(performanceMarks[index].value) || 0; 
+//                 const nedValue = parseFloat(currentInput.val()) || 0; 
+               
+//                 if (index === 0 ) {
+//                     if(performance<nedValue){
+//                         previousResult = performance - nedValue;
+//                         currentInput.val(performance);
+            
+//                     }else{
+//                         previousResult = performance - nedValue;
+//                         currentInput.val(nedValue);
+//                     }
+//                 } else {
+//                     if(previousResult==null || previousResult==''){
+//                         return;     
+//                     }else{
+//                         const initialPreviousResult = previousResult;
+//                         const calculatedResult = Math.abs(previousResult - nedValue);
+//                         const increase = previousResult - initialPreviousResult;
+//                         currentInput.val(nedValue);
+//                         previousResult = increase; 
+//                     }
+//                 }  
+//             });  
+//                 finalResult = previousResult;
+//                 $('input[id^="performance_mark_label_hidden"]').each(function(index) {
+//                 const currentInputHidden = $(this); 
+//                 const performanceMarks = document.querySelectorAll('input[name="performance_mark[]"]');
+                
+//                 const nedValue2 = parseFloat(performanceMarks[index].value) || 0; 
+                
+                
+//                 // $('input[id^="grace_input"]').each(function(index) {
+//                 // const grace_input = $(this); 
+//                 // const performanceMarks = document.querySelectorAll('input[name="performance_mark[]"]');
+                
+//                 // const nedValue2 = parseFloat(performanceMarks[index].value) || 0; 
+//                 // console.log(performance+""+nedValue2);
+//                 if (index === 0) {
+                    
+//                     if(performance>nedValue2){
+//                         previousResult2 = performance - nedValue2; 
+//                         currentInputHidden.val(nedValue2);
+//                     }else{
+//                         previousResult2 = performance - nedValue2; 
+//                         currentInputHidden.val(nedValue2);
+           
+//                     }
+//                 } else {
+//                     if (previousResult2 == null || previousResult2 === '') {
+//                         return; 
+//                     } else {
+//                         const initialPreviousResult = previousResult2;
+//                         const calculatedResult = Math.abs(previousResult2 - nedValue2);
+//                         if(previousResult2<nedValue2){
+//                             currentInputHidden.val(previousResult2); 
+//                             previousResult2 = calculatedResult;
+//                         }else{
+//                             currentInputHidden.val(nedValue2); 
+//                             previousResult2 = calculatedResult;
+//                         }
+                        
+//                     }
+//                 }
+              
+        
+//         });
+//                 finalResult2 = previousResult2; 
+
+//                 $('input[id^="grace_input"]').each(function (index) {
+                      
+//                 const currentInputHidden = $(this); 
+//                 const performanceMarkInput = $('input[id^="performance_mark_label_hidden"]').eq(index); 
+//                 const nedValue = parseFloat(performanceMarkInput.val()) || 0; 
+//                 const performark = $('input[id^="performance_mark"]').eq(index); 
+//                 const performarkneed = parseFloat(performark.val()) || 0;
+
+
+
+//                 const performanceMarks = document.querySelectorAll('input[name="performance_mark[]"]');
+                
+//                 const nedValue2 = parseFloat(performanceMarks[index].value) || 0; 
               
 
 
 
-                // $('input[id^="performance_mark"]').each(function (outerIndex) {
-                //     const currentInput = $(this).val();
-                //     const currentInput2 = $(`input[id^="performance_mark_label_hidden"]:eq(${outerIndex})`).val();
-                    //  console.log(`Comparing: ${currentInput2}`);
+//                 // $('input[id^="performance_mark"]').each(function (outerIndex) {
+//                 //     const currentInput = $(this).val();
+//                 //     const currentInput2 = $(`input[id^="performance_mark_label_hidden"]:eq(${outerIndex})`).val();
+//                     //  console.log(`Comparing: ${currentInput2}`);
                
 
 
-                // const performanceMarks = document.querySelectorAll('input[name="performance_mark[]"]');
+//                 // const performanceMarks = document.querySelectorAll('input[name="performance_mark[]"]');
                 
-                // const nedValue2 = parseFloat(performanceMarks[index].value) || 0;
+//                 // const nedValue2 = parseFloat(performanceMarks[index].value) || 0;
 
 
                 
-                if(performarkneed!=nedValue)
-                {
+//                 if(performarkneed!=nedValue)
+//                 {
                     
                     
-                    if (index === 0) {
-                    // graceresult2 = grace_get - nedValue; 
-                    graceresult2 = nedValue2 - nedValue; 
-                    currentInputHidden.val(graceresult2); 
+//                     if (index === 0) {
+//                     // graceresult2 = grace_get - nedValue; 
+//                     graceresult2 = nedValue2 - nedValue; 
+//                     currentInputHidden.val(graceresult2); 
                     
                 
-                } else {
+//                 } else {
                    
-                    if (graceresult2 == null || graceresult2 === '') {
-                        return; 
-                    } else {
-                        const initialPreviousResult = graceresult2;
-                        // const calculatedResult = Math.abs(graceresult2 - nedValue); 
-                        // const calculatedResult = Math.abs(graceresult2 - nedValue); 
-                        const calculatedResult = Math.abs(nedValue2 - nedValue); 
+//                     if (graceresult2 == null || graceresult2 === '') {
+//                         return; 
+//                     } else {
+//                         const initialPreviousResult = graceresult2;
+//                         // const calculatedResult = Math.abs(graceresult2 - nedValue); 
+//                         // const calculatedResult = Math.abs(graceresult2 - nedValue); 
+//                         const calculatedResult = Math.abs(nedValue2 - nedValue); 
                           
-                        currentInputHidden.val(calculatedResult); 
-                        graceresult2 = calculatedResult; 
-                    }
+//                         currentInputHidden.val(calculatedResult); 
+//                         graceresult2 = calculatedResult; 
+//                     }
                     
-                }
-                    if(performarkneed==nedValue){
-                        currentInputHidden.val("");
-                    }
-                }
+//                 }
+//                     if(performarkneed==nedValue){
+//                         currentInputHidden.val("");
+//                     }
+//                 }
                 
-            });
+//             });
                 
             
 
-                finalResult = graceresult2; 
+//                 finalResult = graceresult2; 
 
-        }
-        else 
-        {
-            const grasLimite=TotalNeeded-performance;
-        }
+//         }
+//         else 
+//         {
+//             const grasLimite=TotalNeeded-performance;
+//         }
        
-});
-    function getgrade(percentage,grade,subjectId){
-            if (percentage >= 91) grade = 'A1';
-            else if (percentage >= 81) grade = 'A2';
-            else if (percentage >= 71) grade = 'B1';
-            else if (percentage >= 61) grade = 'B2';
-            else if (percentage >= 51) grade = 'C1';
-            else if (percentage >= 41) grade = 'C2';
-            else if (percentage >= 33) grade = 'D';
-            else if (percentage >= 21) grade = 'E1';
-            else grade = 'E2';
+// });
+//     function getgrade(percentage,grade,subjectId){
+//             if (percentage >= 91) grade = 'A1';
+//             else if (percentage >= 81) grade = 'A2';
+//             else if (percentage >= 71) grade = 'B1';
+//             else if (percentage >= 61) grade = 'B2';
+//             else if (percentage >= 51) grade = 'C1';
+//             else if (percentage >= 41) grade = 'C2';
+//             else if (percentage >= 33) grade = 'D';
+//             else if (percentage >= 21) grade = 'E1';
+//             else grade = 'E2';
             
-            $('#grade_display_' + subjectId).text(grade);
-    }
+//             $('#grade_display_' + subjectId).text(grade);
+//     }
 
 
-    $(document).ready(function() {
-    const graceLimit = 10; // Set the maximum allowed sum
-    let currentTotal = 0; // Track the current sum
+//     $(document).ready(function() {
+//     const graceLimit = 10; // Set the maximum allowed sum
+//     let currentTotal = 0; // Track the current sum
 
-    const totalAssign =performance+grace_get;
-    const TotalNeeded = parseFloat($('#total_need_mark').val()) || 0;
-    if(TotalNeeded < totalAssign)
-    {
-        // let previousResult  = performance; 
-        // let finalResult = previousResult; 
-        // const subjectId = $(this).data('subject-id');
-    }
+//     const totalAssign =performance+grace_get;
+//     const TotalNeeded = parseFloat($('#total_need_mark').val()) || 0;
+//     if(TotalNeeded < totalAssign)
+//     {
+//         // let previousResult  = performance; 
+//         // let finalResult = previousResult; 
+//         // const subjectId = $(this).data('subject-id');
+//     }
     
-    function updateGraceInputs() {
-        let currentTotal = 0;
-        $(".grace-input").each(function () {
-            const value = parseInt($(this).val()) || 0;
-            currentTotal += value;
-        });
+//     function updateGraceInputs() {
+//         let currentTotal = 0;
+//         $(".grace-input").each(function () {
+//             const value = parseInt($(this).val()) || 0;
+//             currentTotal += value;
+//         });
 
-        if (currentTotal >= graceLimit) {
-            const subjectInputs = document.querySelectorAll('.grace-input');
+//         if (currentTotal >= graceLimit) {
+//             const subjectInputs = document.querySelectorAll('.grace-input');
+ 
+//     subjectInputs.forEach(input => {
+//         input.addEventListener("input", function () {
+//             const subjectId = this.id.replace('grace_input', ''); // Extract subject ID from the ID
+//             const submitButton = document.querySelector(`.submit_grace[data-subject-id="${subjectId}"]`);
 
-    subjectInputs.forEach(input => {
-        input.addEventListener("input", function () {
-            const subjectId = this.id.replace('grace_input', ''); // Extract subject ID from the ID
-            const submitButton = document.querySelector(`.submit_grace[data-subject-id="${subjectId}"]`);
+//             // If the input value is empty, disable the button
+//             if (!this.value.trim()) {
+//                 submitButton.disabled = true;
+//             } else {
+//                 submitButton.disabled = false;
+//             }
+//         });
+//     });
 
-            // If the input value is empty, disable the button
-            if (!this.value.trim()) {
-                submitButton.disabled = true;
-            } else {
-                submitButton.disabled = false;
-            }
-        });
-    });
+//     // On page load, disable all buttons where inputs are empty
+//     subjectInputs.forEach(input => {
+//         const subjectId = input.id.replace('grace_input', '');
+//         const submitButton = document.querySelector(`.submit_grace[data-subject-id="${subjectId}"]`);
 
-    // On page load, disable all buttons where inputs are empty
-    subjectInputs.forEach(input => {
-        const subjectId = input.id.replace('grace_input', '');
-        const submitButton = document.querySelector(`.submit_grace[data-subject-id="${subjectId}"]`);
-
-        if (!input.value.trim()) {
-            submitButton.disabled = true;
-        }
-    });
+//         if (!input.value.trim()) {
+//             submitButton.disabled = true;
+//         }
+//     });
             
             
-        } else {
-            const subjectInputs = document.querySelectorAll('.grace-input');
+//         } else {
+//             const subjectInputs = document.querySelectorAll('.grace-input');
+            
+// subjectInputs.forEach(input => {
+//     input.addEventListener("input", function () {
+//         const subjectId = this.id.replace('grace_input', ''); // Extract subject ID from the ID
+//         const submitButton = document.querySelector(`.submit_grace[data-subject-id="${subjectId}"]`);
+         
+//         // If the input value is empty, disable the button
+//         if (!this.value.trim()) {
+//             submitButton.disabled = true;
+//         } else {
+//             submitButton.disabled = false;
+//         }
+//     });
+// });
 
-subjectInputs.forEach(input => {
-    input.addEventListener("input", function () {
-        const subjectId = this.id.replace('grace_input', ''); // Extract subject ID from the ID
-        const submitButton = document.querySelector(`.submit_grace[data-subject-id="${subjectId}"]`);
+// // On page load, disable all buttons where inputs are empty
+// subjectInputs.forEach(input => {
+//     const subjectId = input.id.replace('grace_input', '');
+//     const submitButton = document.querySelector(`.submit_grace[data-subject-id="${subjectId}"]`);
+    
+//     if (!input.value.trim()) {
+//         submitButton.disabled = true;
+//     }
+// });
+//         }
+//     }
 
-        // If the input value is empty, disable the button
-        if (!this.value.trim()) {
-            submitButton.disabled = true;
-        } else {
-            submitButton.disabled = false;
-        }
-    });
-});
+//     // Bind the event listener for input
+//     $(".grace-input").on("input", function () {
+//         updateGraceInputs();
+//     });
 
-// On page load, disable all buttons where inputs are empty
-subjectInputs.forEach(input => {
-    const subjectId = input.id.replace('grace_input', '');
-    const submitButton = document.querySelector(`.submit_grace[data-subject-id="${subjectId}"]`);
-
-    if (!input.value.trim()) {
-        submitButton.disabled = true;
-    }
-});
-        }
-    }
-
-    // Bind the event listener for input
-    $(".grace-input").on("input", function () {
-        updateGraceInputs();
-    });
-
-    // Call the function on page load
-    updateGraceInputs();
-});
+//     // Call the function on page load
+//     updateGraceInputs();
+// });
 
 
 
