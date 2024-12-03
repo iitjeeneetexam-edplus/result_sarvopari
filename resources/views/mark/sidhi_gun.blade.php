@@ -409,8 +409,10 @@
         {
           
             let previousResult  = performance; 
+            let previousResult2  = performance; 
             let graceresult2 = grace_get;
             let finalResult = previousResult; 
+            let finalResult2 = previousResult2; 
             const subjectId = $(this).data('subject-id');
              $('input[id^="performance_mark"]').each(function (index) {
                 const currentInput = $(this); 
@@ -438,38 +440,50 @@
                 
                 const nedValue2 = parseFloat(performanceMarks[index].value) || 0; // Get the value for performance_mark from the current index
                 
-                // Assuming previousResult2 is initialized properly before the loop
                 if (index === 0) {
-                    // First index, perform the initial calculation with performance (replace with actual 'performance' value)
-                    console.log(nedValue2);
-                    previousResult2 = performance - nedValue2; // Replace 'performance' with the actual value
-                    currentInputHidden.val(nedValue2);
+                    if(performance>nedValue2){
+                        previousResult2 = performance - nedValue2; 
+                        currentInputHidden.val(nedValue2);
+                    }else{
+                        previousResult2 = performance - nedValue2; 
+                        currentInputHidden.val(nedValue2);
+           
+                    }
                 } else {
                     if (previousResult2 == null || previousResult2 === '') {
                         return; 
                     } else {
-                        // Perform the calculation with the value from the previous index
                         const initialPreviousResult = previousResult2;
-                        const calculatedResult = Math.abs(previousResult2 - nedValue2); // Calculate difference
-                        currentInputHidden.val(previousResult2); // Update the hidden input value with the result
-                        previousResult2 = calculatedResult; // Update for the next iteration
+                        const calculatedResult = Math.abs(previousResult2 - nedValue2); 
+                        
+                        currentInputHidden.val(previousResult2); 
+                        previousResult2 = calculatedResult; 
                     }
                 }
             });
-                finalResult = previousResult2; 
+                finalResult2 = previousResult2; 
 
                 $('input[id^="grace_input"]').each(function (index) {
+                      
                 const currentInputHidden = $(this); 
                 const performanceMarkInput = $('input[id^="performance_mark_label_hidden"]').eq(index); 
                 const nedValue = parseFloat(performanceMarkInput.val()) || 0; 
                 const performark = $('input[id^="performance_mark"]').eq(index); 
                 const performarkneed = parseFloat(performark.val()) || 0;
-                // console.log(performarkneed+"="+nedValue);
+
+                const performanceMarks = document.querySelectorAll('input[name="performance_mark[]"]');
+                
+                const nedValue2 = parseFloat(performanceMarks[index].value) || 0;
+
+
                 if(performarkneed!=nedValue)
                 {
+                    
                     if (index === 0) {
                     graceresult2 = grace_get - nedValue; 
                     currentInputHidden.val(graceresult2); 
+                    
+                
                 } else {
                     if (graceresult2 == null || graceresult2 === '') {
                         return; 
