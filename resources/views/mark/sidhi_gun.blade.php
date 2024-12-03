@@ -249,7 +249,7 @@
                         </td>
                         <td style="font-weight: bold;"></td>
                         <td style="font-weight: bold;"></td>
-                        <td>@if($finalTotal < $nedadorno || $pasorfl == 0 ) Pass @else Fail @endif </td>
+                        <td>@if($finalTotal <= $nedadorno) Pass @else Fail @endif </td>
                         <td style="font-weight: bold;">@php $percentages =$maintotalobtn ? ($maintotalobtn / $hundradtotal) * 100 : 0; @endphp {{round($percentages,2)}}%</td>
                     </tr>
                 </tfoot>
