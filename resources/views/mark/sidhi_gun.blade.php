@@ -421,8 +421,14 @@
                 const nedValue = parseFloat(currentInput.val()) || 0; 
                
                 if (index === 0 ) {
-                    previousResult = performance - nedValue;
-                    currentInput.val(nedValue);
+                    if(performance<nedValue){
+                        previousResult = performance - nedValue;
+                        currentInput.val(performance);
+            
+                    }else{
+                        previousResult = performance - nedValue;
+                        currentInput.val(nedValue);
+                    }
                 } else {
                     if(previousResult==null || previousResult==''){
                         return;     
