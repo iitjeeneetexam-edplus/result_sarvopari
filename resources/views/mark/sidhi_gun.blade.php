@@ -432,29 +432,30 @@
                 }  
             });  
                 finalResult = previousResult;
-                $('input[id^="performance_mark_label_hidden"]').each(function (index) {
-                   
+                $('input[id^="performance_mark_label_hidden"]').each(function(index) {
                 const currentInputHidden = $(this); 
-                const performanceMarkInput = $('input[id^="performance_mark"]').eq(index); 
-                const nedValue = parseFloat(performanceMarkInput.val()) || 0; 
-               
-               
+                const performanceMarks = document.querySelectorAll('input[name="performance_mark[]"]');
+                
+                const nedValue2 = parseFloat(performanceMarks[index].value) || 0; // Get the value for performance_mark from the current index
+                
+                // Assuming previousResult2 is initialized properly before the loop
                 if (index === 0) {
-                    previousResult2 = performance - nedValue; 
-                    currentInputHidden.val(nedValue); 
+                    // First index, perform the initial calculation with performance (replace with actual 'performance' value)
+                    console.log(nedValue2);
+                    previousResult2 = performance - nedValue2; // Replace 'performance' with the actual value
+                    currentInputHidden.val(nedValue2);
                 } else {
                     if (previousResult2 == null || previousResult2 === '') {
                         return; 
                     } else {
+                        // Perform the calculation with the value from the previous index
                         const initialPreviousResult = previousResult2;
-                        const calculatedResult = Math.abs(previousResult2 - nedValue); 
-                      
-                        currentInputHidden.val(previousResult2); 
-                        previousResult2 = calculatedResult; 
+                        const calculatedResult = Math.abs(previousResult2 - nedValue2); // Calculate difference
+                        currentInputHidden.val(previousResult2); // Update the hidden input value with the result
+                        previousResult2 = calculatedResult; // Update for the next iteration
                     }
                 }
             });
-           
                 finalResult = previousResult2; 
 
                 $('input[id^="grace_input"]').each(function (index) {
