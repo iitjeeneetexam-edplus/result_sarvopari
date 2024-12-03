@@ -159,7 +159,7 @@
                                            
                                            
                                             @if($ned)
-                                           <input type="hidden" name="performance[]" id="performance_mark_label_hidden{{$subject_value['subject_id']}}" value="{{$performmark}}">  
+                                           <input type="text" name="performance[]" id="performance_mark_label_hidden{{$subject_value['subject_id']}}" value="{{(!empty($performmark))?$performmark:$performm}}">  
                                            <label id="performance_mark_label{{$subject_value['subject_id']}}" readonly disabled  >{{$performmark}}<label> 
                                            @else
                                            <input type="hidden" name="performance[]" value="0"  class="form-control">                                           
@@ -183,7 +183,7 @@
                                              @if($ned)
                                                 <input type="number"min="0" 
                step="1" 
-               oninput="this.value = this.value.replace(/[^0-9]/g, '')"  name="grace[]" id="grace_input{{$subject_value['subject_id']}}" value="{{$gracemmark}}"  class="form-control grace-input">
+               oninput="this.value = this.value.replace(/[^0-9]/g, '')"  name="grace[]" id="grace_input{{$subject_value['subject_id']}}" value=""  class="form-control grace-input">
                                                 &nbsp;&nbsp;
                                                 <button type="button" class="btn btn-success submit_grace" data-subject-id="{{$subject_value['subject_id']}}">Submit</button>
                                                 </div
@@ -281,24 +281,36 @@ $(document).ready(function () {
     const graceLimit = 10; // Set the maximum allowed sum
     let currentTotal = 0; // Track the current sum
 
+    const totalAssign =performance+grace_get;
+ const TotalNeeded = parseFloat($('#total_need_mark').val()) || 0;
+ if(TotalNeeded < totalAssign)
+    {
+        let previousResult  = performance; 
+        let finalResult = previousResult; 
+        const subjectId = $(this).data('subject-id');
+    }
+    });
     $(".grace-input").on("input", function() {
-        // Calculate the total sum of all input values
+        
         currentTotal = 0;
         $(".grace-input").each(function() {
-            const value = parseInt($(this).val()) || 0; // Ensure numeric value or default to 0
+            const value = parseInt($(this).val()) || 0; 
             currentTotal += value;
         });
 
-        // Check if the total exceeds the limit
+        
         if (currentTotal >= graceLimit) {
             $(".grace-input").each(function() {
                 if (!$(this).val()) {
-                    $(this).prop("disabled", true); // Disable textboxes with no value
+                    $(this).prop("disabled", true); 
                 }
             });
         } else {
-            $(".grace-input").prop("disabled", false); // Enable all textboxes
+            $(".grace-input").prop("disabled", false); 
         }
+
+
+
     });
 });
 
@@ -365,8 +377,9 @@ $(document).ready(function () {
          const updatedPerformanceMark = ned_mark - graceInput;
         //  $('#grace_get').val(graceInput);
         // $('#performance_mark_label'+subjectId).show();
-        $('#performance_mark_label_hidden' + subjectId).val(updatedPerformanceMark).show();
-        $('#performance_mark_label' + subjectId).text(updatedPerformanceMark).show();
+        // $('#performance_mark_label_hidden' + subjectId).val(updatedPerformanceMark).show();
+        // $('#performance_mark_label' + subjectId).text(updatedPerformanceMark).show();
+        $('#grace_input' + subjectId).text(2).show();
       
 
 
@@ -377,7 +390,7 @@ $(document).ready(function () {
     });
 
    
-});
+
 
 
 </script>
@@ -431,15 +444,17 @@ $(document).ready(function () {
         }
         else if(TotalNeeded < totalAssign)
         {
+           
             let previousResult  = performance; 
+            let graceresult2 = grace_get;
             let finalResult = previousResult; 
             const subjectId = $(this).data('subject-id');
              $('input[id^="performance_mark"]').each(function (index) {
                 const currentInput = $(this); 
                 const nedValue = parseFloat(currentInput.val()) || 0; 
-                if (index === 0  ) {
+                   
+                if (index === 0 ) {
                     previousResult = performance - nedValue;
-                    
                     currentInput.val(nedValue);
                 } else {
                     if(previousResult==null || previousResult==''){
@@ -454,6 +469,61 @@ $(document).ready(function () {
                 }  
             });  
                 finalResult = previousResult;
+                $('input[id^="performance_mark_label_hidden"]').each(function (index) {
+                const currentInputHidden = $(this); 
+                const performanceMarkInput = $('input[id^="performance_mark"]').eq(index); 
+                const nedValue = parseFloat(performanceMarkInput.val()) || 0; 
+                
+               
+                if (index === 0) {
+                    previousResult2 = performance - nedValue; 
+                    currentInputHidden.val(nedValue); 
+                } else {
+                    if (previousResult2 == null || previousResult2 === '') {
+                        return; 
+                    } else {
+                        const initialPreviousResult = previousResult2;
+                        const calculatedResult = Math.abs(previousResult2 - nedValue); 
+                      
+                        currentInputHidden.val(previousResult2); 
+                        previousResult2 = calculatedResult; 
+                    }
+                }
+            });
+
+                finalResult = previousResult2; 
+
+                $('input[id^="grace_input"]').each(function (index) {
+                const currentInputHidden = $(this); 
+                const performanceMarkInput = $('input[id^="performance_mark_label_hidden"]').eq(index); 
+                const nedValue = parseFloat(performanceMarkInput.val()) || 0; 
+                const performark = $('input[id^="performance_mark"]').eq(index); 
+                const performarkneed = parseFloat(performark.val()) || 0;
+                // console.log(performarkneed+"="+nedValue);
+                if(performarkneed!=nedValue)
+                {
+                    if (index === 0) {
+                    graceresult2 = grace_get - nedValue; 
+                    currentInputHidden.val(graceresult2); 
+                } else {
+                    if (graceresult2 == null || graceresult2 === '') {
+                        return; 
+                    } else {
+                        const initialPreviousResult = graceresult2;
+                        const calculatedResult = Math.abs(graceresult2 - nedValue); 
+                          
+                        currentInputHidden.val(calculatedResult); 
+                        graceresult2 = calculatedResult; 
+                    }
+                }
+                }
+                
+               
+                
+            });
+
+                finalResult = graceresult2; 
+
         }
         else 
         {
