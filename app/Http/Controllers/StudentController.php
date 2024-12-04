@@ -543,8 +543,8 @@ class StudentController extends Controller
                                     'medium'=>$value->medium,
                                     'address'=>$value->address,
                                     'division_name'=>$value->division_name,
-                                    'performance_mark'=>$getpergracmark->performance,
-                                    'grace_mark'=>$getpergracmark->grace,
+                                    'performance_mark'=>(!empty($getpergracmark))?$getpergracmark->performance:'',
+                                    'grace_mark'=>(!empty($getpergracmark))?$getpergracmark->grace:'',
                                     'exam'=>$exam,
                                 ];
                                     
