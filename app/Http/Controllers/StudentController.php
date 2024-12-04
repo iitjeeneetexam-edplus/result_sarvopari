@@ -519,14 +519,12 @@ class StudentController extends Controller
                                 }
                                 // echo "hi".$request->session()->get('school_id');exit;
                                 $getpergracmark = Performance_grace_Model::where('school_id',$request->session()->get('school_id'))->first();
-                                if(!empty($getpergracmark)){
-                                       $performance=$getpergracmark->performance;
-                                       $grace=$getpergracmark->grace;
-
-                                }else{
-                                    $performance='';
-                                       $grace='';
-
+                                if ($getpergracmark) {
+                                    $performance = $getpergracmark->performance;
+                                    $grace = $getpergracmark->grace;
+                                } else {
+                                    $performance = '';
+                                    $grace = '';
                                 }
                                 // echo"<pre>";print_r($getpergracmark);exit;
                                 $data[]=[
