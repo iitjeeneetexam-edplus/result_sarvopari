@@ -504,11 +504,13 @@ function performance_calculation(set_performance,perform_get,subject_id){
 
     
 }
+
 function calculatePerformance() {
         
     const subjectInputs = document.querySelectorAll('#subject_id'); 
         const subjectIds = Array.from(subjectInputs).map(input => input.value);
-
+        var pasfl = 0;
+        
         subjectIds.forEach((id, index) => {
             const gracemarks = document.querySelectorAll('input[name="grace[]"]');
 
@@ -541,7 +543,17 @@ function calculatePerformance() {
             var  percentage = percn ? (percn / 100) * 100 : 0;
             let grade = '';
             getgrade(percentage,grade,id);
+            if(percentage <= 33 && percentage >= 21){
+                pasfl = pasfl+1;
+            }else{
+                pasfl = pasfl+0;
+            }
         });
+        if(pasfl > 0){
+            $('#passskfail').html('Fail');
+        }else{
+            $('#passskfail').html('Pass');
+        }
 
     }
     function getgrade(percentage, grade, subjectId) {
