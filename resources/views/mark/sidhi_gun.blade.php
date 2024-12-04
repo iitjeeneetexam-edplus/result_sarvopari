@@ -152,17 +152,18 @@
                                             <input type="hidden" name="subject_id[]" id="subject_id" value="{{$subject_value['subject_id']}}" class="form-control"> 
                                             <input type="hidden" name="exam_id" value="{{$exam_loop['exam_id']}}" class="form-control">  
                                             <input type="hidden" name="is_optional[]" value="{{$subject_value['is_optional']}}" class="form-control"> 
+                                            <input type="hidden" name="outofmarks[]" value="{{$btnmks}}" id="outofmarks{{$subject_value['subject_id']}}">
 
-
-                                        <td>@if($ned) <input type="text" name="performance_mark[]" id="performance_mark{{$subject_value['subject_id']}}" value="{{$ned}}" class="form-control" readonly disabled>@endif</td>
+                                        <td>@if($ned) <input type="text" name="performance_mark[]" id="performance_mark{{$subject_value['subject_id']}}" value="{{$ned}}" class="form-control" readonly disabled>@else
+                                        <input type="text" name="performance_mark[]" id="performance_mark{{$subject_value['subject_id']}}" value="0" class="form-control" readonly disabled>@endif</td>
                                         <td>
                                            
                                            
                                             @if($ned)
                                            <input type="text" name="performance[]" id="performance_mark_label_hidden{{$subject_value['subject_id']}}"  disabled>  
-                                           <!-- <label id="performance_mark_label{{$subject_value['subject_id']}}" readonly disabled  >{{$performmark}}<label>  -->
+                                            <!-- <label id="performance_mark_label{{$subject_value['subject_id']}}" readonly disabled  >{{$performmark}}<label>  -->
                                            @else
-                                           <input type="hidden" name="performance[]" value="0"  class="form-control">                                           
+                                           <input type="hidden" name="performance[]" id="performance_mark_label_hidden{{$subject_value['subject_id']}}" value="0"  class="form-control">                                           
                                            @endif
                                            </td>
                                        
@@ -235,6 +236,7 @@
                                     @endphp
                                 @endif
                             @endforeach
+                                        
                         @endif
                       
                     @endforeach
@@ -255,20 +257,24 @@
                         </td>
                         <td style="font-weight: bold;"></td>
                         <td style="font-weight: bold;"></td>
-                        <td>@if($finalTotal <= $nedadorno) Pass @else Fail @endif </td>
+                        <td><b id="passskfail">@if($finalTotal <= $nedadorno) Pass @else Fail @endif </b></td>
                         <td style="font-weight: bold;">@php $percentages =$maintotalobtn ? ($maintotalobtn / $hundradtotal) * 100 : 0; @endphp {{round($percentages,2)}}%</td>
                     </tr>
                 </tfoot>
         </table>
 
                 @endforeach
+               
+                 
 
                 @if($finalTotal < $nedadorno || $pasorfl == 0 )  
-                <button class="btn btn-success mb-3" style="float:right">Submit</button>
+                <button type="submit" class="btn btn-success"  style="float:right"  name="submit" >submit</button>
                  @else  
-                 <button class="btn btn-success mb-3" style="float:right" disabled>Submit</button> @endif
+                 <button type="submit" class="btn btn-success"  style="float:right"  name="submit" disabled>submit</button> 
+                  @endif
                    
                     </form> 
+                       <button class="btn btn-success mb-3" style="margin-left: 50vh;" onclick="calculatePerformance()">Calculate Performance</button> 
                     </div>
                 </div>
             </div>
@@ -284,7 +290,7 @@
     const perform_get = parseFloat($('#perform_get').val()) || 0; 
     const total=graceMark+perform_get;
     const requirement_mark = parseFloat($('#total_need_mark').val()) || 0;
-   
+  
     if(requirement_mark <= perform_get){
         autoset()
 
@@ -339,9 +345,11 @@
                 $('input[id^="performance_mark_label_hidden"]').each(function(index) {
                 const currentInputHidden = $(this); 
                 const performanceMarks = document.querySelectorAll('input[name="performance_mark[]"]');
-                
-                const nedValue2 = parseFloat(performanceMarks[index].value) || 0; 
-                
+                //console.log(index);
+                const nedValue2 = parseFloat(performanceMarks[index].value); 
+                if(nedValue2 == '0'){
+
+                }
                 
                 // $('input[id^="grace_input"]').each(function(index) {
                 // const grace_input = $(this); 
@@ -357,6 +365,7 @@
                     }else{
                         previousResult2 = performance - nedValue2; 
                         currentInputHidden.val(nedValue2);
+                       
            
                     }
                 } else {
@@ -384,11 +393,13 @@
   
 
    });
-
+   
+let totalsetvalue = 0;
    function handleKeyDown(element,subject_id,need_mark) {
     
     const graceMark = parseFloat($('#grace_get').val()) || 0; 
     const perform_get = parseFloat($('#perform_get').val()) || 0; 
+    let forremperform_get = parseFloat($('#perform_get').val()) || 0; 
     const total=graceMark+perform_get;
     const requirement_mark = parseFloat($('#total_need_mark').val()) || 0;
     const current_input= $(element).val();
@@ -396,55 +407,84 @@
     let global_graceset = 0; 
     let global_performance_set = 0; 
     
-       
-        
+    
+    const set_performance = Math.abs(need_mark - current_input);
+    $("#performance_mark_label_hidden"+subject_id).val(set_performance);
+    performance_calculation(set_performance,perform_get,subject_id);
     $('input[name="grace[]"]').each(function (index) {
         
         const current_input = parseFloat($(this).val()) || 0; 
         global_graceset += current_input; 
+        //
+        
+
+        //forremperform_get -= totalsetvalue;
+        
     });
   
-    if(need_mark < current_input){
+//   console.log(totalsetvalue+"<"+perform_get);
+      
 
-        $("#grace_input"+subject_id).val(0);
-    }
-    if(grace_limit < current_input){
+    
+
+
+    // console.log(totalsetvalue);
+    if(need_mark < current_input){
         
-        global_graceset +=grace_limit;
         $("#grace_input"+subject_id).val(0);
-    }else{
+        $("#performance_mark_label_hidden"+subject_id).val(0);
+        
+    }
+    
+    if(grace_limit < current_input){
+        global_graceset +=grace_limit;
+        $("#performance_mark_label_hidden"+subject_id).val(0);
+        $("#grace_input"+subject_id).val(0);
        
+
+    }else{
+        
         if(global_graceset > grace_limit){
             
              $("#grace_input"+subject_id).val(0);
+             $("#performance_mark_label_hidden"+subject_id).val(0);
+        }else
+        {
+           
+            // if(perform_get >= set_performance)
+        //    {
+            
+        // const difference = Math.abs(parseFloat(need_mark) - parseFloat(current_input)) || 0;
+        // totalsetvalue += difference; 
+        // // console.log(totalsetvalue+'<='+ perform_get);
+            // if(totalsetvalue <= perform_get)
+            //     {
+                    
+                    
+        // $("#performance_mark_label_hidden"+subject_id).val(set_performance);
+                    // totalsetvalue -= difference; 
+                   
+                    // $("#performance_mark_label_hidden"+subject_id).val(0);
+                // }
+                // else{
+                //      totalsetvalue -= difference; 
+                //      $("#performance_mark_label_hidden"+subject_id).val(0);
+                // }
+               
+               
+                
+
+        //     // $("#performance_mark_label_hidden"+subject_id).val(set_performance);
+        // //    }else{
+        // //     $("#performance_mark_label_hidden"+subject_id).val(0);
+
+        // //    }
         }
-    }
-
-
-    const set_performance = Math.abs(need_mark - current_input);
-    
-    if(set_performance >= perform_get){
-        
-        global_performance_set += current_input; 
-        $("#grace_input"+subject_id).val(0);
-        $("#performance_mark_label_hidden"+subject_id).val(set_performance);
-
-        
-
-    }else{
-    //     if(global_performance_set > perform_get){
-            $("#performance_mark_label_hidden"+subject_id).val(set_performance);
-    //    }else{
-    //     $("#performance_mark_label_hidden"+subject_id).val(set_performance);
-    //    }
         
     }
-    // console.log(need_mark);
-    // if(set_performance == 0){
-        // $("#performance_mark_label_hidden"+subject_id).val(need_mark); 
-    // }
+   
+    sessionStorage.setItem('grace_limit', grace_limit);
 
-    
     
     
 
@@ -452,8 +492,72 @@
 
    
 }
+function performance_calculation(set_performance,perform_get,subject_id){
+       
+    const performance = document.querySelectorAll('input[name="performance[]"]'); 
+    const performance_get = Array.from(performance).map(input => parseFloat(input.value) || 0); 
+    const total = performance_get.reduce((sum, value) => sum + value, 0); 
+    if(total > perform_get){
+        $("#performance_mark_label_hidden"+subject_id).val(0);
+    }
 
 
+    
+}
+function calculatePerformance() {
+        
+    const subjectInputs = document.querySelectorAll('#subject_id'); 
+        const subjectIds = Array.from(subjectInputs).map(input => input.value);
+
+        subjectIds.forEach((id, index) => {
+            const gracemarks = document.querySelectorAll('input[name="grace[]"]');
+
+            const graceValue = parseFloat(gracemarks[index]?.value) || 0;
+
+            const passingmark_value = document.querySelectorAll('input[name="performance_mark[]"]');
+
+            const passing_marks = parseFloat(passingmark_value[index]?.value) || 0;
+            var grace_limit = sessionStorage.getItem('grace_limit');
+            let global_graceset = 0; 
+            $('input[name="grace[]"]').each(function (index) {
+        
+                const current_input = parseFloat($(this).val()) || 0; 
+                global_graceset += current_input; 
+            });
+            
+            if(graceValue=='0' && passing_marks!='0' && grace_limit == global_graceset){ 
+                 // console.log(id);
+                $("#grace_input"+id).val(0);
+                $("#performance_mark_label_hidden"+id).val(passing_marks);
+            }
+
+            var graceInput = parseFloat($("#grace_input" + id).val()) || 0;
+            var performanceMark = parseFloat($("#performance_mark_label_hidden" + id).val()) || 0;
+            var outOfMarks = parseFloat($("#outofmarks" + id).val()) || 0;
+
+            var percn = graceInput + performanceMark + outOfMarks;
+            // console.log(percn);
+
+            var  percentage = percn ? (percn / 100) * 100 : 0;
+            let grade = '';
+            getgrade(percentage,grade,id);
+        });
+
+    }
+    function getgrade(percentage, grade, subjectId) {
+                
+                if (percentage >= 91) grade = 'A1';
+                else if (percentage >= 81) grade = 'A2';
+                else if (percentage >= 71) grade = 'B1';
+                else if (percentage >= 61) grade = 'B2';
+                else if (percentage >= 51) grade = 'C1';
+                else if (percentage >= 41) grade = 'C2';
+                else if (percentage >= 33) grade = 'D';
+                else if (percentage >= 21) grade = 'E1';
+                else grade = 'E2';
+            
+                $('#grade_display_' + subjectId).text(grade);
+}
 
 </script>
 <script>
