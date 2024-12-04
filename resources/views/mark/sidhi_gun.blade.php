@@ -543,7 +543,7 @@ function calculatePerformance() {
             var  percentage = percn ? (percn / 100) * 100 : 0;
             let grade = '';
             getgrade(percentage,grade,id);
-            if(percentage <= 33 && percentage >= 21){
+            if(percentage < 33 && percentage >= 21){
                 pasfl = pasfl+1;
             }else{
                 pasfl = pasfl+0;
