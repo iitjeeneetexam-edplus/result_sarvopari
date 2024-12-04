@@ -264,16 +264,14 @@
         </table>
 
                 @endforeach
-               
-                 
-
-                @if($finalTotal < $nedadorno || $pasorfl == 0 )  
+                
+                @if($finalTotal <= $nedadorno)  
                 <button type="submit" class="btn btn-success"  style="float:right"  name="submit" >submit</button>
                  @else  
                  <button type="submit" class="btn btn-success"  style="float:right"  name="submit" disabled>submit</button> 
                   @endif
                    
-                    </form> 
+        </form> 
                        <button class="btn btn-success mb-3" style="margin-left: 50vh;" onclick="calculatePerformance()">Calculate Performance</button> 
                     </div>
                 </div>
@@ -538,7 +536,6 @@ function calculatePerformance() {
             var outOfMarks = parseFloat($("#outofmarks" + id).val()) || 0;
 
             var percn = graceInput + performanceMark + outOfMarks;
-            // console.log(percn);
 
             var  percentage = percn ? (percn / 100) * 100 : 0;
             let grade = '';
