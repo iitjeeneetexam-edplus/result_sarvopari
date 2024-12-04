@@ -521,10 +521,16 @@ class StudentController extends Controller
                                 $getpergracmark = Performance_grace_Model::where('school_id',$request->session()->get('school_id'))->first();
                                 if($getpergracmark==null)
                                 {
-                                    $performance = 0;
+                                    
+                                    ?>
+                                    <script>
+                                        alert("Please add Total Performance and Grace!");
+                                    </script>
+                                    <?php
+                                        $performance = 0;
                                         $grace = 0;
                                 }else{
-                                    $performance = $getpergracmark->performance;
+                                        $performance = $getpergracmark->performance;
                                         $grace = $getpergracmark->grace;
                                 }
                                 // if ($getpergracmark) {
