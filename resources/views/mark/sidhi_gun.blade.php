@@ -167,7 +167,7 @@ input[readonly] {
                                            
                                        
                                             @if($ned)
-                                           <input type="text" name="performance_get[]" id="performance_mark_label_hidden{{$subject_value['subject_id']}}" value="{{$performmark}}"  disabled class="form-control">  
+                                           <input type="text" name="performance_get[]" id="performance_mark_label_hidden{{$subject_value['subject_id']}}" value="{{$performmark}}"  readonly class="form-control">  
                                            <!-- below code controller ma pass karva mate  -->
                                            <!-- <input type="text" name="performance_get[]" id="performance_mark_label_hidden{{$subject_value['subject_id']}}"    class="form-control">   -->
                                            @else
