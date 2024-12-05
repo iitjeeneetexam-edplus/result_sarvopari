@@ -1,5 +1,12 @@
 @include('sidebar_display')
-
+<style>
+input[readonly] {
+    background-color: #e9ecef; 
+    color: #6c757d;         
+    border-color: #ced4da;   
+    cursor: not-allowed;     
+}
+                                   </style>
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -157,12 +164,12 @@
                                         <td>@if($ned) <input type="text" name="performance_mark[]" id="performance_mark{{$subject_value['subject_id']}}" value="{{$ned}}" class="form-control" readonly disabled>@else
                                         <input type="text" name="performance_mark[]" id="performance_mark{{$subject_value['subject_id']}}" value="0" class="form-control" readonly disabled>@endif</td>
                                         <td>
-                                           
+                                         
                                            
                                             @if($ned)
-                                           <input type="text" name="performance[]" id="performance_mark_label_hidden{{$subject_value['subject_id']}}"   disabled class="form-control">  
+                                           <input type="text" name="performance_get[]" id="performance_mark_label_hidden{{$subject_value['subject_id']}}"   readonly class="form-control">  
                                            <!-- below code controller ma pass karva mate  -->
-                                           <input type="hidden" name="performance_get[]" id="performance_mark_label_hidden{{$subject_value['subject_id']}}"    class="form-control">  
+                                           <!-- <input type="text" name="performance_get[]" id="performance_mark_label_hidden{{$subject_value['subject_id']}}"    class="form-control">   -->
                                            @else
                                            <input type="hidden" name="performance_get[]" id="performance_mark_label_hidden{{$subject_value['subject_id']}}" value="0"  class="form-control">                                           
                                            @endif
