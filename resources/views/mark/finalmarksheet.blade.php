@@ -57,8 +57,26 @@
                     </div>
                     <hr>
                     <div class="table-container">
-                    <div class="button-div" style="display: none;"><button type="button" style="float: right;" class="btn btn-success generateResultButton mb-2" >Generate Final Result</button></div>
-                   
+                    <div class="button-div" style="display: none;"><button type="button" style="float: right;" class="btn btn-success btn-result  mb-2" >Generate Final Result</button></div>
+                    <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="resultModalLabel">Generate Final Result</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    
+                                   <div class="d-flex">
+                                   <label><b>Select Lunguage : </b></label>&nbsp;&nbsp;
+                                    <a href="#" class="btn btn-success generateResultButton_guj">Gujarati</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a href="#" class="btn btn-success generateResultButton">English</a>
+                                   </div>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
                     <table class="table table-bordered" id="studentdata">
                         <thead class="thead-dark">
                             <tr>
@@ -73,7 +91,21 @@
                 </div>
                     </x-app-layout>
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    
                 <script>
+                    $(document).ready(function () {
+                    $('.btn-result').on('click', function (e) {
+                        e.preventDefault();
+
+                        if ($('.student-checkbox:checked').length > 0) {
+                            const resultModal = new bootstrap.Modal($('#resultModal'));
+                            resultModal.show();
+                        } else {
+                            alert('Please select at least one exam to Student.');
+                        }
+                    });
+
+                });
                     
                     $(document).ready(function() {
                         // School change event for fetching standards
@@ -292,6 +324,59 @@
 
                             $.ajax({
                                 url: '/student/final-marksheet',  
+                                method: 'POST',
+                                data: {
+                                    student_id: selectedStudentIds,
+                                    standard : standard,
+                                    division : division,
+                                    exam : exam_id,
+                                    _token: '{{ csrf_token() }}',  
+                                },
+                                beforeSend: function() { 
+                                    $("#dev-loader").show();
+                                },
+                                complete: function() { 
+                                    $("#dev-loader").hide();
+                                },
+                                success: function(response) {
+                                    console.log(response.pdfUrl);
+                                    window.open(response.pdfUrl, '_blank');
+                                },
+                                error: function() {
+                                    Swal.fire({
+                                    icon: "error",
+                                    title: "Result",
+                                    text: "An error occurred while generating results!",
+                                    });
+                                return;
+                                }
+                            });
+                        });
+                        $('.generateResultButton_guj').on('click' , function() { 
+                            var selectedStudentIds = []; 
+                            $('.student-checkbox:checked').each(function() {
+                                selectedStudentIds.push($(this).data('id'));
+                            });
+                            var standard = sessionStorage.getItem('standard');
+                            var division = sessionStorage.getItem('division');
+                            // var exam = sessionStorage.getItem('exam');
+                            var exam_id = [];
+                            $('input[type="checkbox"]:checked').each(function () {
+                                exam_id.push($(this).val());
+                            });
+                           
+                            
+                            if (selectedStudentIds.length === 0) {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Result",
+                                    text: "Please select one or more student!",
+                                    });
+                                return;
+                            }
+
+                            $.ajax({
+                                url: '/student/final-marksheet-guj',  
                                 method: 'POST',
                                 data: {
                                     student_id: selectedStudentIds,
