@@ -164,10 +164,10 @@ input[readonly] {
                                         <td>@if($ned) <input type="text" name="performance_mark[]" id="performance_mark{{$subject_value['subject_id']}}" value="{{$ned}}" class="form-control" readonly disabled>@else
                                         <input type="text" name="performance_mark[]" id="performance_mark{{$subject_value['subject_id']}}" value="0" class="form-control" readonly disabled>@endif</td>
                                         <td>
-                                         
                                            
+                                       
                                             @if($ned)
-                                           <input type="text" name="performance_get[]" id="performance_mark_label_hidden{{$subject_value['subject_id']}}"   readonly class="form-control">  
+                                           <input type="text" name="performance_get[]" id="performance_mark_label_hidden{{$subject_value['subject_id']}}" value="{{$performmark}}"  disabled class="form-control">  
                                            <!-- below code controller ma pass karva mate  -->
                                            <!-- <input type="text" name="performance_get[]" id="performance_mark_label_hidden{{$subject_value['subject_id']}}"    class="form-control">   -->
                                            @else
@@ -199,7 +199,7 @@ input[readonly] {
                                                     name="grace[]" 
                                                     id="grace_input{{$subject_value['subject_id']}}" 
                                                     onchange="handleKeyDown(this, {{$subject_value['subject_id']}},{{$ned}})" 
-
+                                                    value="{{$gracemmark}}"
                                                     class="form-control grace-input">
                                                 <!-- <button type="button" class="btn btn-success submit_grace" data-subject-id="{{$subject_value['subject_id']}}">Submit</button> -->
                                               </div></div
