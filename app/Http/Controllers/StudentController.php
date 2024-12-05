@@ -568,20 +568,26 @@ class StudentController extends Controller
     }
 
     public function siddhi_gunstore(Request $request){
-        foreach($request->subject_id as $is=>$subjects){
-            $meksid = Marks::where('student_id',$request->student_id)
-            ->where('subject_id',$subjects)
-            ->where('exam_id',$request->exam_id)
-            ->where('is_optional',$request->is_optional[$is])->first();
-            if($meksid){
-            Marks::where('id',$meksid->id)->update([
-                'performance_mark'=>$request->performance[$is],
-                'grace_mark'=>$request->grace[$is],
-            ]);
+        // echo "<pre>";print_r($request->all());exit;
+        foreach ($request->subject_id as $is => $subjects) {
+            $meksid = Marks::where('student_id', $request->student_id)
+                ->where('subject_id', $subjects)
+                ->where('exam_id', $request->exam_id)
+                ->where('is_optional', $request->is_optional[$is])
+                ->first();
+    
+            if ($meksid) {
+                Marks::where('id', $meksid->id)->update([
+                    'performance_mark' => $request->performance_get[$is],
+                    'grace_mark' => $request->grace[$is],
+                ]);
+            }
         }
-        }
-        $message = 'Record added successfully.';
-        return back()->with('success', $message);
+    
+        return response()->json([
+            'success' => true,
+            'message' => 'Records updated successfully!',
+        ]);
         
     }
     public function performance_grace(Request $request){
