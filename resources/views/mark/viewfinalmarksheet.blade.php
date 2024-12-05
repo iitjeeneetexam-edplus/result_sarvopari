@@ -209,7 +209,7 @@
         <tfoot>
             <tr>
                 <td style="font-weight: bold;">Total Obtain Marks</td>
-                <td colspan="{{ count($student_value['exam'])}}">{{$maintotalMarks}}</td>
+                <td colspan="{{ count($student_value['exam'])}}"></td>
                 <td style="font-weight: bold;">{{$mainobtainmarks}}</td>
                 <td style="font-weight: bold;">{{$maintotalobtn}}</td>
                 <td style="font-weight: bold;"></td>

@@ -623,6 +623,7 @@ class StudentController extends Controller
        
     }
     public function all_marksheet(Request $request){
+        
         $examIds = $request->input('exam', []); // Get the exam array from the request
 
         // Filter the array to include only integers
@@ -632,7 +633,7 @@ class StudentController extends Controller
 
         // Optionally convert to integers
         $exam_get = array_map('intval', $filteredExamIds);
-
+        // echo "<pre>";print_r($exam_get);exit;
         
         $studentDta=Student::leftjoin('division','division.id','=','students.division_id')
                             ->leftjoin('standards','standards.id','=','division.standard_id')
