@@ -184,7 +184,7 @@
                             var divisionValue= $('#division').val();
                            
 
-                            var examValue= $('#exam').val(); 
+                            // var examValue= $('#exam').val(); 
                             sessionStorage.setItem('standard', standardValue);
                             sessionStorage.setItem('division', divisionValue);
                             sessionStorage.setItem('exam', examValue);
@@ -274,7 +274,13 @@
                             });
                             var standard = sessionStorage.getItem('standard');
                             var division = sessionStorage.getItem('division');
-                            var exam = sessionStorage.getItem('exam');
+                            // var exam = sessionStorage.getItem('exam');
+                            var exam_id = [];
+                            $('input[type="checkbox"]:checked').each(function () {
+                                exam_id.push($(this).val());
+                            });
+                           
+                            
                             if (selectedStudentIds.length === 0) {
                                 Swal.fire({
                                     icon: "error",
@@ -291,7 +297,7 @@
                                     student_id: selectedStudentIds,
                                     standard : standard,
                                     division : division,
-                                    exam : exam,
+                                    exam : exam_id,
                                     _token: '{{ csrf_token() }}',  
                                 },
                                 beforeSend: function() { 

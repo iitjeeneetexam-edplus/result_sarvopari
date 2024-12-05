@@ -408,6 +408,7 @@ class StudentController extends Controller
     public function sidhi_gun(Request $request){
         $id= $request->input('id');
         $exam_id = $request->input('exam_id');
+        
         $studentDta=Student::leftjoin('division','division.id','=','students.division_id')
                             ->leftjoin('standards','standards.id','=','division.standard_id')
                             ->leftjoin('schools','schools.id','=','standards.school_id')
@@ -622,6 +623,17 @@ class StudentController extends Controller
        
     }
     public function all_marksheet(Request $request){
+        $examIds = $request->input('exam', []); // Get the exam array from the request
+
+        // Filter the array to include only integers
+        $filteredExamIds = array_filter($examIds, function ($value) {
+            return is_numeric($value) && (int)$value == $value; // Ensures numeric and integer type
+        });
+
+        // Optionally convert to integers
+        $exam_get = array_map('intval', $filteredExamIds);
+
+        
         $studentDta=Student::leftjoin('division','division.id','=','students.division_id')
                             ->leftjoin('standards','standards.id','=','division.standard_id')
                             ->leftjoin('schools','schools.id','=','standards.school_id')
@@ -637,7 +649,7 @@ class StudentController extends Controller
                             )->get();
                             $data=[];
                     foreach($studentDta as $value){
-                        $examDta = Exam::whereIn('id', explode(',', $request->exam))->get();
+                        $examDta = Exam::whereIn('id', $exam_get)->get();
                         $exam= [];
 
                         foreach ($examDta as $exam_value) {
