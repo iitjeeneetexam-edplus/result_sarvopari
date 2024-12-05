@@ -293,6 +293,7 @@ input[readonly] {
 <script>
    
    $(document).ready(function () {
+    calculatePerformance();
     const graceMark = parseFloat($('#grace_get').val()) || 0; 
     const perform_get = parseFloat($('#perform_get').val()) || 0; 
     const total=graceMark+perform_get;
