@@ -12,9 +12,9 @@ use App\Models\Student;
 use App\Models\StudentSubject;
 use App\Models\Subject;
 use App\Models\Subjectsub;
-use Barryvdh\DomPDF\Facade\Pdf;
+// use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Performance_grace_Model;
-// use Spatie\LaravelPdf\Facades\Pdf;
+use Spatie\LaravelPdf\Facades\Pdf;
 
 use Exception;
 use Illuminate\Support\Facades\File;
@@ -1171,24 +1171,51 @@ class StudentController extends Controller
             });
             $data = ['student'=>$filteredStudents,'subjects'=>$subjectsData,'optional_subjects'=>$optinalsubjects]; 
             // echo "<pre>";print_r($data);exit;
-            $pdf = PDF::loadView('mark.marksheet', ['data' => $data]);
-            // return $pdf->download('marksheet.pdf');
+            // $pdf = PDF::loadView('mark.marksheet', ['data' => $data]);
+            
+            // // return $pdf->download('marksheet.pdf');
+            // $folderPath = public_path('pdfs');
+
+            // if (!File::exists($folderPath)) {
+            // File::makeDirectory($folderPath, 0755, true);
+            // }
+
+            // $baseFileName = 'marksheet.pdf';
+            // $pdfPath = $folderPath . '/' . $baseFileName;
+
+            // $counter = 1;
+            // while (File::exists($pdfPath)) {
+            // $pdfPath = $folderPath . '/marksheet' . $counter . '.pdf'; 
+            // $counter++;
+            // }
+
+            // file_put_contents($pdfPath, $pdf->output());
+            // $pdfUrl = asset('pdfs/' . basename($pdfPath));
+            // return response()->json(['pdfUrl'=>$pdfUrl]);
             $folderPath = public_path('pdfs');
 
+            // Create the directory if it does not exist
             if (!File::exists($folderPath)) {
-            File::makeDirectory($folderPath, 0755, true);
+                File::makeDirectory($folderPath, 0755, true);
             }
-
+            
+            // Define the base file name
             $baseFileName = 'marksheet.pdf';
             $pdfPath = $folderPath . '/' . $baseFileName;
-
+            
+            // Ensure unique filenames if a file already exists
             $counter = 1;
             while (File::exists($pdfPath)) {
-            $pdfPath = $folderPath . '/marksheet' . $counter . '.pdf'; 
-            $counter++;
+                $pdfPath = $folderPath . '/marksheet' . $counter . '.pdf';
+                $counter++;
             }
-
-            file_put_contents($pdfPath, $pdf->output());
+            
+            // Generate and save the PDF
+            Pdf::view('mark.marksheet', ['student' => $data])
+                ->format('a4')
+                ->save($pdfPath);
+            
+            // Optionally, create a URL for accessing the PDF
             $pdfUrl = asset('pdfs/' . basename($pdfPath));
             return response()->json(['pdfUrl'=>$pdfUrl]);
 
