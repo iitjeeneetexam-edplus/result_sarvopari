@@ -1,16 +1,17 @@
 
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 @foreach($student as $student_value)
 <div style="box-sizing: border-box;"> 
-<div style="font-family: system-ui, sans-serif; ">
+<div style="font-family: 'Noto Sans Gujarati', sans-serif">
            
           
-            <div style="width: 190mm; height: 260mm; padding: 10px; border: 3px solid black; border-radius: 4px; font-family: Calibri, sans-serif;">
+            <div style="width: 185mm; height: 260mm; padding: 10px; border: 3px solid black; border-radius: 4px; font-family: Calibri, sans-serif;margin-left:25px;margin-top:30px">
                 <div style="width: 100%; margin-bottom: 10pt;">
                     <div style="border-radius: 4px; border: 2pt solid black; padding: 15pt; height: 67pt;">
                         <h1 style="text-align: center; font-size: 40pt; font-weight: bold; margin: 0; padding: 0;">{{ ucfirst($student_value['school_name']) }}
                         </h1>
-                        <br />
-                        <p style="text-align: center; font-size: 14pt; padding: 0; margin: 0;">{{ $student_value['address'] }}</p>
+                        <p style="text-align: center; font-size: 14pt; padding: 0;margin-top:-0px">{{ $student_value['address'] }}</p>
                     </div>
                 </div>
                 <br>
@@ -18,7 +19,7 @@
                     <table style="width: 100%; border-bottom: 1pt solid black; font-size: 24pt;">
                         <tr>
                             <td style="width: 33%; font-size: 14pt; vertical-align: top;">
-                                <p style="margin: 0;">Index No - <b>{{ ucfirst($student_value['school_index']) }}</b></p>
+                                <p style="margin: 0;" >{{$student_value['Index No']}} - <b>{{ ucfirst($student_value['school_index']) }}</b></p>
                             </td>
                             <td style="width: 34%; text-align: center; padding: 5px; background-color: black; color: white; font-size: 24pt; font-weight: bold; border-radius: 4px;">
                                 Result Sheet
@@ -37,19 +38,19 @@
                     <table style="width: 100%; font-size: 14pt; border-collapse: collapse;">
                         <tr>
                             <td style="width: 33%; text-align: left;">
-                                G R No - <b>{{ $student_value['gr_no'] }}</b>
+                            {{$student_value['G R No']}} - <b>{{ $student_value['gr_no'] }}</b>
                             </td>
-                            <td style="width: 80%; text-align: center; font-size: 16pt; ">
-                                Standard - <b>{{ ucfirst($student_value['standard_name']) }}-{{$student_value['division_name']}}</b>
+                            <td style=" text-align: center; font-size: 16pt; ">
+                            {{$student_value['Standard']}} - <b>{{ ucfirst($student_value['standard_name']) }}-{{$student_value['division_name']}}</b>
                             </td>
                             <td style="width: 33%; text-align: right;">
-                                Roll No - <b>{{ $student_value['roll_no'] }}</b>
+                            {{$student_value['Roll No']}} - <b>{{ $student_value['roll_no'] }}</b>
                             </td>
                         </tr>
                     </table>
                 </div>
-                <p style="margin: 0;margin-top:10px;">UID - <b>{{ $student_value['uid'] }}</b> </p>
-                <p style="font-size: 16pt; margin: 0; padding: 0px; margin-top: 20px;">Student Name - <b>{{ $student_value['student_name'] }}</b> </p>
+                <p style="margin: 0;margin-top:10px;">{{$student_value['UID']}} - <b>{{ $student_value['uid'] }}</b> </p>
+                <p style="font-size: 16pt; margin: 0; padding: 0px; margin-top: 20px;">{{ $student_value['studentname_label'] }} - <b>{{ $student_value['student_name'] }}</b> </p>
 
                <br>
             
@@ -59,18 +60,18 @@
    <table border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
         <thead>
             <tr>
-                <th style="background-color: #f0f0f0;" >Subjects</th>
+                <th style="background-color: #f0f0f0;" >{{$student_value['Subjects']}}</th>
                 @if(isset($student_value['exam']))
                 @foreach($student_value['exam'] as $exam_value)
                 <th style="background-color: #f0f0f0;" >{{$exam_value['exam_name']}}</th>
                 @endforeach
                 @endif
-                <th style="background-color: #f0f0f0;" >Obtain Marks</th>
-                <th style="background-color: #f0f0f0;" >Out of 100</th>
-                <th style="background-color: #f0f0f0;" >Performance</th>
-                <th style="background-color: #f0f0f0;" >Grace</th>
-                <th style="background-color: #f0f0f0;">Grade</th>
-                <th style="background-color: #f0f0f0;">Percentage</th>
+                <th style="background-color: #f0f0f0;" >{{$student_value['Obtain Marks']}}</th>
+                <th style="background-color: #f0f0f0;" >{{$student_value['Out of 100']}}</th>
+                <th style="background-color: #f0f0f0;" >{{$student_value['Performance']}}</th>
+                <th style="background-color: #f0f0f0;" >{{$student_value['Grace']}}</th>
+                <th style="background-color: #f0f0f0;">{{$student_value['Grade']}}</th>
+                <th style="background-color: #f0f0f0;">{{$student_value['Percentage']}}</th>
             </tr>
            
             
@@ -208,13 +209,13 @@
         </tbody>
         <tfoot>
             <tr>
-                <td style="font-weight: bold;">Total Obtain Marks</td>
+                <td style="font-weight: bold;">{{$student_value['Total Obtain Marks']}}</td>
                 <td colspan="{{ count($student_value['exam'])}}"></td>
                 <td style="font-weight: bold;">{{$mainobtainmarks}}</td>
                 <td style="font-weight: bold;">{{$maintotalobtn}}</td>
                 <td style="font-weight: bold;"></td>
                 <td style="font-weight: bold;"></td>
-                <td style="font-weight: bold;">@if($finalTotal < $nedadorno || $pasorfl == 0 ) Pass @else Fail @endif </td>
+                <td style="font-weight: bold;">@if($finalTotal < $nedadorno || $pasorfl == 0 ) {{$student_value['Pass']}} @else {{$student_value['Fail']}} @endif </td>
                 <td style="font-weight: bold;">@php $percentages =$maintotalobtn ? ($maintotalobtn / $hundradtotal) * 100 : 0; @endphp {{round($percentages,2)}}%</td>
             </tr>
         </tfoot>
@@ -223,13 +224,13 @@
 
     <table style="width: 100%; margin-top: 110px;">
     <tr>
-        <td style="text-align: left;">Teacher Signature:</td>
-        <td style="text-align: right;">Principal Signature:</td>
+        <td style="text-align: left;">{{$student_value['Teacher Signature']}}</td>
+        <td style="text-align: right;">{{$student_value['Principal Signature']}}</td>
     </tr>
 </table>
 </div>
-<div style="position: absolute; margin-top: -70px; left: 20px; font-size: 12pt;">
-<p >Date: 04-05-2020</p>
+<div style="position: absolute; margin-top: -70px; left: 50px; font-size: 12pt;">
+<p >{{$student_value['Date']}}: 04-05-2020</p>
 
 
 </div>
