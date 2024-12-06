@@ -46,7 +46,12 @@ return [
          * Symbol, ZapfDingbats.
          */
         'font_dir' => storage_path('fonts'), // advised by dompdf (https://github.com/dompdf/dompdf/pull/782)
-
+        'font_data' => [
+            'noto_sans_gujarati' => [
+                'R' => 'NotoSansGujarati-Regular.ttf', // Regular font
+                'B' => 'NotoSansGujarati-Bold.ttf',   // Bold font (if available) 
+            ],
+        ],
         /**
          * The location of the DOMPDF font cache directory
          *

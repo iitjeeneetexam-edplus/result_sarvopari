@@ -1,10 +1,11 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+ 
+
 @foreach($student as $student_value)
 <div style="box-sizing: border-box;"> 
-<div style="font-family: DejaVu Sans, sans-serif;">
-           
-          
+<div style="font-family: 'noto_sans_gujarati', sans-serif;">
+   
             <div style="width: 190mm; height: 260mm; padding: 10px; border: 3px solid black; border-radius: 4px; font-family: Calibri, sans-serif;">
                 <div style="width: 100%; margin-bottom: 10pt;">
                     <div style="border-radius: 4px; border: 2pt solid black; padding: 15pt; height: 67pt;">

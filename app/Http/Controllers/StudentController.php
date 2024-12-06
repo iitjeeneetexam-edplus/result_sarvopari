@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\File as FacadesFile;
 use Illuminate\Support\Facades\Log;
 use Mpdf\Mpdf;
 use Stichoza\GoogleTranslate\GoogleTranslate;
-
+use TCPDF;
 
 class StudentController extends Controller
 {
@@ -834,6 +834,7 @@ class StudentController extends Controller
 
             file_put_contents($pdfPath, $pdf->output());
             $pdfUrl = asset('pdfs/' . basename($pdfPath));
+
             
             //new code below
            
@@ -861,8 +862,105 @@ class StudentController extends Controller
             // $mpdf->Output($pdfPath, \Mpdf\Output\Destination::FILE);
             // $pdfUrl = asset('pdfs/' . basename($pdfPath));
 
+            // $pdf = new TCPDF();
+
+            // // Set document information
+            // $pdf->SetCreator(PDF_CREATOR);
+            // $pdf->SetAuthor('Your Name');
+            // $pdf->SetTitle('Gujarati PDF Example');
+            // $pdf->SetSubject('Gujarati Text Example');
+            // $pdf->SetKeywords('Gujarati, PDF, Laravel, TCPDF');
+    
+            // // Set default monospaced font
+            // $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+    
+            // // Set margins
+            // $pdf->SetMargins(10, 10, 10);
+            // $pdf->SetHeaderMargin(5);
+            // $pdf->SetFooterMargin(10);
+    
+            // // Set auto page breaks
+            // $pdf->SetAutoPageBreak(TRUE, 10);
+    
+            // // Add a page
+            // $pdf->AddPage();
+    
+            // // Set font for Gujarati (freeserif is a Unicode font included with TCPDF)
+            // $pdf->SetFont('freeserif', '', 12);
+    
+            // // Content in Gujarati
+           
+            // $html = view('mark.viewfinalmarksheetguj', ['student' => $data])->render();
+
+            // // Write HTML content
+            // $pdf->writeHTML($html, true, false, true, false, '');
+    
+            // // Output the PDF as a download
+            // $pdf->Output('Gujarati_Example.pdf', 'D');
+
+            // $folderPath = public_path('pdfs');
+            // if (!File::exists($folderPath)) {
+            //     File::makeDirectory($folderPath, 0755, true);
+            // }
+
+            // $baseFileName = 'marksheet.pdf';
+            // $pdfPath = $folderPath . '/' . $baseFileName;
+
+            // $counter = 1;
+            // while (File::exists($pdfPath)) {
+            //     $pdfPath = $folderPath . '/marksheet' . $counter . '.pdf'; 
+            //     $counter++;
+            // }
+
+            // // $mpdf->Output($pdfPath, \Mpdf\Output\Destination::FILE);
+            // $pdfUrl = asset('pdfs/' . basename($pdfPath));
             return response()->json(['pdfUrl'=>$pdfUrl]);
           
+    }
+    public function generateGujaratiPDF()
+    {
+        // Create new PDF instance
+        $pdf = new TCPDF();
+
+        // Set document information
+        $pdf->SetCreator(PDF_CREATOR);
+        $pdf->SetAuthor('Your Name');
+        $pdf->SetTitle('Gujarati PDF Example');
+        $pdf->SetSubject('Gujarati Text Example');
+        $pdf->SetKeywords('Gujarati, PDF, Laravel, TCPDF');
+
+        // Set default monospaced font
+        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+        // Set margins
+        $pdf->SetMargins(10, 10, 10);
+        $pdf->SetHeaderMargin(5);
+        $pdf->SetFooterMargin(10);
+
+        // Set auto page breaks
+        $pdf->SetAutoPageBreak(TRUE, 10);
+
+        // Add a page
+        $pdf->AddPage();
+
+        // Set font for Gujarati (freeserif is a Unicode font included with TCPDF)
+        $pdf->SetFont('freeserif', '', 12);
+
+        // Content in Gujarati
+        $html = '
+            <h1 style="text-align:center;">ગુજરાતી ટેક્સ્ટ ઉદાહરણ</h1>
+            <p style="text-align:justify;">
+                આ પીડીએફ ફાઈલમાં ગુજરાતી ભાષાને ટેકપીડીએફ લાઇબ્રરી દ્વારા દર્શાવવાની પ્રક્રિયા છે. 
+                આ ઉદાહરણ તમને TCPDF સાથે ગુજરાતી ભાષાના ટેક્સ્ટને હેન્ડલ કરવાની રીત બતાવે છે.
+            </p>
+            <p>મહત્વપૂર્ણ શબ્દો: PDF, TCPDF, Laravel, ગુજરાતી</p>
+        ';
+
+        // Write HTML content
+        $pdf->writeHTML($html, true, false, true, false, '');
+
+        // Output the PDF as a download
+        $pdf->Output('Gujarati_Example.pdf', 'D');
     }
     public function all_marksheet(Request $request){
         
