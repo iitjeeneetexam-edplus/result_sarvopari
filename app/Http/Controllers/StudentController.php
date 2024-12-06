@@ -12,9 +12,9 @@ use App\Models\Student;
 use App\Models\StudentSubject;
 use App\Models\Subject;
 use App\Models\Subjectsub;
-// use Barryvdh\DomPDF\Facade\Pdf;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Models\Performance_grace_Model;
-use Spatie\LaravelPdf\Facades\Pdf;
+// use Spatie\LaravelPdf\Facades\Pdf;
 
 use Exception;
 use Illuminate\Support\Facades\File;
