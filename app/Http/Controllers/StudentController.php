@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File as FacadesFile;
 use Illuminate\Support\Facades\Log;
 use Mpdf\Mpdf;
-use Stichoza\GoogleTranslate\GoogleTranslate;
+// use Stichoza\GoogleTranslate\GoogleTranslate;
 use TCPDF;
 
 class StudentController extends Controller
@@ -284,9 +284,6 @@ class StudentController extends Controller
             Log::error('CSV Import Error: ' . $e->getMessage());
             return back()->with('error', 'Error during CSV import.');
         }
-        
-
-       
     }
 
     public function assignSubject(Request $request)
@@ -638,7 +635,7 @@ class StudentController extends Controller
         // Optionally convert to integers
         $exam_get = array_map('intval', $filteredExamIds);
         // echo "<pre>";print_r($exam_get);exit;
-        $translator = new GoogleTranslate('gu'); // Set target language to Gujarati
+        // $translator = new GoogleTranslate('gu'); // Set target language to Gujarati
 
         $studentDta=Student::leftjoin('division','division.id','=','students.division_id')
                             ->leftjoin('standards','standards.id','=','division.standard_id')
@@ -724,7 +721,7 @@ class StudentController extends Controller
                                         }
                                 
                                         $subject_Data[] = [
-                                            'subject_name' => $translator->translate($subject_value['subject_name']),
+                                            'subject_name' => $subject_value['subject_name'],
                                             'subject_id' => $subject_value['subject_id'],
                                             'marks' => $marks,
                                         ];
@@ -732,7 +729,7 @@ class StudentController extends Controller
                                 
                                     $exam[] = [
                                         'exam_id' => $exam_value->id,
-                                        'exam_name' => $translator->translate($exam_value->exam_name),
+                                        'exam_name' => $exam_value->exam_name,
                                         'exam_year' => $exam_value->exam_year,
                                         'result_date' => $exam_value->result_date,
                                         'subject_Data' => $subject_Data,
@@ -742,42 +739,42 @@ class StudentController extends Controller
 
                                 $data[]=[
                                     'id'=>$value->id,
-                                    'student_name'=>$translator->translate($value->name),
+                                    'student_name'=>$value->name,
                                     'roll_no'=>$value->roll_no,
                                     'gr_no'=>$value->GR_no,
                                     'uid'=>$value->uid,
                                     'school_index'=>$value->school_index,
                                     'medium'=>$value->medium,
-                                    'division_name'=>$translator->translate($value->division_name),
+                                    'division_name'=>$value->division_name,
                                     'address'=>$value->address,
                                     'standard_id'=>$value->standard_id,
-                                    'standard_name'=>$translator->translate($value->standard_name),
-                                    'school_name'=>$translator->translate($value->school_name),
-                                    'medium'=>$translator->translate($value->medium),
+                                    'standard_name'=>$value->standard_name,
+                                    'school_name'=>$value->school_name,
+                                    'medium'=>$value->medium,
                                     'school_index'=>$value->school_index,
-                                    'address'=>$translator->translate($value->address),
+                                    'address'=>$value->address,
                                     'division_name'=>$value->division_name,
                                     'performance_mark'=>$getpergracmark->performance,
                                     'grace_mark'=>$getpergracmark->grace,
-                                    // 'studentname_label'=>$translator->translate('studentname_label'),
-                                    // 'Subjects'=>$translator->translate('Subjects'),
-                                    // 'Obtain Marks'=>$translator->translate('Obtain Marks'),
-                                    // 'Out of 100'=>$translator->translate('Out of 100'),
-                                    // 'Performance'=>$translator->translate('Performance'),
-                                    // 'Grace'=>$translator->translate('Grace'),
-                                    // 'Grade'=>$translator->translate('Grade'),
-                                    // 'Percentage'=>$translator->translate('Percentage'),
-                                    // 'Total Obtain Marks'=>$translator->translate('Total Obtain Marks'),
-                                    // 'Pass'=>$translator->translate('Pass'),
-                                    // 'Fail'=>$translator->translate('Fail'),
-                                    // 'Teacher Signature'=>$translator->translate('Teacher Signature'),
-                                    // 'Principal Signature'=>$translator->translate('Principal Signature'),
-                                    // 'Date'=>$translator->translate('Date'),
-                                    // 'Index No'=>$translator->translate('Index No'),
-                                    // 'G R No'=>$translator->translate('G R No'),
-                                    // 'Standard'=>$translator->translate('Standard'),
-                                    // 'Roll No'=>$translator->translate('Roll No'),
-                                    // 'UID'=>$translator->translate('UID'),
+                                    // 'studentname_label'=>'studentname_label'),
+                                    // 'Subjects'=>'Subjects'),
+                                    // 'Obtain Marks'=>'Obtain Marks'),
+                                    // 'Out of 100'=>'Out of 100'),
+                                    // 'Performance'=>'Performance'),
+                                    // 'Grace'=>'Grace'),
+                                    // 'Grade'=>'Grade'),
+                                    // 'Percentage'=>'Percentage'),
+                                    // 'Total Obtain Marks'=>'Total Obtain Marks'),
+                                    // 'Pass'=>'Pass'),
+                                    // 'Fail'=>'Fail'),
+                                    // 'Teacher Signature'=>'Teacher Signature'),
+                                    // 'Principal Signature'=>'Principal Signature'),
+                                    // 'Date'=>'Date'),
+                                    // 'Index No'=>'Index No'),
+                                    // 'G R No'=>'G R No'),
+                                    // 'Standard'=>'Standard'),
+                                    // 'Roll No'=>'Roll No'),
+                                    // 'UID'=>'UID'),
 
                                     'exam'=>$exam,
                                 ];
@@ -974,7 +971,6 @@ class StudentController extends Controller
         // Optionally convert to integers
         $exam_get = array_map('intval', $filteredExamIds);
         // echo "<pre>";print_r($exam_get);exit;
-        $translator = new GoogleTranslate('en');
         $studentDta=Student::leftjoin('division','division.id','=','students.division_id')
                             ->leftjoin('standards','standards.id','=','division.standard_id')
                             ->leftjoin('schools','schools.id','=','standards.school_id')
@@ -1083,8 +1079,8 @@ class StudentController extends Controller
                                     'uid'=>$value->uid,
                                     'school_index'=>$value->school_index,
                                     'medium'=>$value->medium,
-                                    'division_name'=>$translator->translate($value->division_name),
-                                    'standard_name'=>$translator->translate($value->standard_name),
+                                    'division_name'=>$value->division_name,
+                                    'standard_name'=>$value->standard_name,
                                     'address'=>$value->address,
                                     'standard_id'=>$value->standard_id,
                                     'school_name'=>$value->school_name,
@@ -1094,7 +1090,7 @@ class StudentController extends Controller
                                     'division_name'=>$value->division_name,
                                     'performance_mark'=>$getpergracmark->performance,
                                     'grace_mark'=>$getpergracmark->grace,
-                                    // 'studentname_label'=>$translator->translate('studentname_label'),
+                                    // 'studentname_label'=>'studentname_label'),
                                     // 'Subjects'=>$translator->translate('Subjects'),
                                     // 'Obtain Marks'=>$translator->translate('Obtain Marks'),
                                     // 'Out of 100'=>$translator->translate('Out of 100'),

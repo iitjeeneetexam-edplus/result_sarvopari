@@ -1,10 +1,33 @@
 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
- 
+<meta charset="UTF-8">
+<style>
+    
+    @font-face {
+    font-family: 'GujaratiFont';
+    src: url('fonts/NotoSansGujarati-Regular.ttf') format('truetype');
+    }
+   @font-face {
+        font-family: 'GujaratiFont';
+        font-weight: bold;
+        src: url('fonts/NotoSansGujarati-Bold.ttf') format('truetype');
+    
+    }
+    h1 {
+        font-family: 'GujaratiFont', sans-serif;
+        font-weight: bold;
+        text-align: center;
+    }
+body {
+    font-family: 'GujaratiFont', sans-serif;
+}
 
+</style>
 @foreach($student as $student_value)
+<body>
+<p style="margin: 0; padding: 0px; margin-top: 20px;">
+            વિદ્યાર્થીનું નામ - <b>ધ્રુવિત પટેલ</b>
+        </p>
 <div style="box-sizing: border-box;"> 
-<div style="font-family: 'noto_sans_gujarati', sans-serif;">
    
             <div style="width: 190mm; height: 260mm; padding: 10px; border: 3px solid black; border-radius: 4px; font-family: Calibri, sans-serif;">
                 <div style="width: 100%; margin-bottom: 10pt;">
@@ -23,7 +46,7 @@
                                 <p style="margin: 0;" >Index No - <b>{{ ucfirst($student_value['school_index']) }}</b></p>
                             </td>
                             <td style="width: 34%; text-align: center; padding: 5px; background-color: black; color: white; font-size: 24pt; font-weight: bold; border-radius: 4px;">
-                                પરિણામ પત્રક
+                               
                             </td>
                             <td style="width: 33%; text-align: right; font-size: 14pt; vertical-align: top;">
                                 <p style="margin: 0;margin-top:10px;"> <b>{{$student_value['medium']}}</b></p>
@@ -51,7 +74,7 @@
                     </table>
                 </div>
                 <p style="margin: 0;margin-top:10px;">UID - <b>{{ $student_value['uid'] }}</b> </p>
-                <p style="font-size: 16pt; margin: 0; padding: 0px; margin-top: 20px;">Student Name - <b>{{ $student_value['student_name'] }}</b> </p>
+                <p style="font-size: 16pt; margin: 0; padding: 0px; margin-top: 20px;">વિદ્યાર્થીનું નામ - <b>{{ $student_value['student_name'] }}</b> </p>
 
                <br>
             
@@ -242,3 +265,4 @@
     @endif
 @endforeach
 </div>
+</body>
