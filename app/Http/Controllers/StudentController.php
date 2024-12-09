@@ -1118,7 +1118,7 @@ class StudentController extends Controller
             $additionalWidth = 50; // Additional width per subject
             $totalWidth = $baseWidth + max(0, (6 - 5) * $additionalWidth);
 
-            $pdf = PDF::loadView('mark.viewfinalmarksheet', ['student' => $data])->setPaper([0, 0, $totalWidth, 841.89]);
+            $pdf = PDF::loadView('mark.viewfinalmarksheet', ['student' => $data])->setPaper([0, 0, $totalWidth, 841.89])->setOptions(['isHtml5ParserEnabled' => true, 'isPhpEnabled' => true]);
             // return $pdf->download('marksheet.pdf');
             $folderPath = public_path('pdfs');
 

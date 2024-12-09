@@ -1,31 +1,27 @@
 
 <meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anek+Gujarati:wght@100..800&family=Mukta+Vaani:wght@200;300;400;500;600;700;800&family=Noto+Sans+Gujarati:wght@100..900&family=Noto+Serif+Gujarati:wght@700&family=Rasa:ital,wght@0,300..700;1,300..700&family=Shrikhand&display=swap" rel="stylesheet">
+
 <style>
     
-    @font-face {
-    font-family: 'GujaratiFont';
-    src: url('fonts/NotoSansGujarati-Regular.ttf') format('truetype');
-    }
-   @font-face {
-        font-family: 'GujaratiFont';
-        font-weight: bold;
-        src: url('fonts/NotoSansGujarati-Bold.ttf') format('truetype');
+   
     
-    }
-    h1 {
-        font-family: 'GujaratiFont', sans-serif;
-        font-weight: bold;
-        text-align: center;
-    }
-body {
-    font-family: 'GujaratiFont', sans-serif;
+    .noto-sans-gujarati{
+  font-family: "Noto Sans Gujarati", serif;
+  font-optical-sizing: auto;
+  font-weight:200;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
 }
-
 </style>
 @foreach($student as $student_value)
-<body>
+<body class="noto-sans-gujarati">
+વિદ્યાર્થીનું નામ - <b>ધ્રુવિત પટેલ</b>
 <p style="margin: 0; padding: 0px; margin-top: 20px;">
-            વિદ્યાર્થીનું નામ - <b>ધ્રુવિત પટેલ</b>
+            
         </p>
 <div style="box-sizing: border-box;"> 
    

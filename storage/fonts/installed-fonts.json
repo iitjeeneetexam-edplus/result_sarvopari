@@ -1,6 +1,43 @@
 {
     "gujaratifont": {
-        "normal": "C:\\wamp64\\www\\result\\storage\\fonts\/gujaratifont_normal_ff6c4432acb80e14f7c8764553258500",
-        "bold": "gujaratifont_bold_9e434cbada24e248a73b96734c4a397a"
+        "normal": "C:\\wamp64\\www\\result_sarvopari\\storage\\fonts\/gujaratifont_normal_785fedac7aac348f61281d33ec4f7fac",
+        "bold": "gujaratifont_bold_785fedac7aac348f61281d33ec4f7fac"
+    },
+    "noto sans gujarati": {
+        "100": "C:\\wamp64\\www\\result_sarvopari\\storage\\fonts\/noto_sans_gujarati_100_47084c1ad65f19b9c292fef1f50d2b30",
+        "200": "C:\\wamp64\\www\\result_sarvopari\\storage\\fonts\/noto_sans_gujarati_200_69db5c694bae222102ea8cdb4cd92250",
+        "300": "C:\\wamp64\\www\\result_sarvopari\\storage\\fonts\/noto_sans_gujarati_300_126a781a398f809341cf78ea7661109c",
+        "normal": "C:\\wamp64\\www\\result_sarvopari\\storage\\fonts\/noto_sans_gujarati_normal_b57d0bc19e302fee8c5ead7dbb68f33f",
+        "500": "C:\\wamp64\\www\\result_sarvopari\\storage\\fonts\/noto_sans_gujarati_500_a9c71260aad6ee3d5d6c5367f63fa243",
+        "600": "C:\\wamp64\\www\\result_sarvopari\\storage\\fonts\/noto_sans_gujarati_600_12517130ebdfc91a4b7b52ab99c6b322",
+        "bold": "C:\\wamp64\\www\\result_sarvopari\\storage\\fonts\/noto_sans_gujarati_bold_4a3ee4b0bf4d19eee3950c576112bac0",
+        "800": "C:\\wamp64\\www\\result_sarvopari\\storage\\fonts\/noto_sans_gujarati_800_19a79db7d46bdaa974d05ca6c93be953",
+        "900": "noto_sans_gujarati_900_c15f6b6e6dfc6d1e5dfcb841a16f919a"
+    },
+    "noto serif gujarati": {
+        "100": "C:\\wamp64\\www\\result_sarvopari\\storage\\fonts\/noto_serif_gujarati_100_bfefdd3e8cc9258cde64dabf68664d4f",
+        "200": "C:\\wamp64\\www\\result_sarvopari\\storage\\fonts\/noto_serif_gujarati_200_7fedf500fd2aa128e2d02118718afc69",
+        "300": "C:\\wamp64\\www\\result_sarvopari\\storage\\fonts\/noto_serif_gujarati_300_62beceb055c7b1feda3346b971b73d8c",
+        "normal": "C:\\wamp64\\www\\result_sarvopari\\storage\\fonts\/noto_serif_gujarati_normal_3d0ab7dec55abcc74185949719de9088",
+        "500": "C:\\wamp64\\www\\result_sarvopari\\storage\\fonts\/noto_serif_gujarati_500_8e0de8afa04447ab29163c404b0bc7c1",
+        "600": "C:\\wamp64\\www\\result_sarvopari\\storage\\fonts\/noto_serif_gujarati_600_45e93c3a34f2372562aa253f1cc0a897",
+        "bold": "C:\\wamp64\\www\\result_sarvopari\\storage\\fonts\/noto_serif_gujarati_bold_f6eafe601d8c9524f2a497dbd571ac0c",
+        "800": "C:\\wamp64\\www\\result_sarvopari\\storage\\fonts\/noto_serif_gujarati_800_90a6eeae6233c22a13e018f33598dc28",
+        "900": "noto_serif_gujarati_900_ebe2f5ed9a41bdec0fefec23e72e2683"
+    },
+    "rasa": {
+        "300_italic": "C:\\wamp64\\www\\result_sarvopari\\storage\\fonts\/rasa_300_italic_8c844b596153963f6697c66274651981",
+        "italic": "C:\\wamp64\\www\\result_sarvopari\\storage\\fonts\/rasa_italic_cae0ef0a036c54e77969a498efcc013c",
+        "500_italic": "C:\\wamp64\\www\\result_sarvopari\\storage\\fonts\/rasa_500_italic_4dd34dc3912733c8475addd786f29a14",
+        "600_italic": "C:\\wamp64\\www\\result_sarvopari\\storage\\fonts\/rasa_600_italic_058939ff14c4abcacb3af6224a8be8f4",
+        "bold_italic": "C:\\wamp64\\www\\result_sarvopari\\storage\\fonts\/rasa_bold_italic_547f0a4c28a369e4c901317099ff8470",
+        "300": "C:\\wamp64\\www\\result_sarvopari\\storage\\fonts\/rasa_300_cdbb4acf87da7a690dd3785413e1defe",
+        "normal": "C:\\wamp64\\www\\result_sarvopari\\storage\\fonts\/rasa_normal_a55ef88c6f9398e1389b769486c36355",
+        "500": "C:\\wamp64\\www\\result_sarvopari\\storage\\fonts\/rasa_500_6139c0fcc0fcb68084375e93d2c8e15b",
+        "600": "C:\\wamp64\\www\\result_sarvopari\\storage\\fonts\/rasa_600_d8975c82c8dbf5c6b77ee29ba8a69537",
+        "bold": "rasa_bold_c77dc586364f1e0a848074698ab4e7fe"
+    },
+    "shrikhand": {
+        "normal": "shrikhand_normal_9c1ae84dcb3bb1f3924670d2a52e34e5"
     }
 }

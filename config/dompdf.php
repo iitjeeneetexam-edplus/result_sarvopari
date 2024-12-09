@@ -45,13 +45,16 @@ return [
          * Times-Roman, Times-Bold, Times-BoldItalic, Times-Italic,
          * Symbol, ZapfDingbats.
          */
-        'font_dir' => storage_path('fonts'), // advised by dompdf (https://github.com/dompdf/dompdf/pull/782)
-        'font_data' => [
-            'noto_sans_gujarati' => [
-                'R' => 'NotoSansGujarati-Regular.ttf', // Regular font
-                'B' => 'NotoSansGujarati-Bold.ttf',   // Bold font (if available) 
+    
+            'font_dir' => public_path('fonts'), // Folder where your fonts are stored
+            'font_cache' => storage_path('fonts'), // Cache location
+            'default_font' => 'NotoSansGujarati', // Specify the default font
+            'custom_fonts' => [
+                'NotoSansGujarati' => [
+                    'R' => public_path('fonts/NotoSansGujarati-Regular.ttf'), // Regular weight
+                    'B' => public_path('fonts/NotoSansGujarati-Bold.ttf'),    // Bold weight (if available)
+                ]
             ],
-        ],
         /**
          * The location of the DOMPDF font cache directory
          *
@@ -60,8 +63,7 @@ return [
          *
          * Note: This directory must exist and be writable by the webserver process.
          */
-        'font_cache' => storage_path('fonts'),
-
+        
         /**
          * The location of a temporary directory.
          *
