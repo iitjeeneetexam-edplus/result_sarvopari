@@ -448,7 +448,7 @@
     // Initialize jsPDF with dynamic paper size
     const pdf = new jsPDF({
         unit: 'mm',
-        format: [0, 0, $totalWidth, height], // Use the dynamically calculated width and standard height
+        format: [0, 0, totalWidth, height], // Use the dynamically calculated width and standard height
         orientation: 'portrait'
     });
 
