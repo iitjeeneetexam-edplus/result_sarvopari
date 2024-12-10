@@ -429,49 +429,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
 
 <script>
-            const { jsPDF } = window.jspdf;
+   async function generatePDF(response) {
+        const content = document.getElementById("content");
+        content.innerHTML = response.student;
 
-  async function generatePDF(response) {
-    const content = document.getElementById("content");
-    content.innerHTML = response.student;
+                const options = {
+                    filename: 'student_report.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 3 },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                    
+                };
+                html2pdf().from(content).set(options).save();
 
-    // Set the base width and additional width for dynamic adjustment
-    const baseWidth = 580.28; // A4 width in points (8.27 inches at 72 dpi)
-    const additionalWidth = 50; // Additional width per subject
-
-    // Adjust the total width based on your conditions, here no subject consideration
-    const totalWidth = baseWidth + Math.max(0, (6 - 5) * additionalWidth); // Adjust as needed
-
-    const options = {
-        filename: 'student_report.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 3 },
-        jsPDF: { 
-            unit: 'mm', 
-            format: [totalWidth, 841.89],  // Dynamically set the width (totalWidth)
-            orientation: 'portrait', 
-            auto: true
-        },
-    };
-
-    // Create the PDF with html2pdf directly
-    const pdf = html2pdf().from(content).set(options);
-
-    // If html2pdf's auto width doesn't work properly, try using jsPDF directly for better control
-    const jsPdfInstance = new jsPDF({
-        unit: 'mm',
-        format: [totalWidth, 841.89], // Dynamically set width
-        orientation: 'portrait'
-    });
-
-    // Render the HTML content into the PDF (more control with jsPDF)
-    jsPdfInstance.html(content, {
-        callback: function () {
-            jsPdfInstance.save('student_report.pdf');
-        },
-        html2canvas: { scale: 3 }  // Ensure high resolution rendering
-    });
-}
-
+   }
 
 </script>
