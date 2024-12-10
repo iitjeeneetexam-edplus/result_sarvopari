@@ -2,18 +2,15 @@
 
 @foreach($student as $student_value)
 <body class="noto-sans-gujarati">
-<p style="margin: 0; padding: 0px; margin-top: 20px;">
-            
-        </p>
 <div style="box-sizing: border-box;"> 
    
-            <div style="width: 190mm; height: 260mm; padding: 10px; border: 3px solid black; border-radius: 4px; font-family: Calibri, sans-serif;">
+            <div style="width: 175mm; height: 270mm; padding: 10px; border: 3px solid black; border-radius: 4px; font-family: Calibri, sans-serif;margin-top:30px">
                 <div style="width: 100%; margin-bottom: 10pt;">
-                    <div style="border-radius: 4px; border: 2pt solid black; padding: 15pt; height: 67pt;">
-                        <h1 style="text-align: center; font-size: 40pt; font-weight: bold; margin: 0; padding: 0;">{{ ucfirst($student_value['school_name']) }}
+                    <div style="border-radius: 4px; border: 2pt solid black; padding: 15pt; height: 75pt;">
+                        <h1 style="text-align: center; font-size: 40pt; font-weight: bold; margin: 0; padding: 0;margin-top:-40px">{{ ucfirst($student_value['school_name']) }}
                         </h1>
                         <br />
-                        <p style="text-align: center; font-size: 14pt; padding: 0; margin: 0;">{{ $student_value['address'] }}</p>
+                        <p style="text-align: center; font-size: 14pt; padding: 0; margin-top:-10px;">{{ $student_value['address'] }}</p>
                     </div>
                 </div>
                 <br>

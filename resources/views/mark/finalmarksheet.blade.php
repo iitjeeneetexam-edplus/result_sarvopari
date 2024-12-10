@@ -407,6 +407,7 @@
                                     $("#dev-loader").hide();
                                 },
                                 success: function(response) {
+                                    console.log(response.student);
                                      generatePDF(response);
                                    
                                 },
@@ -424,60 +425,67 @@
 
                         </script>
                         <div id="content"></div>
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+
 <script>
    async function generatePDF(response) {
     const content = document.getElementById("content");
-
-    // Populate the content with the response data
+    
     content.innerHTML = response.student;
 
-    // Ensure the DOM is fully rendered before capturing it
-    await new Promise(resolve => setTimeout(resolve, 100)); // Small delay to ensure rendering
+    // const element = document.getElementById('student-report');
+            const options = {
+                filename: 'student_report.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 3 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().from(content).set(options).save();
 
-    try {
-        // Use html2canvas to capture the content into a canvas
-        const canvas = await html2canvas(content);
+    // await new Promise(resolve => setTimeout(resolve, 100)); 
 
-        // Convert canvas to image data
-        const imgData = canvas.toDataURL("image/png");
+    // try {
+    //     const canvas = await html2canvas(content);
 
-        // Create a jsPDF document with A4 size
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF('p', 'mm', 'a4'); // 'p' = portrait, 'mm' = millimeters, 'a4' = A4 size
+    //     const imgData = canvas.toDataURL("image/png");
 
-        // A4 page dimensions
-        const pageWidth = 400;  // A4 width in mm
-        const pageHeight = 520; // A4 height in mm
+    //     const { jsPDF } = window.jspdf;
+    //     const doc = new jsPDF('p', 'mm', 'a4'); 
 
-        // Canvas dimensions
-        const canvasWidth = canvas.width;
-        const canvasHeight = canvas.height;
+    //     const pageWidth = 400;  
+    //     const pageHeight = 450; 
 
-        // Calculate the scaling factor to fit the image inside A4 size
-        const scaleX = pageWidth / (canvasWidth * 0.75);  // Scale factor adjusted for better fit
-        const scaleY = pageHeight / (canvasHeight * 0.75);
-        const scaleFactor = Math.min(scaleX, scaleY);  // Use the smaller scale factor to ensure content fits
+    //     const canvasWidth = canvas.width;
+    //     const canvasHeight = canvas.height;
 
-        // Calculate the new width and height of the image to fit A4 size
-        const imgWidth = canvasWidth * scaleFactor;
-        const imgHeight = canvasHeight * scaleFactor;
+    //     const scaleX = pageWidth / (canvasWidth * 0.75);  
+    //     const scaleY = pageHeight / (canvasHeight * 0.75);
+    //     const scaleFactor = Math.min(scaleX, scaleY); 
 
-        // Add the image to the PDF
-        doc.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+    //     const imgWidth = canvasWidth * scaleFactor;
+    //     const imgHeight = canvasHeight * scaleFactor;
 
-        // Check if content exceeds one page, add new pages if needed
-        let currentY = imgHeight;
-        while (currentY > pageHeight) {
-            doc.addPage();  // Add a new page for overflow content
-            doc.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-            currentY -= pageHeight; // Move content downwards after adding a new page
-        }
+    //     const marginLeft = 10; 
 
-        // Save the PDF
-        doc.save('Document.pdf');
-    } catch (error) {
-        console.error("Error generating PDF:", error);
-    }
+    //     let x = marginLeft; // Start from left margin
+    //     let y = 0;
+
+    //     doc.addImage(imgData, "PNG", x, y, imgWidth, imgHeight);
+
+
+    //     let currentY = imgHeight;
+    //     while (currentY > pageHeight) {
+    //         doc.addPage();  
+    //         doc.addImage(imgData, "PNG", x, y, imgWidth, imgHeight);
+
+    //         currentY -= pageHeight; 
+    //     }
+
+    //     doc.save('Document.pdf');
+    // } catch (error) {
+    //     console.error("Error generating PDF:", error);
+    // }
 }
 
 </script>
