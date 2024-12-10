@@ -4,7 +4,7 @@
 <body class="noto-sans-gujarati">
 <div style="box-sizing: border-box;"> 
    
-            <div style="width: 175mm; height: 270mm;margin-left:70px; padding: 10px; border: 3px solid black; border-radius: 4px; font-family: Calibri, sans-serif;margin-top:30px">
+            <div style="width: auto; height: 270mm;margin-left:70px; padding: 10px; border: 3px solid black; border-radius: 4px; font-family: Calibri, sans-serif;margin-top:30px">
                 <div style="width: 100%; margin-bottom: 10pt;">
                     <div style="border-radius: 4px; border: 2pt solid black; padding: 15pt; height: 75pt;">
                         <h1 style="text-align: center; font-size: 30pt; font-weight: bold; margin: 0; padding: 0;">{{ ucfirst($student_value['school_name']) }}
@@ -59,18 +59,18 @@
    <table  cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;border: 1px solid black;">
         <thead>
             <tr>
-                <th style="background-color: #f0f0f0;border: 1px solid black;" >વિષયો</th>
+                <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;" >વિષયો</th>
                 @if(isset($student_value['exam']))
                 @foreach($student_value['exam'] as $exam_value)
-                <th style="background-color: #f0f0f0;border: 1px solid black;" >{{$exam_value['exam_name']}}</th>
+                <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;" >{{$exam_value['exam_name']}}</th>
                 @endforeach
                 @endif
-                <th style="background-color: #f0f0f0;border: 1px solid black;" >મેળવેલ ગુણ</th>
-                <th style="background-color: #f0f0f0;border: 1px solid black;" >૧૦૦ માંથી</th>
-                <th style="background-color: #f0f0f0;border: 1px solid black;" >સિદ્ધિ ગુણ</th>
-                <th style="background-color: #f0f0f0;border: 1px solid black;" >કૃપા ગુણ</th>
-                <th style="background-color: #f0f0f0;border: 1px solid black;">ગ્રેડ</th>
-                <th style="background-color: #f0f0f0;border: 1px solid black;">ટકા</th>
+                <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;" >મેળવેલ ગુણ</th>
+                <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;" >૧૦૦ માંથી</th>
+                <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;" >સિદ્ધિ ગુણ</th>
+                <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;" >કૃપા ગુણ</th>
+                <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;">ગ્રેડ</th>
+                <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;">ટકા</th>
             </tr>
            
             
