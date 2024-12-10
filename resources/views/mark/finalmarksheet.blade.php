@@ -429,40 +429,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
 
 <script>
-     const { jsPDF } = window.jspdf;
- async function generatePDF(response) {
-    const content = document.getElementById("content");
-    content.innerHTML = response.student;
+   async function generatePDF(response) {
+        const content = document.getElementById("content");
+        content.innerHTML = response.student;
 
-    // Calculate the content width
-    const contentWidth = content.getBoundingClientRect().width;
+                const options = {
+                    filename: 'student_report.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 3 },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait',auto: true },
+                    
+                };
+                html2pdf().from(content).set(options).save();
 
-    // Define the PDF options
-    const options = {
-        filename: 'student_report.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 3 },
-        jsPDF: {
-            unit: 'mm',
-            format: 'a4',
-            orientation: 'portrait'
-        }
-    };
-
-    // Use jsPDF to get the content width and set the PDF size dynamically
-    const pdf = new jsPDF({
-        unit: 'mm',
-        format: [contentWidth, 297] // Dynamic width based on content and A4 height (297mm)
-    });
-
-    // Render the content onto the PDF with the dynamically set width
-    pdf.html(content, {
-        callback: function (doc) {
-            doc.save('student_report.pdf');
-        },
-        x: 0,
-        y: 0
-    });
-}
+   }
 
 </script>
