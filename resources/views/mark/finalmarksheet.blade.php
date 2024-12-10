@@ -445,7 +445,6 @@
     // Initialize jsPDF with dynamic paper size
     const pdf = new jsPDF({
         unit: 'mm',
-        format: [totalWidth, height], // Set custom width and A4 height
         orientation: 'portrait'
     });
 
@@ -455,6 +454,7 @@
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 3 },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        format: [totalWidth, height],
     };
 
     // Convert HTML content to PDF and save it
