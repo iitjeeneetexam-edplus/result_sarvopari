@@ -440,7 +440,12 @@
     const additionalWidth = 50; // Adjust width for each additional element
     const totalWidth = baseWidth + additionalWidth; // Total dynamic width
 
-    const height = 841.89; // Standard A4 height in mm
+    const height = 841.89; 
+    const elementWidth = content.offsetWidth;
+    const elementHeight = content.offsetHeight;
+ 
+    const pageWidth = content * 0.264583;
+    const pageHeight = content * 0.264583;
 
     // Initialize jsPDF with dynamic paper size
     const pdf = new jsPDF('p', 'mm', [297, 210]);
@@ -451,8 +456,7 @@
         filename: 'student_report.pdf',
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 3 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        format: [totalWidth, height],
+        jsPDF: { unit: 'mm', format: [pageWidth, pageHeight], orientation: 'portrait' }
     };
 
     // Convert HTML content to PDF and save it
