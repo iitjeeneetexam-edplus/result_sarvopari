@@ -437,7 +437,8 @@
                     filename: 'student_report.pdf',
                     image: { type: 'jpeg', quality: 0.98 },
                     html2canvas: { scale: 3 },
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait',auto: true },
+                    
                 };
                 html2pdf().from(content).set(options).save();
 
