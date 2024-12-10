@@ -4,7 +4,7 @@
 <body class="noto-sans-gujarati">
 <div style="box-sizing: border-box;"> 
    
-            <div style="width: auto; height: 270mm;margin-left:70px; padding: 10px; border: 3px solid black; border-radius: 4px; font-family: Calibri, sans-serif;margin-top:30px">
+            <div style="width: auto; height: 270mm;margin-left: 30px;margin-right: 30px;margin-right: 30px; padding: 20px; border: 3px solid black; border-radius: 4px; font-family: Calibri, sans-serif;margin-top:30px">
                 <div style="width: 100%; margin-bottom: 10pt;">
                     <div style="border-radius: 4px; border: 2pt solid black; padding: 15pt; height: 75pt;">
                         <h1 style="text-align: center; font-size: 30pt; font-weight: bold; margin: 0; padding: 0;">{{ ucfirst($student_value['school_name']) }}
@@ -18,7 +18,7 @@
                     <table style="width: 100%; border-bottom: 1pt solid black; font-size: 24pt;">
                         <tr>
                             <td style="width: 33%; font-size: 14pt; vertical-align: top;">
-                                <p style="margin: 0;" >ઇન્ડેક્સ નંબર - <b>{{ ucfirst($student_value['school_index']) }}</b></p>
+                                <p style="margin: 0;" >ક્રમ નંબર - <b>{{ ucfirst($student_value['school_index']) }}</b></p>
                             </td>
                             <td style="width: 34%; text-align: center; padding: 5px; background-color: black; color: white; font-size: 24pt; font-weight: bold; border-radius: 4px;">
                             પરિણામ પત્ર
@@ -209,7 +209,7 @@
         <tfoot>
             <tr>
                 <td style="font-weight: bold;border: 1px solid black;">કુલ ગુણ</td>
-                <td colspan="{{ count($student_value['exam'])}}" style="border: 1px solid black;"></td>
+                <td  colspan="{{ count($student_value['exam'])}}" style="border: 1px solid black;"></td>
                 <td style="font-weight: bold;border: 1px solid black;">{{$mainobtainmarks}}</td>
                 <td style="font-weight: bold;border: 1px solid black;">{{$maintotalobtn}}</td>
                 <td style="font-weight: bold;border: 1px solid black;"></td>
@@ -229,7 +229,7 @@
 </table>
 </div>
 <div style="position: absolute; margin-top: -70px; left: 20px; font-size: 12pt;">
-<p style="margin-left:70px;">તારીખ: 04-05-2020</p>
+<p style="margin-left:30px;">તારીખ: 04-05-2020</p>
 
 
 </div>

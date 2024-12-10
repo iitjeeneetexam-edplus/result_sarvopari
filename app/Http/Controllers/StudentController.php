@@ -1020,6 +1020,7 @@ class StudentController extends Controller
                                                 $get_subject_Data = array_merge($subjectDta1, $subjectDta2);
                                         $subject_Data =[];    
                                     foreach ($get_subject_Data as $subject_value) {
+                                        $subject_name = $subject_value['subject_name'];
                                         
                                         $markDta = Student::leftJoin('marks', 'marks.student_id', '=', 'students.id')
                                             ->whereIn('marks.exam_id', explode(',', $exam_value->id))
@@ -1088,37 +1089,17 @@ class StudentController extends Controller
                                     'school_index'=>$value->school_index,
                                     'address'=>$value->address,
                                     'division_name'=>$value->division_name,
-                                    'performance_mark'=>!empty($getpergracmark->performance) ? $getpergracmark->performance : 0,
-                                    'grace_mark'=>!empty($getpergracmark->grace) ? $getpergracmark->grace : 0,
-                                    // 'studentname_label'=>'studentname_label'),
-                                    // 'Subjects'=>$translator->translate('Subjects'),
-                                    // 'Obtain Marks'=>$translator->translate('Obtain Marks'),
-                                    // 'Out of 100'=>$translator->translate('Out of 100'),
-                                    // 'Performance'=>$translator->translate('Performance'),
-                                    // 'Grace'=>$translator->translate('Grace'),
-                                    // 'Grade'=>$translator->translate('Grade'),
-                                    // 'Percentage'=>$translator->translate('Percentage'),
-                                    // 'Total Obtain Marks'=>$translator->translate('Total Obtain Marks'),
-                                    // 'Pass'=>$translator->translate('Pass'),
-                                    // 'Fail'=>$translator->translate('Fail'),
-                                    // 'Teacher Signature'=>$translator->translate('Teacher Signature'),
-                                    // 'Principal Signature'=>$translator->translate('Principal Signature'),
-                                    // 'Date'=>$translator->translate('Date'),
-                                    // 'Index No'=>$translator->translate('Index No'),
-                                    // 'G R No'=>$translator->translate('G R No'),
-                                    // 'Standard'=>$translator->translate('Standard'),
-                                    // 'Roll No'=>$translator->translate('Roll No'),
-                                    // 'UID'=>$translator->translate('UID'),
-                                    'exam'=>$exam,
+                                    'performance_mark'=>$getpergracmark->performance,
+                                    'grace_mark'=>$getpergracmark->grace,
+                                     'exam'=>$exam,
                                 ];
                                     
                             }
-                             //echo "<pre>";print_r($data);exit;
-                            $baseWidth = 580.28; // A4 width in points (8.27 inches at 72 dpi)
-            $additionalWidth = 50; // Additional width per subject
-            $totalWidth = $baseWidth + max(0, (6 - 5) * $additionalWidth);
-
-            $pdf = PDF::loadView('mark.viewfinalmarksheet', ['student' => $data])->setPaper([0, 0, $totalWidth, 841.89])->setOptions(['isHtml5ParserEnabled' => true, 'isPhpEnabled' => true]);
+                            // echo "<pre>";print_r($data);exit;
+                            // $baseWidth = 595.28; // A4 width in points (8.27 inches at 72 dpi)
+                            // $additionalWidth = 50; // Additional width per subject
+                            // $totalWidth = $baseWidth + max(0, (count($subject_Data) - 5) * $additionalWidth);->setPaper([0, 0, $totalWidth, 841.89])
+            $pdf = PDF::loadView('mark.viewfinalmarksheet', ['student' => $data]);
             // return $pdf->download('marksheet.pdf');
             $folderPath = public_path('pdfs');
 
@@ -1138,31 +1119,7 @@ class StudentController extends Controller
             file_put_contents($pdfPath, $pdf->output());
             $pdfUrl = asset('pdfs/' . basename($pdfPath));
 
-            // $folderPath = public_path('pdfs');
-
-            // // Create the directory if it does not exist
-            // if (!File::exists($folderPath)) {
-            //     File::makeDirectory($folderPath, 0755, true);
-            // }
             
-            // // Define the base file name
-            // $baseFileName = 'marksheet.pdf';
-            // $pdfPath = $folderPath . '/' . $baseFileName;
-            
-            // // Ensure unique filenames if a file already exists
-            // $counter = 1;
-            // while (File::exists($pdfPath)) {
-            //     $pdfPath = $folderPath . '/marksheet' . $counter . '.pdf';
-            //     $counter++;
-            // }
-            
-            // // Generate and save the PDF
-            // $pdf = PDF::loadView('mark.viewfinalmarksheetguj', ['student' => $data])
-            //     ->format('a4')
-            //     ->save($pdfPath);
-            
-            // // Optionally, create a URL for accessing the PDF
-            // $pdfUrl = asset('pdfs/' . basename($pdfPath));
             return response()->json(['pdfUrl'=>$pdfUrl]);
 
        

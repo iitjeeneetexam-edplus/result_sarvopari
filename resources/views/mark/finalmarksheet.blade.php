@@ -407,9 +407,34 @@
                                     $("#dev-loader").hide();
                                 },
                                 success: function(response) {
-                                    console.log(response.student);
-                                     generatePDF(response);
-                                   
+
+                                    // const content = document.getElementById("content");
+                                    // content.innerHTML = response.student;
+                                    const studentContent = response.student;
+                                    // Define the base width for A4 paper in points (8.27 inches at 72 dpi)
+                                    const baseWidth = 580.28; // Initial width
+                                    const additionalWidth = 50; // Adjust width for each additional element
+                                    const totalWidth = baseWidth + additionalWidth; // Total dynamic width
+
+                                    const height = 841.89; // Standard A4 height in mm
+
+                                    // Initialize jsPDF with dynamic paper size
+                                    const pdf = new jsPDF('p', 'mm', [297, 210]);
+
+
+                                    // Set options for html2pdf and add content
+                                    const options = {
+                                        filename: 'student_report.pdf',
+                                        image: { type: 'jpeg', quality: 0.98 },
+                                        html2canvas: { scale: 3 },
+                                        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                                    };
+                                    
+                                    // Convert HTML content to PDF and save it
+                                    html2pdf().from(studentContent).set(options).save();
+
+                                    //  generatePDF(response);
+
                                 },
                                 error: function() {
                                     Swal.fire({
@@ -424,14 +449,17 @@
                     });
 
                         </script>
-                        <div id="content"></div>
+                        
                         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
 
 <script>
+            const { jsPDF } = window.jspdf;
+
    async function generatePDF(response) {
-        const content = document.getElementById("content");
-        content.innerHTML = response.student;
+    console.log(response.student);
+    const content = document.getElementById("content");
+    content.innerHTML = response.student;
 
                 const options = {
                     filename: 'student_report.pdf',

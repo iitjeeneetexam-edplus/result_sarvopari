@@ -1,4 +1,5 @@
 
+
 @foreach($student as $student_value)
 <div style="box-sizing: border-box;"> 
 <div style="font-family: system-ui, sans-serif; ">
@@ -54,28 +55,48 @@
                <br>
             
               
-       
-    
-   <table border="1" cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;">
-        <thead>
-            <tr>
-                <th style="background-color: #f0f0f0;" >Subjects</th>
-                @if(isset($student_value['exam']))
+               <style>
+                    .custom-th {
+                        background-color: #f0f0f0;
+                        border: 1px solid black;
+                        width: 80px;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                        text-align: center;
+                        word-wrap: break-word;
+                    }
+
+                    .custom-table {
+                        border-collapse: collapse;
+                        table-layout: fixed;
+                        width: 100%;
+                        font-size:10px;
+                    }
+
+                    .custom-td {
+                        border: 1px solid black;
+                        text-align: center;
+                    }
+                 </style>
+
+<table class="custom-table">
+    <thead>
+        <tr>
+            <th class="custom-th">Subjects</th>
+            @if(isset($student_value['exam']))
                 @foreach($student_value['exam'] as $exam_value)
-                <th style="background-color: #f0f0f0;" >{{$exam_value['exam_name']}}</th>
+                    <th class="custom-th">{{ $exam_value['exam_name'] }}</th>
                 @endforeach
-                @endif
-                <th style="background-color: #f0f0f0;" >Obtain Marks</th>
-                <th style="background-color: #f0f0f0;" >Out of 100</th>
-                <th style="background-color: #f0f0f0;" >Performance</th>
-                <th style="background-color: #f0f0f0;" >Grace</th>
-                <th style="background-color: #f0f0f0;">Grade</th>
-                <th style="background-color: #f0f0f0;">Percentage</th>
-            </tr>
-           
-            
-           
-        </thead>
+            @endif
+            <th class="custom-th">Obtain Marks</th>
+            <th class="custom-th">Out of 100</th>
+            <th class="custom-th">Performance</th>
+            <th class="custom-th">Grace</th>
+            <th class="custom-th">Grade</th>
+            <th class="custom-th">Percentage</th>
+        </tr>
+    </thead>
         <tbody>
         @php
             $printedSubjects = [];
@@ -99,7 +120,7 @@
             @foreach($exam_value['subject_Data'] as $subject_value)
                 @if(!in_array($subject_value['subject_id'], $printedSubjects))
                     <tr>
-                        <td>{{ $subject_value['subject_name'] }}</td>
+                        <td style="border: 1px solid black;">{{ $subject_value['subject_name'] }}</td>
                         @php
                             $totalMarks = 0; 
                             $obtainmarks = 0;                            
@@ -115,7 +136,7 @@
                                     @if($exam_subject_value['subject_id'] == $subject_value['subject_id'])
                                     @if(isset($exam_subject_value['marks']) && count($exam_subject_value['marks']) > 0)
                                         @foreach($exam_subject_value['marks'] as $mark_value)
-                                            <td>{{ $mark_value['marks'] }}</td>                                            
+                                            <td style="border: 1px solid black;">{{ $mark_value['marks'] }}</td>                                            
                                             @php
                                                 if($mark_value['marks'] == 'AB'){
                                                     $marks = 0;
@@ -140,12 +161,12 @@
                             @endif
 
                             @if(!$marksFound)
-                                <td></td>
+                                <td style="border: 1px solid black;"></td>
                             @endif
                         @endforeach
 
-                        <td><strong>{{ $obtainmarks }}</strong></td>
-                        <td><strong>@php 
+                        <td style="border: 1px solid black;"><strong>{{ $obtainmarks }}</strong></td>
+                        <td style="border: 1px solid black;"> <strong>@php 
                             if($totalMarks > 100){
                                 $obtainmks = $totalMarks ? ($obtainmarks * 100) / $totalMarks : 0; 
                                 $btnmks = round($obtainmks);
@@ -173,9 +194,9 @@
                             @endphp
                             {{ $btnmks }}
                         </strong></td>
-                        <td>{{$performmark}}</td>
-                        <td>{{$gracemmark}}</td>
-                        <td>@php
+                        <td style="border: 1px solid black;">{{$performmark}}</td>
+                        <td style="border: 1px solid black;">{{$gracemmark}}</td>
+                        <td  style="border: 1px solid black;">@php
                             $tolgrac = $performmark+$gracemmark;
                             $perct = $tolgrac+$btnmks;
                             $percentage=$perct ? ($perct / 100) * 100 : 0;
@@ -192,7 +213,7 @@
                             };
                             @endphp
                         {{$grade}}</td>
-                        <td></td>
+                        <td style="border: 1px solid black;"></td>
                     </tr>
 
                     @php
@@ -208,14 +229,14 @@
         </tbody>
         <tfoot>
             <tr>
-                <td style="font-weight: bold;">Total Obtain Marks</td>
-                <td colspan="{{ count($student_value['exam'])}}"></td>
-                <td style="font-weight: bold;">{{$mainobtainmarks}}</td>
-                <td style="font-weight: bold;">{{$maintotalobtn}}</td>
-                <td style="font-weight: bold;"></td>
-                <td style="font-weight: bold;"></td>
-                <td style="font-weight: bold;">@if($finalTotal < $nedadorno || $pasorfl == 0 ) Pass @else Fail @endif </td>
-                <td style="font-weight: bold;">@php $percentages =$maintotalobtn ? ($maintotalobtn / $hundradtotal) * 100 : 0; @endphp {{round($percentages,2)}}%</td>
+                <td style="font-weight: bold;border: 1px solid black;" >Total Obtain Marks</td>
+                <td style="border: 1px solid black;" colspan="{{ count($student_value['exam'])}}"></td>
+                <td style="font-weight: bold;border: 1px solid black;">{{$mainobtainmarks}}</td>
+                <td style="font-weight: bold;border: 1px solid black;">{{$maintotalobtn}}</td>
+                <td style="font-weight: bold;border: 1px solid black;"></td>
+                <td style="font-weight: bold;border: 1px solid black;"></td>
+                <td style="font-weight: bold;border: 1px solid black;">@if($finalTotal < $nedadorno || $pasorfl == 0 ) Pass @else Fail @endif </td>
+                <td style="font-weight: bold;border: 1px solid black;">@php $percentages =$maintotalobtn ? ($maintotalobtn / $hundradtotal) * 100 : 0; @endphp {{round($percentages,2)}}%</td>
             </tr>
         </tfoot>
     </table>
