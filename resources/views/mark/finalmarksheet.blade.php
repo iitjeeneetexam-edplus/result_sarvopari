@@ -436,19 +436,16 @@
     content.innerHTML = response.student;
 
     // Define the base width for A4 paper in points (8.27 inches at 72 dpi)
-    const baseWidth = 580.28;
+    const baseWidth = 580.28; // Initial width
+    const additionalWidth = 50; // Adjust width for each additional element
+    const totalWidth = baseWidth + additionalWidth; // Total dynamic width
 
-    // If you want to adjust width manually (for example, based on some other condition)
-    const additionalWidth = 50; // Adjust this based on how much width each additional element adds
-    const totalWidth = baseWidth + additionalWidth; // Add additional width directly
-
-    // Define the height for A4 paper in points (11.69 inches at 72 dpi)
-    const height = 841.89;
+    const height = 841.89; // Standard A4 height in mm
 
     // Initialize jsPDF with dynamic paper size
     const pdf = new jsPDF({
         unit: 'mm',
-        format: [0, 0, totalWidth, height], // Use the dynamically calculated width and standard height
+        format: [totalWidth, height], // Set custom width and A4 height
         orientation: 'portrait'
     });
 
