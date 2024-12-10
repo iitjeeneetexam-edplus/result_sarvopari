@@ -808,29 +808,29 @@ class StudentController extends Controller
                             // $pdfUrl = asset('pdfs/' . basename($pdfPath));
             //                 require_once __DIR__ . '/../../../vendor/autoload.php';
             //                 // echo "<pre>";print_r($data);exit;
-                            $baseWidth = 580.28; // A4 width in points (8.27 inches at 72 dpi)
-            $additionalWidth = 50; // Additional width per subject
-            $totalWidth = $baseWidth + max(0, (6 - 5) * $additionalWidth);
+            //                 $baseWidth = 580.28; // A4 width in points (8.27 inches at 72 dpi)
+            // $additionalWidth = 50; // Additional width per subject
+            // $totalWidth = $baseWidth + max(0, (6 - 5) * $additionalWidth);
            
-            $pdf = PDF::loadView('mark.viewfinalmarksheetguj', ['student' => $data])->setPaper([0, 0, $totalWidth, 841.89]);
-            // return $pdf->download('marksheet.pdf');
-            $folderPath = public_path('pdfs');
+            // $pdf = PDF::loadView('mark.viewfinalmarksheetguj', ['student' => $data])->setPaper([0, 0, $totalWidth, 841.89]);
+            // // return $pdf->download('marksheet.pdf');
+            // $folderPath = public_path('pdfs');
 
-            if (!File::exists($folderPath)) {
-            File::makeDirectory($folderPath, 0755, true);
-            }
+            // if (!File::exists($folderPath)) {
+            // File::makeDirectory($folderPath, 0755, true);
+            // }
 
-            $baseFileName = 'marksheet.pdf';
-            $pdfPath = $folderPath . '/' . $baseFileName;
+            // $baseFileName = 'marksheet.pdf';
+            // $pdfPath = $folderPath . '/' . $baseFileName;
 
-            $counter = 1;
-            while (File::exists($pdfPath)) {
-            $pdfPath = $folderPath . '/marksheet' . $counter . '.pdf'; 
-            $counter++;
-            }
+            // $counter = 1;
+            // while (File::exists($pdfPath)) {
+            // $pdfPath = $folderPath . '/marksheet' . $counter . '.pdf'; 
+            // $counter++;
+            // }
 
-            file_put_contents($pdfPath, $pdf->output());
-            $pdfUrl = asset('pdfs/' . basename($pdfPath));
+            // file_put_contents($pdfPath, $pdf->output());
+            // $pdfUrl = asset('pdfs/' . basename($pdfPath));
 
             
             //new code below
@@ -887,8 +887,8 @@ class StudentController extends Controller
     
             // // Content in Gujarati
            
-            // $html = view('mark.viewfinalmarksheetguj', ['student' => $data])->render();
-
+            $html = view('mark.viewfinalmarksheetguj', ['student' => $data])->render();
+            
             // // Write HTML content
             // $pdf->writeHTML($html, true, false, true, false, '');
     
@@ -911,7 +911,7 @@ class StudentController extends Controller
 
             // // $mpdf->Output($pdfPath, \Mpdf\Output\Destination::FILE);
             // $pdfUrl = asset('pdfs/' . basename($pdfPath));
-            return response()->json(['pdfUrl'=>$pdfUrl]);
+            return response()->json(['student'=>$html]);
           
     }
     public function generateGujaratiPDF()

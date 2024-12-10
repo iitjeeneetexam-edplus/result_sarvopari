@@ -115,7 +115,9 @@ Route::post('/siddhi_gun/store', [StudentController::class, 'siddhi_gunstore'])-
 Route::get('/performance-grace', [StudentController::class, 'performance_grace'])->name('performance_grace');
 Route::post('/performance-grace-add', [StudentController::class, 'performance_grace_add'])->name('performance_grace_add');
 Route::get('/generate-gujarati-pdf', [StudentController::class, 'generateGujaratiPDF']);
-
+Route::get('/generate-pdf2', function() {
+    return view('mark.test');
+});
 
 });
 Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

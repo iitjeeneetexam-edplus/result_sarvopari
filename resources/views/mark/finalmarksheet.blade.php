@@ -1,4 +1,16 @@
 @include('sidebar_display')
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+    <meta charset="UTF-8">
+    <title>Gujarati PDF Example</title>
+    <style>
+        body {
+            font-family: 'Noto Sans Gujarati', sans-serif;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati&display=swap" rel="stylesheet">
+</head>
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -90,8 +102,11 @@
                 </div>
                 </div>
                     </x-app-layout>
+                    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati&display=swap" rel="stylesheet">
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                    
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
                 <script>
                     $(document).ready(function () {
                     $('.btn-result').on('click', function (e) {
@@ -392,8 +407,8 @@
                                     $("#dev-loader").hide();
                                 },
                                 success: function(response) {
-                                    console.log(response.pdfUrl);
-                                    window.open(response.pdfUrl, '_blank');
+                                     generatePDF(response);
+                                   
                                 },
                                 error: function() {
                                     Swal.fire({
@@ -408,3 +423,61 @@
                     });
 
                         </script>
+                        <div id="content"></div>
+<script>
+   async function generatePDF(response) {
+    const content = document.getElementById("content");
+
+    // Populate the content with the response data
+    content.innerHTML = response.student;
+
+    // Ensure the DOM is fully rendered before capturing it
+    await new Promise(resolve => setTimeout(resolve, 100)); // Small delay to ensure rendering
+
+    try {
+        // Use html2canvas to capture the content into a canvas
+        const canvas = await html2canvas(content);
+
+        // Convert canvas to image data
+        const imgData = canvas.toDataURL("image/png");
+
+        // Create a jsPDF document with A4 size
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF('p', 'mm', 'a4'); // 'p' = portrait, 'mm' = millimeters, 'a4' = A4 size
+
+        // A4 page dimensions
+        const pageWidth = 400;  // A4 width in mm
+        const pageHeight = 520; // A4 height in mm
+
+        // Canvas dimensions
+        const canvasWidth = canvas.width;
+        const canvasHeight = canvas.height;
+
+        // Calculate the scaling factor to fit the image inside A4 size
+        const scaleX = pageWidth / (canvasWidth * 0.75);  // Scale factor adjusted for better fit
+        const scaleY = pageHeight / (canvasHeight * 0.75);
+        const scaleFactor = Math.min(scaleX, scaleY);  // Use the smaller scale factor to ensure content fits
+
+        // Calculate the new width and height of the image to fit A4 size
+        const imgWidth = canvasWidth * scaleFactor;
+        const imgHeight = canvasHeight * scaleFactor;
+
+        // Add the image to the PDF
+        doc.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+
+        // Check if content exceeds one page, add new pages if needed
+        let currentY = imgHeight;
+        while (currentY > pageHeight) {
+            doc.addPage();  // Add a new page for overflow content
+            doc.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+            currentY -= pageHeight; // Move content downwards after adding a new page
+        }
+
+        // Save the PDF
+        doc.save('Document.pdf');
+    } catch (error) {
+        console.error("Error generating PDF:", error);
+    }
+}
+
+</script>
