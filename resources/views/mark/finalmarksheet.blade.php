@@ -432,33 +432,60 @@
             const { jsPDF } = window.jspdf;
 
    async function generatePDF(response) {
-    const content = document.getElementById("content");
-    content.innerHTML = response.student;
+    // Get the content you want to convert to PDF
+const content = document.getElementById('content'); // Adjust the selector for your content
+content.innerHTML = response.student;
+// Calculate the dynamic width based on content size
+const contentWidth = content.scrollWidth;  // Get the width of the content
+const contentHeight = content.scrollHeight; // Get the height of the content
 
-    // Define the base width for A4 paper in points (8.27 inches at 72 dpi)
-    const baseWidth = 580.28; // Initial width
-    const additionalWidth = 50; // Adjust width for each additional element
-    const totalWidth = baseWidth + additionalWidth; // Total dynamic width
+// Define the page margin (optional)
+const pageMargin = 10;  // Margin to apply to the page
 
-    const height = 841.89; // Standard A4 height in mm
+// Adjust the width to ensure it's within the available page width (A4 is 210mm)
+const maxWidth = 210 - 2 * pageMargin; // A4 width minus margins
+const totalWidth = Math.min(contentWidth, maxWidth); // Set dynamic width
+const height = (contentHeight / contentWidth) * totalWidth;  // Calculate the height proportionally
 
-    // Initialize jsPDF with dynamic paper size
-    const pdf = new jsPDF({
-        unit: 'mm',
-        orientation: 'portrait'
-    });
+// Set options for html2pdf
+const options = {
+    filename: 'student_report.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 3 },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    format: [totalWidth, height],  // Use dynamic width and calculated height
+};
 
-    // Set options for html2pdf and add content
-    const options = {
-        filename: 'student_report.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 3 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-        format: [totalWidth, height],
-    };
+// Convert HTML content to PDF and save it
+html2pdf().from(content).set(options).save();
 
-    // Convert HTML content to PDF and save it
-    html2pdf().from(content).set(options).save();
+    // const content = document.getElementById("content");
+    // content.innerHTML = response.student;
+
+    // // Define the base width for A4 paper in points (8.27 inches at 72 dpi)
+    // const baseWidth = 580.28; // Initial width
+    // const additionalWidth = 50; // Adjust width for each additional element
+    // const totalWidth = baseWidth + additionalWidth; // Total dynamic width
+
+    // const height = 841.89; // Standard A4 height in mm
+
+    // // Initialize jsPDF with dynamic paper size
+    // const pdf = new jsPDF({
+    //     unit: 'mm',
+    //     orientation: 'portrait'
+    // });
+
+    // // Set options for html2pdf and add content
+    // const options = {
+    //     filename: 'student_report.pdf',
+    //     image: { type: 'jpeg', quality: 0.98 },
+    //     html2canvas: { scale: 3 },
+    //     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    //     format: [totalWidth, height],
+    // };
+
+    // // Convert HTML content to PDF and save it
+    // html2pdf().from(content).set(options).save();
 }
 
 
