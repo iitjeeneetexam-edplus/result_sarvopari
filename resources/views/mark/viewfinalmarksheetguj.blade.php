@@ -59,18 +59,18 @@
    <table  cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;border: 1px solid black;">
         <thead>
             <tr>
-                <th style="background-color: #f0f0f0;border: 1px solid black;" >વિષયો</th>
+                <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;" >વિષયો</th>
                 @if(isset($student_value['exam']))
                 @foreach($student_value['exam'] as $exam_value)
-                <th style="background-color: #f0f0f0;border: 1px solid black;" >{{$exam_value['exam_name']}}</th>
+                <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;" >{{$exam_value['exam_name']}}</th>
                 @endforeach
                 @endif
-                <th style="background-color: #f0f0f0;border: 1px solid black;" >મેળવેલ ગુણ</th>
-                <th style="background-color: #f0f0f0;border: 1px solid black;" >૧૦૦ માંથી</th>
-                <th style="background-color: #f0f0f0;border: 1px solid black;" >સિદ્ધિ ગુણ</th>
-                <th style="background-color: #f0f0f0;border: 1px solid black;" >કૃપા ગુણ</th>
-                <th style="background-color: #f0f0f0;border: 1px solid black;">ગ્રેડ</th>
-                <th style="background-color: #f0f0f0;border: 1px solid black;">ટકા</th>
+                <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;" >મેળવેલ ગુણ</th>
+                <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;" >૧૦૦ માંથી</th>
+                <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;" >સિદ્ધિ ગુણ</th>
+                <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;" >કૃપા ગુણ</th>
+                <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;">ગ્રેડ</th>
+                <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;">ટકા</th>
             </tr>
            
             
