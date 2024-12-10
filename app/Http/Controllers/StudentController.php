@@ -754,8 +754,8 @@ class StudentController extends Controller
                                     'school_index'=>$value->school_index,
                                     'address'=>$value->address,
                                     'division_name'=>$value->division_name,
-                                    'performance_mark'=>$getpergracmark->performance,
-                                    'grace_mark'=>$getpergracmark->grace,
+                                    'performance_mark'=>!empty($getpergracmark->performance) ? $getpergracmark->performance : 0,
+                                    'grace_mark'=>!empty($getpergracmark->grace) ? $getpergracmark->grace : 0,
                                     // 'studentname_label'=>'studentname_label'),
                                     // 'Subjects'=>'Subjects'),
                                     // 'Obtain Marks'=>'Obtain Marks'),
@@ -1088,8 +1088,8 @@ class StudentController extends Controller
                                     'school_index'=>$value->school_index,
                                     'address'=>$value->address,
                                     'division_name'=>$value->division_name,
-                                    'performance_mark'=>$getpergracmark->performance,
-                                    'grace_mark'=>$getpergracmark->grace,
+                                    'performance_mark'=>!empty($getpergracmark->performance) ? $getpergracmark->performance : 0,
+                                    'grace_mark'=>!empty($getpergracmark->grace) ? $getpergracmark->grace : 0,
                                     // 'studentname_label'=>'studentname_label'),
                                     // 'Subjects'=>$translator->translate('Subjects'),
                                     // 'Obtain Marks'=>$translator->translate('Obtain Marks'),
@@ -1113,7 +1113,7 @@ class StudentController extends Controller
                                 ];
                                     
                             }
-                            // echo "<pre>";print_r($data);exit;
+                             //echo "<pre>";print_r($data);exit;
                             $baseWidth = 580.28; // A4 width in points (8.27 inches at 72 dpi)
             $additionalWidth = 50; // Additional width per subject
             $totalWidth = $baseWidth + max(0, (6 - 5) * $additionalWidth);

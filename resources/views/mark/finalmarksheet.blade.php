@@ -440,7 +440,6 @@
                     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
                 };
                 html2pdf().from(content).set(options).save();
-
    }
 
 </script>
