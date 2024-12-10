@@ -66,8 +66,8 @@
                 @endforeach
                 @endif
                 <th style="background-color: #f0f0f0;border: 1px solid black;" >મેળવેલ ગુણ</th>
-                <th style="background-color: #f0f0f0;border: 1px solid black;" >100 માથી</th>
-                <th style="background-color: #f0f0f0;border: 1px solid black;" >સિદ્ધિ ગુન</th>
+                <th style="background-color: #f0f0f0;border: 1px solid black;" >૧૦૦ માંથી</th>
+                <th style="background-color: #f0f0f0;border: 1px solid black;" >સિદ્ધિ ગુણ</th>
                 <th style="background-color: #f0f0f0;border: 1px solid black;" >કૃપા ગુણ</th>
                 <th style="background-color: #f0f0f0;border: 1px solid black;">ગ્રેડ</th>
                 <th style="background-color: #f0f0f0;border: 1px solid black;">ટકા</th>
