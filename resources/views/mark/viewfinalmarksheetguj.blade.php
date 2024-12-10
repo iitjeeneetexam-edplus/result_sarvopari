@@ -59,18 +59,18 @@
    <table  cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;border: 1px solid black;">
         <thead>
             <tr>
-                <th style="background-color: #f0f0f0;border: 1px solid black;" >વિષયો</th>
+                <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;" >વિષયો</th>
                 @if(isset($student_value['exam']))
                 @foreach($student_value['exam'] as $exam_value)
-                <th style="background-color: #f0f0f0;border: 1px solid black;" >{{$exam_value['exam_name']}}</th>
+                <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;" >{{$exam_value['exam_name']}}</th>
                 @endforeach
                 @endif
-                <th style="background-color: #f0f0f0;border: 1px solid black;" >Obtain Marks</th>
-                <th style="background-color: #f0f0f0;border: 1px solid black;" >Out of 100</th>
-                <th style="background-color: #f0f0f0;border: 1px solid black;" >Performance</th>
-                <th style="background-color: #f0f0f0;border: 1px solid black;" >Grace</th>
-                <th style="background-color: #f0f0f0;border: 1px solid black;">Grade</th>
-                <th style="background-color: #f0f0f0;border: 1px solid black;">Percentage</th>
+                <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;" >મેળવેલ ગુણ</th>
+                <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;" >૧૦૦ માંથી</th>
+                <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;" >સિદ્ધિ ગુણ</th>
+                <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;" >કૃપા ગુણ</th>
+                <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;">ગ્રેડ</th>
+                <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;">ટકા</th>
             </tr>
            
             
@@ -208,13 +208,13 @@
         </tbody>
         <tfoot>
             <tr>
-                <td style="font-weight: bold;border: 1px solid black;">Total Obtain Marks</td>
+                <td style="font-weight: bold;border: 1px solid black;">કુલ ગુણ</td>
                 <td colspan="{{ count($student_value['exam'])}}" style="border: 1px solid black;"></td>
                 <td style="font-weight: bold;border: 1px solid black;">{{$mainobtainmarks}}</td>
                 <td style="font-weight: bold;border: 1px solid black;">{{$maintotalobtn}}</td>
                 <td style="font-weight: bold;border: 1px solid black;"></td>
                 <td style="font-weight: bold;border: 1px solid black;"></td>
-                <td style="font-weight: bold;border: 1px solid black;">@if($finalTotal < $nedadorno || $pasorfl == 0 ) Pass @else Fail @endif </td>
+                <td style="font-weight: bold;border: 1px solid black;">@if($finalTotal < $nedadorno || $pasorfl == 0 ) પાસ @else નાપાસ @endif </td>
                 <td style="font-weight: bold;border: 1px solid black;">@php $percentages =$maintotalobtn ? ($maintotalobtn / $hundradtotal) * 100 : 0; @endphp {{round($percentages,2)}}%</td>
             </tr>
         </tfoot>
