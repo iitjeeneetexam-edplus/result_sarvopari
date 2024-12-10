@@ -4,13 +4,13 @@
 <body class="noto-sans-gujarati">
 <div style="box-sizing: border-box;"> 
    
-            <div style="width: 175mm; height: 270mm; padding: 10px; border: 3px solid black; border-radius: 4px; font-family: Calibri, sans-serif;margin-top:30px">
+            <div style="width: 175mm; height: 270mm;margin-left:70px; padding: 10px; border: 3px solid black; border-radius: 4px; font-family: Calibri, sans-serif;margin-top:30px">
                 <div style="width: 100%; margin-bottom: 10pt;">
                     <div style="border-radius: 4px; border: 2pt solid black; padding: 15pt; height: 75pt;">
-                        <h1 style="text-align: center; font-size: 40pt; font-weight: bold; margin: 0; padding: 0;margin-top:-40px">{{ ucfirst($student_value['school_name']) }}
+                        <h1 style="text-align: center; font-size: 30pt; font-weight: bold; margin: 0; padding: 0;">{{ ucfirst($student_value['school_name']) }}
                         </h1>
                         <br />
-                        <p style="text-align: center; font-size: 14pt; padding: 0; margin-top:-10px;">{{ $student_value['address'] }}</p>
+                        <p style="text-align: center; font-size: 14pt; padding: 0; margin-top:-20px;">{{ $student_value['address'] }}</p>
                     </div>
                 </div>
                 <br>
@@ -21,7 +21,7 @@
                                 <p style="margin: 0;" >Index No - <b>{{ ucfirst($student_value['school_index']) }}</b></p>
                             </td>
                             <td style="width: 34%; text-align: center; padding: 5px; background-color: black; color: white; font-size: 24pt; font-weight: bold; border-radius: 4px;">
-                               
+                            પરિણામ પત્ર
                             </td>
                             <td style="width: 33%; text-align: right; font-size: 14pt; vertical-align: top;">
                                 <p style="margin: 0;margin-top:10px;"> <b>{{$student_value['medium']}}</b></p>
@@ -39,10 +39,10 @@
                             <td style="width: 33%; text-align: left;">
                                 G R No - <b>{{ $student_value['gr_no'] }}</b>
                             </td>
-                            <td style="width: 80%; text-align: center; font-size: 16pt; ">
+                            <td style="width: 35%; text-align: center; font-size: 16pt; ">
                                 Standard - <b>{{ ucfirst($student_value['standard_name']) }}-{{$student_value['division_name']}}</b>
                             </td>
-                            <td style="width: 33%; text-align: right;">
+                            <td style="width: 35%; text-align: right;">
                                 Roll No - <b>{{ $student_value['roll_no'] }}</b>
                             </td>
                         </tr>
@@ -229,7 +229,7 @@
 </table>
 </div>
 <div style="position: absolute; margin-top: -70px; left: 20px; font-size: 12pt;">
-<p >Date: 04-05-2020</p>
+<p style="margin-left:70px;">Date: 04-05-2020</p>
 
 
 </div>
