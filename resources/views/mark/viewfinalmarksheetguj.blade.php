@@ -4,7 +4,7 @@
 <body class="noto-sans-gujarati">
 <div style="box-sizing: border-box;"> 
    
-            <div style="width: 175mm; height: 270mm;margin-left:70px; padding: 10px; border: 3px solid black; border-radius: 4px; font-family: Calibri, sans-serif;margin-top:30px">
+            <div style="width: auto; height: 270mm;margin-left:70px; padding: 10px; border: 3px solid black; border-radius: 4px; font-family: Calibri, sans-serif;margin-top:30px">
                 <div style="width: 100%; margin-bottom: 10pt;">
                     <div style="border-radius: 4px; border: 2pt solid black; padding: 15pt; height: 75pt;">
                         <h1 style="text-align: center; font-size: 30pt; font-weight: bold; margin: 0; padding: 0;">{{ ucfirst($student_value['school_name']) }}
