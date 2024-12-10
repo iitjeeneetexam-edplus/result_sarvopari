@@ -452,8 +452,23 @@
         },
     };
 
-    // Generate the PDF
-    html2pdf().from(content).set(options).save();
+    // Create the PDF with html2pdf directly
+    const pdf = html2pdf().from(content).set(options);
+
+    // If html2pdf's auto width doesn't work properly, try using jsPDF directly for better control
+    const jsPdfInstance = new jsPDF({
+        unit: 'mm',
+        format: [totalWidth, 841.89], // Dynamically set width
+        orientation: 'portrait'
+    });
+
+    // Render the HTML content into the PDF (more control with jsPDF)
+    jsPdfInstance.html(content, {
+        callback: function () {
+            jsPdfInstance.save('student_report.pdf');
+        },
+        html2canvas: { scale: 3 }  // Ensure high resolution rendering
+    });
 }
 
 
