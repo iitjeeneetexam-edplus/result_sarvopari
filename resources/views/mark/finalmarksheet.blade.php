@@ -432,60 +432,31 @@
             const { jsPDF } = window.jspdf;
 
    async function generatePDF(response) {
-    // Get the content you want to convert to PDF
-const content = document.getElementById('content'); // Adjust the selector for your content
-content.innerHTML = response.student;
-// Calculate the dynamic width based on content size
-const contentWidth = content.scrollWidth;  // Get the width of the content
-const contentHeight = content.scrollHeight; // Get the height of the content
+    const content = document.getElementById("content");
+    content.innerHTML = response.student;
 
-// Define the page margin (optional)
-const pageMargin = 10;  // Margin to apply to the page
+    // Define the base width for A4 paper in points (8.27 inches at 72 dpi)
+    const baseWidth = 580.28; // Initial width
+    const additionalWidth = 50; // Adjust width for each additional element
+    const totalWidth = baseWidth + additionalWidth; // Total dynamic width
 
-// Adjust the width to ensure it's within the available page width (A4 is 210mm)
-const maxWidth = 210 - 2 * pageMargin; // A4 width minus margins
-const totalWidth = Math.min(contentWidth, maxWidth); // Set dynamic width
-const height = (contentHeight / contentWidth) * totalWidth;  // Calculate the height proportionally
+    const height = 841.89; // Standard A4 height in mm
 
-// Set options for html2pdf
-const options = {
-    filename: 'student_report.pdf',
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 3 },
-    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-    format: [totalWidth, height],  // Use dynamic width and calculated height
-};
+    // Initialize jsPDF with dynamic paper size
+    const pdf = new jsPDF('p', 'mm', [297, 210]);
 
-// Convert HTML content to PDF and save it
-html2pdf().from(content).set(options).save();
 
-    // const content = document.getElementById("content");
-    // content.innerHTML = response.student;
+    // Set options for html2pdf and add content
+    const options = {
+        filename: 'student_report.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 3 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        format: [totalWidth, height],
+    };
 
-    // // Define the base width for A4 paper in points (8.27 inches at 72 dpi)
-    // const baseWidth = 580.28; // Initial width
-    // const additionalWidth = 50; // Adjust width for each additional element
-    // const totalWidth = baseWidth + additionalWidth; // Total dynamic width
-
-    // const height = 841.89; // Standard A4 height in mm
-
-    // // Initialize jsPDF with dynamic paper size
-    // const pdf = new jsPDF({
-    //     unit: 'mm',
-    //     orientation: 'portrait'
-    // });
-
-    // // Set options for html2pdf and add content
-    // const options = {
-    //     filename: 'student_report.pdf',
-    //     image: { type: 'jpeg', quality: 0.98 },
-    //     html2canvas: { scale: 3 },
-    //     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-    //     format: [totalWidth, height],
-    // };
-
-    // // Convert HTML content to PDF and save it
-    // html2pdf().from(content).set(options).save();
+    // Convert HTML content to PDF and save it
+    html2pdf().from(content).set(options).save();
 }
 
 
