@@ -430,62 +430,17 @@
 
 <script>
    async function generatePDF(response) {
-    const content = document.getElementById("content");
-    
-    content.innerHTML = response.student;
+        const content = document.getElementById("content");
+        content.innerHTML = response.student;
 
-    // const element = document.getElementById('student-report');
-            const options = {
-                filename: 'student_report.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 3 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-            html2pdf().from(content).set(options).save();
+                const options = {
+                    filename: 'student_report.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 3 },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+                html2pdf().from(content).set(options).save();
 
-    // await new Promise(resolve => setTimeout(resolve, 100)); 
-
-    // try {
-    //     const canvas = await html2canvas(content);
-
-    //     const imgData = canvas.toDataURL("image/png");
-
-    //     const { jsPDF } = window.jspdf;
-    //     const doc = new jsPDF('p', 'mm', 'a4'); 
-
-    //     const pageWidth = 400;  
-    //     const pageHeight = 450; 
-
-    //     const canvasWidth = canvas.width;
-    //     const canvasHeight = canvas.height;
-
-    //     const scaleX = pageWidth / (canvasWidth * 0.75);  
-    //     const scaleY = pageHeight / (canvasHeight * 0.75);
-    //     const scaleFactor = Math.min(scaleX, scaleY); 
-
-    //     const imgWidth = canvasWidth * scaleFactor;
-    //     const imgHeight = canvasHeight * scaleFactor;
-
-    //     const marginLeft = 10; 
-
-    //     let x = marginLeft; // Start from left margin
-    //     let y = 0;
-
-    //     doc.addImage(imgData, "PNG", x, y, imgWidth, imgHeight);
-
-
-    //     let currentY = imgHeight;
-    //     while (currentY > pageHeight) {
-    //         doc.addPage();  
-    //         doc.addImage(imgData, "PNG", x, y, imgWidth, imgHeight);
-
-    //         currentY -= pageHeight; 
-    //     }
-
-    //     doc.save('Document.pdf');
-    // } catch (error) {
-    //     console.error("Error generating PDF:", error);
-    // }
-}
+   }
 
 </script>
