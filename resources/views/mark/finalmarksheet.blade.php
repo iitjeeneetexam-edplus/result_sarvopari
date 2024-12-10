@@ -429,19 +429,40 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
 
 <script>
+            const { jsPDF } = window.jspdf;
+
    async function generatePDF(response) {
-        const content = document.getElementById("content");
-        content.innerHTML = response.student;
+    const content = document.getElementById("content");
+    content.innerHTML = response.student;
 
-                const options = {
-                    filename: 'student_report.pdf',
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 3 },
-                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                    
-                };
-                html2pdf().from(content).set(options).save();
+    // Define the base width for A4 paper in points (8.27 inches at 72 dpi)
+    const baseWidth = 580.28;
 
-   }
+    // If you want to adjust width manually (for example, based on some other condition)
+    const additionalWidth = 50; // Adjust this based on how much width each additional element adds
+    const totalWidth = baseWidth + additionalWidth; // Add additional width directly
+
+    // Define the height for A4 paper in points (11.69 inches at 72 dpi)
+    const height = 841.89;
+
+    // Initialize jsPDF with dynamic paper size
+    const pdf = new jsPDF({
+        unit: 'mm',
+        format: [totalWidth, height], // Use the dynamically calculated width and standard height
+        orientation: 'portrait'
+    });
+
+    // Set options for html2pdf and add content
+    const options = {
+        filename: 'student_report.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 3 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    };
+
+    // Convert HTML content to PDF and save it
+    html2pdf().from(content).set(options).save();
+}
+
 
 </script>
