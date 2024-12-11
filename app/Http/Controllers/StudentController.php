@@ -388,6 +388,7 @@ class StudentController extends Controller
         // ->with('data', $requestdt);
         // $data = ['url'=>'students/getstudent/','standard_id'=>$standard_id,'division_id'=>$request->input('editDivision')];
         // return json_encode('success');
+        exit;
         return redirect('students/getstudent/'.$standard_id.'/'.$request->input('editDivision'));
         // return redirect()->back()->with('message', 'Student updated successfully');
     }
