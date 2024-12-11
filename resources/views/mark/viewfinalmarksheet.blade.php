@@ -19,7 +19,7 @@
                     <table style="width: 100%; border-bottom: 1pt solid black; font-size: 24pt;">
                         <tr>
                             <td style="width: 33%; font-size: 14pt; vertical-align: top;">
-                                <p style="margin: 0;">(!empty($student_value['school_index'])?'Index No -':'') <b>{{ ucfirst($student_value['school_index']) }}</b></p>
+                                <p style="margin: 0;">{{(!empty($student_value['school_index'])?'Index No -':'') }}<b>{{ ucfirst($student_value['school_index']) }}</b></p>
                             </td>
                             <td style="width: 34%; text-align: center; padding: 5px; background-color: black; color: white; font-size: 24pt; font-weight: bold; border-radius: 4px;">
                                 Result Sheet
