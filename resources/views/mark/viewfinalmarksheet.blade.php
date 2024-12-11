@@ -213,7 +213,7 @@
                             };
                             @endphp
                         {{$grade}}</td>
-                        <td></td>
+                        <td style="border: 1px solid black;"  ></td>
                     </tr>
 
                     @php
