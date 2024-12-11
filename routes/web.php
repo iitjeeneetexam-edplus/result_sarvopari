@@ -110,6 +110,7 @@ Route::post('/student/final-marksheet-guj', [StudentController::class, 'all_mark
 Route::post('/generate-pdf', [StudentController::class, 'generatePDF'])->name('allgenerate.pdf');
 Route::post('/subjectmarks-pdf', [StudentController::class, 'subjectmarksPDF'])->name('generate.pdf');
 Route::get('/marksheet', [StudentController::class, 'final_marksheet'])->name('marksheet');
+Route::post('/student/mark-marksheet-guj', [StudentController::class, 'mark_marksheet_guj'])->name('students.mark_marksheet_guj');
 Route::post('/marksheet/sidhi_gun', [StudentController::class, 'sidhi_gun'])->name('sidhi_gun');
 Route::post('/siddhi_gun/store', [StudentController::class, 'siddhi_gunstore'])->name('siddhi_gun.store');
 Route::get('/performance-grace', [StudentController::class, 'performance_grace'])->name('performance_grace');

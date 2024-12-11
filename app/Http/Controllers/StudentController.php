@@ -625,8 +625,140 @@ class StudentController extends Controller
     
        
     }
+    public function mark_marksheet_guj(Request  $request){
+        $examIds = $request->input('exam'); 
+        $studentDta=Student::leftjoin('division','division.id','=','students.division_id')
+                            ->leftjoin('standards','standards.id','=','division.standard_id')
+                            ->leftjoin('schools','schools.id','=','standards.school_id')
+                             ->whereIn('students.id',$request->student_id)
+                             ->select('students.*',
+                                'standards.standard_name',
+                                'standards.id as standard_id',
+                                'schools.school_name',
+                                'schools.medium',
+                                'standards.school_index',
+                                'schools.address',
+                                'division.division_name',
+                            )->get();
+                            $data=[];
+                    foreach($studentDta as $value){
+                        $examDta = Exam::where('id', $examIds)->get();
+                        $exam= [];
+
+                        foreach ($examDta as $exam_value) {
+                            $subjectDta1 = Student::leftJoin('division', 'division.id', '=', 'students.division_id')
+                                                    ->leftJoin('standards', 'standards.id', '=', 'division.standard_id')
+                                                    ->leftJoin('subjects', 'subjects.standard_id', '=', 'standards.id')
+                                                    ->whereIn('students.id', explode(',', $value->id))
+                                                    ->where('subjects.is_optional','0')
+                                                    ->select(
+                                                        'subjects.subject_name',
+                                                        'subjects.is_optional',
+                                                        'subjects.id as subject_id',
+                                                        'students.id AS student_id'
+                                                    )
+                                                    ->get()
+                                                    ->toArray(); 
+
+                                                $subjectDta2 = Subject::leftJoin('subject_subs', 'subject_subs.subject_id', '=', 'subjects.id')
+                                                    ->leftJoin('student_subjects', 'student_subjects.subject_id', '=', 'subject_subs.id')
+                                                    ->where('subjects.is_optional','1')
+                                                    ->whereIn('student_subjects.student_id', explode(',', $value->id))
+                                                    ->select(
+                                                        'subject_subs.subject_name',
+                                                        'subjects.is_optional',
+                                                        'subject_subs.id as subject_id',
+                                                        'student_subjects.student_id AS student_id'
+                                                    )
+                                                    ->get()
+                                                    ->toArray(); 
+
+                                                $get_subject_Data = array_merge($subjectDta1, $subjectDta2);
+                                        $subject_Data =[];    
+                                    foreach ($get_subject_Data as $subject_value) {
+                                        
+                                        $markDta = Student::leftJoin('marks', 'marks.student_id', '=', 'students.id')
+                                            ->whereIn('marks.exam_id', explode(',', $exam_value->id))
+                                            ->whereIn('students.id', explode(',', $value->id))
+                                            ->where('marks.subject_id', $subject_value['subject_id'])
+                                            ->where('marks.is_optional', $subject_value['is_optional'])
+                                            ->select(
+                                                'marks.student_id',
+                                                'marks.total_marks',
+                                                'marks.marks',
+                                                'marks.subject_id',
+                                                'marks.performance_mark',
+                                                'marks.grace_mark',
+                                            )
+                                            ->get();
+                                
+                                        $marks = []; 
+                                
+                                        foreach ($markDta as $value2) {
+                                            $value2->marks = $value2->marks !== 'AB' 
+                                                ? (int) round((float) $value2->marks) 
+                                                : 'AB';
+                                
+                                            $marks[] = [
+                                                'student_id' => $value2->student_id,
+                                                'subject_id' => $value2->subject_id,
+                                                'total_marks' => $value2->total_marks,
+                                                'marks' => $value2->marks,
+                                                'exam_id' => $exam_value->id,
+                                                'performance_mark' => $value2->performance_mark,
+                                                'grace_mark' => $value2->grace_mark,
+                                            ];
+                                        }
+                                
+                                        $subject_Data[] = [
+                                            'subject_name' => $subject_value['subject_name'],
+                                            'subject_id' => $subject_value['subject_id'],
+                                            'marks' => $marks,
+                                        ];
+                                    }
+                                
+                                    $exam[] = [
+                                        'exam_id' => $exam_value->id,
+                                        'exam_name' => $exam_value->exam_name,
+                                        'exam_year' => $exam_value->exam_year,
+                                        'result_date' => $exam_value->result_date,
+                                        'subject_Data' => $subject_Data,
+                                    ];
+                                }
+                                $getpergracmark = Performance_grace_Model::where('school_id',$request->session()->get('school_id'))->first();
+
+                                $data[]=[
+                                    'id'=>$value->id,
+                                    'student_name'=>$value->name,
+                                    'roll_no'=>$value->roll_no,
+                                    'gr_no'=>$value->GR_no,
+                                    'uid'=>$value->uid,
+                                    'school_index'=>$value->school_index,
+                                    'medium'=>$value->medium,
+                                    'division_name'=>$value->division_name,
+                                    'address'=>$value->address,
+                                    'standard_id'=>$value->standard_id,
+                                    'standard_name'=>$value->standard_name,
+                                    'school_name'=>$value->school_name,
+                                    'medium'=>$value->medium,
+                                    'school_index'=>$value->school_index,
+                                    'address'=>$value->address,
+                                    'division_name'=>$value->division_name,
+                                    'performance_mark'=>!empty($getpergracmark->performance) ? $getpergracmark->performance : 0,
+                                    'grace_mark'=>!empty($getpergracmark->grace) ? $getpergracmark->grace : 0,
+                                    'exam'=>$exam,
+                                ];
+                                    
+                            }
+                    //    echo "<pre>";print_r($data);exit;    
+           
+            $html = view('mark.viewfinalmarksheetguj', ['student' => $data])->render();
+            
+           
+            return response()->json(['student'=>$html]);
+    }
     public  function all_marksheet_guj(Request $request){
-        $examIds = $request->input('exam', []); // Get the exam array from the request
+        $examIds = $request->input('exam', []); 
 
         // Filter the array to include only integers
         $filteredExamIds = array_filter($examIds, function ($value) {
@@ -757,161 +889,14 @@ class StudentController extends Controller
                                     'division_name'=>$value->division_name,
                                     'performance_mark'=>!empty($getpergracmark->performance) ? $getpergracmark->performance : 0,
                                     'grace_mark'=>!empty($getpergracmark->grace) ? $getpergracmark->grace : 0,
-                                    // 'studentname_label'=>'studentname_label'),
-                                    // 'Subjects'=>'Subjects'),
-                                    // 'Obtain Marks'=>'Obtain Marks'),
-                                    // 'Out of 100'=>'Out of 100'),
-                                    // 'Performance'=>'Performance'),
-                                    // 'Grace'=>'Grace'),
-                                    // 'Grade'=>'Grade'),
-                                    // 'Percentage'=>'Percentage'),
-                                    // 'Total Obtain Marks'=>'Total Obtain Marks'),
-                                    // 'Pass'=>'Pass'),
-                                    // 'Fail'=>'Fail'),
-                                    // 'Teacher Signature'=>'Teacher Signature'),
-                                    // 'Principal Signature'=>'Principal Signature'),
-                                    // 'Date'=>'Date'),
-                                    // 'Index No'=>'Index No'),
-                                    // 'G R No'=>'G R No'),
-                                    // 'Standard'=>'Standard'),
-                                    // 'Roll No'=>'Roll No'),
-                                    // 'UID'=>'UID'),
-
+                                   
                                     'exam'=>$exam,
                                 ];
                                     
                             }
-                            // $folderPath = public_path('pdfs');
-
-                            // // Create the directory if it does not exist
-                            // if (!File::exists($folderPath)) {
-                            //     File::makeDirectory($folderPath, 0755, true);
-                            // }
-                            
-                            // // Define the base file name
-                            // $baseFileName = 'marksheet.pdf';
-                            // $pdfPath = $folderPath . '/' . $baseFileName;
-                            
-                            // // Ensure unique filenames if a file already exists
-                            // $counter = 1;
-                            // while (File::exists($pdfPath)) {
-                            //     $pdfPath = $folderPath . '/marksheet' . $counter . '.pdf';
-                            //     $counter++;
-                            // }
                            
-
-                            // // Generate and save the PDF
-                            //  $pdf = PDF::loadView('mark.viewfinalmarksheetguj', ['student' => $data])
-                            //     ->format('a4')
-                            //     ->save($pdfPath);
-                            
-                            // // Optionally, create a URL for accessing the PDF
-                            // $pdfUrl = asset('pdfs/' . basename($pdfPath));
-            //                 require_once __DIR__ . '/../../../vendor/autoload.php';
-            //                 // echo "<pre>";print_r($data);exit;
-            //                 $baseWidth = 580.28; // A4 width in points (8.27 inches at 72 dpi)
-            // $additionalWidth = 50; // Additional width per subject
-            // $totalWidth = $baseWidth + max(0, (6 - 5) * $additionalWidth);
-           
-            // $pdf = PDF::loadView('mark.viewfinalmarksheetguj', ['student' => $data])->setPaper([0, 0, $totalWidth, 841.89]);
-            // // return $pdf->download('marksheet.pdf');
-            // $folderPath = public_path('pdfs');
-
-            // if (!File::exists($folderPath)) {
-            // File::makeDirectory($folderPath, 0755, true);
-            // }
-
-            // $baseFileName = 'marksheet.pdf';
-            // $pdfPath = $folderPath . '/' . $baseFileName;
-
-            // $counter = 1;
-            // while (File::exists($pdfPath)) {
-            // $pdfPath = $folderPath . '/marksheet' . $counter . '.pdf'; 
-            // $counter++;
-            // }
-
-            // file_put_contents($pdfPath, $pdf->output());
-            // $pdfUrl = asset('pdfs/' . basename($pdfPath));
-
-            
-            //new code below
-           
-
-
-           
-            // $mpdf = new Mpdf(['default_font' => 'NotoSansGujarati']);
-            // $html = view('mark.viewfinalmarksheetguj', ['student' => $data])->render();
-            // $mpdf->WriteHTML($html);
-
-            // $folderPath = public_path('pdfs');
-            // if (!File::exists($folderPath)) {
-            //     File::makeDirectory($folderPath, 0755, true);
-            // }
-
-            // $baseFileName = 'marksheet.pdf';
-            // $pdfPath = $folderPath . '/' . $baseFileName;
-
-            // $counter = 1;
-            // while (File::exists($pdfPath)) {
-            //     $pdfPath = $folderPath . '/marksheet' . $counter . '.pdf'; 
-            //     $counter++;
-            // }
-
-            // $mpdf->Output($pdfPath, \Mpdf\Output\Destination::FILE);
-            // $pdfUrl = asset('pdfs/' . basename($pdfPath));
-
-            // $pdf = new TCPDF();
-
-            // // Set document information
-            // $pdf->SetCreator(PDF_CREATOR);
-            // $pdf->SetAuthor('Your Name');
-            // $pdf->SetTitle('Gujarati PDF Example');
-            // $pdf->SetSubject('Gujarati Text Example');
-            // $pdf->SetKeywords('Gujarati, PDF, Laravel, TCPDF');
-    
-            // // Set default monospaced font
-            // $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-    
-            // // Set margins
-            // $pdf->SetMargins(10, 10, 10);
-            // $pdf->SetHeaderMargin(5);
-            // $pdf->SetFooterMargin(10);
-    
-            // // Set auto page breaks
-            // $pdf->SetAutoPageBreak(TRUE, 10);
-    
-            // // Add a page
-            // $pdf->AddPage();
-    
-            // // Set font for Gujarati (freeserif is a Unicode font included with TCPDF)
-            // $pdf->SetFont('freeserif', '', 12);
-    
-            // // Content in Gujarati
-           
             $html = view('mark.viewfinalmarksheetguj', ['student' => $data])->render();
-            
-            // // Write HTML content
-            // $pdf->writeHTML($html, true, false, true, false, '');
-    
-            // // Output the PDF as a download
-            // $pdf->Output('Gujarati_Example.pdf', 'D');
-
-            // $folderPath = public_path('pdfs');
-            // if (!File::exists($folderPath)) {
-            //     File::makeDirectory($folderPath, 0755, true);
-            // }
-
-            // $baseFileName = 'marksheet.pdf';
-            // $pdfPath = $folderPath . '/' . $baseFileName;
-
-            // $counter = 1;
-            // while (File::exists($pdfPath)) {
-            //     $pdfPath = $folderPath . '/marksheet' . $counter . '.pdf'; 
-            //     $counter++;
-            // }
-
-            // // $mpdf->Output($pdfPath, \Mpdf\Output\Destination::FILE);
-            // $pdfUrl = asset('pdfs/' . basename($pdfPath));
+       
             return response()->json(['student'=>$html]);
           
     }
@@ -1337,4 +1322,5 @@ class StudentController extends Controller
         $schools = School::select('id', 'school_name')->where('id',$request->session()->get('school_id'))->first();
         return view('mark.finalmarksheet', compact('schools'));
     }
+    
 }
