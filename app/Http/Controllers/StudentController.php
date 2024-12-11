@@ -784,6 +784,7 @@ class StudentController extends Controller
                                 'division.division_name',
                             )->get();
                             $data=[];
+                            
                     foreach($studentDta as $value){
                         $examDta = Exam::whereIn('id', $exam_get)->get();
                         $exam= [];
