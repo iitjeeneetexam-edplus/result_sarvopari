@@ -609,7 +609,7 @@
                             }
 
                             $.ajax({
-                                url: '/student/final-marksheet-guj',  
+                                url: '/student/single-exam-marksheet-guj',  
                                 method: 'POST',
                                 data: {
                                     student_id: selectedStudentIds,
