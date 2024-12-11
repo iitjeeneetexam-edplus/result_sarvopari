@@ -154,7 +154,7 @@
                             loadStandards(preSelectedSchoolId);
                         }
                         $('#standard').change(function() {
-                            $('#exam').empty();
+                            $('#examd').empty();
                             var standardId = $(this).val();
                             if (standardId) {
                                 $.ajax({
