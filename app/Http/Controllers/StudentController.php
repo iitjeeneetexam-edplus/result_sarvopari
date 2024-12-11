@@ -887,8 +887,8 @@ class StudentController extends Controller
     
             // // Content in Gujarati
            
-            $html = view('mark.viewfinalmarksheetguj', ['student' => $data])->render();
-            
+            //$html = view('mark.viewfinalmarksheetguj', ['student' => $data])->render();
+            $html = '<div><h1>Hello</h1></div>';
             // // Write HTML content
             // $pdf->writeHTML($html, true, false, true, false, '');
     
@@ -911,7 +911,7 @@ class StudentController extends Controller
 
             // // $mpdf->Output($pdfPath, \Mpdf\Output\Destination::FILE);
             // $pdfUrl = asset('pdfs/' . basename($pdfPath));
-            return response()->json(['student'=>$html]);
+            return response()->json(['student'=>$data]);
           
     }
     public function generateGujaratiPDF()
