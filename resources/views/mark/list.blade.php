@@ -609,7 +609,7 @@
                             }
 
                             $.ajax({
-                                url: '/student/mark-marksheet-guj',  
+                                url: '/student/final-marksheet-guj',  
                                 method: 'POST',
                                 data: {
                                     student_id: selectedStudentIds,
@@ -644,7 +644,7 @@
                                     const options = {
                                         filename: 'student_report.pdf',
                                         image: { type: 'jpeg', quality: 0.98 },
-                                        html2canvas: { scale: 3 },
+                                        html2pdf: { scale: 3 },
                                         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
                                     };
                                     
