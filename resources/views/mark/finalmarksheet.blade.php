@@ -409,7 +409,23 @@
                 success: function(response) {
                         const students = response.student;
                         let studentContent = "";
-                        students.forEach(studentValue => {
+                        let chunkContent = "";
+                        const chunkSize = students.length;
+                        const chunks = [];
+
+                        for (let i = 0; i < students.length; i += chunkSize) {
+                            chunks.push(students.slice(i, i + chunkSize));
+                        }
+
+                        chunks.forEach(chunk => {
+                        let studentContent = "";
+                        chunk.forEach(studentValue => {
+                            let mainobtainmarks = 0;
+                            let maintotalobtn = 0;
+                            let maintotalMarks = 0;
+                            let hundradtotal = 0;
+                            let pasorfl = 0;
+                            let finalTotal = 0;
                             studentContent += `
                                 <div style="box-sizing: border-box;">
                                     <div style="width: auto; height: 270mm; margin-left: 30px; margin-right: 30px; padding: 20px; border: 3px solid black; border-radius: 4px; font-family: Calibri, sans-serif; margin-top: 30px">
@@ -449,8 +465,108 @@
                                         <p style="font-size: 16pt; margin: 0; padding: 0px; margin-top: 20px;">વિદ્યાર્થીનું નામ - <b>${studentValue.student_name}</b> </p>
                                         <br>
                                     </div>
-                                </div>
-                            `;
+                                </div>`;
+                                studentContent += `
+                <table cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center; border: 1px solid black;">
+                    <thead>
+                        <tr>
+                            <th style="background-color: #f0f0f0; border: 1px solid black; width:30px;">વિષયો</th>`;
+
+            if (studentValue.exam) {
+                studentValue.exam.forEach(exam_value => {
+                    studentContent += `<th style="background-color: #f0f0f0; border: 1px solid black; width:30px;">${exam_value.exam_name}</th>`;
+                });
+            }
+
+            studentContent += `
+                            <th style="background-color: #f0f0f0; border: 1px solid black; width:30px;">મેળવેલ ગુણ</th>
+                            <th style="background-color: #f0f0f0; border: 1px solid black; width:30px;">૧૦૦ માંથી</th>
+                            <th style="background-color: #f0f0f0; border: 1px solid black; width:30px;">સિદ્ધિ ગુણ</th>
+                            <th style="background-color: #f0f0f0; border: 1px solid black; width:30px;">કૃપા ગુણ</th>
+                            <th style="background-color: #f0f0f0; border: 1px solid black; width:30px;">ગ્રેડ</th>
+                            <th style="background-color: #f0f0f0; border: 1px solid black; width:30px;">ટકા</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+
+            let printedSubjects = [];
+            let performm = studentValue.performance_mark;
+            let grace = studentValue.grace_mark;
+            let nedadorno = performm + grace;
+
+            if (studentValue.exam) {
+                studentValue.exam.forEach(exam_value => {
+                    if (exam_value.subject_Data) {
+                        exam_value.subject_Data.forEach(subject_value => {
+                            if (!printedSubjects.includes(subject_value.subject_id)) {
+                                studentContent += `
+                                    <tr>
+                                        <td style="border: 1px solid black;">${subject_value.subject_name}</td>`;
+
+                                let obtainmarks = 0;
+                                let totalMarks = 0;
+
+                                studentValue.exam.forEach(exam_loop => {
+                                    if (exam_loop.subject_Data) {
+                                        exam_loop.subject_Data.forEach(exam_subject_value => {
+                                            if (exam_subject_value.subject_id == subject_value.subject_id) {
+                                                exam_subject_value.marks.forEach(mark_value => {
+                                                    let marks = mark_value.marks === 'AB' ? 0 : mark_value.marks;
+                                                    obtainmarks += marks;
+                                                    totalMarks += mark_value.total_marks;
+
+                                                    studentContent += `<td style="border: 1px solid black;">${mark_value.marks}</td>`;
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
+
+                                studentContent += `
+                                    <td style="border: 1px solid black;"><strong>${obtainmarks}</strong></td>
+                                    <td style="border: 1px solid black;"><strong>${totalMarks > 100 ? Math.round((obtainmarks * 100) / totalMarks) : obtainmarks}</strong></td>
+                                    <td style="border: 1px solid black;">${performm}</td>
+                                    <td style="border: 1px solid black;">${grace}</td>
+                                    <td style="border: 1px solid black;">${calculateGrade(obtainmarks, totalMarks)}</td>
+                                    <td></td>
+                                </tr>`;
+
+                                printedSubjects.push(subject_value.subject_id);
+                            }
+                        });
+                    }
+                });
+            }
+
+            studentContent += `</tbody>
+                <tfoot>
+                    <tr>
+                        <td style="font-weight: bold; border: 1px solid black;">કુલ ગુણ</td>
+                        <td colspan="${studentValue.exam ? studentValue.exam.length : 0}" style="border: 1px solid black;"></td>
+                        <td style="font-weight: bold; border: 1px solid black;">${mainobtainmarks}</td>
+                        <td style="font-weight: bold; border: 1px solid black;">${maintotalobtn}</td>
+                        <td style="font-weight: bold; border: 1px solid black;"></td>
+                        <td style="font-weight: bold; border: 1px solid black;"></td>
+                        <td style="font-weight: bold; border: 1px solid black;">${finalTotal < nedadorno || pasorfl == 0 ? 'પાસ' : 'નાપાસ'}</td>
+                        <td style="font-weight: bold; border: 1px solid black;">${(maintotalobtn / hundradtotal * 100).toFixed(2)}%</td>
+                    </tr>
+                </tfoot>
+            </table>
+            <table style="width: 100%; margin-top: 110px;">
+                <tr>
+                    <td style="text-align: left;">શિક્ષકની સહી:</td>
+                    <td style="text-align: right;">પ્રિન્સિપાલની સહી:</td>
+                </tr>
+            </table>
+            <div style="position: absolute; margin-top: -70px; left: 20px; font-size: 12pt;">
+                <p style="margin-left:30px;">તારીખ: 04-05-2020</p>
+            </div>`;
+            chunkContent += studentContent;
+
+                if (studentValue !== chunk[chunk.length - 1]) {
+                    chunkContent += `<div style="page-break-after: always;"></div>`;
+                }
+
                         });
                         console.log(studentContent);
                         const options = {
@@ -470,7 +586,7 @@
                     };
 
                     html2pdf().from(studentContent).set(options).save();
-
+                });
                         // Remove the temporary div after generating the PDF
                     },
                 error: function() {
@@ -484,6 +600,19 @@
             });
         });
     });
+
+    function calculateGrade(obtainmarks, totalMarks) {
+    const percentage = (obtainmarks / totalMarks) * 100;
+    if (percentage >= 91) return 'A1';
+    if (percentage >= 81) return 'A2';
+    if (percentage >= 71) return 'B1';
+    if (percentage >= 61) return 'B2';
+    if (percentage >= 51) return 'C1';
+    if (percentage >= 41) return 'C2';
+    if (percentage >= 33) return 'D';
+    if (percentage >= 21) return 'E1';
+    return 'E2';
+}
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
