@@ -895,9 +895,9 @@ class StudentController extends Controller
                                     
                             }
                            
-            $html = view('mark.viewfinalmarksheetguj', ['student' => $data])->render();
+            //$html = view('mark.viewfinalmarksheetguj', ['student' => $data])->render();
        
-            return response()->json(['student'=>$html]);
+            return response()->json(['student'=>$data]);
           
     }
     public function generateGujaratiPDF()
