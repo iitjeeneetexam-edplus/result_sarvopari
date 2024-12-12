@@ -146,11 +146,9 @@ class StudentController extends Controller
 
         $subjectName = $item->subject_name;
         $students[$item->id]['is_optional'][$subjectName] = $item->is_optional;
-        $students[$item->id]['subject_id'][$subjectName] = $item->subject_id;
-        
+        $students[$item->id]['subject_id'][$subjectName] = $item->subject_id;        
         $students[$item->id]['mark_id'][$subjectName] = $item->mark_id;
         $students[$item->id]['marks'][$subjectName] = $item->marks;
-        
         
         }
          

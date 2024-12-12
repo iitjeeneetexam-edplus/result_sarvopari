@@ -100,7 +100,9 @@
                         <td style="border: 1px solid black;">{{ $subject_value['subject_name'] }}</td>
                         @php
                             $totalMarks = 0; 
-                            $obtainmarks = 0;                            
+                            $obtainmarks = 0; 
+                            $performmark = 0;
+                            $gracemmark = 0;                           
                         @endphp
 
                         @foreach($student_value['exam'] as $exam_loop)
