@@ -108,6 +108,7 @@ class SubjectController extends Controller
         return view('subjects.edit', compact('school_id','schools','data','subject_sub'));
     }
     public function update(Request $request){
+        
         foreach ($request['subject_name'] as $index => $subjectName) {
             // Insert the main subject
             if (empty($subjectName)) {
@@ -118,13 +119,17 @@ class SubjectController extends Controller
                     
                 }
             }
+            
             // if (is_array($subjectName)) {
             //     $subjectName = implode(', ', $request['subject_sub_name'][$index]); // Convert array to comma-separated string
             // }
             
             $subject = Subject::find($request['subject_id']); 
-            $subject->delete();
-            if ($subject) {
+            if(!empty($subject)){
+                $delet = Subject::where('id', $request['subject_id'])->delete();
+            }
+            
+            if ($subject || $delet) {
                 $newSubject = Subject::create([
                     'subject_name' => $subjectName,
                     'is_optional' => $request['is_optional'][$index], 
@@ -132,27 +137,23 @@ class SubjectController extends Controller
                     'status' => $request['status'],                   
                 ]);
             
-            } 
-        
-            // Loop through the subject sub-names and insert them
-            if (!empty(array_filter($request['subject_sub_name'][$index]))) {
+            }
+            if (empty($subjectName)) {
                 foreach ($request['subject_sub_name'][$index] as $subIndex => $subjectSubName) {
-                    // Fetch each specific subject sub-name by ID
                     $subjectSub = Subjectsub::where('subject_id',$request['subject_id'])->first();
                     $subjectSub->delete();
                     if ($subjectSub) {
                         $newSubject = Subjectsub::create([
                             'subject_id' => $request['subject_id'],              
                             'subject_name' => $subjectSubName,                 
-                        ]);
-                        
+                        ]);                        
                     }
                 }
             }
         }
         
-        // Insert sub-subjects in bulk
-                return redirect()->route('subjects.index')->with('success', 'Subject added successfully.');
+        
+        return redirect()->route('subjects.index')->with('success', 'Subject added successfully.');
     }
     public function delete($id){
       

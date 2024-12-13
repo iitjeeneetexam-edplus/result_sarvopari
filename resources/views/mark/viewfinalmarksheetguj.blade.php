@@ -53,9 +53,6 @@
                 <p style="font-size: 16pt; margin: 0; padding: 0px; margin-top: 20px;">વિદ્યાર્થીનું નામ - <b>{{ $student_value['student_name'] }}</b> </p>
 
                <br>
-            
-              
-       
     
    <table  cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;border: 1px solid black;">
         <thead>
@@ -103,7 +100,9 @@
                         <td style="border: 1px solid black;">{{ $subject_value['subject_name'] }}</td>
                         @php
                             $totalMarks = 0; 
-                            $obtainmarks = 0;                            
+                            $obtainmarks = 0; 
+                            $performmark = 0;
+                            $gracemmark = 0;                           
                         @endphp
 
                         @foreach($student_value['exam'] as $exam_loop)

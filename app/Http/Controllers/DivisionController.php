@@ -61,10 +61,10 @@ class DivisionController extends Controller
        
     }
     public function edit($id,Request $request){
-        $standards = Standard::where('id',$request->session()->get('school_id'))->get(); 
+        $standards = Standard::where('school_id',$request->session()->get('school_id'))->get(); 
     
         $data = Division::leftJoin('standards', 'standards.id', '=', 'division.standard_id')
-        ->select('division.*', 'standards.standard_name')
+        ->select('division.*', 'standards.standard_name','standards.school_id')
         ->where('division.id',$id)->first();
         return view('division.edit', compact('data','standards'));
     }
