@@ -626,33 +626,19 @@
                                 },
                                 success: function(response) {
                                     const { jsPDF } = window.jspdf;
-                                    // const content = document.getElementById("content");
-                                    // content.innerHTML = response.student;
                                     const studentContent = response.student;
-                                    // Define the base width for A4 paper in points (8.27 inches at 72 dpi)
-                                    const baseWidth = 580.28; // Initial width
-                                    const additionalWidth = 50; // Adjust width for each additional element
-                                    const totalWidth = baseWidth + additionalWidth; // Total dynamic width
-
-                                    const height = 841.89; // Standard A4 height in mm
-
-                                    // Initialize jsPDF with dynamic paper size
+                                    const baseWidth = 580.28; 
+                                    const additionalWidth = 50; 
+                                    const totalWidth = baseWidth + additionalWidth; 
+                                    const height = 841.89;
                                     const pdf = new jsPDF('p', 'mm', [297, 210]);
-
-
-                                    // Set options for html2pdf and add content
                                     const options = {
                                         filename: 'student_report.pdf',
                                         image: { type: 'jpeg', quality: 0.98 },
                                         html2pdf: { scale: 3 },
                                         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
                                     };
-                                    
-                                    // Convert HTML content to PDF and save it
                                     html2pdf().from(studentContent).set(options).save();
-
-                                    //  generatePDF(response);
-
                                 },
                                 error: function() {
                                     Swal.fire({
