@@ -101,6 +101,8 @@
                         </tbody>
                     </table>
                     <div id="pagination-links"></div>
+                    <meta name="csrf-token" content="{{ csrf_token() }}">
+
                 </div>
                 </div>
                     </x-app-layout>
@@ -249,101 +251,226 @@
                             return;
                         }
 
-                        var exam_id = [];
-                            $('input[type="checkbox"]:checked').each(function () {
-                                exam_id.push($(this).val());
-                            });
-                            $.ajax({
-                                    url: '/students/getfinalstudent',
-                                    type: 'GET', 
+                        // var exam_id = [];
+                        //     $('input[type="checkbox"]:checked').each(function () {
+                        //         exam_id.push($(this).val());
+                        //     });
+                        //     $.ajax({
+                        //             url: '/students/getfinalstudent',
+                        //             type: 'POST', 
+                        //             data: {
+                        //                 standard: standardValue,
+                        //                 division: divisionValue,
+                        //                 exam: examValue,
+                        //                 exam_ids: exam_id,
+                        //                 _token: '{{ csrf_token() }}',  
+                        //             },
+                              
+                        //                 beforeSend: function() { 
+                        //                 $("#dev-loader").show();
+                        //             },
+                        //             complete: function() { 
+                        //                 $("#dev-loader").hide();
+                        //             },
+                        //         success: function(data) {
+                        //             console.log(data.students);
+                        //             if(data.students !=null){
+                        //             $('table tbody').html("");
+                        //             $.each(data.students, function(key, value) {
+                        //                 var baseUrl = "{{ url('marksheet/sidhi_gun') }}";
+                        //                 var studentRow = `<tr class="student-row" data-id="${value.id}">
+                        //                     <td><input type="checkbox" class="student-checkbox" data-id="${value.id}"></td>
+                        //                     <td>${value.name}</td>
+                        //                     <td>
+                        //                      <form action="${baseUrl}" method="post">
+                        //                      @csrf
+                        //                        <input type="hidden" value="${value.id}" name="id">
+                        //                        <input type="hidden" value="${exam_id}" name="exam_id">
+                        //                        <input type="submit" name="submit" value="View" class="btn btn-success">
+                        //                      </form>
+                        //                 </tr>`;
+
+
+                        //                  studentRow += '</tr>';
+                        //                 $('#studentdata tbody').append(studentRow);
+                        //                 // $('#pagination-links').html(data.student.links);
+                        //             });
+                        //             renderPagination(data.pagination,data.divisionId,data.exam_id);
+                        //         }else{
+                        //             $('#studentdata tr').append('<th>No data Found!</th>');
+                        //         }
+                               
+                        //             $('#studentdata thead tr').empty();
+                        //             $('.button-div').show();   
+                        //             $('#studentdata thead tr').append('<th style="width:49px;"><input type="checkbox" id="selectAllstd">&nbsp;&nbsp;&nbsp;&nbsp;</th>');
+                                    
+                        //             $('#studentdata thead tr').append('<th style="width:375px">Student Name</th>');
+                        //             $('#studentdata thead tr').append('<th style="width:49px;">Action</th>');
+                        //             $('#selectAllstd').on('click', function() {
+                        //                     var isChecked = this.checked;
+                        //                     $('.student-checkbox').prop('checked', isChecked);
+                        //                 });
+
+                        //                 // Individual Student Checkbox Click
+                        //                 $('#studentdata').on('click', '.student-checkbox', function() {
+                        //                     if ($('.student-checkbox:checked').length === $('.student-checkbox').length) {
+                        //                         $('#selectAllstd').prop('checked', true);
+                        //                     } else {
+                        //                         $('#selectAllstd').prop('checked', false);
+                        //                     }
+                        //                 });
+                                  
+                        //         },
+                        //         error: function(xhr, status, error) {
+                        //             $('#studentdata thead tr').append('<th><center>No data Found!</center></th>');
+                        //         }
+                        //     });
+                        // });
+                        // function renderPagination(pagination, division, exam_id) {
+                        //     let paginationHtml = '';
+
+                        //     // Helper function to create a pagination form
+                        //     const createPaginationForm = (url, label) => {
+                        //         const urlObj = new URL(url, window.location.origin);
+                        //         const page = urlObj.searchParams.get('page'); // Extract page number from URL
+
+                        //         return `
+                        //             <form method="POST" action="/students/getfinalstudent" class="pagination-form">
+                        //                 <input type="hidden" name="_token" value="${$('meta[name="csrf-token"]').attr('content')}"> 
+                        //                 <input type="hidden" name="division" value="${division}">
+                        //                 <input type="hidden" name="exam_ids" value="${exam_id}">
+                        //                 <input type="hidden" name="page" value="${page}">
+                        //                 <button type="submit" class="pagination-button">${label}</button>
+                        //             </form>
+                        //         `;
+                        //     };
+
+                        //     // Add "Prev" button if available
+                        //     if (pagination.prev_page_url) {
+                        //         paginationHtml += createPaginationForm(pagination.prev_page_url, '&laquo; Prev');
+                        //     }
+
+                        //     // Add current page info
+                        //     paginationHtml += `<span>Page ${pagination.current_page} of ${pagination.last_page}</span>`;
+
+                        //     // Add "Next" button if available
+                        //     if (pagination.next_page_url) {
+                        //         paginationHtml += createPaginationForm(pagination.next_page_url, 'Next &raquo;');
+                        //     }
+
+                        //     // Render pagination
+                        //     $('#pagination-links').html(paginationHtml);
+
+                        // }
+                        function fetchStudents(page = 1) {
+                                var exam_id = [];
+                                $('input[type="checkbox"]:checked').each(function () {
+                                    exam_id.push($(this).val());
+                                });
+
+                                $.ajax({
+                                    url: `/students/getfinalstudent?page=${page}`, // Append page parameter to URL
+                                    type: 'POST',
                                     data: {
                                         standard: standardValue,
                                         division: divisionValue,
                                         exam: examValue,
-                                        exam_ids: exam_id
+                                        exam_ids: exam_id,
+                                        _token: '{{ csrf_token() }}',
                                     },
-                                        beforeSend: function() { 
+                                    beforeSend: function () {
                                         $("#dev-loader").show();
                                     },
-                                    complete: function() { 
+                                    complete: function () {
                                         $("#dev-loader").hide();
                                     },
-                                success: function(data) {
-                                    if(data.students !=null){
-                                    $('table tbody').html("");
-                                    $.each(data.students, function(key, value) {
-                                        var baseUrl = "{{ url('marksheet/sidhi_gun') }}";
-                                        var studentRow = `<tr class="student-row" data-id="${value.id}">
-                                            <td><input type="checkbox" class="student-checkbox" data-id="${value.id}"></td>
-                                            <td>${value.name}</td>
-                                            <td>
-                                             <form action="${baseUrl}" method="post">
-                                             @csrf
-                                               <input type="hidden" value="${value.id}" name="id">
-                                               <input type="hidden" value="${exam_id}" name="exam_id">
-                                               <input type="submit" name="submit" value="View" class="btn btn-success">
-                                             </form>
-                                        </tr>`;
+                                    success: function (data) {
+                                        // Clear the table
+                                        $('table tbody').html("");
 
+                                        if (data.students && data.students.length > 0) {
+                                            $.each(data.students, function (key, value) {
+                                                var baseUrl = "{{ url('marksheet/sidhi_gun') }}";
+                                                var studentRow = `
+                                                    <tr class="student-row" data-id="${value.id}">
+                                                        <td><input type="checkbox" class="student-checkbox" data-id="${value.id}"></td>
+                                                        <td>${value.name}</td>
+                                                        <td>
+                                                            <form action="${baseUrl}" method="post">
+                                                                @csrf
+                                                                <input type="hidden" value="${value.id}" name="id">
+                                                                <input type="hidden" value="${exam_id}" name="exam_id">
+                                                                <input type="submit" name="submit" value="View" class="btn btn-success">
+                                                            </form>
+                                                        </td>
+                                                    </tr>
+                                                `;
+                                                $('#studentdata tbody').append(studentRow);
+                                            });
 
-                                         studentRow += '</tr>';
-                                        $('#studentdata tbody').append(studentRow);
-                                        // $('#pagination-links').html(data.student.links);
-                                    });
-                                    renderPagination(data.pagination,data.divisionId,data.exam_id);
-                                }else{
-                                    $('#studentdata tr').append('<th>No data Found!</th>');
-                                }
-                               
-                                    $('#studentdata thead tr').empty();
-                                    $('.button-div').show();   
-                                    $('#studentdata thead tr').append('<th style="width:49px;"><input type="checkbox" id="selectAllstd">&nbsp;&nbsp;&nbsp;&nbsp;</th>');
-                                    
-                                    $('#studentdata thead tr').append('<th style="width:375px">Student Name</th>');
-                                    $('#studentdata thead tr').append('<th style="width:49px;">Action</th>');
-                                    $('#selectAllstd').on('click', function() {
+                                            // Render Pagination
+                                            renderPagination(data.pagination, data.divisionId, data.exam_id);
+                                        } else {
+                                            $('#studentdata tbody').html('<tr><td colspan="3">No data found!</td></tr>');
+                                        }
+
+                                        // Table Header Setup
+                                        $('#studentdata thead tr').html(`
+                                            <th style="width:49px;"><input type="checkbox" id="selectAllstd">&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                            <th style="width:375px">Student Name</th>
+                                            <th style="width:49px;">Action</th>
+                                        `);
+                                        $('.button-div').show();  
+                                        // Select All Checkbox
+                                        $('#selectAllstd').on('click', function () {
                                             var isChecked = this.checked;
                                             $('.student-checkbox').prop('checked', isChecked);
                                         });
 
-                                        // Individual Student Checkbox Click
-                                        $('#studentdata').on('click', '.student-checkbox', function() {
-                                            if ($('.student-checkbox:checked').length === $('.student-checkbox').length) {
-                                                $('#selectAllstd').prop('checked', true);
-                                            } else {
-                                                $('#selectAllstd').prop('checked', false);
-                                            }
+                                        // Individual Checkbox
+                                        $('#studentdata').on('click', '.student-checkbox', function () {
+                                            $('#selectAllstd').prop(
+                                                'checked',
+                                                $('.student-checkbox:checked').length === $('.student-checkbox').length
+                                            );
                                         });
-                                  
-                                },
-                                error: function(xhr, status, error) {
-                                    $('#studentdata thead tr').append('<th><center>No data Found!</center></th>');
+                                    },
+                                    error: function () {
+                                        $('#studentdata tbody').html('<tr><td colspan="3">No data found!</td></tr>');
+                                    },
+                                });
+                            }
+
+                            function renderPagination(pagination, division, exam_id) {
+                                let paginationHtml = '';
+
+                                if (pagination.prev_page_url) {
+                                    paginationHtml += `
+                                        <button class="pagination-button" data-page="${pagination.current_page - 1}">&laquo; Prev</button>
+                                    `;
                                 }
-                            });
+
+                                paginationHtml += `<span>Page ${pagination.current_page} of ${pagination.last_page}</span>`;
+
+                                if (pagination.next_page_url) {
+                                    paginationHtml += `
+                                        <button class="pagination-button" data-page="${pagination.current_page + 1}">Next &raquo;</button>
+                                    `;
+                                }
+
+                                $('#pagination-links').html(paginationHtml);
+
+                                // Handle Pagination Clicks
+                                $('.pagination-button').on('click', function () {
+                                    var page = $(this).data('page');
+                                    fetchStudents(page); // Fetch students for the clicked page
+                                });
+                            }
+
+                            // Initial Fetch
+                            fetchStudents();
                         });
-                        function renderPagination(pagination, division, exam_id) {
-    let paginationHtml = '';
 
-    // Append division and exam_id as query parameters
-    const appendQueryParams = (url) => {
-        const urlObj = new URL(url, window.location.origin);
-        urlObj.searchParams.append('division', division);
-        urlObj.searchParams.append('exam_ids', exam_id);
-        return urlObj.toString();
-    };
-
-    if (pagination.prev_page_url) {
-        paginationHtml += `<a href="${appendQueryParams(pagination.prev_page_url)}" class="pagination-link">&laquo; Prev</a>`;
-    }
-
-    paginationHtml += `<span>Page ${pagination.current_page} of ${pagination.last_page}</span>`;
-
-    if (pagination.next_page_url) {
-        paginationHtml += `<a href="${appendQueryParams(pagination.next_page_url)}" class="pagination-link">Next &raquo;</a>`;
-    }
-
-    $('#pagination-links').html(paginationHtml);
-}
                         $('.generateResultButton').on('click' , function() { 
                             var selectedStudentIds = []; 
                             $('.student-checkbox:checked').each(function() {
@@ -468,7 +595,7 @@
                         </script>
                         
                         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
 
 <script>
             const { jsPDF } = window.jspdf;

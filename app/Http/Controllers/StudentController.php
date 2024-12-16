@@ -80,10 +80,11 @@ class StudentController extends Controller
         return view('student.list', compact('students','subjects','subject_subs','divisiions'));
     }
     public function getfinalstudent(Request $request){
-        // print_r($_GET);
-        $divisionId = $_GET['division'];
-        // $standardId = $request->input('standard_id');
-        $exam_id = $_GET['exam_ids'];
+        $exam_id =$_POST['exam_ids'];
+        if (!is_array($exam_id)) {
+            $exam_id = explode(',', $exam_id);
+        }
+        $divisionId = $_POST['division'];
         $query = Student::leftJoin('marks', 'marks.student_id', '=', 'students.id')
         ->where('students.division_id', $divisionId)
         ->whereIn('marks.exam_id', $exam_id) 

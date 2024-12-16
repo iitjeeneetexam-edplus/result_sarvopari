@@ -85,7 +85,7 @@ Route::get('/students', [StudentController::class, 'index'])->name('students.ind
 Route::get('/students/getstudent/{sid}/{did}', [StudentController::class, 'getstudents'])->name('students.getstudent');
 Route::get('/students/getstudent', [StudentController::class, 'getstudents'])->name('students.getstudent.get');
 Route::post('/students/getstudentformarks', [StudentController::class, 'getstudentformarks'])->name('students.getstudentformarks');
-Route::get('/students/getfinalstudent', [StudentController::class, 'getfinalstudent'])->name('students.getfinalstudent');
+Route::post('/students/getfinalstudent', [StudentController::class, 'getfinalstudent'])->name('students.getfinalstudent');
 Route::get('/students/add', [StudentController::class, 'showImportForm'])->name('students.importForm');
 Route::post('/students/import', [StudentController::class, 'import'])->name('students.import');
 
