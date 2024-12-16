@@ -21,7 +21,7 @@
                                 <p style="margin: 0;" >{{(!empty($student_value['school_index'])?'ક્રમ નંબર -':'') }} <b>{{ ucfirst($student_value['school_index']) }}</b></p>
                             </td>
                             <td style="width: 34%; text-align: center; padding: 5px; background-color: black; color: white; font-size: 24pt; font-weight: bold; border-radius: 4px;">
-                            પરિણામ પત્ર
+                            પરિણામ પત્રક
                             </td>
                         
                             <td style="width: 33%; text-align: right; font-size: 14pt; vertical-align: top;">
@@ -57,7 +57,7 @@
    <table  cellspacing="0" cellpadding="5" style="width: 100%; border-collapse: collapse; text-align: center;border: 1px solid black;">
         <thead>
             <tr>
-                <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;" >વિષયો</th>
+                <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;" >વિષય</th>
                 @if(isset($student_value['exam']))
                 @foreach($student_value['exam'] as $exam_value)
                 <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;" >{{$exam_value['exam_name']}}</th>
