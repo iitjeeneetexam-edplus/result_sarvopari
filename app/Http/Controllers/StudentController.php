@@ -80,9 +80,10 @@ class StudentController extends Controller
         return view('student.list', compact('students','subjects','subject_subs','divisiions'));
     }
     public function getfinalstudent(Request $request){
-        $divisionId = $request->input('division_id');
+        // print_r($_GET);
+        $divisionId = $_GET['division'];
         // $standardId = $request->input('standard_id');
-        $exam_id = $request->input('exam_id');
+        $exam_id = $_GET['exam_ids'];
         $query = Student::leftJoin('marks', 'marks.student_id', '=', 'students.id')
         ->where('students.division_id', $divisionId)
         ->whereIn('marks.exam_id', $exam_id) 
@@ -93,9 +94,20 @@ class StudentController extends Controller
         )
         ->groupBy('students.id','students.name',)
         ->orderBy('students.id','asc')
-        ->get()->toarray();
+        ->paginate(10);
 
-        return response()->json(['student'=>$query]);
+        return response()->json([
+            'students' => $query->items(), 
+            'divisionId'=>$divisionId,
+            'exam_id'=>$exam_id,
+            'pagination' => [
+                
+                'current_page' => $query->currentPage(),
+                'last_page' => $query->lastPage(),
+                'next_page_url' => $query->nextPageUrl(),
+                'prev_page_url' => $query->previousPageUrl()
+            ]
+        ]);
     }
     public function getstudentformarks(Request $request){
     //    print_r($request->all());exit;
