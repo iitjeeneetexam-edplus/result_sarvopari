@@ -43,7 +43,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="division">Select Division:</label>
-                                    <select name="division_id" id="division" class="form-control">
+                                    <select name="division" id="division" class="form-control">
                                         <option value="">Select a Division</option>
                                         <!-- Populated via AJAX -->
                                     </select>
@@ -68,6 +68,8 @@
                         </form>
                     </div>
                     <hr>
+                    
+
                     <div class="table-container">
                     <div class="button-div" style="display: none;"><button type="button" style="float: right;" class="btn btn-success btn-result  mb-2" >Generate Final Result</button></div>
                     <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
@@ -252,20 +254,24 @@
                                 exam_id.push($(this).val());
                             });
                             $.ajax({
-                                url: '/students/getfinalstudent',
-                                type: 'POST',
-                                data: $(this).serialize(),
-                                beforeSend: function() { 
+                                    url: '/students/getfinalstudent',
+                                    type: 'GET', 
+                                    data: {
+                                        standard: standardValue,
+                                        division: divisionValue,
+                                        exam: examValue,
+                                        exam_ids: exam_id
+                                    },
+                                        beforeSend: function() { 
                                         $("#dev-loader").show();
                                     },
                                     complete: function() { 
                                         $("#dev-loader").hide();
                                     },
                                 success: function(data) {
-                                    if(data.student !=null){
-
+                                    if(data.students !=null){
                                     $('table tbody').html("");
-                                    $.each(data.student, function(key, value) {
+                                    $.each(data.students, function(key, value) {
                                         var baseUrl = "{{ url('marksheet/sidhi_gun') }}";
                                         var studentRow = `<tr class="student-row" data-id="${value.id}">
                                             <td><input type="checkbox" class="student-checkbox" data-id="${value.id}"></td>
@@ -282,8 +288,9 @@
 
                                          studentRow += '</tr>';
                                         $('#studentdata tbody').append(studentRow);
-                                       
+                                        // $('#pagination-links').html(data.student.links);
                                     });
+                                    renderPagination(data.pagination,data.divisionId,data.exam_id);
                                 }else{
                                     $('#studentdata tr').append('<th>No data Found!</th>');
                                 }
@@ -314,6 +321,29 @@
                                 }
                             });
                         });
+                        function renderPagination(pagination, division, exam_id) {
+    let paginationHtml = '';
+
+    // Append division and exam_id as query parameters
+    const appendQueryParams = (url) => {
+        const urlObj = new URL(url, window.location.origin);
+        urlObj.searchParams.append('division', division);
+        urlObj.searchParams.append('exam_ids', exam_id);
+        return urlObj.toString();
+    };
+
+    if (pagination.prev_page_url) {
+        paginationHtml += `<a href="${appendQueryParams(pagination.prev_page_url)}" class="pagination-link">&laquo; Prev</a>`;
+    }
+
+    paginationHtml += `<span>Page ${pagination.current_page} of ${pagination.last_page}</span>`;
+
+    if (pagination.next_page_url) {
+        paginationHtml += `<a href="${appendQueryParams(pagination.next_page_url)}" class="pagination-link">Next &raquo;</a>`;
+    }
+
+    $('#pagination-links').html(paginationHtml);
+}
                         $('.generateResultButton').on('click' , function() { 
                             var selectedStudentIds = []; 
                             $('.student-checkbox:checked').each(function() {
@@ -433,6 +463,7 @@
                             });
                         });
                     });
+
 
                         </script>
                         
