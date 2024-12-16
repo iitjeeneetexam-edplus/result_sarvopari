@@ -349,6 +349,9 @@ $(document).ready(function() {
         if (isOptional == '1') {
             optionalDiv.classList.remove('hidden');
             $('#main_subject').hide();
+            //document.getElementById('main_subject').value = '';
+            const inputElement = document.getElementById('subject_name');
+            inputElement.value = '';
         } else {
             $('#main_subject').show();
             optionalDiv.classList.add('hidden');
@@ -363,6 +366,9 @@ $(document).ready(function() {
 
             optionalDiv2.classList.remove('hidden');
             $('#main_subject' + id).hide();
+            const inputElement = document.getElementById('subject_name' + id);
+            inputElement.value = '';
+
         } else {
             optionalDiv2.classList.add('hidden');
             $('#main_subject' + id).show();
