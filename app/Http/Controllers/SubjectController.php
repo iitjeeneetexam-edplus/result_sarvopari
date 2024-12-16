@@ -120,17 +120,10 @@ class SubjectController extends Controller
                 }
             }
             
-            // if (is_array($subjectName)) {
-            //     $subjectName = implode(', ', $request['subject_sub_name'][$index]); // Convert array to comma-separated string
-            // }
             
             $subject = Subject::find($request['subject_id']); 
-            if(!empty($subject)){
-                $delet = Subject::where('id', $request['subject_id'])->delete();
-            }
-            
-            if ($subject || $delet) {
-                $newSubject = Subject::create([
+            if ($subject) {
+                $newSubject = $subject->update([
                     'subject_name' => $subjectName,
                     'is_optional' => $request['is_optional'][$index], 
                     'standard_id' => $request['standard_id'],         
@@ -138,18 +131,28 @@ class SubjectController extends Controller
                 ]);
             
             }
-            if (empty($subjectName)) {
+            
+            $subjectSub = Subjectsub::where('subject_id',$subject->id)->first();
+            if($request['is_optional'][$index] == 1){
                 foreach ($request['subject_sub_name'][$index] as $subIndex => $subjectSubName) {
-                    $subjectSub = Subjectsub::where('subject_id',$request['subject_id'])->first();
-                    $subjectSub->delete();
-                    if ($subjectSub) {
-                        $newSubject = Subjectsub::create([
-                            'subject_id' => $request['subject_id'],              
+                    if (!empty($subjectSub)) {
+                        $subjectSub->update([
+                            'subject_id' => $subject->id,              
                             'subject_name' => $subjectSubName,                 
-                        ]);                        
+                        ]);                       
+                    }else{
+                        Subjectsub::create([
+                            'subject_id' => $subject->id,              
+                            'subject_name' => $subjectSubName,                 
+                        ]);
                     }
                 }
+            }else{
+                if(!empty($subjectSub)){
+                    $delet = Subjectsub::where('subject_id', $subject->id)->delete();
+                }
             }
+            
         }
         
         
