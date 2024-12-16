@@ -88,7 +88,7 @@
             $grace = $student_value['grace_mark'];
             $nedadorno = $performm+$grace;
             
-            
+            $finalTotal = 0;
         @endphp
 
         @if(isset($student_value['exam']))
@@ -102,7 +102,8 @@
                             $totalMarks = 0; 
                             $obtainmarks = 0; 
                             $performmark = 0;
-                            $gracemmark = 0;                           
+                            $gracemmark = 0;    
+                                                   
                         @endphp
 
                         @foreach($student_value['exam'] as $exam_loop)
@@ -167,7 +168,7 @@
                                 $ned = 0;
                                 $perform = $perform - 0;
                             }
-                            $finalTotal = 0;
+                            
                             $get_total = $get_total + $ned;
                             $finalTotal += $get_total;
                             @endphp
@@ -214,7 +215,7 @@
                 <td style="font-weight: bold;border: 1px solid black;">{{$maintotalobtn}}</td>
                 <td style="font-weight: bold;border: 1px solid black;"></td>
                 <td style="font-weight: bold;border: 1px solid black;"></td>
-                <td style="font-weight: bold;border: 1px solid black;">@if(!empty($finalTotal))@if($finalTotal < $nedadorno || $pasorfl == 0 ) પાસ @else નાપાસ @endif @endif</td>
+                <td style="font-weight: bold;border: 1px solid black;">@if($finalTotal || $finalTotal==0)@if($finalTotal < $nedadorno || $pasorfl == 0 ) પાસ @else નાપાસ @endif @endif</td>
                 <td style="font-weight: bold;border: 1px solid black;">@php $percentages =$maintotalobtn ? ($maintotalobtn / $hundradtotal) * 100 : 0; @endphp {{round($percentages,2)}}%</td>
             </tr>
         </tfoot>
