@@ -114,7 +114,10 @@ class StudentController extends Controller
     //    print_r($request->all());exit;
         $divisionId = $request->input('division_id');
         $standardId = $request->input('standard_id');
-        $exam_id = $request->input('exam_id');
+        $exam_id =$_POST['exam_id'];
+        if (!is_array($exam_id)) {
+            $exam_id = explode(',', $exam_id);
+        }
         // $divisionId = $request->input('division_id');
         // $standardId = $request->input('standard_id');
 
@@ -146,7 +149,8 @@ class StudentController extends Controller
         )
         ->groupBy('students.id','students.name','students.roll_no', 'students.GR_no','marks.marks', 'marks.exam_id','marks.subject_id','marks.is_optional','marks.id','students.division_id')
         ->orderBy('students.roll_no','asc')
-        ->get();
+        // ->get();
+        ->paginate(70);
 
     $students = [];
     foreach ($query as $item) {
@@ -188,8 +192,18 @@ class StudentController extends Controller
         //       ->get()->toarray();
 
   
-                            // print_r($subjects);exit;
-        return response()->json(['student'=>$students,'subject'=>$subjectString,'total_marks'=>$total_marks]);
+                            // print_r($students);exit;
+                            return response()->json([
+                                'student' => $students, 
+                                'subject'=>$subjectString,
+                                'total_marks'=>$total_marks,
+                                'pagination' => [
+                                    'current_page' => $query->currentPage(),
+                                    'last_page' => $query->lastPage(),
+                                    'next_page_url' => $query->nextPageUrl(),
+                                    'prev_page_url' => $query->previousPageUrl()
+                                ]
+                            ]);
     }
 
     public function showImportForm(Request $request)

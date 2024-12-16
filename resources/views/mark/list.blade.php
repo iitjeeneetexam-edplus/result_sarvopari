@@ -90,6 +90,7 @@
                         </tbody>
                     </table>
                     <div id="pagination-links"></div>
+                    <meta name="csrf-token" content="{{ csrf_token() }}">
                 </div>
                 </div>
             </div></div>
@@ -213,12 +214,18 @@
                         }
                             
                           
-
+                        function fetchStudents(page = 1) {
                             $.ajax({
-                                url: '/students/getstudentformarks',
+                                url: `/students/getstudentformarks?page=${page}`,
                                 type: 'POST',
-                                data: $(this).serialize(),
-                                beforeSend: function() { 
+                                data: {
+                                    standard_id: standardValue,
+                                    division_id: divisionValue,
+                                        exam_id: examValue,
+                                        _token: '{{ csrf_token() }}',
+                               
+                                },
+                                   beforeSend: function() { 
                                         $("#dev-loader").show();
                                     },
                                     complete: function() { 
@@ -248,7 +255,12 @@
                                         </td>`;
                                         //&nbsp&nbsp<button class="openBtndelete btn btn-danger" data-id="${value.id}">Delete</button>
                                         studentRow += '</tr>';
+                                        var standard=sessionStorage.getItem('standard');
+                                        var division=sessionStorage.getItem('division');
+                                        var exam=sessionStorage.getItem('exam');
+                                       
                                         $('#studentdata tbody').append(studentRow);
+                                        renderPagination(data.pagination, division, exam);
                                        
                                     });
                                 }else{
@@ -303,7 +315,37 @@
                                     $('#studentdata thead tr').append('<th><center>No data Found!</center></th>');
                                 }
                             });
+                          }
+                        function renderPagination(pagination, division, exam_id) {
+                            let paginationHtml = '';
+
+                            if (pagination.prev_page_url) {
+                                paginationHtml += `
+                                    <button class="pagination-button" data-page="${pagination.current_page - 1}">&laquo; Prev</button>
+                                `;
+                            }
+
+                            paginationHtml += `<span>Page ${pagination.current_page} of ${pagination.last_page}</span>`;
+
+                            if (pagination.next_page_url) {
+                                paginationHtml += `
+                                    <button class="pagination-button" data-page="${pagination.current_page + 1}">Next &raquo;</button>
+                                `;
+                            }
+
+                            $('#pagination-links').html(paginationHtml);
+
+                            // Handle Pagination Clicks
+                            $('.pagination-button').on('click', function () {
+                                var page = $(this).data('page');
+                                fetchStudents(page); // Fetch students for the clicked page
+                            });
+                        }
+                        fetchStudents();
                         });
+
+
+
                     });
                     $(document).on('click', '.openBtndelete', function() {
                         var studentId  = $(this).data('id');
