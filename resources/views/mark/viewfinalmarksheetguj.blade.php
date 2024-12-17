@@ -18,14 +18,20 @@
                     <table style="width: 100%; border-bottom: 1pt solid black; font-size: 24pt;">
                         <tr>
                             <td style="width: 33%; font-size: 14pt; vertical-align: top;">
-                                <p style="margin: 0;" >{{(!empty($student_value['school_index'])?'ક્રમ નંબર -':'') }} <b>{{ ucfirst($student_value['school_index']) }}</b></p>
+                            @if(isset($student_value['exam']))
+                            @foreach($student_value['exam'] as $exam_value)
+                            @endforeach
+                            @endif
+                                <p style="margin: 0;" >{{(!empty($student_value['school_index'])?'Index No -':'') }} <b>{{ ucfirst($student_value['school_index']) }}</b></p>
+                                <p style="margin: 0;margin-top:10px;">પરીક્ષા - <b>{{ ucfirst($exam_value['exam_name']) }}</b> </p>
                             </td>
                             <td style="width: 34%; text-align: center; padding: 5px; background-color: black; color: white; font-size: 24pt; font-weight: bold; border-radius: 4px;">
                             પરિણામ પત્રક
                             </td>
                         
                             <td style="width: 33%; text-align: right; font-size: 14pt; vertical-align: top;">
-                                <p style="margin: 0;margin-top:10px;"> <b>{{$student_value['medium']}}</b></p>
+                            <p style="margin: 0;">વર્ષ – <b>{{ $exam_value['exam_year'] }}</b></p>
+                            <p style="margin: 0;margin-top:10px;"> <b>{{ $student_value['medium'] }}</b></p>
                             </td>
 
                         </tr>
@@ -68,7 +74,7 @@
                 <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;" >સિદ્ધિ ગુણ</th>
                 <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;" >કૃપા ગુણ</th>
                 <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;">ગ્રેડ</th>
-                <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;">ટકા</th>
+                <!-- <th style="background-color: #f0f0f0;border: 1px solid black;width:30px;">ટકા</th> -->
             </tr>
            
             
@@ -193,7 +199,7 @@
                             };
                             @endphp
                         {{$grade}}</td>
-                        <td style="border: 1px solid black;" ></td>
+                        <!-- <td style="border: 1px solid black;" ></td> -->
                     </tr>
 
                     @php
@@ -215,13 +221,31 @@
                 <td style="font-weight: bold;border: 1px solid black;">{{$maintotalobtn}}</td>
                 <td style="font-weight: bold;border: 1px solid black;"></td>
                 <td style="font-weight: bold;border: 1px solid black;"></td>
-                <td style="font-weight: bold;border: 1px solid black;">@if($finalTotal || $finalTotal==0)@if($finalTotal < $nedadorno) પાસ @else નાપાસ @endif @endif</td>
-                <td style="font-weight: bold;border: 1px solid black;">@php $percentages =$maintotalobtn ? ($maintotalobtn / $hundradtotal) * 100 : 0; @endphp {{round($percentages,2)}}%</td>
+                <td style="font-weight: bold;border: 1px solid black;"></td>
+                <!-- <td style="font-weight: bold;border: 1px solid black;">@php $percentages =$maintotalobtn ? ($maintotalobtn / $hundradtotal) * 100 : 0; @endphp {{round($percentages,2)}}%</td> -->
             </tr>
         </tfoot>
     </table>
 
-
+                <div style="width: 100%; margin-top: 15pt;">
+                    <table style="width: 100%; font-size: 16pt; border-collapse: collapse;">
+                        <tr>
+                            <td style="text-align: left; padding: 8px;font-size: 14pt">
+                                ટકા – @php 
+                                $percentages =$maintotalobtn ? ($maintotalobtn / $hundradtotal) * 100 : 0;
+                                 @endphp
+                                <b>{{round($percentages,2)}}%</b>
+                            </td>
+                            <td style="text-align: right; padding: 10px;font-size: 14pt">
+                                પરિણામ – @if($finalTotal || $finalTotal==0)
+                                @if($finalTotal < $nedadorno) પાસ 
+                                @else નાપાસ
+                                @endif
+                                @endif
+                            </td>
+                        </tr>
+                    </table>
+                </div>
     <table style="width: 100%; margin-top: 110px;">
     <tr>
         <td style="text-align: left;">શિક્ષકની સહી:</td>
@@ -230,9 +254,7 @@
 </table>
 </div>
 <div style="position: absolute; margin-top: -70px; left: 20px; font-size: 12pt;">
-<p style="margin-left:30px;">તારીખ: 04-05-2020</p>
-
-
+<p style="margin-left:30px;">તારીખ: {{ date('d-m-20y',strtotime($exam_value['result_date'])) }}</p>
 </div>
 
 
