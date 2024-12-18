@@ -88,6 +88,8 @@
           
         </div>
     </div>
+
+    
     <div class="sidebar"style="display:none;">
         <!-- <a class="{{ Request::segment(1) == 'dashboard' ? 'active' : '' }}" href="{{url('dashboard')}}">Dashboard</a> -->
         <!-- <a class="{{ Request::segment(1) == 'dashboard'   ? 'active' : '' }}" href="{{url('dashboard')}}">Dashboard</a> -->
