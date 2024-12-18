@@ -168,15 +168,15 @@ if ($mrkses < $subject['passing_marks']) {
 
                             $percentage=$subject['total_marks'] ? ($mrkses / $subject['total_marks']) * 100 : 0;
                             $grade=match (true) {
-                            $percentage>= 91 => 'A1',
-                            $percentage >= 81 => 'A2',
-                            $percentage >= 71 => 'B1',
-                            $percentage >= 61 => 'B2',
-                            $percentage >= 51 => 'C1',
-                            $percentage >= 41 => 'C2',
-                            $percentage >= 33 => 'D',
-                            $percentage >= 21 => 'E1',
-                            $percentage <= 20=> 'E2',
+                                    $percentage>= 91 => 'A1',
+                                    $percentage >= 81 => 'A2',
+                                    $percentage >= 71 => 'B1',
+                                    $percentage >= 61 => 'B2',
+                                    $percentage >= 51 => 'C1',
+                                    $percentage >= 41 => 'C2',
+                                    $percentage >= 33 => 'D',
+                                    $percentage >= 21 => 'E1',
+                                    $percentage <= 20=> 'E2',
                                 };
                                 @endphp
                                 @php
@@ -241,13 +241,11 @@ if ($mrkses < $subject['passing_marks']) {
                                 પ્રિન્સિપાલની સહી:
                             </td>
                         </tr>
-
                     </table>
                     <p style="position: absolute; margin-top:10px; font-size: 12pt;">
                         તારીખ:  <b>{{ date('d-m-20y',strtotime($student_value['result_date'])) }}</b>
                     </p>
                 </div>
-
             </div>
             @if(!$loop->last)
     <div style="page-break-after: always;"></div>
