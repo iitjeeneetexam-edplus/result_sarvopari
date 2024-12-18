@@ -882,39 +882,17 @@ class StudentController extends Controller
                                 ];
                                 
                     }
-                    // arsort($totalMarks); // Sort by total marks in descending order
-                    // $rank = 1;
-                    // $ranks = [];
-                    // foreach ($totalMarks as $studentId => $marks) {
-                    //     $ranks[$studentId] = $rank++;
-                    // }
-                    // foreach ($studentDta as $value) {
-                    //     $getpergracmark = Performance_grace_Model::where('school_id', $request->session()->get('school_id'))->first();
+                    arsort($totalMarks); // Sort by total marks in descending order
+                    $rank = 1;
+                    $ranks = [];
+                    foreach ($totalMarks as $studentId => $marks) {
+                        $ranks[$studentId] = $rank++;
+                    }
                     
-                    //     $data[] = [
-                    //         'id' => $value->id,
-                    //         'student_name' => $value->name,
-                    //         'roll_no' => $value->roll_no,
-                    //         'gr_no' => $value->GR_no,
-                    //         'uid' => $value->uid,
-                    //         'school_index' => $value->school_index,
-                    //         'medium' => $value->medium,
-                    //         'division_name' => $value->division_name,
-                    //         'address' => $value->address,
-                    //         'standard_id' => $value->standard_id,
-                    //         'standard_name' => $value->standard_name,
-                    //         'school_name' => $value->school_name,
-                    //         'medium' => $value->medium,
-                    //         'school_index' => $value->school_index,
-                    //         'address' => $value->address,
-                    //         'division_name' => $value->division_name,
-                    //         'performance_mark' => !empty($getpergracmark->performance) ? $getpergracmark->performance : 0,
-                    //         'grace_mark' => !empty($getpergracmark->grace) ? $getpergracmark->grace : 0,                                   
-                    //         'exam'=>$exam,
-                    //         'total_marks' => $totalMarks[$value->id],
-                    //         'rank' => $ranks[$value->id], // Add rank here
-                    //     ];
-                    // }
+                    // Update ranks in $data
+                    foreach ($data as &$studentData) {
+                        $studentData['rank'] = $ranks[$studentData['id']];
+                    }  
                            
             $html = view('mark.viewfinalmarksheetguj', ['student' => $data])->render();
        
