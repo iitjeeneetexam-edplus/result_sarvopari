@@ -651,135 +651,95 @@ class StudentController extends Controller
        
     }
     public function mark_marksheet_guj(Request  $request){
-        $examIds = $request->input('exam'); 
-        $studentDta=Student::leftjoin('division','division.id','=','students.division_id')
-                            ->leftjoin('standards','standards.id','=','division.standard_id')
-                            ->leftjoin('schools','schools.id','=','standards.school_id')
-                             ->whereIn('students.id',$request->student_id)
-                             ->select('students.*',
-                                'standards.standard_name',
-                                'standards.id as standard_id',
-                                'schools.school_name',
-                                'schools.medium',
-                                'standards.school_index',
-                                'schools.address',
-                                'division.division_name',
-                            )->get();
-                            $data=[];
-                    foreach($studentDta as $value){
-                        $examDta = Exam::where('id', $examIds)->get();
-                        $exam= [];
+        $student=Student::leftjoin('division','division.id','=','students.division_id')
+            ->leftjoin('standards','standards.id','=','division.standard_id')
+            ->leftjoin('exams','exams.standard_id','=','standards.id')
+            ->leftjoin('schools','schools.id','=','standards.school_id')
+            ->select('students.*',
+                      'standards.standard_name',
+                      'standards.id as standard_id',
+                      'schools.school_name',
+                      'schools.medium',
+                      'standards.school_index',
+                      'schools.address',
+                      'division.division_name',
+                      'exams.exam_name',
+                      'exams.exam_year',
+                      'exams.result_date'
+                    )
+            ->whereIn('students.id',$request->student_id)
+            ->where('exams.id',$request->exam)
+            ->get()
+            ->toarray();
+            $standard_id=0;
+            if(!empty($student))
+            {
+             $standard_id=$student[0]['standard_id'];
+            }
+            $subjectsData = Subject::leftJoin('marks', function ($join) {
+                $join->on('marks.subject_id', '=', 'subjects.id')
+                     ->where('marks.is_optional', '0');
+            })
+            ->where('subjects.standard_id', $standard_id)
+            ->whereIn('marks.student_id', $request->student_id)
+            ->where('marks.exam_id', $request->exam)
+            ->select(
+                'subjects.subject_name',
+                'subjects.id',
+                'subjects.is_optional',
+                'marks.total_marks',
+                'marks.marks',
+                'marks.passing_marks',
+                'marks.subject_id as mark_subject_id',
+                'marks.is_optional as mark_is_optional',
+                'marks.student_id',
+            )
+            ->get()->toarray();
+            $optinalsubjects = Subject::join('subject_subs','subject_subs.subject_id','=','subjects.id')
+            ->leftJoin('marks', function ($join) {
+                $join->on('marks.subject_id', '=', 'subject_subs.id')
+                     ->where('marks.is_optional', '1');
+            })
+            ->where('subjects.standard_id', $standard_id)
+            ->where('marks.exam_id', $request->exam)
+            ->whereIn('marks.student_id', $request->student_id)
+            ->select(
+                'subject_subs.subject_name',
+                'subject_subs.id',
+                'subjects.is_optional',
+                'marks.total_marks',
+                'marks.marks',
+                'marks.subject_id as mark_subject_id',
+                'marks.is_optional as mark_is_optional',
+                'marks.passing_marks',
+                'marks.student_id',
 
-                        foreach ($examDta as $exam_value) {
-                            $subjectDta1 = Student::leftJoin('division', 'division.id', '=', 'students.division_id')
-                                                    ->leftJoin('standards', 'standards.id', '=', 'division.standard_id')
-                                                    ->leftJoin('subjects', 'subjects.standard_id', '=', 'standards.id')
-                                                    ->whereIn('students.id', explode(',', $value->id))
-                                                    ->where('subjects.is_optional','0')
-                                                    ->select(
-                                                        'subjects.subject_name',
-                                                        'subjects.is_optional',
-                                                        'subjects.id as subject_id',
-                                                        'students.id AS student_id'
-                                                    )
-                                                    ->get()
-                                                    ->toArray(); 
-
-                                                $subjectDta2 = Subject::leftJoin('subject_subs', 'subject_subs.subject_id', '=', 'subjects.id')
-                                                    ->leftJoin('student_subjects', 'student_subjects.subject_id', '=', 'subject_subs.id')
-                                                    ->where('subjects.is_optional','1')
-                                                    ->whereIn('student_subjects.student_id', explode(',', $value->id))
-                                                    ->select(
-                                                        'subject_subs.subject_name',
-                                                        'subjects.is_optional',
-                                                        'subject_subs.id as subject_id',
-                                                        'student_subjects.student_id AS student_id'
-                                                    )
-                                                    ->get()
-                                                    ->toArray(); 
-
-                                                $get_subject_Data = array_merge($subjectDta1, $subjectDta2);
-                                        $subject_Data =[];    
-                                    foreach ($get_subject_Data as $subject_value) {
-                                        
-                                        $markDta = Student::leftJoin('marks', 'marks.student_id', '=', 'students.id')
-                                            ->whereIn('marks.exam_id', explode(',', $exam_value->id))
-                                            ->whereIn('students.id', explode(',', $value->id))
-                                            ->where('marks.subject_id', $subject_value['subject_id'])
-                                            ->where('marks.is_optional', $subject_value['is_optional'])
-                                            ->select(
-                                                'marks.student_id',
-                                                'marks.total_marks',
-                                                'marks.marks',
-                                                'marks.subject_id',
-                                                'marks.performance_mark',
-                                                'marks.grace_mark',
-                                            )
-                                            ->get();
-                                
-                                        $marks = []; 
-                                
-                                        foreach ($markDta as $value2) {
-                                            $value2->marks = $value2->marks !== 'AB' 
-                                                ? (int) round((float) $value2->marks) 
-                                                : 'AB';
-                                
-                                            $marks[] = [
-                                                'student_id' => $value2->student_id,
-                                                'subject_id' => $value2->subject_id,
-                                                'total_marks' => $value2->total_marks,
-                                                'marks' => $value2->marks,
-                                                'exam_id' => $exam_value->id,
-                                                'performance_mark' => $value2->performance_mark,
-                                                'grace_mark' => $value2->grace_mark,
-                                            ];
-                                        }
-                                
-                                        $subject_Data[] = [
-                                            'subject_name' => $subject_value['subject_name'],
-                                            'subject_id' => $subject_value['subject_id'],
-                                            'marks' => $marks,
-                                        ];
-                                    }
-                                
-                                    $exam[] = [
-                                        'exam_id' => $exam_value->id,
-                                        'exam_name' => $exam_value->exam_name,
-                                        'exam_year' => $exam_value->exam_year,
-                                        'result_date' => $exam_value->result_date,
-                                        'subject_Data' => $subject_Data,
-                                    ];
-                                }
-                                $getpergracmark = Performance_grace_Model::where('school_id',$request->session()->get('school_id'))->first();
-
-                                $data[]=[
-                                    'id'=>$value->id,
-                                    'student_name'=>$value->name,
-                                    'roll_no'=>$value->roll_no,
-                                    'gr_no'=>$value->GR_no,
-                                    'uid'=>$value->uid,
-                                    'school_index'=>$value->school_index,
-                                    'medium'=>$value->medium,
-                                    'division_name'=>$value->division_name,
-                                    'address'=>$value->address,
-                                    'standard_id'=>$value->standard_id,
-                                    'standard_name'=>$value->standard_name,
-                                    'school_name'=>$value->school_name,
-                                    'medium'=>$value->medium,
-                                    'school_index'=>$value->school_index,
-                                    'address'=>$value->address,
-                                    'division_name'=>$value->division_name,
-                                    'performance_mark'=>!empty($getpergracmark->performance) ? $getpergracmark->performance : 0,
-                                    'grace_mark'=>!empty($getpergracmark->grace) ? $getpergracmark->grace : 0,
-                                    'exam'=>$exam,
-                                ];
-                                    
-                            }
-                    //    echo "<pre>";print_r($data);exit;    
-           
-            $html = view('mark.viewfinalmarksheetguj', ['student' => $data])->render();
+            )
+            ->get()->toarray(); 
+            $optinalsubjects = array_map(function($row) {
+                if ($row["marks"] !== 'AB') {
+                    $row["marks"] = (int) round((float) $row["marks"]);
+                }
+                return $row;
+            }, $optinalsubjects);
             
+            $subjectsData = array_map(function($row) {
+                if ($row["marks"] !== 'AB') {
+                    $row["marks"] = (int) round((float) $row["marks"]);
+                }
+                return $row;
+            }, $subjectsData);            
+            
+            $tempStudantId=array_column($subjectsData, 'student_id') ;
+            $tempOpsStudantId =array_column($optinalsubjects, 'student_id');
+            $tempMerge=array_unique(array_merge($tempStudantId, $tempOpsStudantId));  
+            $filteredStudents = array_filter($student, function ($st) use ($tempMerge) {  
+               return is_array($tempMerge) && isset($st['id']) && in_array($st['id'], $tempMerge);
+            });
+            $data = ['student'=>$filteredStudents,'subjects'=>$subjectsData,'optional_subjects'=>$optinalsubjects]; 
+                
            
+            $html = view('mark.viewsinglemarksheetgujarati', ['data' => $data])->render();
             return response()->json(['student'=>$html]);
     }
     public  function all_marksheet_guj(Request $request){
@@ -914,8 +874,7 @@ class StudentController extends Controller
                                     'address'=>$value->address,
                                     'division_name'=>$value->division_name,
                                     'performance_mark'=>!empty($getpergracmark->performance) ? $getpergracmark->performance : 0,
-                                    'grace_mark'=>!empty($getpergracmark->grace) ? $getpergracmark->grace : 0,
-                                   
+                                    'grace_mark'=>!empty($getpergracmark->grace) ? $getpergracmark->grace : 0,                                   
                                     'exam'=>$exam,
                                 ];
                                     
@@ -1217,15 +1176,8 @@ class StudentController extends Controller
                     $row["marks"] = (int) round((float) $row["marks"]);
                 }
                 return $row;
-            }, $subjectsData);
+            }, $subjectsData);            
             
-            // $response_data = [
-            //     'student' => $student,
-            //     'subjects' => $subjectsData,
-            //     'optional_subjects'=>$optinalsubjects,
-            // ];
-            // exit;
-            // echo "<pre>";print_r($response_data);exit;
             $tempStudantId=array_column($subjectsData, 'student_id') ;
             $tempOpsStudantId =array_column($optinalsubjects, 'student_id');
             $tempMerge=array_unique(array_merge($tempStudantId, $tempOpsStudantId));  
@@ -1233,9 +1185,8 @@ class StudentController extends Controller
                return is_array($tempMerge) && isset($st['id']) && in_array($st['id'], $tempMerge);
             });
             $data = ['student'=>$filteredStudents,'subjects'=>$subjectsData,'optional_subjects'=>$optinalsubjects]; 
-            // echo "<pre>";print_r($data);exit;
             $pdf = PDF::loadView('mark.marksheet', ['data' => $data]);
-            // return $pdf->download('marksheet.pdf');
+            
             $folderPath = public_path('pdfs');
 
             if (!File::exists($folderPath)) {
