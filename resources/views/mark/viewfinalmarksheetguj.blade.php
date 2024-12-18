@@ -217,7 +217,7 @@
             <tr>
                 <td style="font-weight: bold;border: 1px solid black;">કુલ ગુણ</td>
                 <td  colspan="{{ count($student_value['exam'])}}" style="border: 1px solid black;"></td>
-                <td style="font-weight: bold;border: 1px solid black;">{{$mainobtainmarks}}</td>
+                 <td style="font-weight: bold;border: 1px solid black;"></td><!-- {{$mainobtainmarks}} -->
                 <td style="font-weight: bold;border: 1px solid black;">{{$maintotalobtn}}</td>
                 <td style="font-weight: bold;border: 1px solid black;"></td>
                 <td style="font-weight: bold;border: 1px solid black;"></td>
@@ -236,12 +236,15 @@
                                  @endphp
                                 <b>{{round($percentages,2)}}%</b>
                             </td>
-                            <td style="text-align: right; padding: 10px;font-size: 14pt">
+                            <td style="text-align: center; padding: 10px;font-size: 14pt">
                                 પરિણામ – @if($finalTotal || $finalTotal==0)
                                 @if($finalTotal < $nedadorno) પાસ 
                                 @else નાપાસ
                                 @endif
                                 @endif
+                            </td>
+                            <td style="text-align: right; padding: 10px;font-size: 14pt">
+                                ક્રમાંક – <b> {{$student_value['rank']}} </b>
                             </td>
                         </tr>
                     </table>
