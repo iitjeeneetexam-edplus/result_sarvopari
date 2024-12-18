@@ -97,10 +97,25 @@ class StudentController extends Controller
         ->orderBy('students.id','asc')
         ->paginate(10);
 
+
+        $query2 = Student::leftJoin('marks', 'marks.student_id', '=', 'students.id')
+        ->where('students.division_id', $divisionId)
+        ->whereIn('marks.exam_id', $exam_id) 
+        ->select(
+            'students.id',
+            'students.name',
+            'marks.marks'
+               
+        )
+        ->groupBy('students.id','students.name','marks.marks')
+        ->orderBy('students.id','asc')
+        ->get();
+
         return response()->json([
             'students' => $query->items(), 
             'divisionId'=>$divisionId,
             'exam_id'=>$exam_id,
+            'rank_calculation_student'=>$query2,
             'pagination' => [
                 
                 'current_page' => $query->currentPage(),
@@ -1368,7 +1383,7 @@ class StudentController extends Controller
     }
     public function final_marksheet(Request $request){
         $schools = School::select('id', 'school_name')->where('id',$request->session()->get('school_id'))->first();
-        return view('mark.finalmarksheet', compact('schools'));
+    return view('mark.finalmarksheet', compact('schools'));
     }
     
 }
