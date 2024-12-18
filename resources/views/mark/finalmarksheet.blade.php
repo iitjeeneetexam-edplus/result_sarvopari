@@ -96,6 +96,7 @@
                     <div class="col-md-2"> <div class="button-div" style="display: none;"><button type="button" style="float: right;" class="btn btn-success btn-result  mb-2" >Generate Final Result</button></div>
                     </div>
                 </div>
+                
                     <table class="table table-bordered" id="studentdata">
                         <thead class="thead-dark">
                             <tr>
