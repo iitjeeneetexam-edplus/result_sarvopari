@@ -192,9 +192,58 @@ class StudentController extends Controller
         //       ->get()->toarray();
 
   
-                            // print_r($students);exit;
+                       
+        
+        $query2 = Student::with('division:id,division_name')
+        ->leftJoin('marks', 'marks.student_id', '=', 'students.id')
+        ->leftJoin('subjects as s1', function ($join) {
+            $join->on('s1.id', '=', 'marks.subject_id')
+                ->where('marks.is_optional', '0');
+        })
+        ->leftJoin('subject_subs as s2', function ($join) {
+            $join->on('s2.id', '=', 'marks.subject_id')
+                ->where('marks.is_optional', '1');
+        })
+        ->where('students.division_id', $divisionId)
+        ->where('marks.exam_id', $exam_id) 
+        ->select(
+            'students.id',
+            'students.name',
+            'students.roll_no',
+            'students.GR_no',
+            'students.division_id',
+            'marks.marks',
+            'marks.exam_id',
+            'marks.subject_id',
+            'marks.is_optional',
+            'marks.id as mark_id',
+            
+            DB::raw('GROUP_CONCAT(COALESCE(s1.subject_name, s2.subject_name)) as subject_name')
+        )
+        ->groupBy('students.id','students.name','students.roll_no', 'students.GR_no','marks.marks', 'marks.exam_id','marks.subject_id','marks.is_optional','marks.id','students.division_id')
+        ->orderBy('students.roll_no','asc')
+        ->get();
+        // ->paginate(70);
+
+    $students2 = [];
+    foreach ($query2 as $item2) {
+        $students2[$item2->id]['id'] = $item2->id;
+        $students2[$item2->id]['name'] = $item2->name;
+        $students2[$item2->id]['roll_no'] = $item2->roll_no;
+        $students2[$item2->id]['GR_no'] = $item2->GR_no;
+        $students2[$item2->id]['division_id'] = $item2->division_id;
+        $students2[$item2->id]['exam_id'] = $item2->exam_id;
+
+        $subjectName = $item2->subject_name;
+        $students2[$item2->id]['is_optional'][$subjectName] = $item2->is_optional;
+        $students2[$item2->id]['subject_id'][$subjectName] = $item2->subject_id;        
+        $students2[$item2->id]['mark_id'][$subjectName] = $item2->mark_id;
+        $students2[$item2->id]['marks'][$subjectName] = $item2->marks;
+        
+        }
                             return response()->json([
                                 'student' => $students, 
+                                'student2' => $students2, 
                                 'subject'=>$subjectString,
                                 'total_marks'=>$total_marks,
                                 'pagination' => [
@@ -205,7 +254,15 @@ class StudentController extends Controller
                                 ]
                             ]);
     }
+    public function update_student_ranks(Request $request){
+        $students = $request->input('students'); 
 
+        foreach ($students as $studentData) {
+            Student::where('id', $studentData['id'])->update(['rank' => $studentData['rank']]);
+        }
+
+        return response()->json(['message' => 'Ranks updated successfully']);
+    }
     public function showImportForm(Request $request)
     {
         $schools = School::where('id',$request->session()->get('school_id'))->first();

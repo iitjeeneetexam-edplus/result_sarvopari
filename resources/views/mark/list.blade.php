@@ -83,6 +83,7 @@
                     <div class="col-md-9"></div>
                     <div class="col-md-3"><input type="text" id="searchInput" class="form-control mb-3" placeholder="Search..." style="display: none;"></div>
                 </div>
+                
                     <table class="table table-bordered" id="studentdata">
                         <thead class="thead-dark">
                             <tr>
@@ -251,7 +252,14 @@
                                     complete: function() { 
                                         $("#dev-loader").hide();
                                     },
-                                success: function(data) {
+                                    success: function (data) {
+                                        
+
+    // Optional: Pass the processed data to your UI
+    // renderUI(subjectTotals, data.student2);
+
+
+
                                     if(data.student !=null){
 
                                     $('table tbody').html("");
@@ -330,6 +338,66 @@
                                         });
                                     }
                                     $('#studentdata thead tr').append('<th><center>Action</center></th>');
+
+
+
+                                   //rank generate
+                                   let students = Array.isArray(data.student2) ? data.student2 : Object.values(data.student2);
+
+                                        let subjectTotals = {};
+
+                                        students.forEach(student => {
+                                            let totalMarks = 0;
+
+                                            for (const [subject, marks] of Object.entries(student.marks)) {
+                                                let numericMarks = parseInt(marks) || 0; 
+                                                totalMarks += numericMarks;
+
+                                                subjectTotals[subject] = (subjectTotals[subject] || 0) + numericMarks;
+                                            }
+
+                                            student.totalMarks = totalMarks;
+                                        });
+
+                                        let rankedStudents = students
+                                            .map(student => student) 
+                                            .sort((a, b) => b.totalMarks - a.totalMarks); 
+
+                                        let rank = 1;
+                                        let previousMarks = null;
+
+                                        rankedStudents.forEach((student, index) => {
+                                            if (student.totalMarks === previousMarks) {
+                                                student.rank = rank; 
+                                            } else {
+                                                rank = index + 1; 
+                                                student.rank = rank;
+                                            }
+                                            previousMarks = student.totalMarks;
+                                        });
+
+                                        // Output for debugging
+                                        console.log("Subject Totals:", subjectTotals);
+                                        console.log("Ranked Students:", rankedStudents);
+                                        $.ajax({
+                                            url: 'student/update-student-ranks', // Update with your route
+                                            method: 'POST',
+                                            data: {
+                                                _token: $('meta[name="csrf-token"]').attr('content'), // Add CSRF token
+                                                students: rankedStudents.map(student => ({
+                                                    id: student.id, // Assuming each student has an `id`
+                                                    rank: student.rank
+                                                }))
+                                            },
+                                            success: function(response) {
+                                                console.log('Ranks updated successfully:', response);
+                                            },
+                                            error: function(xhr, status, error) {
+                                                console.error('Error updating ranks:', error);
+                                            }
+                                        });
+
+
                                 },
                                 error: function(xhr, status, error) {
                                     $('#studentdata thead tr').append('<th><center>No data Found!</center></th>');

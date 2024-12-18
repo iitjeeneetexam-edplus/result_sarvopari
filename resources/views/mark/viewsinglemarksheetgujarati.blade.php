@@ -222,7 +222,7 @@ if ($mrkses < $subject['passing_marks']) {
                                 <b>{{$porf}}</b>
                             </td>
                             <td style="text-align: right; padding: 10px;font-size: 14pt">
-                                ક્રમાંક – <b> {{ $studentRank }} </b>
+                                ક્રમાંક – <b> {{ $student_value['rank'] }} </b>
                             </td>
 
                         </tr>
