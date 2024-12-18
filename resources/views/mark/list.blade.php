@@ -80,21 +80,40 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                    <div class="col-md-9"></div>
+                    <div class="col-md-3"><input type="text" id="searchInput" class="form-control mb-3" placeholder="Search..." style="display: none;"></div>
+                </div>
                     <table class="table table-bordered" id="studentdata">
                         <thead class="thead-dark">
                             <tr>
 
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="tableBody">
                         </tbody>
                     </table>
-                    <div id="pagination-links"></div>
+                    <div id="pagination-links" style="float:right"></div>
                     <meta name="csrf-token" content="{{ csrf_token() }}">
                 </div>
                 </div>
             </div></div>
     </div>
+    <script>
+    document.getElementById('searchInput').addEventListener('keyup', function () {
+        const searchValue = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#tableBody tr');
+        
+        rows.forEach(row => {
+            const rowText = row.textContent.toLowerCase();
+            if (rowText.includes(searchValue)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+</script>
                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                 <script>
                         $(document).ready(function () {
@@ -190,12 +209,14 @@
                             }
                         });
                         $('form').submit(function(event) {
+                            $("#searchInput").css('display', 'block');
+
                             event.preventDefault(); 
                             let errors="";
                             $("#validationErrors").html("");
                             var standardValue= $('#standard').val();
                             var divisionValue= $('#division').val();
-                           
+                            
 
                             var examValue= $('#exam').val(); 
                             sessionStorage.setItem('standard', standardValue);
@@ -321,7 +342,7 @@
 
                             if (pagination.prev_page_url) {
                                 paginationHtml += `
-                                    <button class="pagination-button" data-page="${pagination.current_page - 1}">&laquo; Prev</button>
+                                    <button class="pagination-button btn btn-success" data-page="${pagination.current_page - 1}">&laquo; Prev</button>
                                 `;
                             }
 
@@ -329,7 +350,7 @@
 
                             if (pagination.next_page_url) {
                                 paginationHtml += `
-                                    <button class="pagination-button" data-page="${pagination.current_page + 1}">Next &raquo;</button>
+                                    <button class="pagination-button btn btn-success" data-page="${pagination.current_page + 1}">Next &raquo;</button>
                                 `;
                             }
 
@@ -667,6 +688,7 @@
                                     $("#dev-loader").hide();
                                 },
                                 success: function(response) {
+                               
                                     const { jsPDF } = window.jspdf;
                                     const studentContent = response.student;
                                     const baseWidth = 580.28; 
@@ -695,7 +717,7 @@
                     
                 </script>
 </x-app-layout>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
 
 <style>
