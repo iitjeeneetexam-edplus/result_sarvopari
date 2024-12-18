@@ -71,8 +71,7 @@
                     
 
                     <div class="table-container">
-                    <div class="button-div" style="display: none;"><button type="button" style="float: right;" class="btn btn-success btn-result  mb-2" >Generate Final Result</button></div>
-                    <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
+                      <div class="modal fade" id="resultModal" tabindex="-1" aria-labelledby="resultModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -91,13 +90,19 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                    <div class="col-md-8"></div>
+                    <div class="col-md-2"><input type="text" id="searchInput" class="form-control mb-3" placeholder="Search..." style="display: none;"></div>
+                    <div class="col-md-2"> <div class="button-div" style="display: none;"><button type="button" style="float: right;" class="btn btn-success btn-result  mb-2" >Generate Final Result</button></div>
+                    </div>
+                </div>
                     <table class="table table-bordered" id="studentdata">
                         <thead class="thead-dark">
                             <tr>
 
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="tableBody">
                         </tbody>
                     </table>
                     <div id="pagination-links" style="float:right"></div>
@@ -110,7 +115,21 @@
                     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-
+                    <script>
+    document.getElementById('searchInput').addEventListener('keyup', function () {
+        const searchValue = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#tableBody tr');
+        
+        rows.forEach(row => {
+            const rowText = row.textContent.toLowerCase();
+            if (rowText.includes(searchValue)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+</script>
                 <script>
                     $(document).ready(function () {
                     $('.btn-result').on('click', function (e) {
@@ -222,6 +241,8 @@
                             } 
                         });
                         $('form').submit(function(event) {
+                            $("#searchInput").css('display', 'block');
+
                             event.preventDefault(); 
                             var standardValue= $('#standard').val();
                             var divisionValue= $('#division').val();

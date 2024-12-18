@@ -14,6 +14,10 @@
                 <br>   <form method="POST" action="{{ route('assign.subject') }}">
                                 @csrf
                                 <div class="table-responsive">
+                                <div class="row">
+                    <div class="col-md-9"></div>
+                    <div class="col-md-3"><input type="text" id="searchInput" class="form-control mb-3" placeholder="Search..."></div>
+                </div>
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>
@@ -35,7 +39,7 @@
                                                 
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="tableBody">
                                             @php $i = 1; @endphp
                                             @if($students->isNotEmpty())
                                             @foreach($students as $student)
@@ -120,6 +124,21 @@
                     </div>
                 </div>
             </div>
+            <script>
+    document.getElementById('searchInput').addEventListener('keyup', function () {
+        const searchValue = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#tableBody tr');
+        
+        rows.forEach(row => {
+            const rowText = row.textContent.toLowerCase();
+            if (rowText.includes(searchValue)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+</script>
             <script>
                 
                 document.getElementById('submitBtn').onclick = function(event) {

@@ -80,13 +80,17 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                    <div class="col-md-9"></div>
+                    <div class="col-md-3"><input type="text" id="searchInput" class="form-control mb-3" placeholder="Search..." style="display: none;"></div>
+                </div>
                     <table class="table table-bordered" id="studentdata">
                         <thead class="thead-dark">
                             <tr>
 
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="tableBody">
                         </tbody>
                     </table>
                     <div id="pagination-links" style="float:right"></div>
@@ -95,6 +99,21 @@
                 </div>
             </div></div>
     </div>
+    <script>
+    document.getElementById('searchInput').addEventListener('keyup', function () {
+        const searchValue = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#tableBody tr');
+        
+        rows.forEach(row => {
+            const rowText = row.textContent.toLowerCase();
+            if (rowText.includes(searchValue)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+</script>
                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
                 <script>
                         $(document).ready(function () {
@@ -190,12 +209,14 @@
                             }
                         });
                         $('form').submit(function(event) {
+                            $("#searchInput").css('display', 'block');
+
                             event.preventDefault(); 
                             let errors="";
                             $("#validationErrors").html("");
                             var standardValue= $('#standard').val();
                             var divisionValue= $('#division').val();
-                           
+                            
 
                             var examValue= $('#exam').val(); 
                             sessionStorage.setItem('standard', standardValue);
