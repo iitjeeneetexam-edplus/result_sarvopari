@@ -874,8 +874,6 @@ class StudentController extends Controller
                                     'standard_id'=>$value->standard_id,
                                     'standard_name'=>$value->standard_name,
                                     'school_name'=>$value->school_name,
-                                    'school_index'=>$value->school_index,
-                                    'address'=>$value->address,
                                     'performance_mark'=>!empty($getpergracmark->performance) ? $getpergracmark->performance : 0,
                                     'grace_mark'=>!empty($getpergracmark->grace) ? $getpergracmark->grace : 0,                                   
                                     'exam'=>$exam,
