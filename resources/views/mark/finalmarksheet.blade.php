@@ -100,7 +100,7 @@
                         <tbody>
                         </tbody>
                     </table>
-                    <div id="pagination-links"></div>
+                    <div id="pagination-links" style="float:right"></div>
                     <meta name="csrf-token" content="{{ csrf_token() }}">
 
                 </div>
@@ -251,117 +251,7 @@
                             return;
                         }
 
-                        // var exam_id = [];
-                        //     $('input[type="checkbox"]:checked').each(function () {
-                        //         exam_id.push($(this).val());
-                        //     });
-                        //     $.ajax({
-                        //             url: '/students/getfinalstudent',
-                        //             type: 'POST', 
-                        //             data: {
-                        //                 standard: standardValue,
-                        //                 division: divisionValue,
-                        //                 exam: examValue,
-                        //                 exam_ids: exam_id,
-                        //                 _token: '{{ csrf_token() }}',  
-                        //             },
-                              
-                        //                 beforeSend: function() { 
-                        //                 $("#dev-loader").show();
-                        //             },
-                        //             complete: function() { 
-                        //                 $("#dev-loader").hide();
-                        //             },
-                        //         success: function(data) {
-                        //             console.log(data.students);
-                        //             if(data.students !=null){
-                        //             $('table tbody').html("");
-                        //             $.each(data.students, function(key, value) {
-                        //                 var baseUrl = "{{ url('marksheet/sidhi_gun') }}";
-                        //                 var studentRow = `<tr class="student-row" data-id="${value.id}">
-                        //                     <td><input type="checkbox" class="student-checkbox" data-id="${value.id}"></td>
-                        //                     <td>${value.name}</td>
-                        //                     <td>
-                        //                      <form action="${baseUrl}" method="post">
-                        //                      @csrf
-                        //                        <input type="hidden" value="${value.id}" name="id">
-                        //                        <input type="hidden" value="${exam_id}" name="exam_id">
-                        //                        <input type="submit" name="submit" value="View" class="btn btn-success">
-                        //                      </form>
-                        //                 </tr>`;
-
-
-                        //                  studentRow += '</tr>';
-                        //                 $('#studentdata tbody').append(studentRow);
-                        //                 // $('#pagination-links').html(data.student.links);
-                        //             });
-                        //             renderPagination(data.pagination,data.divisionId,data.exam_id);
-                        //         }else{
-                        //             $('#studentdata tr').append('<th>No data Found!</th>');
-                        //         }
-                               
-                        //             $('#studentdata thead tr').empty();
-                        //             $('.button-div').show();   
-                        //             $('#studentdata thead tr').append('<th style="width:49px;"><input type="checkbox" id="selectAllstd">&nbsp;&nbsp;&nbsp;&nbsp;</th>');
-                                    
-                        //             $('#studentdata thead tr').append('<th style="width:375px">Student Name</th>');
-                        //             $('#studentdata thead tr').append('<th style="width:49px;">Action</th>');
-                        //             $('#selectAllstd').on('click', function() {
-                        //                     var isChecked = this.checked;
-                        //                     $('.student-checkbox').prop('checked', isChecked);
-                        //                 });
-
-                        //                 // Individual Student Checkbox Click
-                        //                 $('#studentdata').on('click', '.student-checkbox', function() {
-                        //                     if ($('.student-checkbox:checked').length === $('.student-checkbox').length) {
-                        //                         $('#selectAllstd').prop('checked', true);
-                        //                     } else {
-                        //                         $('#selectAllstd').prop('checked', false);
-                        //                     }
-                        //                 });
-                                  
-                        //         },
-                        //         error: function(xhr, status, error) {
-                        //             $('#studentdata thead tr').append('<th><center>No data Found!</center></th>');
-                        //         }
-                        //     });
-                        // });
-                        // function renderPagination(pagination, division, exam_id) {
-                        //     let paginationHtml = '';
-
-                        //     // Helper function to create a pagination form
-                        //     const createPaginationForm = (url, label) => {
-                        //         const urlObj = new URL(url, window.location.origin);
-                        //         const page = urlObj.searchParams.get('page'); // Extract page number from URL
-
-                        //         return `
-                        //             <form method="POST" action="/students/getfinalstudent" class="pagination-form">
-                        //                 <input type="hidden" name="_token" value="${$('meta[name="csrf-token"]').attr('content')}"> 
-                        //                 <input type="hidden" name="division" value="${division}">
-                        //                 <input type="hidden" name="exam_ids" value="${exam_id}">
-                        //                 <input type="hidden" name="page" value="${page}">
-                        //                 <button type="submit" class="pagination-button">${label}</button>
-                        //             </form>
-                        //         `;
-                        //     };
-
-                        //     // Add "Prev" button if available
-                        //     if (pagination.prev_page_url) {
-                        //         paginationHtml += createPaginationForm(pagination.prev_page_url, '&laquo; Prev');
-                        //     }
-
-                        //     // Add current page info
-                        //     paginationHtml += `<span>Page ${pagination.current_page} of ${pagination.last_page}</span>`;
-
-                        //     // Add "Next" button if available
-                        //     if (pagination.next_page_url) {
-                        //         paginationHtml += createPaginationForm(pagination.next_page_url, 'Next &raquo;');
-                        //     }
-
-                        //     // Render pagination
-                        //     $('#pagination-links').html(paginationHtml);
-
-                        // }
+                       
                         function fetchStudents(page = 1) {
                                 var exam_id = [];
                                 $('input[type="checkbox"]:checked').each(function () {
@@ -446,7 +336,7 @@
 
                                 if (pagination.prev_page_url) {
                                     paginationHtml += `
-                                        <button class="pagination-button" data-page="${pagination.current_page - 1}">&laquo; Prev</button>
+                                        <button class="pagination-button btn btn-success"  data-page="${pagination.current_page - 1}">&laquo; Prev</button>
                                     `;
                                 }
 
@@ -454,7 +344,7 @@
 
                                 if (pagination.next_page_url) {
                                     paginationHtml += `
-                                        <button class="pagination-button" data-page="${pagination.current_page + 1}">Next &raquo;</button>
+                                        <button class="pagination-button btn btn-success" data-page="${pagination.current_page + 1}">Next &raquo;</button>
                                     `;
                                 }
 

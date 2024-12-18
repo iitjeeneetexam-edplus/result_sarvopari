@@ -89,7 +89,7 @@
                         <tbody>
                         </tbody>
                     </table>
-                    <div id="pagination-links"></div>
+                    <div id="pagination-links" style="float:right"></div>
                     <meta name="csrf-token" content="{{ csrf_token() }}">
                 </div>
                 </div>
@@ -321,7 +321,7 @@
 
                             if (pagination.prev_page_url) {
                                 paginationHtml += `
-                                    <button class="pagination-button" data-page="${pagination.current_page - 1}">&laquo; Prev</button>
+                                    <button class="pagination-button btn btn-success" data-page="${pagination.current_page - 1}">&laquo; Prev</button>
                                 `;
                             }
 
@@ -329,7 +329,7 @@
 
                             if (pagination.next_page_url) {
                                 paginationHtml += `
-                                    <button class="pagination-button" data-page="${pagination.current_page + 1}">Next &raquo;</button>
+                                    <button class="pagination-button btn btn-success" data-page="${pagination.current_page + 1}">Next &raquo;</button>
                                 `;
                             }
 
@@ -667,6 +667,7 @@
                                     $("#dev-loader").hide();
                                 },
                                 success: function(response) {
+                               
                                     const { jsPDF } = window.jspdf;
                                     const studentContent = response.student;
                                     const baseWidth = 580.28; 
@@ -695,7 +696,7 @@
                     
                 </script>
 </x-app-layout>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
 
 <style>
