@@ -113,9 +113,12 @@ class StudentController extends Controller
     // Step 2: Assign ranks and update in the database
     $rank = 1;
     foreach ($studentMarks as $student) {
-        Student::where('id', $student->student_id)
+        if($student->total_marks!=0){
+            Student::where('id', $student->student_id)
             ->update(['rank' => $rank]);
-        $rank++;
+             $rank++;
+    
+        }
     }
         
         // echo "<pre>";print_r($marks);exit;
@@ -981,51 +984,7 @@ class StudentController extends Controller
             return response()->json(['student'=>$html]);
           
     }
-    public function generateGujaratiPDF()
-    {
-        // Create new PDF instance
-        $pdf = new TCPDF();
-
-        // Set document information
-        $pdf->SetCreator(PDF_CREATOR);
-        $pdf->SetAuthor('Your Name');
-        $pdf->SetTitle('Gujarati PDF Example');
-        $pdf->SetSubject('Gujarati Text Example');
-        $pdf->SetKeywords('Gujarati, PDF, Laravel, TCPDF');
-
-        // Set default monospaced font
-        $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-
-        // Set margins
-        $pdf->SetMargins(10, 10, 10);
-        $pdf->SetHeaderMargin(5);
-        $pdf->SetFooterMargin(10);
-
-        // Set auto page breaks
-        $pdf->SetAutoPageBreak(TRUE, 10);
-
-        // Add a page
-        $pdf->AddPage();
-
-        // Set font for Gujarati (freeserif is a Unicode font included with TCPDF)
-        $pdf->SetFont('freeserif', '', 12);
-
-        // Content in Gujarati
-        $html = '
-            <h1 style="text-align:center;">ગુજરાતી ટેક્સ્ટ ઉદાહરણ</h1>
-            <p style="text-align:justify;">
-                આ પીડીએફ ફાઈલમાં ગુજરાતી ભાષાને ટેકપીડીએફ લાઇબ્રરી દ્વારા દર્શાવવાની પ્રક્રિયા છે. 
-                આ ઉદાહરણ તમને TCPDF સાથે ગુજરાતી ભાષાના ટેક્સ્ટને હેન્ડલ કરવાની રીત બતાવે છે.
-            </p>
-            <p>મહત્વપૂર્ણ શબ્દો: PDF, TCPDF, Laravel, ગુજરાતી</p>
-        ';
-
-        // Write HTML content
-        $pdf->writeHTML($html, true, false, true, false, '');
-
-        // Output the PDF as a download
-        $pdf->Output('Gujarati_Example.pdf', 'D');
-    }
+    
     public function all_marksheet(Request $request){
         
         $examIds = $request->input('exam', []); // Get the exam array from the request
@@ -1196,6 +1155,29 @@ class StudentController extends Controller
     public function marksheet(Request $request){
         // print_r($request->all());exit;
         try{ 
+
+            $studentMarks = Student::leftJoin('marks', 'marks.student_id', '=', 'students.id')
+            ->whereIn('students.id',$request->student_id)
+            ->where('marks.exam_id', $request->exam)
+            ->select(
+                'students.id as student_id',
+                'students.name as student_name',
+                DB::raw('SUM(marks.marks) as total_marks')
+            )
+            ->groupBy('students.id', 'students.name')
+            ->orderBy('total_marks', 'desc') // Order by total marks for ranking
+            ->get();
+        //   echo "<pre>";print_r($studentMarks);exit;
+        // Step 2: Assign ranks and update in the database
+                $rank = 1;
+                foreach ($studentMarks as $student) {
+                    if($student->total_marks!=0){
+                    Student::where('id', $student->student_id)
+                        ->update(['rank' => $rank]);
+                    $rank++;
+                    }
+                }
+
             $student=Student::leftjoin('division','division.id','=','students.division_id')
             ->leftjoin('standards','standards.id','=','division.standard_id')
             ->leftjoin('exams','exams.standard_id','=','standards.id')
@@ -1281,6 +1263,11 @@ class StudentController extends Controller
             $filteredStudents = array_filter($student, function ($st) use ($tempMerge) {  
                return is_array($tempMerge) && isset($st['id']) && in_array($st['id'], $tempMerge);
             });
+
+
+           
+            
+
             $data = ['student'=>$filteredStudents,'subjects'=>$subjectsData,'optional_subjects'=>$optinalsubjects]; 
             $pdf = PDF::loadView('mark.marksheet', ['data' => $data]);
             

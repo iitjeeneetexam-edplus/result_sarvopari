@@ -217,8 +217,8 @@ if ($mrkses < $subject['passing_marks']) {
                                 @endphp
                                 <b>{{$porf}}</b>
                             </td>
-                            <td style="text-align: right; padding: 10px;font-size: 14pt">
-                                Rank – <b> {{ $studentRank }} </b>
+                            <td style="width: 33%; text-align: right;">
+                                Rank : {{$student_value['rank']}}
                             </td>
 
                         </tr>
