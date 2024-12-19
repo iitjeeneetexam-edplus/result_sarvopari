@@ -905,6 +905,7 @@ class StudentController extends Controller
                                                 'marks.subject_id',
                                                 'marks.performance_mark',
                                                 'marks.grace_mark',
+                                                'marks.passing_marks'
                                             )
                                             ->get();
                                 
@@ -924,6 +925,7 @@ class StudentController extends Controller
                                                 'exam_id' => $exam_value->id,
                                                 'performance_mark' => $value2->performance_mark,
                                                 'grace_mark' => $value2->grace_mark,
+                                                'passing_marks' => $value2->passing_marks,
                                             ];
                                         }
                                 

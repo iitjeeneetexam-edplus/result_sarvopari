@@ -93,7 +93,8 @@
             $perform = $student_value['performance_mark'];
             $grace = $student_value['grace_mark'];
             $nedadorno = $performm+$grace;
-            
+            $totalpasingmarks = 0;
+            $totalmrkswithpg = 0;
             $finalTotal = 0;
         @endphp
 
@@ -178,7 +179,7 @@
                             $get_total = $get_total + $ned;
                             $finalTotal += $get_total;
                             @endphp
-                            {{ $btnmks }}
+                           {{ $btnmks }}
                         </strong></td>
                         <td style="border: 1px solid black;">{{$performmark}}</td>
                         <td style="border: 1px solid black;">{{$gracemmark}}</td>
@@ -197,6 +198,10 @@
                                 $percentage >= 21 => 'E1',
                                 $percentage <= 20=> 'E2',
                             };
+
+                            
+                            $totalpasingmarks += $pasingmarks;
+                            $totalmrkswithpg += $perct;
                             @endphp
                         {{$grade}}</td>
                         <!-- <td style="border: 1px solid black;" ></td> -->
@@ -238,7 +243,7 @@
                             </td>
                             <td style="text-align: center; padding: 10px;font-size: 14pt">
                                 પરિણામ – @if($finalTotal || $finalTotal==0)
-                                @if($finalTotal < $nedadorno) પાસ 
+                                @if($totalpasingmarks < $totalmrkswithpg) પાસ 
                                 @else નાપાસ
                                 @endif
                                 @endif
