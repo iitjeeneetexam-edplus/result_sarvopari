@@ -249,7 +249,12 @@
                                 @endif
                             </td>
                             <td style="text-align: right; padding: 10px;font-size: 14pt">
-                                ક્રમાંક – <b> {{$student_value['rank']}} </b>
+                                ક્રમાંક – <b> 
+                                @if($finalTotal || $finalTotal==0)
+                                @if($totalpasingmarks < $totalmrkswithpg) {{$student_value['rank']}}
+                                @else 0
+                                @endif
+                                @endif </b>
                             </td>
                         </tr>
                     </table>

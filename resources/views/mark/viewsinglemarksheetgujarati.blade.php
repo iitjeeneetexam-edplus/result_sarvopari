@@ -222,7 +222,13 @@ if ($mrkses < $subject['passing_marks']) {
                                 <b>{{$porf}}</b>
                             </td>
                             <td style="text-align: right; padding: 10px;font-size: 14pt">
-                                ક્રમાંક – <b> {{ $student_value['rank'] }} </b>
+                                ક્રમાંક – @php
+                                if($passfail >= 1) {
+                                $porfs = 0;
+                                }else{
+                                $porfs = $student_value['rank'];
+                                }
+                                @endphp<b> {{ $porfs }} </b>
                             </td>
 
                         </tr>

@@ -218,7 +218,13 @@ if ($mrkses < $subject['passing_marks']) {
                                 <b>{{$porf}}</b>
                             </td>
                             <td style="width: 33%; text-align: right;">
-                                Rank : {{$student_value['rank']}}
+                                Rank : @php
+                                if($passfail >= 1) {
+                                $porfs = 0;
+                                }else{
+                                $porfs = $student_value['rank'];
+                                }
+                                @endphp {{$porfs}}
                             </td>
 
                         </tr>

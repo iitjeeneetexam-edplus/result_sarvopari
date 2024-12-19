@@ -265,7 +265,14 @@
                             @endif
                         </td>
                         <td style="width: 33%; text-align: right;">
-                            Rank : {{$student_value['rank']}}
+                            Rank : @if(isset($finalTotal) || $finalTotal === 0)
+                                @if($finalTotal < $nedadorno)
+                                    {{ $student_value['rank'] }}
+                                @else
+                                    0
+                                @endif
+                            @endif
+
                         </td>
                     </tr>
                 </table>
