@@ -83,7 +83,7 @@
                     <div class="col-md-9"></div>
                     <div class="col-md-3"><input type="text" id="searchInput" class="form-control mb-3" placeholder="Search..." style="display: none;"></div>
                 </div>
-                
+
                     <table class="table table-bordered" id="studentdata">
                         <thead class="thead-dark">
                             <tr>
@@ -342,63 +342,61 @@
 
 
                                    //rank generate
-                                   let students = Array.isArray(data.student2) ? data.student2 : Object.values(data.student2);
+                                  if (data.rank_calculation_student && data.rank_calculation_student.length > 0) {
+    let students = data.rank_calculation_student; // Use rank_calculation_student directly
+    let subjectTotals = {};
 
-                                        let subjectTotals = {};
+    students.forEach(student => {
+        let totalMarks = 0;
+         console.log(student); 
+        if (student.marks) {
+            for (const [subject, marks] of Object.entries(student.marks)) {
+                let numericMarks = parseInt(marks) || 0;
+                totalMarks += numericMarks;
 
-                                        students.forEach(student => {
-                                            let totalMarks = 0;
+                // Update subject totals
+                subjectTotals[subject] = (subjectTotals[subject] || 0) + numericMarks;
+            }
+        }
 
-                                            for (const [subject, marks] of Object.entries(student.marks)) {
-                                                let numericMarks = parseInt(marks) || 0; 
-                                                totalMarks += numericMarks;
+        student.totalMarks = totalMarks; // Assign total marks to student
+    });
 
-                                                subjectTotals[subject] = (subjectTotals[subject] || 0) + numericMarks;
-                                            }
+    // Rank students based on total marks
+    let rankedStudents = students.sort((a, b) => b.totalMarks - a.totalMarks);
 
-                                            student.totalMarks = totalMarks;
-                                        });
+    let rank = 1;
+    let previousMarks = null;
 
-                                        let rankedStudents = students
-                                            .map(student => student) 
-                                            .sort((a, b) => b.totalMarks - a.totalMarks); 
+    rankedStudents.forEach((student, index) => {
+        if (student.totalMarks === previousMarks) {
+            student.rank = rank; // Same rank for equal marks
+        } else {
+            rank = index + 1; // Increment rank
+            student.rank = rank;
+        }
+        previousMarks = student.totalMarks;
+    });
 
-                                        let rank = 1;
-                                        let previousMarks = null;
-
-                                        rankedStudents.forEach((student, index) => {
-                                            if (student.totalMarks === previousMarks) {
-                                                student.rank = rank; 
-                                            } else {
-                                                rank = index + 1; 
-                                                student.rank = rank;
-                                            }
-                                            previousMarks = student.totalMarks;
-                                        });
-
-                                        // Output for debugging
-                                        console.log("Subject Totals:", subjectTotals);
-                                        console.log("Ranked Students:", rankedStudents);
-                                        $.ajax({
-                                            url: 'student/update-student-ranks', // Update with your route
-                                            method: 'POST',
-                                            data: {
-                                                _token: $('meta[name="csrf-token"]').attr('content'), // Add CSRF token
-                                                students: rankedStudents.map(student => ({
-                                                    id: student.id, // Assuming each student has an `id`
-                                                    rank: student.rank
-                                                }))
-                                            },
-                                            success: function(response) {
-                                                console.log('Ranks updated successfully:', response);
-                                            },
-                                            error: function(xhr, status, error) {
-                                                console.error('Error updating ranks:', error);
-                                            }
-                                        });
-
-
-                                },
+    // AJAX to update ranks in Laravel
+    $.ajax({
+        url: '/student/update-student-ranks',
+        method: 'POST',
+        data: {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            students: rankedStudents.map(student => ({
+                id: student.student_id, // Student ID
+                rank: student.rank // Assigned rank
+            }))
+        },
+        success: function(response) {
+            console.log('Ranks updated successfully:', response);
+        },
+        error: function(xhr, status, error) {
+            console.error('Error updating ranks:', error);
+        }
+    });
+}},
                                 error: function(xhr, status, error) {
                                     $('#studentdata thead tr').append('<th><center>No data Found!</center></th>');
                                 }

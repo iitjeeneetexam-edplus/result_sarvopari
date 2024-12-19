@@ -98,24 +98,33 @@ class StudentController extends Controller
         ->paginate(10);
 
 
-        $query2 = Student::leftJoin('marks', 'marks.student_id', '=', 'students.id')
+        $studentMarks = Student::leftJoin('marks', 'marks.student_id', '=', 'students.id')
         ->where('students.division_id', $divisionId)
-        ->whereIn('marks.exam_id', $exam_id) 
+        ->whereIn('marks.exam_id', $exam_id)
         ->select(
-            'students.id',
-            'students.name',
-            'marks.marks'
-               
+            'students.id as student_id',
+            'students.name as student_name',
+            DB::raw('SUM(marks.marks) as total_marks')
         )
-        ->groupBy('students.id','students.name','marks.marks')
-        ->orderBy('students.id','asc')
+        ->groupBy('students.id', 'students.name')
+        ->orderBy('total_marks', 'desc') // Order by total marks for ranking
         ->get();
+
+    // Step 2: Assign ranks and update in the database
+    $rank = 1;
+    foreach ($studentMarks as $student) {
+        Student::where('id', $student->student_id)
+            ->update(['rank' => $rank]);
+        $rank++;
+    }
+        
+        // echo "<pre>";print_r($marks);exit;
 
         return response()->json([
             'students' => $query->items(), 
             'divisionId'=>$divisionId,
             'exam_id'=>$exam_id,
-            'rank_calculation_student'=>$query2,
+            // 'rank_calculation_student'=>$marks,
             'pagination' => [
                 
                 'current_page' => $query->currentPage(),
@@ -270,6 +279,7 @@ class StudentController extends Controller
                             ]);
     }
     public function update_student_ranks(Request $request){
+        // echo "<pre>";print_r($request->all());exit;
         $students = $request->input('students'); 
 
         foreach ($students as $studentData) {

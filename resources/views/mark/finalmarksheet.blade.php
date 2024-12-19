@@ -347,62 +347,11 @@
                                             );
                                         });
 
-                                       //rank calculation 
-                                       console.log(data.rank_calculation_student);
-                                       let students = Array.isArray(data.rank_calculation_student) ? data.rank_calculation_student : Object.values(data.rank_calculation_student);
+                                    
+                                                                            
 
-                                            let subjectTotals = {};
 
-                                            students.forEach(student => {
-                                                let totalMarks = 0;
 
-                                                for (const [subject, marks] of Object.entries(student.marks)) {
-                                                    let numericMarks = parseInt(marks) || 0; 
-                                                    totalMarks += numericMarks;
-
-                                                    subjectTotals[subject] = (subjectTotals[subject] || 0) + numericMarks;
-                                                }
-
-                                                student.totalMarks = totalMarks;
-                                            });
-
-                                            let rankedStudents = students
-                                                .map(student => student) 
-                                                .sort((a, b) => b.totalMarks - a.totalMarks); 
-
-                                            let rank = 1;
-                                            let previousMarks = null;
-
-                                            rankedStudents.forEach((student, index) => {
-                                                if (student.totalMarks === previousMarks) {
-                                                    student.rank = rank; 
-                                                } else {
-                                                    rank = index + 1; 
-                                                    student.rank = rank;
-                                                }
-                                                previousMarks = student.totalMarks;
-                                            });
-
-                                            // Output for debugging
-                                            // console.log("Subject Totals:", subjectTotals);
-                                            // console.log("Ranked Students:", rankedStudents);
-                                            $.ajax({
-                                                url: 'student/update-student-ranks', // Update with your route
-                                                method: 'POST',
-                                                data: {
-                                                    _token: $('meta[name="csrf-token"]').attr('content'), // Add CSRF token
-                                                    students: rankedStudents.map(student => ({
-                                                        id: student.id, // Assuming each student has an `id`
-                                                        rank: student.rank
-                                                    }))
-                                                },
-                                                success: function(response) {
-                                                    console.log('Ranks updated successfully:', response);
-                                                },
-                                                error: function(xhr, status, error) {
-                                                    console.error('Error updating ranks:', error);
-                                                }
-                                            });
 
                                         
                                     },
