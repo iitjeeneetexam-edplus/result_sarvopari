@@ -960,21 +960,21 @@ class StudentController extends Controller
                                     'grace_mark'=>!empty($getpergracmark->grace) ? $getpergracmark->grace : 0,                                   
                                     'exam'=>$exam,
                                     'total_marks' => $studentTotalMarks,
-                                    'rank' => '', 
+                                    'rank' =>$value->rank,
                                 ];
                                 
                     }
-                    arsort($totalMarks); // Sort by total marks in descending order
-                    $rank = 1;
-                    $ranks = [];
-                    foreach ($totalMarks as $studentId => $marks) {
-                        $ranks[$studentId] = $rank++;
-                    }
+                    // arsort($totalMarks); // Sort by total marks in descending order
+                    // $rank = 1;
+                    // $ranks = [];
+                    // foreach ($totalMarks as $studentId => $marks) {
+                    //     $ranks[$studentId] = $rank++;
+                    // }
                     
-                    // Update ranks in $data
-                    foreach ($data as &$studentData) {
-                        $studentData['rank'] = $ranks[$studentData['id']];
-                    }  
+                    // // Update ranks in $data
+                    // foreach ($data as &$studentData) {
+                    //     $studentData['rank'] = $ranks[$studentData['id']];
+                    // }  
                            
             $html = view('mark.viewfinalmarksheetguj', ['student' => $data])->render();
        
