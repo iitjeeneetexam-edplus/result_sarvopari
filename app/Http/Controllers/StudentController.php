@@ -1158,7 +1158,8 @@ class StudentController extends Controller
                                     'division_name'=>$value->division_name,
                                     'performance_mark'=>!empty($getpergracmark->performance) ? $getpergracmark->performance : 0,
                                     'grace_mark'=>!empty($getpergracmark->grace) ? $getpergracmark->grace : 0,
-                                     'exam'=>$exam,
+                                    'exam'=>$exam,
+                                    'rank'=>$value->rank,
                                 ];
                                     
                             }

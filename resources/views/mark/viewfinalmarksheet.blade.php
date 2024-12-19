@@ -251,18 +251,21 @@
             <div style="width: 100%; margin-top: 15pt;">
                 <table style="width: 100%; font-size: 16pt; border-collapse: collapse;">
                     <tr>
-                        <td style="text-align: left; padding: 8px;font-size: 14pt">
+                        <td style="width: 45%; text-align: left;">
                             Percentage – @php 
                             $percentages =$maintotalobtn ? ($maintotalobtn / $hundradtotal) * 100 : 0;
                                 @endphp
                             <b>{{round($percentages,2)}}%</b>
                         </td>
-                        <td style="text-align: right; padding: 10px;font-size: 14pt">
+                        <td style="width: 80%; text-align: center; font-size: 16pt; ">
                             Result – @if($finalTotal || $finalTotal==0)
                             @if($finalTotal < $nedadorno) Pass 
                             @else Fail
                             @endif
                             @endif
+                        </td>
+                        <td style="width: 33%; text-align: right;">
+                            Rank : {{$student_value['rank']}}
                         </td>
                     </tr>
                 </table>
